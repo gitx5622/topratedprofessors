@@ -8,6 +8,7 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
+    "@emotion/core": "^11.0.0",
     "counterup2": "^2.0.2",
     "dayjs": "^1.10.7",
     "dotenv": "^8.2.0",
