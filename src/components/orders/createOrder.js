@@ -3,7 +3,7 @@ import React from 'react';
 import { jsx, Text } from 'theme-ui';
 import OrderCard from "./components/order-card";
 
-const RejectedOrders = ({section}) => {
+const CreateOrder = ({section}) => {
     return (
         <div sx={styles.completed}>
             <OrderCard
@@ -13,7 +13,7 @@ const RejectedOrders = ({section}) => {
     );
 };
 
-export default RejectedOrders;
+export default CreateOrder;
 
 const styles = {
     completed: {

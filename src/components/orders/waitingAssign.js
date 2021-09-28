@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import React from 'react';
 import { jsx, Text } from 'theme-ui';
-import OrderCard from "./order-card";
+import OrderCard from "./components/order-card";
 
 const WaitingAssign = ({section}) => {
     return (

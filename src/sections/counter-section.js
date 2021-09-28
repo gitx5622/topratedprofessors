@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import {jsx, Grid, Heading, Box, Text} from 'theme-ui';
 import PatternBG from "../assets/patternBG.png";
-import HomeworkCard from "../components/homework_card";
 import CountUp from 'react-countup';
 
 const data = [

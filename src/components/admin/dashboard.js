@@ -1,12 +1,13 @@
 import React from 'react';
 import { ThemeProvider } from 'theme-ui';
 import theme from 'theme';
-import Layout from "../layout";
 import CompletedOrders from "../orders/completedOrders";
 import AllOrders from "../orders/allOrders";
 import WaitingAssign from "../orders/waitingAssign";
 import ApprovedOrders from "../orders/approvedOrders";
 import PendingOrders from "../orders/pendingOrders";
+import OrderLayout from "../orders/layout/order-layout";
+import CreateOrder from "../orders/createOrder";
 
 const Dashboard = ({page, section}) => {
     const renderOrderPages = () => {
@@ -47,6 +48,12 @@ const Dashboard = ({page, section}) => {
                         section={section}
                     />
                 );
+            case 'create_order':
+                return (
+                    <CreateOrder
+                        section={section}
+                    />
+                );
             case undefined:
                 return '';
             default:
@@ -56,9 +63,9 @@ const Dashboard = ({page, section}) => {
     return (
         <div>
             <ThemeProvider theme={theme}>
-            <Layout>
+            <OrderLayout>
                 {renderOrderPages()}
-            </Layout>
+            </OrderLayout>
             </ThemeProvider>
         </div>
     );

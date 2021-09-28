@@ -34,7 +34,7 @@ export default function Login() {
         };
 
         loginUser(dispatch, bodyData).then(response => {
-            if (response.status === 200) router.push('/admin/dashboard');
+            if (response.status === 200) router.push('/dashboard/completed');
             if (response.data.error_message)
                 setLoginStatus({ loading: false, error: response.data.error_message });
         });
@@ -51,7 +51,7 @@ export default function Login() {
     useEffect(() => {
         const user = localStorage.currentUser && JSON.parse(localStorage.currentUser);
         if (user){
-                    router.push('/admin/dashboard');
+                    router.push('/dashboard/completed');
                 } else {
                     localStorage.clear();
                 }

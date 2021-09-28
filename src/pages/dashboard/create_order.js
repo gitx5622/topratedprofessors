@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
+import Dashboard from "../../components/admin/dashboard";
 
-const Index = () => {
+const CreateOrder = () => {
     useEffect(() => {
         try {
             JSON.parse(localStorage.currentUser);
@@ -10,10 +11,8 @@ const Index = () => {
         }
     }, []);
     return (
-        <div>
-            <h1>Dashboard</h1>
-        </div>
+        <Dashboard page='dashboard' section='create_order'/>
     );
 };
 
-export default Index;
+export default CreateOrder;
