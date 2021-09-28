@@ -1,3 +1,4 @@
+/** @jsx jsx */
 import React, { useState } from 'react';
 import {Box, jsx} from 'theme-ui';
 import { Scrollbars } from 'react-custom-scrollbars';

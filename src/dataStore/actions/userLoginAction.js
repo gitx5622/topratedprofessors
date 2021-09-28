@@ -2,7 +2,7 @@
 import axiosConfig from '../../config/axios';
 import jwtdecode from 'jwt-decode';
 import {ERROR, LOADING, SUCCESS} from "../dispatchTypes";
-import {Alert, jsx} from "theme-ui";
+import {Alert, Close, jsx} from "theme-ui";
 
 export const loginUser = async (dispatch, bodyData) => {
     dispatch({

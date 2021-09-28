@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React from 'react';
-import { jsx, Text } from 'theme-ui';
+import { jsx } from 'theme-ui';
 import OrderCard from "./components/order-card";
 
 const RejectedOrders = ({section}) => {

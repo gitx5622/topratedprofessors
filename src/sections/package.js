@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, Container, Box, Flex } from 'theme-ui';
-import { keyframes } from '@emotion/core';
+import { keyframes } from '@emotion/react';
 import React, { useState } from 'react';
 import PriceCard from 'components/price-card';
 import SectionHeader from 'components/section-header';
