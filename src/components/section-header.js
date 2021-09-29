@@ -22,9 +22,8 @@ export default function SectionHeader({ title, slogan, isWhite }) {
             <center>{slogan}</center>
         </Text>
         <Heading
-            as='p'
             sx={{
-                fontSize: ['24px', '28px', '32px', '36px'],
+                fontSize: ['24px', '28px', '32px', '32px'],
                 lineHeight: [1.3, null, null, 1.25],
                 textAlign: 'center',
                 fontWeight: '700',

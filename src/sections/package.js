@@ -137,7 +137,7 @@ const styles = {
   pricingWrapper: {
     mb: '-40px',
     mt: '-40px',
-    mx: ['30px', "30px", '50px'],
+    mx: ['30px', null, '50px'],
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'wrap',
