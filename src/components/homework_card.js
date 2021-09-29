@@ -22,6 +22,12 @@ const styles = {
         backgroundColor: '#ffffff',
         boxShadow: '10px 10px 10px  10px rgba(38, 78, 118, 0.1)',
         borderRadius: '10px',
+        padding: '20px',
+        lineHeight: 1.5,
+    },
+    title: {
+        fontFamily: 'body',
+        fontSize: ['16px', null, '20px'],
     },
     number: {
         fontSize: [30, 36, 40],

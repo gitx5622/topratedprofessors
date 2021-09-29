@@ -1,8 +1,9 @@
 /** @jsx jsx */
+import React from "react";
 import { jsx } from 'theme-ui';
+import { Button, Heading, Select, Box, Text, Image} from 'theme-ui';
 import { useRouter} from "next/router";
 import Head from 'next/head';
-import {Button, Heading, Select, Box, Text, Image} from "theme-ui";
 import Mcafee from 'assets/footer/mcafee.png';
 
 const CalculatorCard = ({
@@ -82,6 +83,7 @@ const styles = {
         color: 'background'
     },
         CalTitle: {
+            fontFamily: 'body',
             textAlign: 'center',
         },
         mcafee: {

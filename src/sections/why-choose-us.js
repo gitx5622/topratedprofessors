@@ -1,3 +1,4 @@
+/** @jsx jsx */
 import React, {Component} from 'react';
 import {Image, Box, Grid, Text, Heading, Card, jsx} from 'theme-ui';
 import Satisfaction from "../assets/satisfaction.png";
@@ -77,7 +78,7 @@ class WhyChooseUs extends Component {
                 <Grid sx={styles.grid}>
                     <Box sx={{ml: '20px'}}>
                         <h1 style={{textAlign: 'center'}}>Why Choose Us</h1>
-                        <Text>
+                        <Text sx={{lineHeight: 2.0}}>
                             Students go through a lot of challenges. Imagine having five assignments, all due tonight.
                             I bet you would break down as you figure out a way of handling all of them.
                             We understand the challenges students face and, as such always seek to help whenever we can.
@@ -93,15 +94,15 @@ class WhyChooseUs extends Component {
                             You would have no reason to panic if you hire a professor to do your homework.
                             We boast of helping over 100,000 students from across the globe because they trust us with their assignments and we never fail to deliver.
                         </Text>
-                        <Text>
-                            <Heading>Features of Our Assignment Help :</Heading>
+                        <Text><br/>
+                            <Heading sx={{fontFamily: 'body',fontSize: '20px'}}>Features of Our Assignment Help :</Heading><br/>
                             <Grid sx={styles.featureGrid}>
                                 {data.map((item, index) => (
                                     <Box key={index}>
-                                        <Heading>{item.title}</Heading>
+                                        <Heading sx={{fontFamily: 'body',fontSize: '17px'}}>{item.title}</Heading>
                                         <Box  sx={styles.assignment}>
                                             <Image src={item.image} alt='wall_clock' sx={styles.image}/>
-                                            <Text>{item.text}</Text>
+                                            <Text sx={{lineHeight: 1.5,}}>{item.text}</Text>
                                         </Box>
                                     </Box>
                                 ))}
@@ -111,7 +112,7 @@ class WhyChooseUs extends Component {
                     <Box>
                         <Card sx={styles.card}>
                             <h2 style={{textAlign: 'center', fontFamily: 'Quicksand, sans-serif'}}>Why Top Rated Professors</h2>
-                            <ul style={{listStyle: 'none', textAlign: 'center', lineHeight: 2.5, marginTop: '-20px'}}>
+                            <ul style={{listStyle: 'none', textAlign: 'center', lineHeight: 2.5, marginTop: '10px'}}>
                                 <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                                     <Image src={Check} alt="deadline" sx={styles.cardImage}/>
                                     <li>Any Deadline - Any Subject</li>
@@ -134,7 +135,7 @@ class WhyChooseUs extends Component {
                                 </Box>
                             </ul>
                             <Image src={Satisfaction} alt='100% original'/>
-                        </Card>
+                        </Card><br/>
                         <Card sx={styles.card}>
                             <h2 style={{textAlign: 'center'}}>100% Money-Back Guarantee</h2>
                             <Image src={Original} alt='wall_clock'/>
@@ -182,8 +183,8 @@ const styles = {
             opacity: 2,
             },
         image: {
-            width: '30%',
-            height: '15%'
+            width: '100px',
+            height: '38px'
         },
         assignment: {
             display: 'flex',

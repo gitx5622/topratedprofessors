@@ -1,4 +1,5 @@
-import { Box, Card, Text, Heading } from 'theme-ui';
+/** @jsx jsx */
+import { jsx, Box, Card, Text, Heading } from 'theme-ui';
 import { FaAngleDoubleRight } from 'react-icons/fa';
 import React from 'react';
 

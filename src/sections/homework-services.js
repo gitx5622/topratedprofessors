@@ -33,7 +33,7 @@ const data = [
 ]
 const  HomeworkServices = () =>  {
         return (
-            <section id='homework' sx={{ backgroundColor: 'whitesmoke', p: '40px'}}>
+            <section id='homework' sx={{ fontFamily: 'body', backgroundColor: 'whitesmoke', p: '40px'}}>
                 <h1 sx={styles.title}>Homework Help Services</h1>
                 <Grid sx={styles.grid}>
                     {data.map((item, index) => (

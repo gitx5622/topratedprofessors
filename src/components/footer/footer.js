@@ -61,7 +61,7 @@ export default function Footer() {
                     <li><img src={Paypal} alt="paypal" width="100px"/></li>
                     <li><img src={Visa} alt="visa" width="100px"/></li>
                 </ul>
-            <Text sx={{textAlign: 'center',  color: '#A1A9B3'}}>
+            <Text sx={{lineHeight: 1.5, textAlign: 'center',  color: '#A1A9B3', px: 8}}>
                 Write My Paper for Cheap |
                 Fast Essay Writing Service |
                 Pay for Term Papers  |
@@ -89,6 +89,7 @@ export default function Footer() {
 
 const styles = {
   footer: {
+      fontFamily: 'body',
       backgroundColor: '#242a35',
       grid: {
           pt: [0, null, null, null, null, null, 2],
@@ -106,6 +107,7 @@ const styles = {
           gridTemplateColumns: ['repeat(1,1fr)', 'repeat(2,1fr)',  'repeat(2,1fr)', 'repeat(4,1fr)'],
       },
       heading: {
+          fontFamily: 'body',
           color: 'primary',
           ml: 4,
           fontSize: [25, null, 30],
@@ -117,6 +119,7 @@ const styles = {
       ul: {
           listStyle: 'none',
           li: {
+              lineHeight: 2.0,
               color: "white",
               p: [1, null, 1.9],
               '@media screen and (max-width:768px)': {

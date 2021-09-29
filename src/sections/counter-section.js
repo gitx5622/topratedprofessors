@@ -46,7 +46,7 @@ const styles = {
         backgroundPosition: 'center center',
         backgroundSize: 'cover',
         position: 'relative',
-        mt: '-50px',
+        mt: ['50px', null,'-50px'],
         py: [6, null, 8, null, null, 6],
         grid: {
             pt: [0, null, null, null, null, null, 2],
@@ -64,11 +64,13 @@ const styles = {
             gridTemplateColumns: ['repeat(1,1fr)', 'repeat(2,1fr)',  'repeat(2,1fr)', 'repeat(4,1fr)'],
         },
         number: {
+            fontFamily: 'body',
             textAlign: 'center',
             fontSize: [4, null, 45],
             color: 'white',
         },
         content: {
+            fontFamily: 'body',
             textAlign: 'center',
             fontSize: [4, null, 16]
         },

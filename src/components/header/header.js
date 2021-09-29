@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, Box, Flex, Button } from 'theme-ui';
 import { useRouter } from 'next/router';
-import { keyframes } from '@emotion/react';
+import { keyframes } from '@emotion/core';
 import { Link } from 'react-scroll';
 import Logo from 'components/logo';
 import LogoDark from 'assets/logo.png';
@@ -29,10 +29,8 @@ const Header  = ({ className }) => {
               ))}
             </Flex>
         <Box sx={{display: 'flex', gap: '10px'}}>
-          <Button sx={{  '@media screen and (max-width:768px)': {
-              display: 'none',
-            },}} className="donate__btn" onClick={() => router.push('/user/login')} variant="secondary" aria-label="Get Started">Login</Button>
-          <Button className="donate__btn" onClick={() => router.push('/user/register')}  variant="secondary" aria-label="Get Started">Get Started</Button>
+          <Button className="login__btn" onClick={() => router.push('/user/login')} variant="secondary" aria-label="Get Started">Login</Button>
+          <Button className="register__btn" onClick={() => router.push('/user/register')}  variant="secondary" aria-label="Get Started">Get Started</Button>
         </Box>
           <MobileDrawer/>
       </header>
@@ -56,6 +54,7 @@ const positionAnim = keyframes`
 
 const styles = {
   header: {
+    fontFamily: 'body',
     display: 'flex',
     pl: '20px',
     pr: '20px',
@@ -71,14 +70,51 @@ const styles = {
     backgroundColor: 'primary',
     transition: 'all 0.4s ease',
     animation: `${positionAnim} 0.4s ease`,
-    '.donate__btn': {
+    '.login__btn': {
+      borderRadius: '45px',
+      fontSize: ['14px', null, null, 2],
+      letterSpacings: '-0.15px',
+      padding: ['12px 20px', null, '15px 30px'],
+      fontFamily: 'body',
+      cursor: 'pointer',
+      lineHeight: 1.2,
+      transition: 'all 0.25s',
+      fontWeight: 500,
       backgroundColor: 'secondary',
       color: 'white',
-      flexShrink: 0,
-      mr: [15, 20, null, null, 0],
-      ml: ['auto', null, null, null, 0],
+      '&:focus': {
+        outline: 0,
+      },
       '@media screen and (max-width:768px)': {
-        ml: ['-80px', '-40px', '-30px', '-30px', 0]
+        ml: ['-80px', '-40px', '-30px', '-30px', '20px'],
+        mr: ['-80px', '-40px', '-30px', '-30px', '50px']
+      },
+      '&:hover': {
+        backgroundColor: 'white',
+        color: 'black',
+      },
+    },
+    '.register__btn': {
+      borderRadius: '45px',
+      fontSize: ['14px', null, null, 2],
+      letterSpacings: '-0.15px',
+      padding: ['12px 20px', null, '15px 30px'],
+      fontFamily: 'body',
+      cursor: 'pointer',
+      lineHeight: 1.2,
+      transition: 'all 0.25s',
+      fontWeight: 500,
+      backgroundColor: 'secondary',
+      color: 'white',
+      '@media screen and (max-width: 768px)': {
+        display: 'none',
+      },
+      '&:focus': {
+        outline: 0,
+      },
+      '@media screen and (max-width:768px)': {
+        ml: ['-80px', '-40px', '-30px', '-30px', '20px'],
+        mr: ['-80px', '-40px', '-30px', '-30px', '50px']
       },
       '&:hover': {
         backgroundColor: 'white',
@@ -94,7 +130,39 @@ const styles = {
       'nev > a': {
         color: 'text',
       },
-      '.donate__btn': {
+      '.login__btn': {
+        borderRadius: '45px',
+        fontSize: ['14px', null, null, 2],
+        letterSpacings: '-0.15px',
+        padding: ['12px 20px', null, '15px 30px'],
+        fontFamily: 'body',
+        cursor: 'pointer',
+        lineHeight: 1.2,
+        transition: 'all 0.25s',
+        fontWeight: 500,
+        '&:focus': {
+          outline: 0,
+        },
+        backgroundColor: 'primary',
+        color: "black",
+        '&:hover': {
+          backgroundColor: 'white',
+          color: 'black',
+        },
+      },
+      '.register__btn': {
+        borderRadius: '45px',
+        fontSize: ['14px', null, null, 2],
+        letterSpacings: '-0.15px',
+        padding: ['12px 20px', null, '15px 30px'],
+        fontFamily: 'body',
+        cursor: 'pointer',
+        lineHeight: 1.2,
+        transition: 'all 0.25s',
+        fontWeight: 500,
+        '&:focus': {
+          outline: 0,
+        },
         backgroundColor: 'primary',
         color: "black",
         '&:hover': {
@@ -111,9 +179,11 @@ const styles = {
   },
   nav: {
     mx: 'auto',
-    display: 'none',
     '@media screen and (min-width: 1024px)': {
       display: 'block',
+    },
+    '@media screen and (max-width: 768px)': {
+      display: 'none',
     },
     a: {
       fontSize: 2,

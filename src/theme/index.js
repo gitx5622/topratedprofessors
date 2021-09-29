@@ -1,5 +1,4 @@
-export default {
-  // example colors with dark mode
+export default  {
   colors: {
     text: '#343D48', // body color and primary color
     text_secondary: '#02073E', // secondary body color
@@ -88,15 +87,19 @@ export default {
   },
   section: {
     reviews: {
+      fontFamily: 'body',
       pt: [3, null, 8, '70px', null, 8, null, '25px'],
       pb: ['50px', null, 9, null, null, 10, null, '50px'],
       overflow: 'hidden',
     },
     writingService: {
-      pt: [8, null,null, '80px'],
+      fontFamily: 'body',
+      pt: ['20px', null,null, '80px'],
       pb: ['90px', null, null, '80px'],
     },
     whyChooseUs: {
+      pt: ['10px', null,null, '20px'],
+      fontFamily: 'body',
       pb: [0, null, 1]
     },
     HowItWorks: {
@@ -231,7 +234,7 @@ export default {
       borderRadius: 99999,
     },
   },
-  // variants for buttons
+// variants for buttons
   buttons: {
     menu: {
       display: [null, null, 'none'],
@@ -386,4 +389,4 @@ export default {
       whiteSpace: 'nowrap !important',
     },
   },
-};
+}

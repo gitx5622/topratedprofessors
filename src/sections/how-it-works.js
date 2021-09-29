@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui';
-import { Container, Grid, Box, Heading } from 'theme-ui';
+import { Grid, Box, Heading } from 'theme-ui';
 import SectionHeader from 'components/section-header';
 
 import PatternBG from 'assets/patternBG.png';
@@ -44,11 +44,10 @@ export default function HowItWorks() {
   return (
       <section id='how-it-works' sx={{variant: 'section.HowItWorks'}}>
         <Box sx={styles.workflow}>
-          <Container>
             <SectionHeader
                 title="How it works"
                 isWhite={false}
-            />
+            /><br/><br/>
             <Grid sx={styles.grid}>
               {data.map((item) => (
                   <Box key={item.id} sx={styles.card}>
@@ -59,7 +58,6 @@ export default function HowItWorks() {
                   </Box>
               ))}
             </Grid>
-          </Container>
         </Box>
       </section>
   );
@@ -74,7 +72,8 @@ const styles = {
     backgroundSize: 'cover',
     position: 'relative',
     mt: '-50px',
-    py: [6, null, 8, null, null, 6],
+    px: 8,
+    py: [7, null, 6, null, null, 7],
   },
   grid: {
     mb: -1,
@@ -151,6 +150,7 @@ const styles = {
     flexDirection: 'column',
     mt: '-5px',
     title: {
+      fontFamily: 'body',
       fontSize: [3, null, 4, null, null, 5],
       color: 'white',
       lineHeight: [1.4, null, null, null, null, 1.55],

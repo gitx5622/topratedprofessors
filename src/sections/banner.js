@@ -100,13 +100,12 @@ export default function Banner() {
                     </Box>
                     <Text sx={styles.banner.services}>We are the best custom essay writers online.</Text><br/>
                     <Heading sx={styles.banner.services}>100% SATISFACTION GUARANTEED</Heading>
-                    <Image src={Original} alt='100% original' sx={styles.banner.originalImg}/>
                     <Box sx={styles.banner.buttonGroup}>
                         <Button className='buttons' onClick={() => router.push('/dashboard/completed')} >Dashboard</Button>
                         <Button className='buttons' onClick={() => router.push('/dashboard/completed')} >Order Now</Button>
                     </Box>
                 </Box>
-              <Box>
+              <Box sx={styles.calculatorCard}>
                   <CalculatorCard
                       myLevel={mylevel }
                       myPages={mypages}
@@ -133,6 +132,7 @@ export default function Banner() {
 
 const styles = {
   banner: {
+      fontFamily: 'body',
       pt: ['40px', '45px', '55px', '70px', null, null, '80px', '115px'],
       pb: [2, null, 0, null, 2, 0, null, 5],
       position: 'relative',
@@ -166,16 +166,7 @@ const styles = {
       grid: {
           pt: [0, null, null, null, null, null, 2],
           px: [5, 6, 0, null, 7, 8, 7],
-          gridGap: [
-              '40px 0',
-              null,
-              '45px 30px',
-              null,
-              '60px 50px',
-              '70px 50px',
-              null,
-              '80px 90px',
-          ],
+          gridGap: '6em',
           gridTemplateColumns: ['repeat(1,1fr)', null, 'repeat(2,1fr)'],
       },
       bannerCard: {
@@ -193,7 +184,8 @@ const styles = {
           opacity: 0.96,
       },
       mainTitle: {
-          fontSize: [20,20, 22, 26, 30, 32,34,36],
+          fontFamily: 'Quicksand, sans-serif',
+          fontSize: ['20px', null, '30px'],
       },
       buttonGroup: {
           display: 'flex',
@@ -201,11 +193,19 @@ const styles = {
           mx: [2, null, 4],
           py: [2, null, null, 3, null, null, 6],
           '.buttons' : {
+              borderRadius: '45px',
+              fontSize: ['14px', null, null, 2],
+              letterSpacings: '-0.15px',
+              padding: ['12px 20px', null, '15px 30px'],
+              fontFamily: 'body',
               backgroundColor: 'secondary',
-              border: '1px solid whitesmoke',
-              borderRadius: '10px',
-              outline: 0,
-              color: 'background',
+              cursor: 'pointer',
+              lineHeight: 1.2,
+              transition: 'all 0.25s',
+              fontWeight: 500,
+              '&:focus': {
+                  outline: 0,
+              },
           },
       },
       services: {
@@ -213,17 +213,11 @@ const styles = {
           flexDirection: 'column',
           justifyContent: 'center',
           textAlign: 'center',
-          lineHeight: 'body'
+          lineHeight: 'body',
+          fontFamily: 'Quicksand, sans-serif',
       },
       checks: {
         width: ['7%', null, '8%']
       },
-      originalImg: {
-          width: ['10%', null, '15%'],
-          mt: ['-50px'],
-          '@media screen and (max-width:568px)': {
-              display: 'none',
-          },
-      },
-  }
+  },
 };

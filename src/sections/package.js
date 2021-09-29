@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx, Container, Box, Flex } from 'theme-ui';
-import { keyframes } from '@emotion/react';
+import { jsx, Box, Flex } from 'theme-ui';
+import { keyframes } from '@emotion/core';
 import React, { useState } from 'react';
 import PriceCard from 'components/price-card';
 import SectionHeader from 'components/section-header';
@@ -63,7 +63,6 @@ export default function Package() {
   }
   return (
       <section id="writing-service" sx={{variant: 'section.writingService'}}>
-        <Container>
           <SectionHeader
               title="Academic Paper Writing Service"
           />
@@ -112,7 +111,6 @@ export default function Package() {
                   </Box>
               ))}
           </Box>
-        </Container>
       </section>
   );
 }
@@ -139,7 +137,7 @@ const styles = {
   pricingWrapper: {
     mb: '-40px',
     mt: '-40px',
-    mx: -3,
+    mx: ['30px', null, '50px'],
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'wrap',
@@ -178,7 +176,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     mb: '7',
-    mt: ['-15px', '-35px'],
+    mt: ['15px', '35px'],
     position: 'relative',
     zIndex: 2,
   },
