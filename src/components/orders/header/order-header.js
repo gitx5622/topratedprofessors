@@ -9,6 +9,8 @@ import { AiOutlineLogout } from 'react-icons/ai';
 import { Alert } from 'theme-ui'
 import {logoutUser} from "../../../dataStore/actions/userLogoutAction";
 import {useDispatch} from "react-redux";
+import Head from 'next/head';
+import React from "react";
 
 const OrderHeader  = ({ className }) => {
     const router = useRouter();
@@ -28,6 +30,9 @@ const OrderHeader  = ({ className }) => {
     }
     return (
         <header sx={styles.header} className={className}>
+            <Head>
+                <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+            </Head>
             <Flex as="nav" sx={styles.nav}>
                 {menuItems.map((menuItem, i) => (
                     <Link

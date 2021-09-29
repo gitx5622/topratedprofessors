@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import React, {useState, useEffect, useMemo} from "react";
+import Head from 'next/head';
 import {useRouter} from "next/router";
 import { useDispatch, useSelector} from "react-redux";
 import {jsx, Box, Button, Label, Input, Textarea, Select, Grid} from 'theme-ui';
@@ -8,7 +9,6 @@ import {useDropzone} from 'react-dropzone';
 import dayjs from "dayjs";
 import LogoDark from 'assets/logo.png';
 import Logo from "../../logo";
-import Head from 'next/head';
 import { GrView } from 'react-icons/gr';
 import { BiCheckShield } from 'react-icons/bi';
 import { FiEdit } from 'react-icons/fi';
@@ -255,6 +255,7 @@ const OrderCard = ({section}) => {
         <Box sx={styles.orderCard}>
             <Head>
                 <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'/>
+                <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
             </Head>
                     <Box sx={styles.sidebar}  >
                         <ul sx={styles.list}>
