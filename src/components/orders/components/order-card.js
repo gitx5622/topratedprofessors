@@ -289,7 +289,7 @@ const OrderCard = ({section}) => {
                         </thead>
                         <tbody>
                         {section === 'completed' && (
-                            orderData.map(order => { return (
+                            orderData ? orderData.map(order => { return (
                                 <tr key={order.id}>
                                     <td><a style={{color: '#1890FF', textDecoration: 'none'}} href={`/orders/order_details/${order.id}`}>{order.order_number}</a></td>
                                     <td>{dayjs(order.deadline).format("dddd, MMMM D YYYY")}</td>
@@ -299,10 +299,14 @@ const OrderCard = ({section}) => {
                                     <td><GrView style={{color: 'red'}}/> <FiEdit/> <AiOutlineDelete/></td>
                                     <td><Button className='reserve-button'>Reserve Now</Button></td>
                                 </tr>
-                            )})
+                            )}): (
+                                <Box>
+                                    No data
+                                </Box>
+                            )
                         )}
                         {section === 'all-orders' && (
-                            orderData.map(order => { return (
+                            orderData ? orderData.map(order => { return (
                                 <tr key={order.id}>
                                     <td><a style={{color: '#1890FF', textDecoration: 'none'}} href={`/orders/order_details/${order.id}`}>{order.order_number}</a></td>
                                     <td>{dayjs(order.deadline).format("dddd, MMMM D YYYY")}</td>
@@ -312,8 +316,13 @@ const OrderCard = ({section}) => {
                                     <td><GrView style={{color: 'red'}}/> <FiEdit/> <AiOutlineDelete/></td>
                                     <td><Button className='reserve-button'>Reserve Now</Button></td>
                                 </tr>
-                            )})
-                        )}
+                            )}) : (
+                                <Box>
+                                    No data
+                                </Box>
+                            )
+                        )
+                        }
                         </tbody>
                     </table>
                     {section === 'create_order' && (
