@@ -136,7 +136,7 @@ class WhyChooseUs extends Component {
                             </ul>
                             <Image src={Satisfaction} alt='100% original'/>
                         </Card><br/>
-                        <Card sx={styles.card}>
+                        <Card className=".image__card" sx={styles.card}>
                             <h2 style={{textAlign: 'center'}}>100% Money-Back Guarantee</h2>
                             <Image src={Original} alt='wall_clock'/>
                         </Card>
@@ -181,6 +181,11 @@ const styles = {
             mt: [0, null, 4],
             mb:[6, null, 0],
             opacity: 2,
+            '.image__card': {
+                '@media screen and (max-width: 1200px)': {
+                    display: 'none'
+                },
+            }
             },
         image: {
             width: '100px',

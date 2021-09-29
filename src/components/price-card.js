@@ -42,7 +42,7 @@ const styles = {
     p: ['35px 25px', null, null, '40px'],
     width: ['100%', '75%', '100%'],
     mb: '40px',
-    mt: '90px',
+    mt: '80px',
     mx: [0, 'auto', 0],
     '&:before': {
       position: 'absolute',
