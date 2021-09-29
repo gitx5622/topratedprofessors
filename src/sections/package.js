@@ -65,7 +65,7 @@ export default function Package() {
       <section id="writing-service" sx={{variant: 'section.writingService'}}>
           <SectionHeader
               title="Academic Paper Writing Service"
-          />
+          /><br/>
           <Flex sx={styles.buttonGroup}>
             <Box sx={styles.buttonGroupInner}>
               <button
@@ -137,7 +137,7 @@ const styles = {
   pricingWrapper: {
     mb: '-40px',
     mt: '-40px',
-    mx: ['30px', null, '50px'],
+    mx: ['30px', "30px", '50px'],
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'wrap',
