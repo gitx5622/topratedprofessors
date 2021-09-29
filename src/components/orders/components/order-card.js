@@ -417,7 +417,7 @@ const OrderCard = ({section}) => {
                                 </Grid>
                                 <Box mt={3} >
                                     <Label htmlFor="spacing">Instructions</Label>
-                                    <Textarea sx={styles.form.texterea} name="comment" id="comment" rows={6}/>
+                                    <Textarea sx={styles.form.texterea} autoFocus name="comment" id="comment" rows={6}/>
                                 </Box>
                                 <Button mt={2}>Create Order</Button>
                             </Box>
@@ -564,9 +564,11 @@ const styles = {
             gridTemplateColumns: ['repeat(1,1fr)', 'repeat(2,1fr)',  'repeat(4,1fr)', 'repeat(4,1fr)'],
         },
         select: {
+            fontFamily: 'Quicksand, sans-serif',
             borderColor: '#E5ECF4',
             height: '50px',
             option: {
+                fontFamily: 'Quicksand, sans-serif',
                 '&:focus': {
                     borderColor: '0 0 3pt 2pt #719ECE',
                 },
@@ -574,6 +576,7 @@ const styles = {
         },
         texterea: {
             borderColor: '#E5ECF4',
+            boxShadow: '0 0 3pt 2pt #719ECE',
             '&:focus': {
                 boxShadow: '0 0 3pt 2pt #719ECE',
             },
