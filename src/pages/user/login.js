@@ -65,7 +65,7 @@ export default function Login() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
         </Box>
-            <Box sx={{display: 'flex'}}>
+            <Box sx={styles.login}>
                     <Box sx={styles.loginImage}>
                         <Image src={PatternBG} alt="" sx={styles.patternImage}/>
                     </Box>
@@ -101,6 +101,14 @@ export default function Login() {
 }
 
 const styles = {
+    login: {
+        display: 'flex',
+        '@media screen and (max-width:768px)': {
+            display: 'flex',
+            gap: '20px',
+            flexDirection: 'column',
+        },
+    },
     grid: {
         pt: [0, null, null, null, null, null, 2],
         px: [5, 6, 0, null, 7, 8, 7],

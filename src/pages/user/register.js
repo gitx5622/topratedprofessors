@@ -1,92 +1,134 @@
 /** @jsx jsx */
-import { jsx, Box, Button, Label, Input, } from 'theme-ui';
+import { jsx, Box, Button, Label, Input, Image } from 'theme-ui';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/router';
-import { loginUser } from "../../dataStore/actions/userLoginAction";
-import PatternBG from "../../assets/back.png";
+import {useState, useReducer, useEffect} from 'react';
+import PatternBG from "../../assets/login.svg";
+import {RegisterUser} from "../../dataStore/actions/userRegistrationAction";
+import checkDetailsReducer, {initialCheckDetailsState} from "../../dataStore/reducers/checkDetailsReducer";
 
 export default function Register() {
-    const router = useRouter();
-    const dispatch = useDispatch();
-    const [loginDetails, setLoginDetails] = useState({
+    const [registerValues, setregisterValues] = useState({
+        first_name:'',
+        last_name:'',
+        username:'',
         email: '',
         password: '',
-    });
-    const [loginStatus, setLoginStatus] = useState({
-        error: '',
-        loading: false,
+        password_confirmation:''
     });
 
-    const handleUserLogin = e => {
-        setLoginStatus(status => ({
-            ...status,
-            loading: true,
-            error: '',
-        }));
+    const [checkDetailsData, dispatchCheckDetails] = useReducer(
+        checkDetailsReducer,
+        initialCheckDetailsState
+    );
+
+    const handleChange  = (event) => {
+        if (checkDetailsData.isError) {
+            dispatchCheckDetails({ type: 'DEFAULT' });
+        }
+        setregisterValues({ ...registerValues, [event.target.name]: event.target.value });
+    };
+    const handleRegisterUser = e => {
         e.preventDefault();
-        const { email, password } = loginDetails;
-
         const bodyData = {
-            email,
-            password,
+            first_name: registerValues.email,
+            last_name: registerValues.last_name,
+            username: registerValues.username,
+            email: registerValues.email,
+            password: registerValues.password,
+            password_confirmation: registerValues.password_confirmation
         };
-
-        loginUser(dispatch, bodyData).then(response => {
-            if (response.status === 200) router.push('/admin/dashboard');
-            if (response.data.error_message)
-                setLoginStatus({ loading: false, error: response.data.error_message });
-        });
-    };
-
-    const handleInputChange = e => {
-        e.persist();
-        setLoginDetails(details => ({
-            ...details,
-            [e.target.name]: e.target.value,
-        }));
-    };
-
-    useEffect(() => {
-        const user = localStorage.currentUser && JSON.parse(localStorage.currentUser);
-        if (user){
-            router.push('/admin/dashboard');
+        if (registerValues.first_name !== '' && registerValues.last_name && registerValues.username &&
+            registerValues.email && registerValues.password !== '' && registerValues.password_confirmation) {
+            RegisterUser(dispatchCheckDetails, bodyData);
         } else {
+            dispatchCheckDetails({
+                type: 'ERROR',
+                errorMessage: 'Make sure all the fields all filled',
+            });
+        }
+    };
+    useEffect(() => {
+        try {
+            JSON.parse(localStorage.currentUser);
+            window.location.replace('/dashboard/completed')
+        } catch (error) {
             localStorage.clear();
         }
-    }, [dispatch, router]);
+    }, []);
 
     return (
-        <Box sx={styles.login}>
+        <Box>
             <Box>
                 <Head>
                     <title>Register</title>
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
             </Box>
-            <Box sx={styles.forms} as="form" onSubmit={handleUserLogin}>
-                <h3 sx={{textAlign: 'center'}}>Register</h3>
-                <div className="error-section mb-2">{loginStatus.error}</div>
-                <Label sx={styles.forms.label} htmlFor="email">Email</Label>
-                <Input
-                    sx={styles.forms.input}
-                    id="email"
-                    type="email"
-                    name="email"
-                    value={loginDetails.email}
-                    onChange={handleInputChange}
-                />
-                <Label sx={styles.forms.label} htmlFor="password">Password</Label>
-                <Input
-                    sx={styles.forms.input}
-                    id="password"
-                    type="password"
-                    name="password"
-                    value={loginDetails.password}
-                    onChange={handleInputChange}
-                />
-                <Button sx={styles.forms.submit}>Submit</Button>
+            <Box sx={styles.login}>
+                <Box sx={styles.loginImage}>
+                    <Image src={PatternBG} alt="" sx={styles.patternImage}/>
+                </Box>
+                <Box sx={styles.form}>
+                    <center><h3 sx={{fontFamily: 'Quicksand, sans-serif'}}>Welcome to TopRatedProfessors</h3></center><br/>
+                    <Box sx={styles.formLogin} as="form" onSubmit={handleRegisterUser}>
+                        <h3 sx={{textAlign: 'center', fontFamily: 'Quicksand, sans-serif'}}>Register</h3>
+                        <Label sx={styles.formLogin.label} htmlFor="email">First Name</Label>
+                        <Input
+                            sx={styles.formLogin.input}
+                            type="text"
+                            name="first_name"
+                            placeholder="FirstName"
+                            className="form-control"
+                            onChange={handleChange}
+                        />
+                        <Label sx={styles.formLogin.label} htmlFor="password">Last Name</Label>
+                        <Input
+                            sx={styles.formLogin.input}
+                            type="text"
+                            name="last_name"
+                            placeholder="LastName"
+                            className="form-control"
+                            onChange={handleChange}
+                        />
+                        <Label sx={styles.formLogin.label} htmlFor="password">Username</Label>
+                        <Input
+                            sx={styles.formLogin.input}
+                            type="text"
+                            name="username"
+                            placeholder="Username"
+                            className="form-control"
+                            onChange={handleChange}
+                        />
+                        <Label sx={styles.formLogin.label} htmlFor="password">Email</Label>
+                        <Input
+                            sx={styles.formLogin.input}
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            className="form-control"
+                            onChange={handleChange}
+                        />
+                        <Label sx={styles.formLogin.label} htmlFor="password">Password</Label>
+                        <Input
+                            sx={styles.formLogin.input}
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            className="form-control"
+                            onChange={handleChange}
+                        />
+                        <Label sx={styles.formLogin.label} htmlFor="password">Password Confirmation</Label>
+                        <Input
+                            sx={styles.formLogin.input}
+                            type="password"
+                            name="password_confirmation"
+                            placeholder="Password Confirmation"
+                            className="form-control"
+                            onChange={handleChange}
+                        />
+                        <Button sx={styles.formLogin.submit}>Submit</Button>
+                    </Box>
+                </Box>
             </Box>
         </Box>
     );
@@ -94,22 +136,40 @@ export default function Register() {
 
 const styles = {
     login: {
-        backgroundImage: `url(${PatternBG})`,
-        backgroundRepeat: `no-repeat`,
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-        position: 'relative',
-        py: '160px'
+        display: 'flex',
+        '@media screen and (max-width:768px)': {
+            display: 'flex',
+            gap: '20px',
+            flexDirection: 'column',
+        },
     },
-    forms: {
+    grid: {
+        pt: [0, null, null, null, null, null, 2],
+        px: [5, 6, 0, null, 7, 8, 7],
+        gridTemplateColumns: ['repeat(1,1fr)', 'repeat(2,1fr)',  'repeat(2,1fr)', 'repeat(2,1fr)'],
+    },
+    loginImage: {
+        display: 'grid',
+        height: '100%',
+    },
+    patternImage: {
+        maxWidth: '100%',
+        maxHeight: '100vh',
         margin: 'auto',
+    },
+    form: {
+        margin: 'auto',
+    },
+    formLogin: {
         padding: '30px',
         border: '1px solid #c9c9c9',
+        boxShadow: t => `0 0 0 2px rgba(0, 0, 0, 0.2)`,
         borderRadius: '5px',
         background: '#f5f5f5',
         width: ['250px', '420px',],
         display: 'block',
         label: {
+            fontFamily: 'Quicksand, sans-serif',
             fontSize: 1,
             fontWeight: 'bold',
         },
