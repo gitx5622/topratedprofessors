@@ -531,7 +531,7 @@ const styles = {
             p: ['5px', null, '5px'],
             borderRadius: '5px',
             a: {
-                fontFamily: 'body',
+                fontFamily: 'Quicksand, sans-serif',
                 textDecoration: 'none',
                 color: 'black',
             }
@@ -540,7 +540,7 @@ const styles = {
     table : {
         width: '100%',
         th: {
-            fontFamily: 'body',
+            fontFamily: 'Quicksand, sans-serif',
             position: 'sticky',
             top: '60px',
             backgroundColor: '#EAEEF3',
@@ -548,7 +548,7 @@ const styles = {
             px: ['5px', null, '7px']
         },
         td: {
-            fontFamily: 'body',
+            fontFamily: 'Quicksand, sans-serif',
             borderBottom: '1px solid #E5ECF4',
             marginBottom: '15px',
         },

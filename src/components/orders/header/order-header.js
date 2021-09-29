@@ -88,7 +88,7 @@ const styles = {
             left: 0,
         },
         '.donate__btn': {
-            fontFamily: 'body',
+            fontFamily: 'Quicksand, sans-serif',
             backgroundColor: 'secondary',
             color: 'white',
             flexShrink: 0,
@@ -111,6 +111,7 @@ const styles = {
                 color: 'text',
             },
             '.donate__btn': {
+                fontFamily: 'Quicksand, sans-serif',
                 backgroundColor: 'primary',
                 color: "black",
                 '&:hover': {
@@ -119,7 +120,7 @@ const styles = {
                 },
             },
             a: {
-                fontFamily: 'body',
+                fontFamily: 'Quicksand, sans-serif',
                 '&:sticky': {
                     color: 'white',
                 },
@@ -134,7 +135,7 @@ const styles = {
         },
         a: {
             fontSize: 2,
-            fontFamily: 'body',
+            fontFamily: 'Quicksand, sans-serif',
             fontWeight: 'body',
             px: 5,
             cursor: 'pointer',
