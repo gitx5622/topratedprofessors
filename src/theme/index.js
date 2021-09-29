@@ -103,7 +103,7 @@ export default  {
       pb: [0, null, 1]
     },
     HowItWorks: {
-      mt: [0, null, '-20px']
+      mt: ['20px', null, '-20px']
     },
   },
   sectionHeader: {

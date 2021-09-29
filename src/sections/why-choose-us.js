@@ -112,7 +112,7 @@ class WhyChooseUs extends Component {
                     <Box>
                         <Card sx={styles.card}>
                             <h2 style={{textAlign: 'center', fontFamily: 'Quicksand, sans-serif'}}>Why Top Rated Professors</h2>
-                            <ul style={{listStyle: 'none', textAlign: 'center', lineHeight: 2.5, marginTop: '10px'}}>
+                            <ul style={{listStyle: 'none', textAlign: 'center', lineHeight: [2.5], marginTop: '10px'}}>
                                 <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                                     <Image src={Check} alt="deadline" sx={styles.cardImage}/>
                                     <li>Any Deadline - Any Subject</li>
@@ -184,7 +184,7 @@ const styles = {
             },
         image: {
             width: '100px',
-            height: '38px'
+            height: '28px'
         },
         assignment: {
             display: 'flex',

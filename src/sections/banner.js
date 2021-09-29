@@ -185,7 +185,7 @@ const styles = {
       },
       mainTitle: {
           fontFamily: 'Quicksand, sans-serif',
-          fontSize: ['20px', null, '30px'],
+          fontSize: ['22px', null, '36px'],
       },
       buttonGroup: {
           display: 'flex',
