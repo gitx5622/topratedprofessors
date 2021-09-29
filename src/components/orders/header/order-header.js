@@ -88,6 +88,7 @@ const styles = {
             left: 0,
         },
         '.donate__btn': {
+            fontFamily: 'body',
             backgroundColor: 'secondary',
             color: 'white',
             flexShrink: 0,
@@ -118,6 +119,7 @@ const styles = {
                 },
             },
             a: {
+                fontFamily: 'body',
                 '&:sticky': {
                     color: 'white',
                 },
@@ -132,6 +134,7 @@ const styles = {
         },
         a: {
             fontSize: 2,
+            fontFamily: 'body',
             fontWeight: 'body',
             px: 5,
             cursor: 'pointer',
