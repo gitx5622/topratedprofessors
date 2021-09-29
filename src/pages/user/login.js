@@ -1,11 +1,11 @@
 /** @jsx jsx */
-import { jsx, Box, Button, Label, Input, } from 'theme-ui';
+import { jsx, Box, Button, Label, Input, Grid, Image } from 'theme-ui';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { loginUser } from "../../dataStore/actions/userLoginAction";
-import PatternBG from "../../assets/back.png";
+import PatternBG from "../../assets/login.svg";
 
 export default function Login() {
     const router = useRouter();
@@ -58,58 +58,76 @@ export default function Login() {
     }, [dispatch, router]);
 
     return (
-        <Box sx={styles.login}>
+        <Box>
         <Box>
             <Head>
                 <title>Login</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
         </Box>
-            <Box sx={styles.forms} as="form" onSubmit={handleUserLogin}>
-                <h3 sx={{textAlign: 'center'}}>Login</h3>
-                <div className="error-section mb-2">{loginStatus.error}</div>
-                <Label sx={styles.forms.label} htmlFor="email">Email</Label>
-                <Input
-                    sx={styles.forms.input}
-                    id="email"
-                    type="email"
-                    name="email"
-                    value={loginDetails.email}
-                    onChange={handleInputChange}
-                />
-                <Label sx={styles.forms.label} htmlFor="password">Password</Label>
-                <Input
-                    sx={styles.forms.input}
-                    id="password"
-                    type="password"
-                    name="password"
-                    value={loginDetails.password}
-                    onChange={handleInputChange}
-                />
-                <Button sx={styles.forms.submit}>Submit</Button>
+            <Box sx={{display: 'flex'}}>
+                    <Box sx={styles.loginImage}>
+                        <Image src={PatternBG} alt="" sx={styles.patternImage}/>
+                    </Box>
+                    <Box sx={styles.form}>
+                        <center><h3 sx={{fontFamily: 'Quicksand, sans-serif'}}>Welcome to TopRatedProfessors</h3></center><br/>
+                    <Box sx={styles.formLogin} as="form" onSubmit={handleUserLogin}>
+                        <h3 sx={{textAlign: 'center', fontFamily: 'Quicksand, sans-serif'}}>Login</h3>
+                        <div className="error-section mb-2">{loginStatus.error}</div>
+                        <Label sx={styles.formLogin.label} htmlFor="email">Email</Label>
+                        <Input
+                            sx={styles.formLogin.input}
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={loginDetails.email}
+                            onChange={handleInputChange}
+                        />
+                        <Label sx={styles.formLogin.label} htmlFor="password">Password</Label>
+                        <Input
+                            sx={styles.formLogin.input}
+                            id="password"
+                            type="password"
+                            name="password"
+                            value={loginDetails.password}
+                            onChange={handleInputChange}
+                        />
+                        <Button sx={styles.formLogin.submit}>Submit</Button>
+                    </Box>
+                    </Box>
             </Box>
         </Box>
     );
 }
 
 const styles = {
-    login: {
-        backgroundImage: `url(${PatternBG})`,
-        backgroundRepeat: `no-repeat`,
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-        position: 'relative',
-        py: '160px'
+    grid: {
+        pt: [0, null, null, null, null, null, 2],
+        px: [5, 6, 0, null, 7, 8, 7],
+        gridTemplateColumns: ['repeat(1,1fr)', 'repeat(2,1fr)',  'repeat(2,1fr)', 'repeat(2,1fr)'],
     },
-    forms: {
+    loginImage: {
+        display: 'grid',
+        height: '100%',
+    },
+    patternImage: {
+        maxWidth: '100%',
+        maxHeight: '100vh',
         margin: 'auto',
+    },
+    form: {
+        margin: 'auto',
+    },
+    formLogin: {
         padding: '30px',
         border: '1px solid #c9c9c9',
+        boxShadow: t => `0 0 0 2px rgba(0, 0, 0, 0.2)`,
         borderRadius: '5px',
         background: '#f5f5f5',
         width: ['250px', '420px',],
         display: 'block',
         label: {
+            fontFamily: 'Quicksand, sans-serif',
             fontSize: 1,
             fontWeight: 'bold',
         },
