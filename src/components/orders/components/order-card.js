@@ -281,8 +281,8 @@ const OrderCard = ({section}) => {
                         <Box sx={styles.sortSearch}>
                             <Box sx={{display: 'flex', justifyContent: 'space-between', padding: '10px'}}>
                                 <h3>{section.toUpperCase()}</h3>
-                                <Input sx={{width: '150px'}} name="" placeholder="Sort"/>
-                                <Input sx={{width: '150px'}} name="" placeholder="Search"/>
+                                <Input sx={{width: '200px', height: '40px'}} name="" placeholder="Sort"/>
+                                <Input sx={{width: '200px', height: '40px'}} name="" placeholder="Search"/>
                             </Box>
                         </Box>
                         <table sx={styles.table}>
@@ -313,7 +313,8 @@ const OrderCard = ({section}) => {
                                             <td>
                                                 <center>{(order.amount).toFixed(2)}</center>
                                             </td>
-                                            <td style={{display: 'flex', justifyContent: 'space-between'}}>
+                                            <td>
+                                                <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
                                                 <IconContext.Provider value={{ color: "green", size:'1.5em', className: "global-class-name" }}>
                                                         <GrView />
                                                 </IconContext.Provider>
@@ -323,6 +324,7 @@ const OrderCard = ({section}) => {
                                                 <IconContext.Provider value={{ color: "red", size:'1.5em', className: "global-class-name" }}>
                                                     <AiOutlineDelete/>
                                                 </IconContext.Provider>
+                                                </Box>
                                             </td>
                                             <td><Button className='reserve-button'>Reserve Now</Button></td>
                                         </tr>
