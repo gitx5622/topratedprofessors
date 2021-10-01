@@ -14,6 +14,7 @@ import { BiCheckShield } from 'react-icons/bi';
 import { FiEdit } from 'react-icons/fi';
 import { RiSettings2Line } from 'react-icons/ri';
 import { AiOutlineDelete, AiOutlineCheckCircle, AiOutlineStop } from 'react-icons/ai';
+import { IconContext } from "react-icons";
 import { MdAddCircle } from 'react-icons/md';
 import { FcTimeline, FcCancel } from 'react-icons/fc';
 import { BsCheckAll, BsStopwatch } from 'react-icons/bs';
@@ -280,8 +281,8 @@ const OrderCard = ({section}) => {
                         <Box sx={styles.sortSearch}>
                             <Box sx={{display: 'flex', justifyContent: 'space-between', padding: '10px'}}>
                                 <h3>{section.toUpperCase()}</h3>
-                                <Input sx={{width: '200px'}} name="" placeholder="Sort"/>
-                                <Input sx={{width: '200px'}} name="" placeholder="Search"/>
+                                <Input sx={{width: '150px'}} name="" placeholder="Sort"/>
+                                <Input sx={{width: '150px'}} name="" placeholder="Search"/>
                             </Box>
                         </Box>
                         <table sx={styles.table}>
@@ -312,7 +313,17 @@ const OrderCard = ({section}) => {
                                             <td>
                                                 <center>{(order.amount).toFixed(2)}</center>
                                             </td>
-                                            <td><GrView style={{color: 'red'}}/> <FiEdit/> <AiOutlineDelete/></td>
+                                            <td style={{display: 'flex', justifyContent: 'space-between'}}>
+                                                <IconContext.Provider value={{ color: "green", size:'1.5em', className: "global-class-name" }}>
+                                                        <GrView />
+                                                </IconContext.Provider>
+                                                <IconContext.Provider value={{ color: "blue", size:'1.5em', className: "global-class-name" }}>
+                                                    <FiEdit/>
+                                                </IconContext.Provider>
+                                                <IconContext.Provider value={{ color: "red", size:'1.5em', className: "global-class-name" }}>
+                                                    <AiOutlineDelete/>
+                                                </IconContext.Provider>
+                                            </td>
                                             <td><Button className='reserve-button'>Reserve Now</Button></td>
                                         </tr>
                                     )
