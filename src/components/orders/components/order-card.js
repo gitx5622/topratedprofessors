@@ -260,7 +260,7 @@ const OrderCard = ({section}) => {
             </Head>
                     <Box sx={styles.sidebar}  >
                         <ul sx={styles.list}>
-                            <li style={{backgroundColor: '#17c671'}}><a href='/dashboard/completed'><Logo src={LogoDark}/></a></li>
+                            <li style={{background: 'linear-gradient(to right, #17c671, #0059B2)'}}><a href='/dashboard/completed'><Logo src={LogoDark}/></a></li>
                             <li className={`create_order ${section === 'create_order' ?  'active' : '' } `}><a href='/dashboard/create_order'><MdAddCircle/> Create Order</a></li>
                             <li className={`completed ${section === 'completed' ?  'active' : '' } `}><a href='/dashboard/completed'><AiOutlineCheckCircle/> Completed</a></li>
                             <li className={`all-orders ${section === 'all-orders' ?  'active' : '' } `}><a href='/dashboard/all-orders'><BsCheckAll/>  All Orders</a></li>
@@ -280,11 +280,11 @@ const OrderCard = ({section}) => {
                         <>
                         <Box sx={styles.sortSearch}>
                             <Box sx={{display: 'flex', justifyContent: 'space-between', padding: '10px'}}>
-                                <h3>{section.toUpperCase()}</h3>
+                                <h3>{section.toUpperCase().replace(/_/g, " ")}</h3>
                                 {section === 'create_order' ? "" :
                                     <Box sx={{display: 'flex', gap: '1em'}}>
-                                    <Input name="" placeholder="Sort"/>
-                                    <Input  name="" placeholder="Search"/>
+                                    <Input sx={styles.defaultOrder} name="" placeholder="Sort"/>
+                                    <Input sx={styles.defaultOrder} name="" placeholder="Search"/>
                                     </Box>
                                 }
                             </Box>
@@ -484,9 +484,6 @@ const OrderCard = ({section}) => {
 export default OrderCard;
 
 const styles = {
-    createOrder: {
-        display: 'none',
-    },
     defaultOrder: {
         width: '200px',
         height: '40px'
