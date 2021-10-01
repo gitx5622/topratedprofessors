@@ -281,22 +281,28 @@ const OrderCard = ({section}) => {
                         <Box sx={styles.sortSearch}>
                             <Box sx={{display: 'flex', justifyContent: 'space-between', padding: '10px'}}>
                                 <h3>{section.toUpperCase()}</h3>
-                                <Input sx={{width: '200px', height: '40px'}} name="" placeholder="Sort"/>
-                                <Input sx={{width: '200px', height: '40px'}} name="" placeholder="Search"/>
+                                {section === 'create_order' ? "" :
+                                    <Box sx={{display: 'flex', gap: '1em'}}>
+                                    <Input name="" placeholder="Sort"/>
+                                    <Input  name="" placeholder="Search"/>
+                                    </Box>
+                                }
                             </Box>
                         </Box>
                         <table sx={styles.table}>
-                            <thead>
-                            <tr>
-                                <th>Order No</th>
-                                <th>Deadline</th>
-                                <th>Type</th>
-                                <th>Pages</th>
-                                <th>Amount</th>
-                                <th>Actions</th>
-                                <th>Reserve Now</th>
-                            </tr>
-                            </thead>
+                            {section === 'create_order' ?  "" :
+                                <thead>
+                                <tr>
+                                    <th>Order No</th>
+                                    <th>Deadline</th>
+                                    <th>Type</th>
+                                    <th>Pages</th>
+                                    <th>Amount</th>
+                                    <th>Actions</th>
+                                    <th>Reserve Now</th>
+                                </tr>
+                                </thead>
+                            }
                             <tbody>
                             {section === 'completed' && (
                                 orderData.map(order => {
@@ -478,6 +484,13 @@ const OrderCard = ({section}) => {
 export default OrderCard;
 
 const styles = {
+    createOrder: {
+        display: 'none',
+    },
+    defaultOrder: {
+        width: '200px',
+        height: '40px'
+    },
     sortSearch: {
         width: '100%',
         backgroundColor: '#273142',
