@@ -44,16 +44,16 @@ const OrderCard = ({section}) => {
     console.log(selected);
     const [order, setOrder] = React.useState({
         user_id: '',
-        service_id:'',
-        type_id:'',
-        style_id:'',
-        level_id: '',
-        pages_id:'',
-        urgency_id:'',
-        subject_id:'',
-        sources_id:'',
-        spacing_id:'',
-        language_id:'',
+        service_id: 1,
+        type_id: 1,
+        style_id: 1,
+        level_id: 1,
+        pages_id: 1,
+        urgency_id: 1,
+        subject_id: 1,
+        sources_id: 1,
+        spacing_id: 1,
+        language_id: 1,
         phone: '',
         topic: '',
         instructions: '',
@@ -191,11 +191,11 @@ const OrderCard = ({section}) => {
     };
 
     const addOrder = (credentials) => createOrders(dispatch, credentials);
-    // const {id: userID} = JSON.parse(localStorage.currentUser);
     const handleCreateOrderSubmit = (e) => {
         e.preventDefault();
+        const {id: userID} = JSON.parse(localStorage.currentUser);
         addOrder({
-            // user_id:        parseInt(userID),
+            user_id:        parseInt(userID),
             service_id:     parseInt(order.service_id, 10),
             type_id:        parseInt(order.type_id,10),
             style_id:       parseInt(order.style_id,10),
@@ -275,56 +275,81 @@ const OrderCard = ({section}) => {
                 <Box sx={{marginLeft: '23%', width: '100%', '@media screen and (max-width:768px)': {
                         marginLeft: 0,
                     },}}>
-                    <table sx={styles.table} >
-                        <thead sx={section === 'create_order' ? styles.createHeader : ''}>
-                        <tr>
-                            <th >Order No</th>
-                            <th>Deadline</th>
-                            <th>Type</th>
-                            <th>Pages</th>
-                            <th>Amount</th>
-                            <th>Actions</th>
-                            <th>Reserve Now</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {section === 'completed' && (
-                            orderData ? orderData.map(order => { return (
-                                <tr key={order.id}>
-                                    <td><a style={{color: '#1890FF', textDecoration: 'none'}} href={`/orders/order_details/${order.id}`}>{order.order_number}</a></td>
-                                    <td>{dayjs(order.deadline).format("dddd, MMMM D YYYY")}</td>
-                                    <td>{order.type.name}</td>
-                                    <td><center>{order.page.no_of_page}</center></td>
-                                    <td><center>{(order.amount).toFixed(2)}</center></td>
-                                    <td><GrView style={{color: 'red'}}/> <FiEdit/> <AiOutlineDelete/></td>
-                                    <td><Button className='reserve-button'>Reserve Now</Button></td>
-                                </tr>
-                            )}): (
-                                <Box>
-                                    No data
-                                </Box>
+                    {orderData ?
+                        <>
+                        <Box sx={styles.sortSearch}>
+                            <Box sx={{display: 'flex', justifyContent: 'space-between', padding: '10px'}}>
+                                <h3>{section.toUpperCase()}</h3>
+                                <Input sx={{width: '200px'}} name="" placeholder="Sort"/>
+                                <Input sx={{width: '200px'}} name="" placeholder="Search"/>
+                            </Box>
+                        </Box>
+                        <table sx={styles.table}>
+                            <thead>
+                            <tr>
+                                <th>Order No</th>
+                                <th>Deadline</th>
+                                <th>Type</th>
+                                <th>Pages</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                                <th>Reserve Now</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {section === 'completed' && (
+                                orderData.map(order => {
+                                    return (
+                                        <tr key={order.id}>
+                                            <td><a style={{color: '#1890FF', textDecoration: 'none'}}
+                                                   href={`/orders/order_details/${order.id}`}>{order.order_number}</a>
+                                            </td>
+                                            <td>{dayjs(order.deadline).format("dddd, MMMM D YYYY")}</td>
+                                            <td>{order.type.name}</td>
+                                            <td>
+                                                <center>{order.page.no_of_page}</center>
+                                            </td>
+                                            <td>
+                                                <center>{(order.amount).toFixed(2)}</center>
+                                            </td>
+                                            <td><GrView style={{color: 'red'}}/> <FiEdit/> <AiOutlineDelete/></td>
+                                            <td><Button className='reserve-button'>Reserve Now</Button></td>
+                                        </tr>
+                                    )
+                                })
+                                )}
+                            {section === 'all-orders' && (
+                                orderData.map(order => {
+                                    return (
+                                        <tr key={order.id}>
+                                            <td><a style={{color: '#1890FF', textDecoration: 'none'}}
+                                                   href={`/orders/order_details/${order.id}`}>{order.order_number}</a>
+                                            </td>
+                                            <td>{dayjs(order.deadline).format("dddd, MMMM D YYYY")}</td>
+                                            <td>{order.type.name}</td>
+                                            <td>
+                                                <center>{order.page.no_of_page}</center>
+                                            </td>
+                                            <td>
+                                                <center>{(order.amount).toFixed(2)}</center>
+                                            </td>
+                                            <td><GrView style={{color: 'red'}}/> <FiEdit/> <AiOutlineDelete/></td>
+                                            <td><Button className='reserve-button'>Reserve Now</Button></td>
+                                        </tr>
+                                    )
+                                })
                             )
-                        )}
-                        {section === 'all-orders' && (
-                            orderData ? orderData.map(order => { return (
-                                <tr key={order.id}>
-                                    <td><a style={{color: '#1890FF', textDecoration: 'none'}} href={`/orders/order_details/${order.id}`}>{order.order_number}</a></td>
-                                    <td>{dayjs(order.deadline).format("dddd, MMMM D YYYY")}</td>
-                                    <td>{order.type.name}</td>
-                                    <td><center>{order.page.no_of_page}</center></td>
-                                    <td><center>{(order.amount).toFixed(2)}</center></td>
-                                    <td><GrView style={{color: 'red'}}/> <FiEdit/> <AiOutlineDelete/></td>
-                                    <td><Button className='reserve-button'>Reserve Now</Button></td>
-                                </tr>
-                            )}) : (
-                                <Box>
-                                    No data
-                                </Box>
-                            )
+                            }
+                            </tbody>
+                        </table>
+                        </>
+                        : (
+                            <Box>
+                                You have no Active Data
+                                <Button>Place Order</Button>
+                            </Box>
                         )
                         }
-                        </tbody>
-                    </table>
                     {section === 'create_order' && (
                         <Box>
                             <Box as='form' onSubmit={handleCreateOrderSubmit}>
@@ -440,8 +465,16 @@ const OrderCard = ({section}) => {
 export default OrderCard;
 
 const styles = {
-    createHeader: {
-        display: 'none',
+    sortSearch: {
+        width: '100%',
+        backgroundColor: '#273142',
+        boxShadow: '0 3px 4px rgba(38, 78, 118, 0.1)',
+        color: 'white',
+        borderRadius: '10px',
+        select: {
+            height: '50px',
+            width: '100px',
+        },
     },
     baseStyle:  {
         flex: 1,

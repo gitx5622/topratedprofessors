@@ -5,8 +5,10 @@ import {useState, useReducer, useEffect} from 'react';
 import PatternBG from "../../assets/login.svg";
 import {RegisterUser} from "../../dataStore/actions/userRegistrationAction";
 import checkDetailsReducer, {initialCheckDetailsState} from "../../dataStore/reducers/checkDetailsReducer";
+import {useRouter} from "next/router";
 
 export default function Register() {
+    const router = useRouter();
     const [registerValues, setregisterValues] = useState({
         first_name:'',
         last_name:'',
@@ -48,13 +50,13 @@ export default function Register() {
         }
     };
     useEffect(() => {
-        try {
-            JSON.parse(localStorage.currentUser);
-            window.location.replace('/dashboard/completed')
-        } catch (error) {
+        const user = localStorage.currentUser && JSON.parse(localStorage.currentUser);
+        if (user){
+            router.push('/dashboard/completed');
+        } else {
             localStorage.clear();
         }
-    }, []);
+    }, [router]);
 
     return (
         <Box>

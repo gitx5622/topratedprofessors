@@ -6,7 +6,7 @@ import { Link } from 'react-scroll';
 import MobileDrawer from '../../header/mobile-drawer';
 import menuItems from './orderHeaderData';
 import { AiOutlineLogout } from 'react-icons/ai';
-import { Alert } from 'theme-ui'
+import { Alert, Close } from 'theme-ui'
 import {logoutUser} from "../../../dataStore/actions/userLogoutAction";
 import {useDispatch} from "react-redux";
 import Head from 'next/head';

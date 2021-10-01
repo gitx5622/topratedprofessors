@@ -15,7 +15,7 @@ export const RegisterUser = (dispatchRegisterUser, bodyData) => {
                 },
             })
             .then(response => {
-                localStorage.activeUser = JSON.stringify({
+                localStorage.currentUser = JSON.stringify({
                     user: response.data,
                 });
                 dispatchRegisterUser({
