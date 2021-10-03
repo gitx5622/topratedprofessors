@@ -35,7 +35,7 @@ const OrderHeader  = ({ className }) => {
             </Head>
             <Flex as="nav" sx={styles.nav}>
                 {menuItems.map((menuItem, i) => (
-                    <Link href={menuItem.path}>
+                    <Link key={i} href={menuItem.path}>
                        <a> {menuItem.image} {menuItem.label}</a>
                     </Link>
                 ))}
