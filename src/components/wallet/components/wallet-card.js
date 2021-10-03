@@ -77,6 +77,8 @@ const styles = {
         '.wallet-button': {
            borderTopRightRadius: "10px",
             borderTopLeftRadius: "10px",
+            borderBottomRightRadius: "unset",
+            borderBottomLeftRadius: "unset",
             padding: '10px',
             backgroundColor: '#273142',
             color: 'white',
@@ -90,6 +92,7 @@ const styles = {
         my:'10px',
     },
     button: {
+        borderRadius: "10px",
         background: 'linear-gradient(to right, #17c671, #0059B2)',
         padding: '10px',
         color: 'white',
