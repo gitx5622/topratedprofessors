@@ -255,6 +255,7 @@ const OrderCard = ({section}) => {
     return (
         <Box sx={styles.orderCard}>
             <Head>
+                <title>{section.toUpperCase().replace(/_/g, " ")}</title>
                 <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'/>
                 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
             </Head>
@@ -320,7 +321,7 @@ const OrderCard = ({section}) => {
                                                 <center>{(order.amount).toFixed(2)}</center>
                                             </td>
                                             <td>
-                                                <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                                                <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
                                                 <IconContext.Provider value={{ color: "green", size:'1.5em', className: "global-class-name" }}>
                                                         <GrView />
                                                 </IconContext.Provider>
@@ -461,7 +462,7 @@ const OrderCard = ({section}) => {
                                 <Grid sx={styles.form.topicGrid}>
                                     <Box>
                                         <Label htmlFor="username">Topic</Label>
-                                        <Input sx={styles.form.select} name="topic " placeholder='Topic' />
+                                        <Input sx={styles.form.select} onChange={handleChange} name="topic " placeholder='Topic' />
                                     </Box>
                                     <Box>
                                         <Label htmlFor="username">Upload Files</Label>
@@ -470,7 +471,7 @@ const OrderCard = ({section}) => {
                                 </Grid>
                                 <Box mt={3} >
                                     <Label htmlFor="spacing">Instructions</Label>
-                                    <Textarea sx={styles.form.texterea} autoFocus name="comment" id="comment" rows={6}/>
+                                    <Textarea sx={styles.form.textarea} autoFocus onChange={handleChange} name="comment" id="comment" rows={6}/>
                                 </Box>
                                 <Button mt={2}>Create Order</Button>
                             </Box>
@@ -486,7 +487,10 @@ export default OrderCard;
 const styles = {
     defaultOrder: {
         width: '200px',
-        height: '40px'
+        height: '40px',
+        '::placeholder': {
+            color: 'white'
+        }
     },
     sortSearch: {
         width: '100%',
@@ -639,7 +643,7 @@ const styles = {
                 },
             }
         },
-        texterea: {
+        textarea: {
             borderColor: '#E5ECF4',
             boxShadow: '0 0 3pt 2pt #719ECE',
             '&:focus': {

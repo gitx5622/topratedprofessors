@@ -2,7 +2,7 @@
 import {jsx, Flex, Button } from 'theme-ui';
 import { useRouter } from 'next/router';
 import { keyframes } from '@emotion/core';
-import { Link } from 'react-scroll';
+import Link from 'next/link';
 import MobileDrawer from '../../header/mobile-drawer';
 import menuItems from './orderHeaderData';
 import { AiOutlineLogout } from 'react-icons/ai';
@@ -35,16 +35,8 @@ const OrderHeader  = ({ className }) => {
             </Head>
             <Flex as="nav" sx={styles.nav}>
                 {menuItems.map((menuItem, i) => (
-                    <Link
-                        activeClass="active"
-                        to={menuItem.path}
-                        spy={true}
-                        smooth={true}
-                        offset={-70}
-                        duration={500}
-                        key={i}
-                    >
-                        {menuItem.image} {menuItem.label}
+                    <Link href={menuItem.path}>
+                       <a> {menuItem.image} {menuItem.label}</a>
                     </Link>
                 ))}
             </Flex>
@@ -88,6 +80,23 @@ const styles = {
         backgroundColor: 'primary',
         transition: 'all 0.4s ease',
         animation: `${positionAnim} 0.4s ease`,
+        a: {
+            fontSize: 2,
+            fontFamily: 'Quicksand, sans-serif',
+            fontWeight: 'body',
+            textDecoration: 'none',
+            color: 'black',
+            px: 5,
+            cursor: 'pointer',
+            lineHeight: '1.2',
+            transition: 'all 0.15s',
+            '&:hover': {
+                color: 'white',
+            },
+            '&.active': {
+                color: 'white',
+            },
+        },
         '@media screen and (max-width:768px)': {
             width: '100%',
             left: 0,
