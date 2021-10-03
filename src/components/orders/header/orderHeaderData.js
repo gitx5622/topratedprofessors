@@ -6,27 +6,27 @@ import { TiThMenuOutline } from 'react-icons/ti';
 
 export default [
     {
-        image: <TiThMenuOutline style={{fontSize: '30px'}}/>,
+        image: <TiThMenuOutline style={{fontSize: '20px'}}/>,
         path: 'home',
         label: 'My Orders',
     },
     {
-        image: <MdAddToQueue style={{fontSize: '30px'}}/>,
+        image: <MdAddToQueue style={{fontSize: '20px'}}/>,
         path: 'why-choose-us',
         label: 'Create Order',
     },
     {
-        image: <FiSettings style={{fontSize: '30px'}}/>,
+        image: <FiSettings style={{fontSize: '20px'}}/>,
         path: 'writing-service',
         label: 'Settings',
     },
     {
-        image: <FaWallet style={{fontSize: '30px'}}/>,
+        image: <FaWallet style={{fontSize: '20px'}}/>,
         path: 'wallet',
         label: ' My Finances',
     },
     {
-        image: <CgProfile style={{fontSize: '30px'}}/>,
+        image: <CgProfile style={{fontSize: '20px'}}/>,
         path: 'reviews',
         label: 'Profile',
     },

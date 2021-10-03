@@ -75,6 +75,9 @@ const styles = {
         gap: '10px',
        borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
         '.wallet-button': {
+           borderTopRightRadius: "10px",
+            borderTopLeftRadius: "10px",
+            padding: '10px',
             backgroundColor: '#273142',
             color: 'white',
         }
@@ -87,7 +90,9 @@ const styles = {
         my:'10px',
     },
     button: {
-        background: 'linear-gradient(to right, #17c671, #0059B2)'
+        background: 'linear-gradient(to right, #17c671, #0059B2)',
+        padding: '10px',
+        color: 'white',
     },
     sidebar: {
         ml: '-8px',
@@ -106,7 +111,7 @@ const styles = {
         fontSize: ["20px", null, '26px'],
         li : {
             borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
-            p: ['10px', null, '10px'],
+            p: ['6px', null, '6px'],
             borderRadius: '5px',
             a: {
                 fontFamily: 'Quicksand, sans-serif',
