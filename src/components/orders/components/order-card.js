@@ -430,6 +430,17 @@ const OrderCard = ({section}) => {
                                     <Alert sx={{background: "red"}}>{checkDetailsData.errorMessage}<Close ml="auto" mr={-2} onClick={handleCloseAlert}/></Alert>
                                     : ''
                             )}
+                            <Box sx={styles.sortSearch}>
+                                <Box sx={{display: 'flex', justifyContent: 'space-between', padding: '10px'}}>
+                                    <h3>{section.toUpperCase().replace(/_/g, " ")}</h3>
+                                    {section === 'create_order' ? "" :
+                                        <Box sx={{display: 'flex', gap: '1em'}}>
+                                            <Input sx={styles.defaultOrder} name="" placeholder="Sort"/>
+                                            <Input sx={styles.defaultOrder} name="" placeholder="Search"/>
+                                        </Box>
+                                    }
+                                </Box>
+                            </Box>
                             <Box as='form' onSubmit={handleCreateOrderSubmit}>
                                 <Grid sx={styles.form.grid}>
                                     <Box>
