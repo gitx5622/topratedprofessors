@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Box, Button, Label, Input, Text, Image } from 'theme-ui';
+import {jsx, Box, Button, Label, Input, Text, Image, Alert, Close} from 'theme-ui';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -76,9 +76,14 @@ export default function Login() {
                     <Box sx={styles.formLogin} as="form" onSubmit={handleUserLogin}>
                         <center><h1 sx={{fontFamily: 'Quicksand, sans-serif'}}>Welcome to TopRatedProfessors</h1><br/>
                             <Button sx={{background: "#17a2b8", display: 'block',width: '100%', borderColor: '#17a2b8'}} href="/" block theme="info"><BiArrowBack/> Go Home</Button><br/>
+                            {loginStatus.error && (
+                                <Alert sx={{background: 'red', mt:'10px'}}>
+                                    {loginStatus.error }
+                                    <Close ml="auto" mr={-2} />
+                                </Alert>
+                            )}
                         </center><br/>
                         <h3 sx={{textAlign: 'center', fontFamily: 'Quicksand, sans-serif'}}>Login</h3>
-                        <div className="error-section mb-2">{loginStatus.error}</div>
                         <Label sx={styles.formLogin.label} htmlFor="email">Email</Label>
                         <Input
                             sx={styles.formLogin.input}

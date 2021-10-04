@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import {jsx, Box, Button, Label, Input, Image, Text} from 'theme-ui';
+import {jsx, Box, Button, Label, Input, Image, Text, Alert, Close} from 'theme-ui';
 import Head from 'next/head';
 import {useState, useReducer, useEffect} from 'react';
 import PatternBG from "../../assets/login.svg";
@@ -43,7 +43,7 @@ export default function Register() {
         };
         if (registerValues.first_name !== '' && registerValues.last_name && registerValues.username &&
             registerValues.email && registerValues.password !== '' && registerValues.password_confirmation) {
-            RegisterUser(dispatchCheckDetails, bodyData);
+            RegisterUser(dispatchCheckDetails, bodyData)
         } else {
             dispatchCheckDetails({
                 type: 'ERROR',
@@ -53,13 +53,13 @@ export default function Register() {
     };
 
     useEffect(() => {
-        try {
-            JSON.parse(localStorage.currentUser);
+        const user = localStorage.currentUser && JSON.parse(localStorage.currentUser);
+        if (user){
             router.push('/dashboard/completed');
-        } catch (error) {
+        } else {
             localStorage.clear();
         }
-    }, []);
+    }, [dispatchCheckDetails, router]);
 
     return (
         <Box>
@@ -80,6 +80,12 @@ export default function Register() {
                             <h1 sx={{fontFamily: 'Quicksand, sans-serif'}}>Welcome to TopRatedProfessors</h1><br/>
                             <Button sx={{background: "#17a2b8", display: 'block',width: '100%', borderColor: '#17a2b8'}}
                                     href="/" block theme="info"><BiArrowBack/> Go Home</Button><br/>
+                            {checkDetailsData.errorMessage && (
+                                <Alert sx={{background: 'red', mt:'10px'}}>
+                                {checkDetailsData.errorMessage }
+                                <Close ml="auto" mr={-2} />
+                            </Alert>
+                            )}
                         </center><br/>
                         <h3 sx={{textAlign: 'center', fontFamily: 'Quicksand, sans-serif'}}>Register</h3><br/>
                         <Box sx={styles.grid}>

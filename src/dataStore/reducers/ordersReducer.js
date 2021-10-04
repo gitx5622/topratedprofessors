@@ -1,4 +1,6 @@
 import {
+    CREATE_ORDERS_ERROR,
+    CREATE_ORDERS_SUCCESS,
     GET_ORDER,
     GET_ORDER_ERROR,
     GET_ORDER_SUCCESS,
@@ -67,6 +69,22 @@ export const ordersReducers = (
             return {
                 ...state,
                 isError: true,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case CREATE_ORDERS_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: true,
+                isLoading: false,
+                orders: action.orders,
+            };
+        }
+        case CREATE_ORDERS_ERROR: {
+            return {
+                ...state,
                 isSuccess: false,
                 isLoading: false,
                 errorMessage: action.errorMessage,

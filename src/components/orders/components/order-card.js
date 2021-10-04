@@ -1,9 +1,9 @@
 /** @jsx jsx */
-import React, {useState, useEffect, useMemo} from "react";
+import React, {useState, useEffect, useMemo, useReducer} from "react";
 import Head from 'next/head';
 import {useRouter} from "next/router";
 import { useDispatch, useSelector} from "react-redux";
-import {jsx, Box, Button, Label, Input, Textarea, Select, Grid, Image} from 'theme-ui';
+import {jsx, Box, Button, Label, Input, Textarea, Select, Grid, Image, Close, Alert} from 'theme-ui';
 import {getOrders} from "../../../dataStore/actions/ordersAction";
 import {useDropzone} from 'react-dropzone';
 import dayjs from "dayjs";
@@ -30,11 +30,14 @@ import {getServices} from "../../../dataStore/actions/servicesAction";
 import {getLanguages} from "../../../dataStore/actions/languagesAction";
 import {getSpacing} from "../../../dataStore/actions/spacingsAction";
 import {createOrders} from "../../../dataStore/actions/ordersAction";
+import {RegisterUser} from "../../../dataStore/actions/userRegistrationAction";
+import checkDetailsReducer, {initialCheckDetailsState} from "../../../dataStore/reducers/checkDetailsReducer";
 
 
 const OrderCard = ({section}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const orderSelector = useSelector(state => state.orderState);
+    const [closeAlert, setCloseAlert] = useState(false);
+    const [closeAlertErrorMessage, setCloseAlertErrorMessage] = useState(false);
     const [selected, setSelected] = React.useState("");
     const [myservice, setmyservice] = React.useState(8);
     const [mytype, setmytype] = React.useState(1);
@@ -66,16 +69,13 @@ const OrderCard = ({section}) => {
         topwriter:'',
         promocode:''
     });
-
-    const {
-        orders: {
-            orders: orderData,
-            pagination
-        }
-    } = orderSelector;
-
     const router = useRouter();
     const dispatch = useDispatch();
+
+    const [checkDetailsData, dispatchCheckDetails] = useReducer(
+        checkDetailsReducer,
+        initialCheckDetailsState
+    );
 
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
@@ -112,13 +112,6 @@ const OrderCard = ({section}) => {
             </div>
         );
     }
-    const {acceptedFiles, getRootProps, getInputProps} = useDropzone();
-
-    const files = acceptedFiles.map(file => (
-        <li key={file.path}>
-            {file.path} - {file.size} bytes
-        </li>
-    ));
     const parseServiceSelected = (event) => {
         const valueToParse = event.target.value;
         const service_id_index = Object.values(JSON.parse(valueToParse));
@@ -191,12 +184,17 @@ const OrderCard = ({section}) => {
             [event.target.name]: spacing_id
         })
     };
-
+    const handleCloseAlert = () => {
+        setCloseAlert(false);
+    }
+    const handleCloseErrorMessageAlert = () => {
+        setCloseAlertErrorMessage(false);
+    }
     const addOrder = (credentials) => createOrders(dispatch, credentials);
     const handleCreateOrderSubmit = (e) => {
         e.preventDefault();
         const {id: userID} = JSON.parse(localStorage.currentUser);
-        addOrder({
+        const bodyData =  {
             user_id:        parseInt(userID),
             service_id:     parseInt(order.service_id, 10),
             type_id:        parseInt(order.type_id,10),
@@ -217,7 +215,21 @@ const OrderCard = ({section}) => {
             qualitycheck:   false,
             topwriter:      true,
             promocode:'',
-        });
+        }
+        if (order.phone !== '' && order.topic !== '' && order.instructions !== '') {
+            addOrder(bodyData);
+        } else {
+            dispatchCheckDetails({
+                type: 'ERROR',
+                errorMessage: 'Make sure all the fields all filled',
+            });
+            setCloseAlert(true);
+            if(errorMessage){
+                setCloseAlertErrorMessage(true)
+            }else{
+                setCloseAlertErrorMessage(false)
+            }
+        }
     };
     const levelSelector = useSelector(state => state.levelState);
     const pageSelector = useSelector(state => state.pageState);
@@ -229,6 +241,15 @@ const OrderCard = ({section}) => {
     const typeSelector = useSelector(state => state.typeState);
     const urgencySelector = useSelector(state => state.urgencyState);
     const languageSelector = useSelector(state => state.languageState);
+    const orderSelector = useSelector(state => state.orderState);
+    const {
+        errorMessage,
+        isLoading,
+        orders: {
+            orders: orderData,
+            pagination
+        }
+    } = orderSelector;
 
     const handleChange = event => {
         event.preventDefault();
@@ -252,7 +273,6 @@ const OrderCard = ({section}) => {
         addOrder();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
-
     return (
         <Box sx={styles.orderCard}>
             <Head>
@@ -366,6 +386,18 @@ const OrderCard = ({section}) => {
                         </>
                         : (
                             section === 'create_order' ? '' :
+                                <Box>
+                                    <Box sx={styles.sortSearch}>
+                                        <Box sx={{display: 'flex', justifyContent: 'space-between', padding: '10px'}}>
+                                            <h3>{section.toUpperCase().replace(/_/g, " ")}</h3>
+                                            {section === 'create_order' ? "" :
+                                                <Box sx={{display: 'flex', gap: '1em'}}>
+                                                    <Input sx={styles.defaultOrder} name="" placeholder="Sort"/>
+                                                    <Input sx={styles.defaultOrder} name="" placeholder="Search"/>
+                                                </Box>
+                                            }
+                                        </Box>
+                                    </Box>
                                 <Box sx={{display: "flex", flexDirection: 'column'}}>
                                     <center>
                                         <Image src={NoData} alt="no-data"/><br/>
@@ -375,10 +407,23 @@ const OrderCard = ({section}) => {
                                             Order</Button>
                                     </center>
                                 </Box>
+                                </Box>
                         )
                         }
                     {section === 'create_order' && (
                         <Box>
+                            {closeAlertErrorMessage ?
+                                <Alert sx={{background: "red"}}>
+                                    {errorMessage}
+                                    <Close ml="auto" mr={-2} onClick={handleCloseErrorMessageAlert}/>
+                                </Alert>
+                                    : ''
+                            }
+                            {checkDetailsData.errorMessage && (
+                                closeAlert ?
+                                    <Alert sx={{background: "red"}}>{checkDetailsData.errorMessage}<Close ml="auto" mr={-2} onClick={handleCloseAlert}/></Alert>
+                                    : ''
+                            )}
                             <Box as='form' onSubmit={handleCreateOrderSubmit}>
                                 <Grid sx={styles.form.grid}>
                                     <Box>
@@ -399,7 +444,7 @@ const OrderCard = ({section}) => {
                                     </Box>
                                     <Box>
                                         <Label htmlFor="urgency_id">Urgency</Label>
-                                        <Select sx={styles.form.select} name="urgency_id">
+                                        <Select sx={styles.form.select} onChange={parseUrgencySelected} name="urgency_id">
                                             {urgencySelector.urgencies.map(urgency => { return (
                                                 <option key={urgency.id} value={JSON.stringify(urgency)}>{urgency.name}</option>
                                             )})}
@@ -468,7 +513,7 @@ const OrderCard = ({section}) => {
                                 </Grid>
                                 <Grid sx={styles.form.topicGrid}>
                                     <Box>
-                                        <Label htmlFor="username">Topic</Label>
+                                        <Label htmlFor="topic ">Topic</Label>
                                         <Input sx={styles.form.select} onChange={handleChange} name="topic " placeholder='Topic' />
                                     </Box>
                                     <Box>
@@ -480,7 +525,7 @@ const OrderCard = ({section}) => {
                                     <Label htmlFor="spacing">Instructions</Label>
                                     <Textarea sx={styles.form.textarea} autoFocus onChange={handleChange} name="comment" id="comment" rows={6}/>
                                 </Box>
-                                <Button mt={2}>Create Order</Button>
+                                <Button sx={styles.buttonCreate} mt={2}>Create Order</Button>
                             </Box>
                         </Box>
                     )}
@@ -492,6 +537,12 @@ const OrderCard = ({section}) => {
 export default OrderCard;
 
 const styles = {
+    buttonCreate: {
+            borderRadius: "10px",
+            background: 'linear-gradient(to right, #17c671, #0059B2)',
+            padding: '5px',
+            color: 'white',
+    },
     defaultOrder: {
         width: '200px',
         height: '40px',

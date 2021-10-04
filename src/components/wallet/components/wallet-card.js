@@ -45,7 +45,7 @@ const WalletCard = ({section}) => {
                     <Button className='wallet-button'>Deposit</Button>
                     <Button className='wallet-button'>Transanctions</Button>
                     <Button className='wallet-button'>Withdraw</Button>
-                </Box>
+                </Box><hr sx={{mr: '10px'}}/>
                 <Box sx={styles.wallet}>
                     <Box sx={{p:'15px', backgroundColor: '#EAEEF3', borderTopLeftRadius: "10px", borderTopRightRadius: "10px"}}><h3>Transactions</h3></Box><hr/>
                    <Box sx={{display: 'flex', flexDirection: 'column', pb: '30px'}}>
@@ -73,7 +73,6 @@ const styles = {
        display: 'flex',
         marginTop: '20px',
         gap: '10px',
-       borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
         '.wallet-button': {
            borderTopRightRadius: "10px",
             borderTopLeftRadius: "10px",
