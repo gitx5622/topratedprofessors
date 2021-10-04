@@ -2,8 +2,8 @@
 import { jsx, Box, Flex } from 'theme-ui';
 import { keyframes } from '@emotion/core';
 import React, { useState } from 'react';
-import PriceCard from 'components/price-card';
-import SectionHeader from 'components/section-header';
+import PriceCard from 'components/home/price-card';
+import SectionHeader from 'components/home/section-header';
 
 const packages = {
   instructions: [

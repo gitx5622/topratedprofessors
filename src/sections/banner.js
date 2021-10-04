@@ -8,7 +8,7 @@ import Original from 'assets/original-stamp.png';
 import Check from 'assets/check.png';
 import ShapeLeft from 'assets/shape-left.png';
 import ShapeRight from 'assets/shape-right.png';
-import CalculatorCard from "../components/calculator_card";
+import CalculatorCard from "../components/home/calculator_card";
 import {getLevels} from "../dataStore/actions/levelsAction";
 import {getTypes} from "../dataStore/actions/typesAction";
 import {getUrgencies} from "../dataStore/actions/urgenciesAction";

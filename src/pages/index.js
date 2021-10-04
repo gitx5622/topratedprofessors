@@ -1,8 +1,8 @@
 import React from 'react';
 import { ThemeProvider } from 'theme-ui';
 import theme from '../theme';
-import SEO from 'components/seo';
-import Layout from 'components/layout';
+import SEO from 'components/home/seo';
+import Layout from 'components/home/layout';
 import Banner from '../sections/banner';
 import TestimonialCard from "../sections/reviews";
 import HowItWorks from "../sections/how-it-works";

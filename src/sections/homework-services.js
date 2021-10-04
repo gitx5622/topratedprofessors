@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, Grid } from 'theme-ui';
-import HomeworkCard from "../components/homework_card";
+import HomeworkCard from "../components/home/homework_card";
 
 const data = [
     {

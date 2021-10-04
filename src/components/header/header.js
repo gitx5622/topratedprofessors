@@ -3,7 +3,7 @@ import { jsx, Box, Flex, Button } from 'theme-ui';
 import { useRouter } from 'next/router';
 import { keyframes } from '@emotion/core';
 import { Link } from 'react-scroll';
-import Logo from 'components/logo';
+import Logo from 'components/home/logo';
 import LogoDark from 'assets/logo.png';
 import MobileDrawer from './mobile-drawer';
 import menuItems from './header.data';

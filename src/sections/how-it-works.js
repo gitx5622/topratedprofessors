@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui';
 import { Grid, Box, Heading } from 'theme-ui';
-import SectionHeader from 'components/section-header';
+import SectionHeader from 'components/home/section-header';
 
 import PatternBG from 'assets/patternBG.png';
 import ArrowOdd from 'assets/arrowOdd.svg';

@@ -9,8 +9,10 @@ import PendingOrders from "../orders/pendingOrders";
 import OrderLayout from "../orders/layout/order-layout";
 import CreateOrder from "../orders/createOrder";
 import Finances from "../wallet/finances";
+import SettingEdit from "../settings/edit";
+import SettingView from "../settings/view";
 
-const Dashboard = ({page, section}) => {
+const Dashboard = ({section}) => {
     const renderOrderPages = () => {
         switch (section) {
             case 'completed':
@@ -52,6 +54,18 @@ const Dashboard = ({page, section}) => {
             case 'wallet':
                 return (
                     <Finances
+                        section={section}
+                    />
+                );
+            case 'edit':
+                return (
+                    <SettingEdit
+                        section={section}
+                    />
+                );
+            case 'view':
+                return (
+                    <SettingView
                         section={section}
                     />
                 );

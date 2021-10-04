@@ -3,12 +3,13 @@ import React, {useState, useEffect, useMemo} from "react";
 import Head from 'next/head';
 import {useRouter} from "next/router";
 import { useDispatch, useSelector} from "react-redux";
-import {jsx, Box, Button, Label, Input, Textarea, Select, Grid} from 'theme-ui';
+import {jsx, Box, Button, Label, Input, Textarea, Select, Grid, Image} from 'theme-ui';
 import {getOrders} from "../../../dataStore/actions/ordersAction";
 import {useDropzone} from 'react-dropzone';
 import dayjs from "dayjs";
 import LogoDark from 'assets/logo.png';
-import Logo from "../../logo";
+import NoData from '../../../assets/no-open.svg';
+import Logo from "../../home/logo";
 import { GrView } from 'react-icons/gr';
 import { BiCheckShield } from 'react-icons/bi';
 import { FiEdit } from 'react-icons/fi';
@@ -364,10 +365,16 @@ const OrderCard = ({section}) => {
                         </table>
                         </>
                         : (
-                            <Box>
-                                You have no Active Data
-                                <Button>Place Order</Button>
-                            </Box>
+                            section === 'create_order' ? '' :
+                                <Box sx={{display: "flex", flexDirection: 'column'}}>
+                                    <center>
+                                        <Image src={NoData} alt="no-data"/><br/>
+                                        <h3>You have no Active Data</h3><br/>
+                                        <Button
+                                            sx={{background: 'linear-gradient(to right, #17c671, #0059B2)'}}><MdAddCircle/> Place
+                                            Order</Button>
+                                    </center>
+                                </Box>
                         )
                         }
                     {section === 'create_order' && (

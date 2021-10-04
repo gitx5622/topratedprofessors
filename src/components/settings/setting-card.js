@@ -2,20 +2,20 @@
 import Head from 'next/head';
 import {jsx, Box, Button, Image} from 'theme-ui';
 import LogoDark from 'assets/logo.png';
-import Logo from "../../home/logo";
+import Logo from "../home/logo";
 import { BiCheckShield } from 'react-icons/bi';
 import { RiSettings2Line } from 'react-icons/ri';
 import { AiOutlineCheckCircle, AiOutlineStop } from 'react-icons/ai';
 import { MdAddCircle } from 'react-icons/md';
 import { FcTimeline, FcCancel } from 'react-icons/fc';
 import { BsCheckAll, BsStopwatch } from 'react-icons/bs';
-import NoTransactions from '../../../assets/no-transactions.svg';
+import NoTransactions from '../../assets/no-transactions.svg';
 
-const WalletCard = ({section}) => {
+const SettingCard = ({section}) => {
     return (
         <Box sx={styles.orderCard}>
             <Head>
-                <title>Wallet</title>
+                <title>Settings</title>
                 <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'/>
                 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
             </Head>
@@ -38,7 +38,7 @@ const WalletCard = ({section}) => {
                     marginLeft: 0,
                 },}}>
                 <Box sx={{display: 'flex', justifyContent: 'space-between', mx:'20px'}}>
-                    <h1>My balance: $0.00</h1>
+                    <h1>My profile</h1>
                     <Button sx={styles.button}><MdAddCircle/> Add Funds</Button>
                 </Box>
                 <Box sx={styles.nav}>
@@ -48,20 +48,20 @@ const WalletCard = ({section}) => {
                 </Box>
                 <Box sx={styles.wallet}>
                     <Box sx={{p:'15px', backgroundColor: '#EAEEF3', borderTopLeftRadius: "10px", borderTopRightRadius: "10px"}}><h3>Transactions</h3></Box><hr/>
-                   <Box sx={{display: 'flex', flexDirection: 'column', pb: '30px'}}>
-                       <center>
-                        <Image sx={{width: '300px'}} src={NoTransactions} alt=""/><br/>
-                       <h3 style={{color: 'linear-gradient(to bottom, #17c671, #0059B2)'}}>You haven't made any transactions<br/>
-                           When you add funds, pay for an order, etc., all details will appear here.</h3>
-                       </center>
-                   </Box>
+                    <Box sx={{display: 'flex', flexDirection: 'column', pb: '30px'}}>
+                        <center>
+                            <Image sx={{width: '300px'}} src={NoTransactions} alt=""/><br/>
+                            <h3 style={{color: 'linear-gradient(to bottom, #17c671, #0059B2)'}}>You haven't made any transactions<br/>
+                                When you add funds, pay for an order, etc., all details will appear here.</h3>
+                        </center>
+                    </Box>
                 </Box>
             </Box>
         </Box>
     );
 };
 
-export default WalletCard;
+export default SettingCard;
 
 const styles = {
     orderCard: {
@@ -70,12 +70,12 @@ const styles = {
         display: "flex",
     },
     nav: {
-       display: 'flex',
+        display: 'flex',
         marginTop: '20px',
         gap: '10px',
-       borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
         '.wallet-button': {
-           borderTopRightRadius: "10px",
+            borderTopRightRadius: "10px",
             borderTopLeftRadius: "10px",
             borderBottomRightRadius: "unset",
             borderBottomLeftRadius: "unset",

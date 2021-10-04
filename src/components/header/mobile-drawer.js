@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import {Box, jsx} from 'theme-ui';
 import { Scrollbars } from 'react-custom-scrollbars';
-import Drawer from 'components/drawer';
+import Drawer from 'components/home/drawer';
 import { IoMdClose, IoMdMenu } from 'react-icons/io';
 import { Link } from 'react-scroll';
 import { FaFacebookF, FaTwitter, FaGithubAlt, FaDribbble } from 'react-icons/fa';
