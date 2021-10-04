@@ -14,7 +14,6 @@ export const getSpacing = (dispatch) => {
                 type: SPACING_SUCCESS,
                 spacings: response.data,
             });
-            console.log(response.data);
         })
         .catch(error => {
             dispatch({

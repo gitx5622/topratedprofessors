@@ -14,7 +14,6 @@ export const getUrgencies = (dispatch) => {
                 type: GET_URGENCY_SUCCESS,
                 urgencies: response.data,
             });
-            console.log(response.data);
         })
         .catch(error => {
             dispatch({

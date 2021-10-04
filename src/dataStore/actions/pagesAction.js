@@ -14,7 +14,6 @@ export const getPages = (dispatch) => {
                 type: PAGE_SUCCESS,
                 pages: response.data,
             });
-            console.log(response.data);
         })
         .catch(error => {
             dispatch({

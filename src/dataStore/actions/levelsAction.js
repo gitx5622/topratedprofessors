@@ -16,7 +16,6 @@ export const getLevels = (dispatch) => {
                 type: LEVEL_SUCCESS,
                 levels: response.data,
             });
-            console.log(response.data);
         })
         .catch(error => {
             dispatch({

@@ -18,7 +18,6 @@ export const getStyles = (dispatch) => {
                 type: STYLE_SUCCESS,
                 styles: response.data,
             });
-            console.log(response.data);
         })
         .catch(error => {
             dispatch({

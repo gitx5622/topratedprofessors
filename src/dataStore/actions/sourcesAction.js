@@ -14,7 +14,6 @@ export const getSources = (dispatch) => {
                 type: SOURCE_SUCCESS,
                 sources: response.data,
             });
-            console.log(response.data);
         })
         .catch(error => {
             dispatch({

@@ -14,7 +14,6 @@ export const getSubjects = (dispatch) => {
                 type: GET_SUBJECT_SUCCESS,
                 subjects: response.data,
             });
-            console.log(response.data);
         })
         .catch(error => {
             dispatch({

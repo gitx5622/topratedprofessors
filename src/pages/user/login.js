@@ -1,9 +1,11 @@
 /** @jsx jsx */
-import { jsx, Box, Button, Label, Input, Grid, Image } from 'theme-ui';
+import { jsx, Box, Button, Label, Input, Text, Image } from 'theme-ui';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
+import { BiArrowBack } from 'react-icons/bi';
 import { loginUser } from "../../dataStore/actions/userLoginAction";
 import PatternBG from "../../assets/login.svg";
 
@@ -71,8 +73,10 @@ export default function Login() {
                         <Image src={PatternBG} alt="" sx={styles.patternImage}/>
                     </Box>
                     <Box sx={styles.form}>
-                        <center><h3 sx={{fontFamily: 'Quicksand, sans-serif'}}>Welcome to TopRatedProfessors</h3></center><br/>
                     <Box sx={styles.formLogin} as="form" onSubmit={handleUserLogin}>
+                        <center><h1 sx={{fontFamily: 'Quicksand, sans-serif'}}>Welcome to TopRatedProfessors</h1><br/>
+                            <Button sx={{background: "#17a2b8", display: 'block',width: '100%', borderColor: '#17a2b8'}} href="/" block theme="info"><BiArrowBack/> Go Home</Button><br/>
+                        </center><br/>
                         <h3 sx={{textAlign: 'center', fontFamily: 'Quicksand, sans-serif'}}>Login</h3>
                         <div className="error-section mb-2">{loginStatus.error}</div>
                         <Label sx={styles.formLogin.label} htmlFor="email">Email</Label>
@@ -93,7 +97,9 @@ export default function Login() {
                             value={loginDetails.password}
                             onChange={handleInputChange}
                         />
-                        <Button sx={styles.formLogin.submit}>Submit</Button>
+                        <Button sx={styles.formLogin.login}>Login</Button>
+                        <Text as='p'>Don't have an account ? Register Here</Text>
+                        <Button sx={styles.formLogin.register}><Link href='/user/register'><a>Register</a></Link></Button>
                     </Box>
                     </Box>
             </Box>
@@ -109,6 +115,10 @@ const styles = {
             gap: '20px',
             flexDirection: 'column',
         },
+        a: {
+            textDecoration: 'none',
+            color: 'white',
+        }
     },
     grid: {
         pt: [0, null, null, null, null, null, 2],
@@ -151,12 +161,23 @@ const styles = {
                 outline: 'none',
             },
         },
-        submit: {
+        login: {
             margin: '10px 0 0 0',
             padding: '7px 10px',
             border: '1px solid #efffff',
             borderRadius: '3px',
-            background: '#3085d6',
+            background: '#17c671',
+            width: '100%',
+            fontSize: '15px',
+            color: 'white',
+            display: 'block'
+        },
+        register: {
+            margin: '10px 0 0 0',
+            padding: '7px 10px',
+            border: '1px solid #efffff',
+            borderRadius: '3px',
+            background: '#FDAA8F',
             width: '100%',
             fontSize: '15px',
             color: 'white',

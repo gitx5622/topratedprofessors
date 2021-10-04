@@ -1,6 +1,9 @@
+/** @jsx jsx */
 import axiosConfig from '../../config/axios';
+import jwtdecode from 'jwt-decode';
 
 import { LOADING, SUCCESS, ERROR } from '../dispatchTypes';
+import {Alert, Close, jsx} from "theme-ui";
 
 export const RegisterUser = (dispatchRegisterUser, bodyData) => {
     dispatchRegisterUser({
@@ -9,15 +12,21 @@ export const RegisterUser = (dispatchRegisterUser, bodyData) => {
 
     try {
         axiosConfig
-            .post('/register', bodyData, {
-                headers: {
-                    'X-TOPRATED-TOKEN': localStorage.token,
-                },
-            })
+            .post('/register', bodyData)
             .then(response => {
-                localStorage.currentUser = JSON.stringify({
-                    user: response.data,
-                });
+                let userData = response.data;
+                let userToken = response.headers['x-toprated-token'];
+                const tokenInfo = jwtdecode(userToken);
+                if (userToken && tokenInfo.user_id === userData.id){
+                    localStorage.sessionID = tokenInfo.session_id;
+                    localStorage.currentUser = JSON.stringify(response.data);
+                    localStorage.token = userToken;
+                }else {
+                    <Alert>
+                        User Id did mot match
+                        <Close ml="auto" mr={-2} />
+                    </Alert>
+                }
                 dispatchRegisterUser({
                     type: SUCCESS,
                 });

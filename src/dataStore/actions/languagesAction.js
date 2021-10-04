@@ -14,7 +14,6 @@ export const getLanguages = (dispatch) => {
                 type: LANGUAGE_SUCCESS,
                 languages: response.data,
             });
-            console.log(response.data);
         })
         .catch(error => {
             dispatch({

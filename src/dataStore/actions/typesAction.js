@@ -18,7 +18,6 @@ export const getTypes = (dispatch) => {
                 type: GET_TYPE_SUCCESS,
                 types: response.data,
             });
-            console.log(response.data);
         })
         .catch(error => {
             dispatch({
