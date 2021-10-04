@@ -47,11 +47,11 @@ const SettingCard = ({section}) => {
                     <Button className='wallet-button'>Withdraw</Button>
                 </Box>
                 <Box sx={styles.wallet}>
-                    <Box sx={{p:'15px', backgroundColor: '#EAEEF3', borderTopLeftRadius: "10px", borderTopRightRadius: "10px"}}><h3>Transactions</h3></Box><hr/>
+                    <Box sx={{p:'15px', backgroundColor: '#273142',color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px"}}><h3>Transactions</h3></Box><hr/>
                     <Box sx={{display: 'flex', flexDirection: 'column', pb: '30px'}}>
                         <center>
                             <Image sx={{width: '300px'}} src={NoTransactions} alt=""/><br/>
-                            <h3 style={{color: 'linear-gradient(to bottom, #17c671, #0059B2)'}}>You haven't made any transactions<br/>
+                            <h3 style={{color: '#273142'}}>You haven't made any transactions<br/>
                                 When you add funds, pay for an order, etc., all details will appear here.</h3>
                         </center>
                     </Box>
@@ -75,12 +75,13 @@ const styles = {
         gap: '10px',
         borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
         '.wallet-button': {
+            cursor: 'pointer',
             borderTopRightRadius: "10px",
             borderTopLeftRadius: "10px",
             borderBottomRightRadius: "unset",
             borderBottomLeftRadius: "unset",
             padding: '10px',
-            backgroundColor: '#273142',
+            background: 'linear-gradient(to right, #17c671, #0059B2)',
             color: 'white',
         }
     },
@@ -96,6 +97,7 @@ const styles = {
         background: 'linear-gradient(to right, #17c671, #0059B2)',
         padding: '5px',
         color: 'white',
+        cursor: 'pointer',
     },
     sidebar: {
         ml: '-8px',

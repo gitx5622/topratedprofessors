@@ -5,6 +5,7 @@ import {useRouter} from "next/router";
 import { useDispatch, useSelector} from "react-redux";
 import {jsx, Box, Button, Label, Input, Textarea, Select, Grid, Image, Close, Alert} from 'theme-ui';
 import {getOrders} from "../../../dataStore/actions/ordersAction";
+import ContentLoader from "react-content-loader"
 import {useDropzone} from 'react-dropzone';
 import dayjs from "dayjs";
 import LogoDark from 'assets/logo.png';
@@ -30,7 +31,7 @@ import {getServices} from "../../../dataStore/actions/servicesAction";
 import {getLanguages} from "../../../dataStore/actions/languagesAction";
 import {getSpacing} from "../../../dataStore/actions/spacingsAction";
 import {createOrders} from "../../../dataStore/actions/ordersAction";
-import {RegisterUser} from "../../../dataStore/actions/userRegistrationAction";
+import { BoxLoading } from 'react-loadingg';
 import checkDetailsReducer, {initialCheckDetailsState} from "../../../dataStore/reducers/checkDetailsReducer";
 
 
@@ -311,6 +312,11 @@ const OrderCard = ({section}) => {
                                 }
                             </Box>
                         </Box>
+                            {
+                                isLoading && (
+                                    <BoxLoading/>
+                                )
+                            }
                         <table sx={styles.table}>
                             {section === 'create_order' ?  "" :
                                 <thead>
@@ -542,6 +548,7 @@ const styles = {
             background: 'linear-gradient(to right, #17c671, #0059B2)',
             padding: '5px',
             color: 'white',
+            cursor: 'pointer',
     },
     defaultOrder: {
         width: '200px',
