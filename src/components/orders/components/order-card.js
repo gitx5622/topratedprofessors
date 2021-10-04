@@ -5,7 +5,6 @@ import {useRouter} from "next/router";
 import { useDispatch, useSelector} from "react-redux";
 import {jsx, Box, Button, Label, Input, Textarea, Select, Grid, Image, Close, Alert} from 'theme-ui';
 import {getOrders} from "../../../dataStore/actions/ordersAction";
-import ContentLoader from "react-content-loader"
 import {useDropzone} from 'react-dropzone';
 import dayjs from "dayjs";
 import LogoDark from 'assets/logo.png';
