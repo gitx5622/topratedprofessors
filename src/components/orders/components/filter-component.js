@@ -4,11 +4,12 @@ import {jsx, Box, Input, Button} from 'theme-ui';
 import {AiOutlineClose} from 'react-icons/ai';
 import {CSVLink} from "react-csv";
 
-const FilterComponent = ({onFilter, onClear, filterText, data}) => {
+const FilterComponent = ({onFilter, onClear, filterText, data, section}) => {
     return (
-        <Box sx={styles.filter}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-around'}}>
+            <Box sx={{display: 'flex'}}>{section.toUpperCase().replace(/_/g, " ")}</Box>
             <Box sx={{display: 'flex'}}>
-            <Input value={filterText} onChange={onFilter}   placeholder='Search by Order Number'/>
+            <Input sx={styles.input} value={filterText} onChange={onFilter}   placeholder='Search by Order Number'/>
             <Box sx={{width: '50px', background: '#2979FF', borderTopRightRadius: '5px', borderBottomRightRadius: '5px',}}>
                 <center>
                     <AiOutlineClose  style={{marginTop: '8px', color: 'white', fontSize: '20px'}} onClick={onClear}/>
@@ -16,7 +17,7 @@ const FilterComponent = ({onFilter, onClear, filterText, data}) => {
             </Box>
             </Box>
             <Box sx={{display: 'flex'}}>
-            <Input value={filterText} onChange={onFilter}   placeholder='Search by Name type'/>
+            <Input sx={styles.input} value={filterText} onChange={onFilter}   placeholder='Search by Name type'/>
             <Box sx={{width: '50px', background: '#2979FF', borderTopRightRadius: '5px', borderBottomRightRadius: '5px',}}>
                 <center>
                     <AiOutlineClose  style={{marginTop: '8px', color: 'white', fontSize: '20px'}} onClick={onClear}/>
@@ -33,9 +34,8 @@ const FilterComponent = ({onFilter, onClear, filterText, data}) => {
 export default FilterComponent;
 
 const styles = {
-    filter: {
-        display: 'flex',
-        gap: '1.5em',
+    input : {
+        height: '35px',
         '::placeholder': {
             color: 'white'
         }

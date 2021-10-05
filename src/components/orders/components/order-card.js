@@ -265,7 +265,13 @@ const OrderCard = ({section}) => {
         };
 
         return (
-            <FilterComponent onFilter={e => setFilterText(e.target.value)} data={filteredItems || orderData} onClear={handleClear} filterText={filterText} />
+            <FilterComponent
+                onFilter={e => setFilterText(e.target.value)}
+                data={filteredItems || orderData}
+                onClear={handleClear}
+                filterText={filterText}
+                section={section}
+            />
         );
     }, [filterText, resetPaginationToggle]);
 
@@ -278,8 +284,8 @@ const OrderCard = ({section}) => {
         },
         cells: {
             style: {
-                paddingLeft: '8px', // override the cell padding for data cells
-                paddingRight: '8px',
+                padding: '10px', // override the cell padding for data cells
+                fontSize: '14px',
             },
         },
     };
@@ -339,9 +345,6 @@ const OrderCard = ({section}) => {
                             }
                             {section === 'completed' && (
                                 <Box sx={styles.completedPage}>
-                                    <Box sx={styles.completedPage.header}>
-                                        {section.toUpperCase().replace(/_/g, " ")}
-                                    </Box>
                                     <Box>
                                         <DataTable
                                             columns={columns}
@@ -546,7 +549,6 @@ const styles = {
     completedPage:{
         minHeight:'200px',
         border: '1px solid rgba(0, 0, 0, 0.2)',
-        borderRadius: '5px',
         margin: '20px',
         header: {
             padding: '10px',
