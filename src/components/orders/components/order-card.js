@@ -345,7 +345,7 @@ const OrderCard = ({section}) => {
                             }
                             {section === 'completed' && (
                                 <Box sx={styles.completedPage}>
-                                    <Box sx={{display: 'flex', justifyContent: 'flex-start'}}>{section.toUpperCase().replace(/_/g, " ")}</Box>
+                                    <Box sx={{display: 'flex',color: 'black', justifyContent: 'flex-start'}}>{section.toUpperCase().replace(/_/g, " ")}</Box>
                                     <Box>
                                         <DataTable
                                             columns={columns}
