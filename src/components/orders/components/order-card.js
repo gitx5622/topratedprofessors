@@ -267,7 +267,7 @@ const OrderCard = ({section}) => {
         }
     } = orderSelector;
 
-    const filteredItems = orderData.filter(
+    const filteredItems = orderData?.filter(
         item => item.type.name && item.type.name.toLowerCase().includes(filterText.toLowerCase()),
     );
     const handleChange = event => {
