@@ -1,19 +1,46 @@
 /** @jsx jsx */
 import React from 'react';
-import {jsx, Box, Input} from 'theme-ui';
+import {jsx, Box, Input, Button} from 'theme-ui';
 import {AiOutlineClose} from 'react-icons/ai';
+import {CSVLink} from "react-csv";
 
-const FilterComponent = ({onFilter, onClear, filterText}) => {
+const FilterComponent = ({onFilter, onClear, filterText, data}) => {
     return (
-        <Box sx={{display: 'flex'}}>
+        <Box sx={styles.filter}>
+            <Box sx={{display: 'flex'}}>
+            <Input value={filterText} onChange={onFilter}   placeholder='Search by Order Number'/>
+            <Box sx={{width: '50px', background: '#2979FF', borderTopRightRadius: '5px', borderBottomRightRadius: '5px',}}>
+                <center>
+                    <AiOutlineClose  style={{marginTop: '8px', color: 'white', fontSize: '20px'}} onClick={onClear}/>
+                </center>
+            </Box>
+            </Box>
+            <Box sx={{display: 'flex'}}>
             <Input value={filterText} onChange={onFilter}   placeholder='Search by Name type'/>
             <Box sx={{width: '50px', background: '#2979FF', borderTopRightRadius: '5px', borderBottomRightRadius: '5px',}}>
                 <center>
                     <AiOutlineClose  style={{marginTop: '8px', color: 'white', fontSize: '20px'}} onClick={onClear}/>
                 </center>
             </Box>
+            </Box>
+            <Box sx={{display: 'flex'}}>
+                <CSVLink data={data}><Button sx={styles.exportButton}>Export</Button></CSVLink>
+            </Box>
         </Box>
     );
 };
 
 export default FilterComponent;
+
+const styles = {
+    filter: {
+        display: 'flex',
+        gap: '1.5em',
+        '::placeholder': {
+            color: 'white'
+        }
+    },
+    exportButton: {
+        background: 'linear-gradient(to right, #17c671, #0059B2)'
+    }
+}

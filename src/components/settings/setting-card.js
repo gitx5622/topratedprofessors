@@ -212,7 +212,7 @@ const SettingCard = ({section}) => {
                         Last Order
                     </Box>
                     <Box>
-                        <DataTable title="Desserts - Conditional Cells" columns={columns} data={data} pagination />
+                        <DataTable columns={columns} data={data} pagination />
                     </Box>
                 </Box>
             </Box>

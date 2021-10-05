@@ -32,8 +32,6 @@ import checkDetailsReducer, {initialCheckDetailsState} from "../../../dataStore/
 import DataTable from "react-data-table-component";
 import {columns} from "./columns.data";
 import FilterComponent from "./filter-component";
-import Export from "./export";
-
 
 const OrderCard = ({section}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -80,19 +78,6 @@ const OrderCard = ({section}) => {
         checkDetailsReducer,
         initialCheckDetailsState
     );
-
-    const subHeaderComponentMemo = React.useMemo(() => {
-        const handleClear = () => {
-            if (filterText) {
-                setResetPaginationToggle(!resetPaginationToggle);
-                setFilterText('');
-            }
-        };
-
-        return (
-            <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
-        );
-    }, [filterText, resetPaginationToggle]);
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
         getOrders(dispatch, userId )
@@ -270,6 +255,34 @@ const OrderCard = ({section}) => {
     const filteredItems = orderData?.filter(
         item => item.type.name && item.type.name.toLowerCase().includes(filterText.toLowerCase()),
     );
+
+    const subHeaderComponentMemo = React.useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <FilterComponent onFilter={e => setFilterText(e.target.value)} data={filteredItems || orderData} onClear={handleClear} filterText={filterText} />
+        );
+    }, [filterText, resetPaginationToggle]);
+
+    const customStyles = {
+        headCells: {
+            style: {
+                background: '#E3F2FD',
+                fontSize: '16px',
+            },
+        },
+        cells: {
+            style: {
+                paddingLeft: '8px', // override the cell padding for data cells
+                paddingRight: '8px',
+            },
+        },
+    };
     const handleChange = event => {
         event.preventDefault();
         setOrder({
@@ -277,8 +290,6 @@ const OrderCard = ({section}) => {
             [event.target.name]: event.target.value
         })
     }
-
-    const actionsMemo = React.useMemo(() => <Export data={filteredItems || orderData}/>, []);
 
     useEffect(() => {
         getLevels(dispatch);
@@ -327,18 +338,24 @@ const OrderCard = ({section}) => {
                                 )
                             }
                             {section === 'completed' && (
-                                <DataTable
-                                title="Completed Orders"
-                                columns={columns}
-                                data={filteredItems}
-                                pagination
-                                paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
-                                subHeader
-                                subHeaderComponent={subHeaderComponentMemo}
-                                selectableRows
-                                persistTableHead
-                                actions={actionsMemo}
-                                />
+                                <Box sx={styles.completedPage}>
+                                    <Box sx={styles.completedPage.header}>
+                                        {section.toUpperCase().replace(/_/g, " ")}
+                                    </Box>
+                                    <Box>
+                                        <DataTable
+                                            columns={columns}
+                                            data={filteredItems}
+                                            pagination
+                                            paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
+                                            subHeader
+                                            subHeaderComponent={subHeaderComponentMemo}
+                                            selectableRows
+                                            persistTableHead
+                                            customStyles={customStyles}
+                                        />
+                                    </Box>
+                                </Box>
                                 // orderData.map(order => {
                                 //     return (
                                 //         <tr key={order.id}>
@@ -526,15 +543,17 @@ const styles = {
             color: 'white'
         }
     },
-    sortSearch: {
-        width: '100%',
-        backgroundColor: '#273142',
-        boxShadow: '0 3px 4px rgba(38, 78, 118, 0.1)',
-        color: 'white',
-        borderRadius: '10px',
-        select: {
-            height: '50px',
-            width: '100px',
+    completedPage:{
+        minHeight:'200px',
+        border: '1px solid rgba(0, 0, 0, 0.2)',
+        borderRadius: '5px',
+        margin: '20px',
+        header: {
+            padding: '10px',
+            minHeight: '20px',
+            background: '#273142',
+            color: 'white',
+            borderBottom: '1px solid rgba(0, 0, 0, 0.2)'
         },
     },
     baseStyle:  {
