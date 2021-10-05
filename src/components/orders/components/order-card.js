@@ -345,6 +345,7 @@ const OrderCard = ({section}) => {
                             }
                             {section === 'completed' && (
                                 <Box sx={styles.completedPage}>
+                                    <Box sx={{display: 'flex', justifyContent: 'flex-start'}}>{section.toUpperCase().replace(/_/g, " ")}</Box>
                                     <Box>
                                         <DataTable
                                             columns={columns}
@@ -548,8 +549,6 @@ const styles = {
     },
     completedPage:{
         minHeight:'200px',
-        border: '1px solid rgba(0, 0, 0, 0.2)',
-        margin: '20px',
         header: {
             padding: '10px',
             minHeight: '20px',

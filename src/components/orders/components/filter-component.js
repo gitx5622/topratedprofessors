@@ -6,11 +6,10 @@ import {CSVLink} from "react-csv";
 
 const FilterComponent = ({onFilter, onClear, filterText, data, section}) => {
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'space-around'}}>
-            <Box sx={{display: 'flex'}}>{section.toUpperCase().replace(/_/g, " ")}</Box>
+        <Box sx={{ display: 'flex', justifyContent: 'space-around', gap: '2.5em'}}>
             <Box sx={{display: 'flex'}}>
             <Input sx={styles.input} value={filterText} onChange={onFilter}   placeholder='Search by Order Number'/>
-            <Box sx={{width: '50px', background: '#2979FF', borderTopRightRadius: '5px', borderBottomRightRadius: '5px',}}>
+            <Box sx={{width: '35px', background: '#2979FF', borderTopRightRadius: '5px', borderBottomRightRadius: '5px',}}>
                 <center>
                     <AiOutlineClose  style={{marginTop: '8px', color: 'white', fontSize: '20px'}} onClick={onClear}/>
                 </center>
@@ -18,7 +17,7 @@ const FilterComponent = ({onFilter, onClear, filterText, data, section}) => {
             </Box>
             <Box sx={{display: 'flex'}}>
             <Input sx={styles.input} value={filterText} onChange={onFilter}   placeholder='Search by Name type'/>
-            <Box sx={{width: '50px', background: '#2979FF', borderTopRightRadius: '5px', borderBottomRightRadius: '5px',}}>
+            <Box sx={{width: '35px', background: '#2979FF', borderTopRightRadius: '5px', borderBottomRightRadius: '5px',}}>
                 <center>
                     <AiOutlineClose  style={{marginTop: '8px', color: 'white', fontSize: '20px'}} onClick={onClear}/>
                 </center>
