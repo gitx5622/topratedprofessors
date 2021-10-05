@@ -12,7 +12,7 @@ import NoData from '../../../assets/no-open.svg';
 import Logo from "../../home/logo";
 import { BiCheckShield } from 'react-icons/bi';
 import { RiSettings2Line } from 'react-icons/ri';
-import { AiOutlineCheckCircle, AiFillCheckCircle, AiOutlineStop } from 'react-icons/ai';
+import { AiOutlineCheckCircle, AiOutlineStop } from 'react-icons/ai';
 import { MdAddCircle } from 'react-icons/md';
 import { FcTimeline, FcCancel } from 'react-icons/fc';
 import { BsCheckAll, BsStopwatch } from 'react-icons/bs';

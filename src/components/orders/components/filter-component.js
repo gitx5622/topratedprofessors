@@ -1,3 +1,4 @@
+/** @jsx jsx */
 import React from 'react';
 import {jsx, Box, Input} from 'theme-ui';
 import {AiOutlineClose} from 'react-icons/ai';

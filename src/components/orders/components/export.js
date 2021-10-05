@@ -1,6 +1,7 @@
+/** @jsx jsx */
 import React from 'react';
-import { CSVLink, CSVDownload } from "react-csv";
-import { Button } from 'theme-ui';
+import { CSVLink } from "react-csv";
+import { jsx, Button } from 'theme-ui';
 
 const Export = ({data}) => {
     return (
