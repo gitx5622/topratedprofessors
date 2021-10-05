@@ -288,6 +288,7 @@ const OrderCard = ({section}) => {
                 padding: '10px', // override the cell padding for data cells
                 fontSize: '14px',
                 color: 'black',
+                fontWeight: 500,
             },
         },
     };
