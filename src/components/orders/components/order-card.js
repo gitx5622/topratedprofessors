@@ -255,7 +255,6 @@ const OrderCard = ({section}) => {
     const filteredItems = orderData?.filter(
         item => item.type.name && item.type.name.toLowerCase().includes(filterText.toLowerCase()),
     );
-
     const subHeaderComponentMemo = React.useMemo(() => {
         const handleClear = () => {
             if (filterText) {
@@ -280,12 +279,15 @@ const OrderCard = ({section}) => {
             style: {
                 background: '#E3F2FD',
                 fontSize: '16px',
+                color: 'black',
+                fontWeight: 600,
             },
         },
         cells: {
             style: {
                 padding: '10px', // override the cell padding for data cells
                 fontSize: '14px',
+                color: 'black',
             },
         },
     };
@@ -354,7 +356,7 @@ const OrderCard = ({section}) => {
                                             paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
                                             subHeader
                                             subHeaderComponent={subHeaderComponentMemo}
-                                            selectableRows
+                                            expandableRows
                                             persistTableHead
                                             customStyles={customStyles}
                                         />

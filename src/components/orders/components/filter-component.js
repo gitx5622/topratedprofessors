@@ -9,7 +9,7 @@ const FilterComponent = ({onFilter, onClear, filterText, data, section}) => {
         <Box sx={{ display: 'flex', justifyContent: 'space-around', gap: '2.5em'}}>
             <Box sx={{display: 'flex'}}>
             <Input sx={styles.input} value={filterText} onChange={onFilter}   placeholder='Search by Order Number'/>
-            <Box sx={{height: '35px', background: '#2979FF', borderTopRightRadius: '5px', borderBottomRightRadius: '5px',}}>
+            <Box sx={{height: '35px', width: '50px', background: '#2979FF', borderTopRightRadius: '5px', borderBottomRightRadius: '5px',}}>
                 <center>
                     <AiOutlineClose  style={{marginTop: '8px', color: 'white', fontSize: '20px'}} onClick={onClear}/>
                 </center>
@@ -17,7 +17,7 @@ const FilterComponent = ({onFilter, onClear, filterText, data, section}) => {
             </Box>
             <Box sx={{display: 'flex'}}>
             <Input sx={styles.input} value={filterText} onChange={onFilter}   placeholder='Search by Name type'/>
-            <Box sx={{height: '35px', background: '#2979FF', borderTopRightRadius: '5px', borderBottomRightRadius: '5px',}}>
+            <Box sx={{height: '35px',width: '50px', background: '#2979FF', borderTopRightRadius: '5px', borderBottomRightRadius: '5px',}}>
                 <center>
                     <AiOutlineClose  style={{marginTop: '8px', color: 'white', fontSize: '20px'}} onClick={onClear}/>
                 </center>
@@ -40,6 +40,8 @@ const styles = {
         }
     },
     exportButton: {
-        background: 'linear-gradient(to right, #17c671, #0059B2)'
+        background: 'linear-gradient(to right, #17c671, #0059B2)',
+        padding: '8px',
+        borderRadius: '10px',
     }
 }
