@@ -278,7 +278,7 @@ const OrderCard = ({section}) => {
         })
     }
 
-    const actionsMemo = React.useMemo(() => <Export data={filteredItems}/>, []);
+    const actionsMemo = React.useMemo(() => <Export data={filteredItems || orderData}/>, []);
 
     useEffect(() => {
         getLevels(dispatch);
