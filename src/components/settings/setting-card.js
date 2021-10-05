@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import Head from 'next/head';
-import {jsx, Box, Button, Image} from 'theme-ui';
+import {jsx, Box, Button} from 'theme-ui';
 import LogoDark from 'assets/logo.png';
 import Logo from "../home/logo";
 import { BiCheckShield } from 'react-icons/bi';
@@ -9,9 +9,70 @@ import { AiOutlineCheckCircle, AiOutlineStop } from 'react-icons/ai';
 import { MdAddCircle } from 'react-icons/md';
 import { FcTimeline, FcCancel } from 'react-icons/fc';
 import { BsCheckAll, BsStopwatch } from 'react-icons/bs';
-import NoTransactions from '../../assets/no-transactions.svg';
+import DataTable from 'react-data-table-component';
+
+const data = [
+    {
+        id: 1,
+        name: 'Beetlejuice',
+        calories: 150,
+        type: 'Ice cream',
+        fat: 3.5,
+        carbs: 15,
+        iron: 34,
+        year: '1988',
+    },
+    {
+        id: 2,
+        name: 'Ghostbusters',
+        calories: 230,
+        type: 'Weed',
+        fat: 24,
+        carbs: 67,
+        iron: 34,
+        year: '1984',
+    },
+    {
+        id: 3,
+        name: 'Beetlejuice',
+        calories: 408,
+        type: 'Caffein',
+        fat: 16,
+        carbs: 51,
+        iron: 34,
+        year: '1988',
+    },
+    {
+        id: 4,
+        name: 'Ghostbusters',
+        calories: 375,
+        type: 'Jobs',
+        fat: 50,
+        carbs: 37,
+        iron: 34,
+        year: '1984',
+    },
+]
+
 
 const SettingCard = ({section}) => {
+    const handleFirstPageButtonClick = () => {
+        onChangePage(1);
+    };
+
+    // RDT uses page index starting at 1, MUI starts at 0
+    // i.e. page prop will be off by one here
+    const handleBackButtonClick = () => {
+        onChangePage(page);
+    };
+
+    const handleNextButtonClick = () => {
+        onChangePage(page + 2);
+    };
+
+    const handleLastPageButtonClick = () => {
+        onChangePage(getNumberOfPages(count, rowsPerPage));
+    };
     return (
         <Box sx={styles.orderCard}>
             <Head>
@@ -41,19 +102,16 @@ const SettingCard = ({section}) => {
                     <h1>My profile</h1>
                     <Button sx={styles.button}><MdAddCircle/> Add Funds</Button>
                 </Box>
-                <Box sx={styles.nav}>
-                    <Button className='wallet-button'>Deposit</Button>
-                    <Button className='wallet-button'>Transanctions</Button>
-                    <Button className='wallet-button'>Withdraw</Button>
+                <Box sx={styles.profile}>
+                    <Box sx={styles.profile.details}>Order Number</Box>
+                    <Box sx={styles.profile.details}>Orders</Box>
                 </Box>
-                <Box sx={styles.wallet}>
-                    <Box sx={{p:'15px', backgroundColor: '#273142',color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px"}}><h3>Transactions</h3></Box><hr/>
-                    <Box sx={{display: 'flex', flexDirection: 'column', pb: '30px'}}>
-                        <center>
-                            <Image sx={{width: '300px'}} src={NoTransactions} alt=""/><br/>
-                            <h3 style={{color: '#273142'}}>You haven't made any transactions<br/>
-                                When you add funds, pay for an order, etc., all details will appear here.</h3>
-                        </center>
+                <Box sx={styles.lastOrder}>
+                    <Box sx={styles.lastOrder.header}>
+                        Last Order
+                    </Box>
+                    <Box>
+                        <DataTable title="Desserts - Conditional Cells" columns={columns} data={data} pagination />
                     </Box>
                 </Box>
             </Box>
@@ -64,33 +122,36 @@ const SettingCard = ({section}) => {
 export default SettingCard;
 
 const styles = {
+    lastOrder:{
+        minHeight:'200px',
+        border: '1px solid rgba(0, 0, 0, 0.2)',
+        borderRadius: '5px',
+        margin: '20px',
+        header: {
+            padding: '10px',
+            minHeight: '20px',
+            background: '#273142',
+            color: 'white',
+            borderBottom: '1px solid rgba(0, 0, 0, 0.2)'
+        },
+    },
+    profile: {
+        display: 'flex',
+        gap: '1em',
+        padding: '20px',
+        details: {
+            height: '100px',
+            padding: '10px',
+            mt: '20px',
+            width: '50%',
+            border: '1px solid rgba(0, 0, 0, 0.2)',
+            borderRadius: '5px',
+        },
+    },
     orderCard: {
         margin: 0,
         padding: 0,
         display: "flex",
-    },
-    nav: {
-        display: 'flex',
-        marginTop: '20px',
-        gap: '10px',
-        borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
-        '.wallet-button': {
-            cursor: 'pointer',
-            borderTopRightRadius: "10px",
-            borderTopLeftRadius: "10px",
-            borderBottomRightRadius: "unset",
-            borderBottomLeftRadius: "unset",
-            padding: '10px',
-            background: 'linear-gradient(to right, #17c671, #0059B2)',
-            color: 'white',
-        }
-    },
-    wallet: {
-        border: '1px solid rgba(0, 0, 0, 0.2)',
-        borderRadius: '10px',
-        minHeight: '350px',
-        mx: '10px',
-        my:'10px',
     },
     button: {
         borderRadius: "10px",

@@ -10,12 +10,9 @@ import dayjs from "dayjs";
 import LogoDark from 'assets/logo.png';
 import NoData from '../../../assets/no-open.svg';
 import Logo from "../../home/logo";
-import { GrView } from 'react-icons/gr';
 import { BiCheckShield } from 'react-icons/bi';
-import { FiEdit } from 'react-icons/fi';
 import { RiSettings2Line } from 'react-icons/ri';
-import { AiOutlineDelete, AiOutlineCheckCircle, AiOutlineStop } from 'react-icons/ai';
-import { IconContext } from "react-icons";
+import { AiOutlineCheckCircle, AiFillCheckCircle, AiOutlineStop } from 'react-icons/ai';
 import { MdAddCircle } from 'react-icons/md';
 import { FcTimeline, FcCancel } from 'react-icons/fc';
 import { BsCheckAll, BsStopwatch } from 'react-icons/bs';
@@ -32,6 +29,10 @@ import {getSpacing} from "../../../dataStore/actions/spacingsAction";
 import {createOrders} from "../../../dataStore/actions/ordersAction";
 import { BoxLoading } from 'react-loadingg';
 import checkDetailsReducer, {initialCheckDetailsState} from "../../../dataStore/reducers/checkDetailsReducer";
+import DataTable from "react-data-table-component";
+import {columns} from "./columns";
+import FilterComponent from "./filter-component";
+import Export from "./export";
 
 
 const OrderCard = ({section}) => {
@@ -69,6 +70,9 @@ const OrderCard = ({section}) => {
         topwriter:'',
         promocode:''
     });
+    const [filterText, setFilterText] = React.useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+
     const router = useRouter();
     const dispatch = useDispatch();
 
@@ -77,6 +81,18 @@ const OrderCard = ({section}) => {
         initialCheckDetailsState
     );
 
+    const subHeaderComponentMemo = React.useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
+        );
+    }, [filterText, resetPaginationToggle]);
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
         getOrders(dispatch, userId )
@@ -251,13 +267,18 @@ const OrderCard = ({section}) => {
         }
     } = orderSelector;
 
+    const filteredItems = orderData.filter(
+        item => item.type.name && item.type.name.toLowerCase().includes(filterText.toLowerCase()),
+    );
     const handleChange = event => {
         event.preventDefault();
         setOrder({
             ...order,
             [event.target.name]: event.target.value
         })
-    };
+    }
+
+    const actionsMemo = React.useMemo(() => <Export data={filteredItems}/>, []);
 
     useEffect(() => {
         getLevels(dispatch);
@@ -300,109 +321,59 @@ const OrderCard = ({section}) => {
                     },}}>
                     {orderData ?
                         <>
-                        <Box sx={styles.sortSearch}>
-                            <Box sx={{display: 'flex', justifyContent: 'space-between', padding: '10px'}}>
-                                <h3>{section.toUpperCase().replace(/_/g, " ")}</h3>
-                                {section === 'create_order' ? "" :
-                                    <Box sx={{display: 'flex', gap: '1em'}}>
-                                    <Input sx={styles.defaultOrder} name="" placeholder="Sort"/>
-                                    <Input sx={styles.defaultOrder} name="" placeholder="Search"/>
-                                    </Box>
-                                }
-                            </Box>
-                        </Box>
                             {
                                 isLoading && (
                                     <BoxLoading/>
                                 )
                             }
-                        <table sx={styles.table}>
-                            {section === 'create_order' ?  "" :
-                                <thead>
-                                <tr>
-                                    <th>Order No</th>
-                                    <th>Deadline</th>
-                                    <th>Type</th>
-                                    <th>Pages</th>
-                                    <th>Amount</th>
-                                    <th>Actions</th>
-                                    <th>Reserve Now</th>
-                                </tr>
-                                </thead>
-                            }
-                            <tbody>
                             {section === 'completed' && (
-                                orderData.map(order => {
-                                    return (
-                                        <tr key={order.id}>
-                                            <td><a style={{color: '#1890FF', textDecoration: 'none'}}
-                                                   href={`/orders/order_details/${order.id}`}>{order.order_number}</a>
-                                            </td>
-                                            <td>{dayjs(order.deadline).format("dddd, MMMM D YYYY")}</td>
-                                            <td>{order.type.name}</td>
-                                            <td>
-                                                <center>{order.page.no_of_page}</center>
-                                            </td>
-                                            <td>
-                                                <center>{(order.amount).toFixed(2)}</center>
-                                            </td>
-                                            <td>
-                                                <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
-                                                <IconContext.Provider value={{ color: "green", size:'1.5em', className: "global-class-name" }}>
-                                                        <GrView />
-                                                </IconContext.Provider>
-                                                <IconContext.Provider value={{ color: "blue", size:'1.5em', className: "global-class-name" }}>
-                                                    <FiEdit/>
-                                                </IconContext.Provider>
-                                                <IconContext.Provider value={{ color: "red", size:'1.5em', className: "global-class-name" }}>
-                                                    <AiOutlineDelete/>
-                                                </IconContext.Provider>
-                                                </Box>
-                                            </td>
-                                            <td><Button className='reserve-button'>Reserve Now</Button></td>
-                                        </tr>
-                                    )
-                                })
+                                <DataTable
+                                title="Completed Orders"
+                                columns={columns}
+                                data={filteredItems}
+                                pagination
+                                paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
+                                subHeader
+                                subHeaderComponent={subHeaderComponentMemo}
+                                selectableRows
+                                persistTableHead
+                                actions={actionsMemo}
+                                />
+                                // orderData.map(order => {
+                                //     return (
+                                //         <tr key={order.id}>
+                                //             <td><a style={{color: '#1890FF', textDecoration: 'none'}}
+                                //                    href={`/orders/order_details/${order.id}`}>{order.order_number}</a>
+                                //             </td>
+                                //             <td>{dayjs(order.deadline).format("dddd, MMMM D YYYY")}</td>
+                                //             <td>{order.type.name}</td>
+                                //             <td>
+                                //                 <center>{order.page.no_of_page}</center>
+                                //             </td>
+                                //             <td>
+                                //                 <center>{(order.amount).toFixed(2)}</center>
+                                //             </td>
+                                //             <td>
+                                //                 <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
+                                //                 <IconContext.Provider value={{ color: "green", size:'1.5em', className: "global-class-name" }}>
+                                //                         <GrView />
+                                //                 </IconContext.Provider>
+                                //                 <IconContext.Provider value={{ color: "blue", size:'1.5em', className: "global-class-name" }}>
+                                //                     <FiEdit/>
+                                //                 </IconContext.Provider>
+                                //                 <IconContext.Provider value={{ color: "red", size:'1.5em', className: "global-class-name" }}>
+                                //                     <AiOutlineDelete/>
+                                //                 </IconContext.Provider>
+                                //                 </Box>
+                                //             </td>
+                                //             <td><Button className='reserve-button'>Reserve Now</Button></td>
+                                //         </tr>
+                                //     )
+                                // })
                                 )}
-                            {section === 'all-orders' && (
-                                orderData.map(order => {
-                                    return (
-                                        <tr key={order.id}>
-                                            <td><a style={{color: '#1890FF', textDecoration: 'none'}}
-                                                   href={`/orders/order_details/${order.id}`}>{order.order_number}</a>
-                                            </td>
-                                            <td>{dayjs(order.deadline).format("dddd, MMMM D YYYY")}</td>
-                                            <td>{order.type.name}</td>
-                                            <td>
-                                                <center>{order.page.no_of_page}</center>
-                                            </td>
-                                            <td>
-                                                <center>{(order.amount).toFixed(2)}</center>
-                                            </td>
-                                            <td><GrView style={{color: 'red'}}/> <FiEdit/> <AiOutlineDelete/></td>
-                                            <td><Button className='reserve-button'>Reserve Now</Button></td>
-                                        </tr>
-                                    )
-                                })
-                            )
-                            }
-                            </tbody>
-                        </table>
                         </>
                         : (
-                            section === 'create_order' ? '' :
                                 <Box>
-                                    <Box sx={styles.sortSearch}>
-                                        <Box sx={{display: 'flex', justifyContent: 'space-between', padding: '10px'}}>
-                                            <h3>{section.toUpperCase().replace(/_/g, " ")}</h3>
-                                            {section === 'create_order' ? "" :
-                                                <Box sx={{display: 'flex', gap: '1em'}}>
-                                                    <Input sx={styles.defaultOrder} name="" placeholder="Sort"/>
-                                                    <Input sx={styles.defaultOrder} name="" placeholder="Search"/>
-                                                </Box>
-                                            }
-                                        </Box>
-                                    </Box>
                                 <Box sx={{display: "flex", flexDirection: 'column'}}>
                                     <center>
                                         <Image src={NoData} alt="no-data"/><br/>
@@ -429,17 +400,6 @@ const OrderCard = ({section}) => {
                                     <Alert sx={{background: "red"}}>{checkDetailsData.errorMessage}<Close ml="auto" mr={-2} onClick={handleCloseAlert}/></Alert>
                                     : ''
                             )}
-                            <Box sx={styles.sortSearch}>
-                                <Box sx={{display: 'flex', justifyContent: 'space-between', padding: '10px'}}>
-                                    <h3>{section.toUpperCase().replace(/_/g, " ")}</h3>
-                                    {section === 'create_order' ? "" :
-                                        <Box sx={{display: 'flex', gap: '1em'}}>
-                                            <Input sx={styles.defaultOrder} name="" placeholder="Sort"/>
-                                            <Input sx={styles.defaultOrder} name="" placeholder="Search"/>
-                                        </Box>
-                                    }
-                                </Box>
-                            </Box>
                             <Box as='form' onSubmit={handleCreateOrderSubmit}>
                                 <Grid sx={styles.form.grid}>
                                     <Box>
@@ -549,7 +509,6 @@ const OrderCard = ({section}) => {
         </Box>
     );
 };
-
 export default OrderCard;
 
 const styles = {
