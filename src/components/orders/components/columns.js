@@ -1,4 +1,4 @@
-export const columns = [
+export default  [
     {
         name: 'Order Number',
         selector: row => row.order_number,
