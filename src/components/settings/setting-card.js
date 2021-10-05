@@ -10,6 +10,7 @@ import { MdAddCircle } from 'react-icons/md';
 import { FcTimeline, FcCancel } from 'react-icons/fc';
 import { BsCheckAll, BsStopwatch } from 'react-icons/bs';
 import DataTable from 'react-data-table-component';
+import {columns} from "../orders/components/columns.data";
 
 const data = [
     {

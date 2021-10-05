@@ -30,7 +30,6 @@ import {createOrders} from "../../../dataStore/actions/ordersAction";
 import { BoxLoading } from 'react-loadingg';
 import checkDetailsReducer, {initialCheckDetailsState} from "../../../dataStore/reducers/checkDetailsReducer";
 import DataTable from "react-data-table-component";
-import columns from "./columns";
 import FilterComponent from "./filter-component";
 import Export from "./export";
 
