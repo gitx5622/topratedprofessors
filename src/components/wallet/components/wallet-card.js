@@ -10,7 +10,151 @@ import { MdAddCircle } from 'react-icons/md';
 import { FcTimeline, FcCancel } from 'react-icons/fc';
 import { BsCheckAll, BsStopwatch } from 'react-icons/bs';
 import NoTransactions from '../../../assets/no-transactions.svg';
+import DataTable from "react-data-table-component";
 
+const data = [
+    {
+        id: 1,
+        name: 'Beetlejuice',
+        calories: 150,
+        type: 'Ice cream',
+        fat: 3.5,
+        carbs: 15,
+        iron: 34,
+        year: '1988',
+    },
+    {
+        id: 2,
+        name: 'Ghostbusters',
+        calories: 230,
+        type: 'Weed',
+        fat: 24,
+        carbs: 67,
+        iron: 34,
+        year: '1984',
+    },
+    {
+        id: 3,
+        name: 'Beetlejuice',
+        calories: 408,
+        type: 'Caffein',
+        fat: 16,
+        carbs: 51,
+        iron: 34,
+        year: '1988',
+    },
+    {
+        id: 4,
+        name: 'Ghostbusters',
+        calories: 375,
+        type: 'Jobs',
+        fat: 50,
+        carbs: 37,
+        iron: 34,
+        year: '1984',
+    },
+]
+const columns = [
+    {
+        name: 'Name',
+        selector: row => row.name,
+        sortable: true,
+        grow: 2,
+    },
+    {
+        name: 'Type',
+        selector: row => row.type,
+        sortable: true,
+    },
+    {
+        name: 'Calories (g)',
+        selector: row => row.calories,
+        sortable: true,
+        right: true,
+        conditionalCellStyles: [
+            {
+                when: row => row.calories < 300,
+                style: {
+                    backgroundColor: 'rgba(63, 195, 128, 0.9)',
+                    color: 'white',
+                    '&:hover': {
+                        cursor: 'pointer',
+                    },
+                },
+            },
+            {
+                when: row => row.calories >= 300 && row.calories < 400,
+                style: {
+                    backgroundColor: 'rgba(248, 148, 6, 0.9)',
+                    color: 'white',
+                    '&:hover': {
+                        cursor: 'pointer',
+                    },
+                },
+            },
+            {
+                when: row => row.calories >= 400,
+                style: {
+                    backgroundColor: 'rgba(242, 38, 19, 0.9)',
+                    color: 'white',
+                    '&:hover': {
+                        cursor: 'not-allowed',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        name: 'Fat (g)',
+        selector: row => row.fat,
+        sortable: true,
+        right: true,
+        conditionalCellStyles: [
+            {
+                when: row => row.fat <= 5,
+                style: {
+                    backgroundColor: 'rgba(63, 195, 128, 0.9)',
+                    color: 'white',
+                    '&:hover': {
+                        cursor: 'pointer',
+                    },
+                },
+            },
+            {
+                when: row => row.fat > 5 && row.fat < 10,
+                style: {
+                    backgroundColor: 'rgba(248, 148, 6, 0.9)',
+                    color: 'white',
+                    '&:hover': {
+                        cursor: 'pointer',
+                    },
+                },
+            },
+            {
+                when: row => row.fat > 10,
+                style: {
+                    backgroundColor: 'rgba(242, 38, 19, 0.9)',
+                    color: 'white',
+                    '&:hover': {
+                        cursor: 'not-allowed',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        name: 'Carbs (g)',
+        selector: row => row.carbs,
+        sortable: true,
+        right: true,
+    },
+    {
+        name: 'Iron (%)',
+        selector: row => row.iron,
+        sortable: true,
+        right: true,
+    },
+];
 const WalletCard = ({section}) => {
     return (
         <Box sx={styles.orderCard}>
@@ -46,15 +190,13 @@ const WalletCard = ({section}) => {
                     <Button className='wallet-button'>Transanctions</Button>
                     <Button className='wallet-button'>Withdraw</Button>
                 </Box><hr sx={{mr: '10px'}}/>
-                <Box sx={styles.wallet}>
-                    <Box sx={{p:'15px', backgroundColor: '#EAEEF3', borderTopLeftRadius: "10px", borderTopRightRadius: "10px"}}><h3>Transactions</h3></Box><hr/>
-                   <Box sx={{display: 'flex', flexDirection: 'column', pb: '30px'}}>
-                       <center>
-                        <Image sx={{width: '300px'}} src={NoTransactions} alt=""/><br/>
-                       <h3 style={{color: 'linear-gradient(to bottom, #17c671, #0059B2)'}}>You haven't made any transactions<br/>
-                           When you add funds, pay for an order, etc., all details will appear here.</h3>
-                       </center>
-                   </Box>
+                <Box sx={styles.lastOrder}>
+                    <Box sx={styles.lastOrder.header}>
+                        Last Order
+                    </Box>
+                    <Box>
+                        <DataTable columns={columns} data={data} pagination />
+                    </Box>
                 </Box>
             </Box>
         </Box>
@@ -64,6 +206,18 @@ const WalletCard = ({section}) => {
 export default WalletCard;
 
 const styles = {
+    lastOrder:{
+        minHeight:'200px',
+        border: '1px solid rgba(0, 0, 0, 0.2)',
+        borderRadius: '5px',
+        header: {
+            padding: '10px',
+            minHeight: '20px',
+            background: '#273142',
+            color: 'white',
+            borderBottom: '1px solid rgba(0, 0, 0, 0.2)'
+        },
+    },
     orderCard: {
         margin: 0,
         padding: 0,
@@ -82,13 +236,6 @@ const styles = {
             backgroundColor: '#273142',
             color: 'white',
         }
-    },
-    wallet: {
-        border: '1px solid rgba(0, 0, 0, 0.2)',
-        borderRadius: '10px',
-        minHeight: '350px',
-        mx: '10px',
-        my:'10px',
     },
     button: {
         borderRadius: "10px",
@@ -110,10 +257,10 @@ const styles = {
     },
     list : {
         listStyle: 'none',
-        fontSize: ["20px", null, '26px'],
+        fontSize: [15, null, 24],
         li : {
             borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
-            p: ['4px', null, '4px'],
+            p: ['5px', null, '5px'],
             borderRadius: '5px',
             a: {
                 fontFamily: 'Quicksand, sans-serif',

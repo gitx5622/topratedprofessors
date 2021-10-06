@@ -22,14 +22,7 @@ export const ExpandedComponent = ({ data }) =>
                         <Box sx={{fontSize: '20px'}}>  Type </Box>
                     </Box>
                     <Box sx={{width: '10%'}}>
-                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
-                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
-                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
-                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
-                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
-                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
-                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
-                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
+                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
                     </Box>
                     <Box sx={{width: '50%'}}>
                         <Box sx={{fontSize: '20px'}}>  {data.id} </Box>
@@ -54,13 +47,6 @@ export const ExpandedComponent = ({ data }) =>
                     <Box><Button sx={{background: 'blue', p: '10px', borderRadius: '10px'}}>Edit Details</Button></Box>
                 </Box>
                     <Box sx={{width: '10%'}}>
-                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
-                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
-                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
-                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
-                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
-                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
-                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
                         {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
                     </Box>
                 <Box sx={{width: '33.33%'}}>

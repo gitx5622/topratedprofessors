@@ -227,7 +227,6 @@ const styles = {
         minHeight:'200px',
         border: '1px solid rgba(0, 0, 0, 0.2)',
         borderRadius: '5px',
-        margin: '20px',
         header: {
             padding: '10px',
             minHeight: '20px',
@@ -275,10 +274,10 @@ const styles = {
     },
     list : {
         listStyle: 'none',
-        fontSize: ["20px", null, '26px'],
+        fontSize: [15, null, 24],
         li : {
             borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
-            p: ['4px', null, '4px'],
+            p: ['5px', null, '5px'],
             borderRadius: '5px',
             a: {
                 fontFamily: 'Quicksand, sans-serif',

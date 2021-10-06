@@ -349,7 +349,6 @@ const OrderCard = ({section}) => {
                             }
                             {section === 'completed' && (
                                 <Box sx={styles.completedPage}>
-                                    <Box sx={{display: 'flex',color: 'black', justifyContent: 'flex-start'}}>{section.toUpperCase().replace(/_/g, " ")}</Box>
                                     <Box>
                                         <DataTable
                                             columns={columns}
@@ -365,37 +364,6 @@ const OrderCard = ({section}) => {
                                         />
                                     </Box>
                                 </Box>
-                                // orderData.map(order => {
-                                //     return (
-                                //         <tr key={order.id}>
-                                //             <td><a style={{color: '#1890FF', textDecoration: 'none'}}
-                                //                    href={`/orders/order_details/${order.id}`}>{order.order_number}</a>
-                                //             </td>
-                                //             <td>{dayjs(order.deadline).format("dddd, MMMM D YYYY")}</td>
-                                //             <td>{order.type.name}</td>
-                                //             <td>
-                                //                 <center>{order.page.no_of_page}</center>
-                                //             </td>
-                                //             <td>
-                                //                 <center>{(order.amount).toFixed(2)}</center>
-                                //             </td>
-                                //             <td>
-                                //                 <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
-                                //                 <IconContext.Provider value={{ color: "green", size:'1.5em', className: "global-class-name" }}>
-                                //                         <GrView />
-                                //                 </IconContext.Provider>
-                                //                 <IconContext.Provider value={{ color: "blue", size:'1.5em', className: "global-class-name" }}>
-                                //                     <FiEdit/>
-                                //                 </IconContext.Provider>
-                                //                 <IconContext.Provider value={{ color: "red", size:'1.5em', className: "global-class-name" }}>
-                                //                     <AiOutlineDelete/>
-                                //                 </IconContext.Provider>
-                                //                 </Box>
-                                //             </td>
-                                //             <td><Button className='reserve-button'>Reserve Now</Button></td>
-                                //         </tr>
-                                //     )
-                                // })
                                 )}
                         </>
                         : (
