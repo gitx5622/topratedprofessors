@@ -276,6 +276,11 @@ const OrderCard = ({section}) => {
     }, [filterText, resetPaginationToggle]);
 
     const customStyles = {
+        rows: {
+            style: {
+                minHeight: '60px', // override the row height
+            },
+        },
         headCells: {
             style: {
                 background: '#E3F2FD',

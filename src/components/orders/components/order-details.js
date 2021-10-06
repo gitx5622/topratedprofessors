@@ -11,56 +11,56 @@ export const ExpandedComponent = ({ data }) =>
             <Box>
                 <Box sx={{display: 'flex', minHeight: '250px', width: '100%', borderBottom: '1px solid rgba(0, 0, 0, 0.2)',p:'10px'}}>
                 <Box  sx={{display: 'flex', width: '50%', borderRight: '1px solid rgba(0, 0, 0, 0.2)',}}>
-                    <Box sx={{width: '40%'}}>
-                        <Box sx={{fontSize: '20px'}}>  OrderID </Box>
-                        <Box sx={{fontSize: '20px'}}>  Service </Box>
-                        <Box sx={{fontSize: '20px'}}>  Urgency </Box>
-                        <Box sx={{fontSize: '20px'}}>  Client </Box>
-                        <Box sx={{fontSize: '20px'}}>  Sources </Box>
-                        <Box sx={{fontSize: '20px'}}>  Amount </Box>
-                        <Box sx={{fontSize: '20px'}}>  Subject </Box>
-                        <Box sx={{fontSize: '20px'}}>  Type </Box>
-                        <Box><button style={{background: 'blue', padding: '10px', marginTop:"20px", color: 'white', borderRadius: '10px'}}>Edit Order</button></Box>
+                    <Box sx={{width: '40%', fontSize: '18px'}}>
+                        <Box>  OrderID </Box>
+                        <Box>  Service </Box>
+                        <Box>  Urgency </Box>
+                        <Box>  Client </Box>
+                        <Box>  Sources </Box>
+                        <Box>  Amount </Box>
+                        <Box>  Subject </Box>
+                        <Box>  Type </Box>
+                        <Box><button style={{background: 'blue', padding: '10px', marginTop:"10px", color: 'white', borderRadius: '10px'}}>Edit Order</button></Box>
+                        <Box><button style={{backgroundColor: '#FFB400', padding: '10px', marginTop:"20px", color: 'white', borderRadius: '10px'}}>Cancel Order</button></Box>
                     </Box>
                     <Box sx={{width: '10%'}}>
                         {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
                     </Box>
-                    <Box sx={{width: '50%'}}>
-                        <Box sx={{fontSize: '20px'}}>  {data.id} </Box>
-                        <Box sx={{fontSize: '20px'}}>  {data.service.name} </Box>
-                        <Box sx={{fontSize: '20px'}}> {data.urgency.name} </Box>
-                        <Box sx={{fontSize: '20px'}}>  {data.user.username} </Box>
-                        <Box sx={{fontSize: '20px'}}>  {data.source.name} </Box>
-                        <Box sx={{fontSize: '20px'}}>  {Math.round((data.amount + Number.EPSILON) * 100) / 100} </Box>
-                        <Box sx={{fontSize: '20px'}}>  {data.subject.name} </Box>
-                        <Box sx={{fontSize: '20px'}}>  {data.type.name} </Box>
-                        <Box><button style={{backgroundColor: '#FFB400', padding: '10px', marginTop:"20px", color: 'white', borderRadius: '10px'}}>Cancel Order</button></Box>
+                    <Box sx={{width: '50%', fontSize: '18px'}}>
+                        <Box>  {data.id} </Box>
+                        <Box>  {data.service.name} </Box>
+                        <Box> {data.urgency.name} </Box>
+                        <Box>  {data.user.username} </Box>
+                        <Box>  {data.source.name} </Box>
+                        <Box>  {Math.round((data.amount + Number.EPSILON) * 100) / 100} </Box>
+                        <Box>  {data.subject.name} </Box>
+                        <Box>  {data.type.name} </Box>
                     </Box>
                 </Box>
-                <Box sx={{width: '23.33%', ml: '20px'}}>
-                    <Box sx={{fontSize: '20px'}}>  Style </Box>
-                    <Box sx={{fontSize: '20px'}}>  Deadline </Box>
-                    <Box sx={{fontSize: '20px'}}>  Page </Box>
-                    <Box sx={{fontSize: '20px'}}>  Level </Box>
-                    <Box sx={{fontSize: '20px'}}>  Spacing </Box>
-                    <Box sx={{fontSize: '20px'}}>  Language </Box>
-                    <Box sx={{fontSize: '20px'}}>  Topic </Box>
-                    <Box sx={{fontSize: '20px'}}>  Instructions </Box>
+                <Box sx={{width: '23.33%', ml: '20px', fontSize: '18px'}}>
+                    <Box>Style </Box>
+                    <Box> Deadline </Box>
+                    <Box>  Page </Box>
+                    <Box>  Level </Box>
+                    <Box>  Spacing </Box>
+                    <Box>  Language </Box>
+                    <Box>  Topic </Box>
+                    <Box>  Instructions </Box>
                     <Box><button style={{background: 'blue', padding: '10px', marginTop:"10px", color: 'white', borderRadius: '10px'}}>Reserve Order</button></Box>
                     <Box><button style={{background: 'green', padding: '10px',marginTop:"20px", color: 'white',  borderRadius: '10px'}}>Pay via Paypal</button></Box>
                 </Box>
                     <Box sx={{width: '10%'}}>
                         {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
                     </Box>
-                <Box sx={{width: '33.33%'}}>
-                    <Box sx={{fontSize: '20px'}}> {data.style.name} </Box>
-                    <Box sx={{fontSize: '20px'}}> {formatDate(data.deadline)} </Box>
-                    <Box sx={{fontSize: '20px'}}>  {data.page.name} </Box>
-                    <Box sx={{fontSize: '20px'}}>  {data.level.name} </Box>
-                    <Box sx={{fontSize: '20px'}}>  {data.spacing.name} </Box>
-                    <Box sx={{fontSize: '20px'}}>  {data.language.name} </Box>
-                    <Box sx={{fontSize: '20px'}}>  {data.topic} </Box>
-                    <Box sx={{fontSize: '20px'}}>  {data.instructions} </Box>
+                <Box sx={{width: '33.33%', fontSize: '18px'}}>
+                    <Box> {data.style.name} </Box>
+                    <Box> {formatDate(data.deadline)} </Box>
+                    <Box>  {data.page.name} </Box>
+                    <Box>  {data.level.name} </Box>
+                    <Box>  {data.spacing.name} </Box>
+                    <Box>  {data.language.name} </Box>
+                    <Box>  {data.topic} </Box>
+                    <Box>  {data.instructions} </Box>
                 </Box>
                 </Box>
             </Box>
