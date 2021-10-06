@@ -2,19 +2,21 @@ export const columns =  [
     {
         name: 'Order Number',
         selector: row => row.order_number,
+        grow: 1.5,
         sortable: true,
-        grow: 2,
     },
     {
         name: 'Deadline',
         selector: row => row.deadline,
         sortable: true,
+        grow: 2,
     },
     {
         name: 'Type',
         selector: row => row.type.name,
+        grow: 2,
         sortable: true,
-        right: true,
+        left: true,
         conditionalCellStyles: [
             {
                 when: row => row.type.name < 300,
@@ -52,7 +54,7 @@ export const columns =  [
         name: 'Pages',
         selector: row => row.page.no_of_page,
         sortable: true,
-        right: true,
+        center: true,
         conditionalCellStyles: [
             {
                 when: row => row.page.no_of_page <= 5,
@@ -89,13 +91,15 @@ export const columns =  [
     {
         name: 'Amount',
         selector: row => row.amount,
+        grow: 1.5,
         sortable: true,
-        right: true,
+        left: true,
     },
     {
         name: 'Reserve Now',
         selector: row => row.iron,
+        grow: 1.5,
         sortable: true,
-        right: true,
+        left: true,
     },
 ];

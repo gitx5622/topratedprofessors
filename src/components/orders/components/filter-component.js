@@ -35,6 +35,9 @@ export default FilterComponent;
 const styles = {
     input : {
         height: '35px',
+        borderTopRightRadius: 'unset',
+        borderRight: '1px solid #2979FF',
+        borderBottomRightRadius: 'unset',
         '::placeholder': {
             color: 'white'
         }
