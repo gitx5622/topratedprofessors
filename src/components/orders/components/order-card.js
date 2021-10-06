@@ -560,7 +560,7 @@ const styles = {
         display: "flex",
     },
     sidebar: {
-        ml: '-8px',
+        ml: '-10px',
         width: '23%',
         height: '100%',
         top: '0px',
