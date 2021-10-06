@@ -24,7 +24,7 @@ const FilterComponent = ({onFilter, onClear, filterText, data, section}) => {
             </Box>
             </Box>
             <Box sx={{display: 'flex'}}>
-                <CSVLink data={data}><Button sx={styles.exportButton}>Export</Button></CSVLink>
+                <CSVLink data={data}><button sx={styles.exportButton}>Export</button></CSVLink>
             </Box>
         </Box>
     );

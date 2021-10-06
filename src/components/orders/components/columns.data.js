@@ -95,11 +95,4 @@ export const columns =  [
         sortable: true,
         left: true,
     },
-    {
-        name: 'Reserve Now',
-        selector: row => row.iron,
-        grow: 1.5,
-        sortable: true,
-        left: true,
-    },
 ];
