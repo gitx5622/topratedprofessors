@@ -261,7 +261,6 @@ const styles = {
         cursor: 'pointer',
     },
     sidebar: {
-        ml: '-8px',
         width: '23%',
         height: '100%',
         top: '0px',
