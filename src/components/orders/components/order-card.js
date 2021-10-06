@@ -32,6 +32,7 @@ import checkDetailsReducer, {initialCheckDetailsState} from "../../../dataStore/
 import DataTable from "react-data-table-component";
 import {columns} from "./columns.data";
 import FilterComponent from "./filter-component";
+import { ExpandedComponent } from "./order-details";
 
 const OrderCard = ({section}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -358,6 +359,7 @@ const OrderCard = ({section}) => {
                                             subHeader
                                             subHeaderComponent={subHeaderComponentMemo}
                                             expandableRows
+                                            expandableRowsComponent={ExpandedComponent}
                                             persistTableHead
                                             customStyles={customStyles}
                                         />
