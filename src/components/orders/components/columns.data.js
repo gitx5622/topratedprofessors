@@ -4,6 +4,9 @@ export const columns =  [
         selector: row => row.order_number,
         grow: 1.5,
         sortable: true,
+        style: {
+            color: "#1890FF"
+        }
     },
     {
         name: 'Deadline',

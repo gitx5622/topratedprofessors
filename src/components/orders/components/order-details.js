@@ -20,6 +20,7 @@ export const ExpandedComponent = ({ data }) =>
                         <Box sx={{fontSize: '20px'}}>  Amount </Box>
                         <Box sx={{fontSize: '20px'}}>  Subject </Box>
                         <Box sx={{fontSize: '20px'}}>  Type </Box>
+                        <Box><button sx={{background: 'blue', p: '10px', borderRadius: '10px'}}>Edit Order</button></Box>
                     </Box>
                     <Box sx={{width: '10%'}}>
                         {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
@@ -33,6 +34,7 @@ export const ExpandedComponent = ({ data }) =>
                         <Box sx={{fontSize: '20px'}}>  {Math.round((data.amount + Number.EPSILON) * 100) / 100} </Box>
                         <Box sx={{fontSize: '20px'}}>  {data.subject.name} </Box>
                         <Box sx={{fontSize: '20px'}}>  {data.type.name} </Box>
+                        <Box><button sx={{backgroundColor: 'blue', p: '10px', borderRadius: '10px'}}>Cancel Order</button></Box>
                     </Box>
                 </Box>
                 <Box sx={{width: '23.33%', ml: '20px'}}>
@@ -44,7 +46,7 @@ export const ExpandedComponent = ({ data }) =>
                     <Box sx={{fontSize: '20px'}}>  Language </Box>
                     <Box sx={{fontSize: '20px'}}>  Topic </Box>
                     <Box sx={{fontSize: '20px'}}>  Instructions </Box>
-                    <Box><Button sx={{background: 'blue', p: '10px', borderRadius: '10px'}}>Edit Details</Button></Box>
+                    <Box><button sx={{background: 'blue', p: '10px', borderRadius: '10px'}}>Reserve Order</button></Box>
                 </Box>
                     <Box sx={{width: '10%'}}>
                         {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
@@ -58,7 +60,7 @@ export const ExpandedComponent = ({ data }) =>
                     <Box sx={{fontSize: '20px'}}>  {data.language.name} </Box>
                     <Box sx={{fontSize: '20px'}}>  {data.topic} </Box>
                     <Box sx={{fontSize: '20px'}}>  {data.instructions} </Box>
-                    <Box><Button sx={{background: 'green', p: '10px', borderRadius: '10px'}}>Reseve Now</Button></Box>
+                    <Box><button sx={{background: 'green', p: '10px', borderRadius: '10px'}}>Pay via Paypal</button></Box>
                 </Box>
                 </Box>
             </Box>

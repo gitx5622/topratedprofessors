@@ -35,8 +35,8 @@ export default FilterComponent;
 const styles = {
     input : {
         height: '35px',
-        borderTopRightRadius: 'unset',
         borderRight: '1px solid #2979FF',
+        borderTopRightRadius: 'unset',
         borderBottomRightRadius: 'unset',
         '::placeholder': {
             color: 'white'
@@ -44,7 +44,8 @@ const styles = {
     },
     exportButton: {
         background: 'linear-gradient(to right, #17c671, #0059B2)',
-        padding: '4px',
+        padding: '10px',
         borderRadius: '10px',
+        color: 'white',
     }
 }
