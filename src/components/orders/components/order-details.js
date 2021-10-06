@@ -4,56 +4,75 @@ import { AiOutlineArrowRight} from 'react-icons/ai';
 
 export const ExpandedComponent = ({ data }) =>
     <Box sx={styles.orderDetails}>
-        <h3>Order Details</h3>
         <Box sx={styles.lastOrder}>
             <Box sx={styles.lastOrder.header}>
-                Last Order
+                <h3>Order Details</h3>
             </Box>
             <Box>
-                <Box sx={{display: 'flex', minHeight: '250px', width: '100%', borderBottom: '1px solid red',}}>
-                <Box  sx={{display: 'flex', width: '33.33%', borderRight: '1px solid red', wrap: 'word-wrap'}}>
+                <Box sx={{display: 'flex', minHeight: '250px', width: '100%', borderBottom: '1px solid rgba(0, 0, 0, 0.2)',p:'10px'}}>
+                <Box  sx={{display: 'flex', width: '50%', borderRight: '1px solid rgba(0, 0, 0, 0.2)',}}>
                     <Box sx={{width: '40%'}}>
-                        <Box sx={{fontSize: '24px'}}>  OrderID </Box>
-                        <Box sx={{fontSize: '24px'}}>  Service </Box>
-                        <Box sx={{fontSize: '24px'}}>  Urgency </Box>
-                        <Box sx={{fontSize: '24px'}}>  Client </Box>
-                        <Box sx={{fontSize: '24px'}}>  Sources </Box>
-                        <Box sx={{fontSize: '24px'}}>  Amount </Box>
-                        <Box sx={{fontSize: '24px'}}>  Subject </Box>
-                        <Box sx={{fontSize: '24px'}}>  Type </Box>
+                        <Box sx={{fontSize: '20px'}}>  OrderID </Box>
+                        <Box sx={{fontSize: '20px'}}>  Service </Box>
+                        <Box sx={{fontSize: '20px'}}>  Urgency </Box>
+                        <Box sx={{fontSize: '20px'}}>  Client </Box>
+                        <Box sx={{fontSize: '20px'}}>  Sources </Box>
+                        <Box sx={{fontSize: '20px'}}>  Amount </Box>
+                        <Box sx={{fontSize: '20px'}}>  Subject </Box>
+                        <Box sx={{fontSize: '20px'}}>  Type </Box>
                     </Box>
-                    <Box sx={{width: '60%'}}>
-                        <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.id} </Box>
-                        <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.service.name} </Box>
-                        <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.urgency.name} </Box>
-                        <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.user.username} </Box>
-                        <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.source.name} </Box>
-                        <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {Math.round((data.amount + Number.EPSILON) * 100) / 100} </Box>
-                        <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.subject.name} </Box>
-                        <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.type.name} </Box>
+                    <Box sx={{width: '10%'}}>
+                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
+                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
+                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
+                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
+                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
+                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
+                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
+                        <AiOutlineArrowRight style={{fontSize: '20px'}}/>
+                    </Box>
+                    <Box sx={{width: '50%'}}>
+                        <Box sx={{fontSize: '20px'}}>  {data.id} </Box>
+                        <Box sx={{fontSize: '20px'}}>  {data.service.name} </Box>
+                        <Box sx={{fontSize: '20px'}}> {data.urgency.name} </Box>
+                        <Box sx={{fontSize: '20px'}}>  {data.user.username} </Box>
+                        <Box sx={{fontSize: '20px'}}>  {data.source.name} </Box>
+                        <Box sx={{fontSize: '20px'}}>  {Math.round((data.amount + Number.EPSILON) * 100) / 100} </Box>
+                        <Box sx={{fontSize: '20px'}}>  {data.subject.name} </Box>
+                        <Box sx={{fontSize: '20px'}}>  {data.type.name} </Box>
                     </Box>
                 </Box>
-                <Box sx={{width: '23.33%'}}>
-                    <Box sx={{fontSize: '24px'}}>  Style </Box>
-                    <Box sx={{fontSize: '24px'}}>  Deadline </Box>
-                    <Box sx={{fontSize: '24px'}}>  Page </Box>
-                    <Box sx={{fontSize: '24px'}}>  Level </Box>
-                    <Box sx={{fontSize: '24px'}}>  Spacing </Box>
-                    <Box sx={{fontSize: '24px'}}>  Language </Box>
-                    <Box sx={{fontSize: '24px'}}>  Topic </Box>
-                    <Box sx={{fontSize: '24px'}}>  Instructions </Box>
-                    <Box><Button sx={{background: 'blue'}}>Edit Details</Button></Box>
+                <Box sx={{width: '23.33%', ml: '20px'}}>
+                    <Box sx={{fontSize: '20px'}}>  Style </Box>
+                    <Box sx={{fontSize: '20px'}}>  Deadline </Box>
+                    <Box sx={{fontSize: '20px'}}>  Page </Box>
+                    <Box sx={{fontSize: '20px'}}>  Level </Box>
+                    <Box sx={{fontSize: '20px'}}>  Spacing </Box>
+                    <Box sx={{fontSize: '20px'}}>  Language </Box>
+                    <Box sx={{fontSize: '20px'}}>  Topic </Box>
+                    <Box sx={{fontSize: '20px'}}>  Instructions </Box>
+                    <Box><Button sx={{background: 'blue', p: '10px', borderRadius: '10px'}}>Edit Details</Button></Box>
                 </Box>
-                <Box sx={{width: '43.33%'}}>
-                    <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.style.name} </Box>
-                    <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {formatDate(data.deadline)} </Box>
-                    <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.page.name} </Box>
-                    <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.level.name} </Box>
-                    <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.spacing.name} </Box>
-                    <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.language.name} </Box>
-                    <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.topic} </Box>
-                    <Box sx={{fontSize: '24px'}}><AiOutlineArrowRight style={{fontSize: '22px'}}/>  {data.instructions} </Box>
-                    <Box><Button sx={{background: 'green'}}>Reseve Now</Button></Box>
+                    <Box sx={{width: '10%'}}>
+                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
+                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
+                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
+                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
+                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
+                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
+                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
+                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
+                    </Box>
+                <Box sx={{width: '33.33%'}}>
+                    <Box sx={{fontSize: '20px'}}> {data.style.name} </Box>
+                    <Box sx={{fontSize: '20px'}}> {formatDate(data.deadline)} </Box>
+                    <Box sx={{fontSize: '20px'}}>  {data.page.name} </Box>
+                    <Box sx={{fontSize: '20px'}}>  {data.level.name} </Box>
+                    <Box sx={{fontSize: '20px'}}>  {data.spacing.name} </Box>
+                    <Box sx={{fontSize: '20px'}}>  {data.language.name} </Box>
+                    <Box sx={{fontSize: '20px'}}>  {data.topic} </Box>
+                    <Box sx={{fontSize: '20px'}}>  {data.instructions} </Box>
+                    <Box><Button sx={{background: 'green', p: '10px', borderRadius: '10px'}}>Reseve Now</Button></Box>
                 </Box>
                 </Box>
             </Box>
@@ -62,7 +81,7 @@ export const ExpandedComponent = ({ data }) =>
 
 const styles = {
     orderDetails: {
-        mx: '50px',
+        ml: '50px',
     },
     lastOrder:{
         minHeight:'200px',
