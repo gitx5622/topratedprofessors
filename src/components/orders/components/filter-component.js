@@ -44,7 +44,7 @@ const styles = {
     },
     exportButton: {
         background: 'linear-gradient(to right, #17c671, #0059B2)',
-        padding: '8px',
+        padding: '4px',
         borderRadius: '10px',
     }
 }
