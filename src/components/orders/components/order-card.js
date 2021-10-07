@@ -6,7 +6,6 @@ import { useDispatch, useSelector} from "react-redux";
 import {jsx, Box, Button, Label, Input, Textarea, Select, Grid, Image, Close, Alert} from 'theme-ui';
 import {getOrders} from "../../../dataStore/actions/ordersAction";
 import {useDropzone} from 'react-dropzone';
-import dayjs from "dayjs";
 import LogoDark from 'assets/logo.png';
 import NoData from '../../../assets/no-open.svg';
 import Logo from "../../home/logo";
@@ -45,7 +44,6 @@ const OrderCard = ({section}) => {
     const [mypages, setmypages] = React.useState(1);
     const [mylevel, setmylevel] = React.useState(1);
     const [myspacing, setmyspacing] = React.useState(1);
-    const [contentEditor, setContentEditor] = React.useState();
     console.log(selected);
     const [order, setOrder] = React.useState({
         user_id: '',
@@ -210,7 +208,7 @@ const OrderCard = ({section}) => {
             language_id:    parseInt(order.language_id,10),
             phone:          order.phone,
             topic:          order.topic,
-            instructions:   contentEditor,
+            instructions:   order.instructions,
             pagesummary:    false,
             plagreport:     true,
             initialdraft:   false,
@@ -220,13 +218,14 @@ const OrderCard = ({section}) => {
         }
         if (order.phone !== '' && order.topic !== '' && order.instructions !== '') {
             addOrder(bodyData);
+            router.push("/dashboard/completed")
         } else {
             dispatchCheckDetails({
                 type: 'ERROR',
                 errorMessage: 'Make sure all the fields all filled',
             });
             setCloseAlert(true);
-            if(errorMessage){
+            if(errorMessage.errorMessage){
                 setCloseAlertErrorMessage(true)
             }else{
                 setCloseAlertErrorMessage(false)
@@ -357,7 +356,7 @@ const OrderCard = ({section}) => {
                                     <Box>
                                         <DataTable
                                             columns={columns}
-                                            data={filteredItems}
+                                            data={filteredItems }
                                             pagination
                                             paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
                                             subHeader
@@ -403,7 +402,7 @@ const OrderCard = ({section}) => {
                                     <Alert sx={{background: "red"}}>{checkDetailsData.errorMessage}<Close ml="auto" mr={-2} onClick={handleCloseAlert}/></Alert>
                                     : ''
                             )}
-                            <Box as='form' onSubmit={handleCreateOrderSubmit}>
+                            <form onSubmit={handleCreateOrderSubmit}>
                                 <Grid sx={styles.form.grid}>
                                     <Box>
                                         <Label htmlFor="service">Service</Label>
@@ -504,8 +503,8 @@ const OrderCard = ({section}) => {
                                     <Label htmlFor="spacing">Instructions</Label>
                                     <Textarea sx={styles.form.textarea} autoFocus onChange={handleChange} name="comment" id="comment" rows={6}/>
                                 </Box>
-                                <Button sx={styles.buttonCreate} mt={2}>Create Order</Button>
-                            </Box>
+                                <button style={styles.buttonCreate}  type='submit'>Create Order</button>
+                            </form>
                         </Box>
                     )}
                 </Box>

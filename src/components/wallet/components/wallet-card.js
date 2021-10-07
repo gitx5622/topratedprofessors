@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import Head from 'next/head';
-import {jsx, Box, Button, Image} from 'theme-ui';
+import {jsx, Box, Button, Input, Image} from 'theme-ui';
 import LogoDark from 'assets/logo.png';
 import Logo from "../../home/logo";
 import { BiCheckShield } from 'react-icons/bi';
@@ -9,8 +9,10 @@ import { AiOutlineCheckCircle, AiOutlineStop } from 'react-icons/ai';
 import { MdAddCircle } from 'react-icons/md';
 import { FcTimeline, FcCancel } from 'react-icons/fc';
 import { BsCheckAll, BsStopwatch } from 'react-icons/bs';
-import NoTransactions from '../../../assets/no-transactions.svg';
+import Modal from 'react-modal';
 import DataTable from "react-data-table-component";
+import Paypal from "../../../assets/secure.svg";
+import Pay from "../../../assets/pay.png";
 
 const data = [
     {
@@ -156,6 +158,15 @@ const columns = [
     },
 ];
 const WalletCard = ({section}) => {
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+    }
     return (
         <Box sx={styles.orderCard}>
             <Head>
@@ -183,19 +194,47 @@ const WalletCard = ({section}) => {
                 },}}>
                 <Box sx={{display: 'flex', justifyContent: 'space-between', mx:'20px'}}>
                     <h1>My balance: $0.00</h1>
-                    <Button sx={styles.button}><MdAddCircle/> Add Funds</Button>
+                        <Modal
+                            isOpen={modalIsOpen}
+                            onRequestClose={closeModal}
+                            style={styles.modal}
+                            contentLabel="Example Modal"
+                        >
+                            <Box sx={styles.modal.grid}>
+                                <Box sx={{borderRight: '1px solid rgba(0, 0, 0, 0.2)', pr: '10px'}}>
+                                    <h2>Add funds to your account</h2>
+                                    <h4>Amount (USD): (Min amount: $0.01)</h4>
+                                    <form>
+                                        <Input placeholder='$0.00'/>
+                                    </form>
+                                    <h3>Payment methods:</h3>
+                                    <Image src={Pay} alt='' sx={{height: '100px'}}/>
+                                    <button style={styles.modal.button} >Deposit</button>
+                                </Box>
+                                <Box>
+                                    <center>
+                                        <Image src={Paypal} sx={styles.modal.image}/>
+                                        <Box sx={{mt: '-30px'}}>
+                                            <h3>Make a secure payment</h3>
+                                            <h5>We use advanced 256 bit encryption to protect your information and securely process all transactions.</h5>
+                                        </Box>
+                                    </center>
+                                </Box>
+                            </Box>
+                            <button style={{backgroundColor: 'red', padding: '10px', borderRadius: '5px'}} onClick={closeModal}>close</button>
+                        </Modal>
+                    <button style={styles.button} onClick={openModal}><MdAddCircle/> Add Funds</button>
                 </Box>
                 <Box sx={styles.nav}>
-                    <Button className='wallet-button'>Deposit</Button>
                     <Button className='wallet-button'>Transanctions</Button>
-                    <Button className='wallet-button'>Withdraw</Button>
+                    <Button className='wallet-button'>Withdraw Request</Button>
                 </Box><hr sx={{mr: '10px'}}/>
                 <Box sx={styles.lastOrder}>
                     <Box sx={styles.lastOrder.header}>
                         Last Order
                     </Box>
                     <Box>
-                        <DataTable columns={columns} data={data} pagination />
+                        <DataTable columns={columns} data={data} pagination customStyles={styles.customStyles}/>
                     </Box>
                 </Box>
             </Box>
@@ -206,6 +245,62 @@ const WalletCard = ({section}) => {
 export default WalletCard;
 
 const styles = {
+    modal : {
+        button: {
+            borderRadius: "10px",
+            background: 'linear-gradient(to right, #17c671, #0059B2)',
+            padding: '10px',
+            color: 'white',
+            width: '100%',
+            display: 'block',
+        },
+        content: {
+            fontFamily: 'Quicksand, sans-serif',
+            top: '50%',
+            left: '50%',
+            fontSize: '20px',
+            right: 'auto',
+            width: '80%',
+            margin: '40px',
+            height: '500px',
+            bottom: 'auto',
+            lineHeight: 2.0,
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+        },
+        grid: {
+            display: 'grid',
+            gridTemplateColumns: '2fr 2fr',
+        },
+        image: {
+            width: '350px',
+            height: '300px',
+            objectFit: 'cover',
+        }
+    },
+    customStyles : {
+        rows: {
+            style: {
+                minHeight: '60px', // override the row height
+            },
+        },
+        headCells: {
+            style: {
+                background: '#E3F2FD',
+                fontSize: '20px',
+                color: 'black',
+                fontWeight: 700,
+            },
+        },
+        cells: {
+            style: {
+                padding: '10px', // override the cell padding for data cells
+                fontSize: '18px',
+                color: 'black',
+                fontWeight: 500,
+            },
+        },
+    },
     lastOrder:{
         minHeight:'200px',
         border: '1px solid rgba(0, 0, 0, 0.2)',
@@ -240,7 +335,7 @@ const styles = {
     button: {
         borderRadius: "10px",
         background: 'linear-gradient(to right, #17c671, #0059B2)',
-        padding: '5px',
+        padding: '8px',
         color: 'white',
     },
     sidebar: {

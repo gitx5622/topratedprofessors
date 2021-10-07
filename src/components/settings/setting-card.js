@@ -201,18 +201,29 @@ const SettingCard = ({section}) => {
                 },}}>
                 <Box sx={{display: 'flex', justifyContent: 'space-between', mx:'20px'}}>
                     <h1>My profile</h1>
-                    <Button sx={styles.button}><MdAddCircle/> Add Funds</Button>
+                    <button sx={styles.button}><MdAddCircle/> Edit profile</button>
                 </Box>
                 <Box sx={styles.profile}>
-                    <Box sx={styles.profile.details}>Order Number</Box>
-                    <Box sx={styles.profile.details}>Orders</Box>
+                    <Box sx={styles.profile.details}>
+                        <Box sx={styles.profile.image}>96</Box>
+                        <Box>
+                            <h3>434696</h3>
+                            <h4>10:53 AM</h4>
+                            <h3>Member since: Nov 6, 2020</h3>
+                        </Box>
+                    </Box>
+                    <Box sx={styles.profile.orders}>
+                        <Box sx={styles.profile.orders.first}><h3>0 Orders</h3></Box>
+                        <Box sx={styles.profile.orders.first}><h3>0% Accepted</h3></Box>
+                        <Box sx={styles.profile.orders.next}><h3>0% Payrate</h3></Box>
+                    </Box>
                 </Box>
                 <Box sx={styles.lastOrder}>
                     <Box sx={styles.lastOrder.header}>
                         Last Order
                     </Box>
                     <Box>
-                        <DataTable columns={columns} data={data} pagination />
+                        <DataTable columns={columns} data={data} pagination  customStyles={styles.customStyles}/>
                     </Box>
                 </Box>
             </Box>
@@ -223,10 +234,34 @@ const SettingCard = ({section}) => {
 export default SettingCard;
 
 const styles = {
+    customStyles : {
+        rows: {
+            style: {
+                minHeight: '60px', // override the row height
+            },
+        },
+        headCells: {
+            style: {
+                background: '#E3F2FD',
+                fontSize: '20px',
+                color: 'black',
+                fontWeight: 700,
+            },
+        },
+        cells: {
+            style: {
+                padding: '10px', // override the cell padding for data cells
+                fontSize: '18px',
+                color: 'black',
+                fontWeight: 500,
+            },
+        },
+    },
     lastOrder:{
         minHeight:'200px',
         border: '1px solid rgba(0, 0, 0, 0.2)',
         borderRadius: '5px',
+        margin:"20px",
         header: {
             padding: '10px',
             minHeight: '20px',
@@ -239,13 +274,40 @@ const styles = {
         display: 'flex',
         gap: '1em',
         padding: '20px',
+        image: {
+            height: '70px',
+            width: '70px',
+            borderRadius: '50px',
+            backgroundColor: 'red',
+            textAlign: 'center',
+            pt: '20px',
+            color: 'white',
+        },
         details: {
+            display: 'grid',
+            gridTemplateColumns: '1fr 3fr',
             height: '100px',
             padding: '10px',
             mt: '20px',
             width: '50%',
             border: '1px solid rgba(0, 0, 0, 0.2)',
             borderRadius: '5px',
+        },
+        orders:{
+            display: 'flex',
+            justifyContent: 'space-around',
+            height: '100px',
+            mt: '20px',
+            width: '50%',
+            border: '1px solid rgba(0, 0, 0, 0.2)',
+            borderRadius: '5px',
+            first : {
+                padding: '30px',
+                borderRight: '1px solid rgba(0, 0, 0, 0.2)',
+            },
+            next: {
+                padding: '30px',
+            }
         },
     },
     orderCard: {
