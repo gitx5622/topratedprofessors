@@ -13,6 +13,7 @@ import Modal from 'react-modal';
 import DataTable from "react-data-table-component";
 import Paypal from "../../../assets/secure.svg";
 import Pay from "../../../assets/pay.png";
+import MasterCard  from "../../../assets/mastercard.svg";
 
 const data = [
     {
@@ -218,6 +219,7 @@ const WalletCard = ({section}) => {
                                             <h3>Make a secure payment</h3>
                                             <h5>We use advanced 256 bit encryption to protect your information and securely process all transactions.</h5>
                                         </Box>
+                                        <Image src={MasterCard} alt=""/>
                                     </center>
                                 </Box>
                             </Box>
@@ -227,7 +229,7 @@ const WalletCard = ({section}) => {
                 </Box>
                 <Box sx={styles.nav}>
                     <Button className='wallet-button'>Transanctions</Button>
-                    <Button className='wallet-button'>Withdraw Request</Button>
+                    <Button className='wallet-button' onClick={openModal}>Withdraw Request</Button>
                 </Box><hr sx={{mr: '10px'}}/>
                 <Box sx={styles.lastOrder}>
                     <Box sx={styles.lastOrder.header}>

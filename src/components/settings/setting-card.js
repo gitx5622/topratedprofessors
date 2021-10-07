@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import Head from 'next/head';
-import {jsx, Box, Button} from 'theme-ui';
+import {jsx, Box, Button, Input, Image} from 'theme-ui';
 import LogoDark from 'assets/logo.png';
 import Logo from "../home/logo";
 import { BiCheckShield } from 'react-icons/bi';
@@ -10,6 +10,10 @@ import { MdAddCircle } from 'react-icons/md';
 import { FcTimeline, FcCancel } from 'react-icons/fc';
 import { BsCheckAll, BsStopwatch } from 'react-icons/bs';
 import DataTable from 'react-data-table-component';
+import Pay from "../../assets/pay.png";
+import Paypal from "../../assets/secure.svg";
+import MasterCard from "../../assets/mastercard.svg";
+import Modal from "react-modal";
 
 const data = [
     {
@@ -157,6 +161,15 @@ const columns = [
 
 
 const SettingCard = ({section}) => {
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+    }
     const handleFirstPageButtonClick = () => {
         onChangePage(1);
     };
@@ -201,7 +214,43 @@ const SettingCard = ({section}) => {
                 },}}>
                 <Box sx={{display: 'flex', justifyContent: 'space-between', mx:'20px'}}>
                     <h1>My profile</h1>
-                    <button sx={styles.button}><MdAddCircle/> Edit profile</button>
+                    <Modal
+                        isOpen={modalIsOpen}
+                        onRequestClose={closeModal}
+                        style={styles.modal}
+                        contentLabel="Example Modal"
+                    >
+                        <h3>Edit User Profile</h3>
+                        <form style={styles.form}>
+                            <div>
+                                <label>First Name</label>
+                                <input style={styles.form.input} placeholder="" name=""/>
+                            </div>
+                            <div>
+                                <label>Phone</label>
+                                <input placeholder="" name=""/>
+                            </div>
+                            <div>
+                                <label>Last Name</label>
+                                <input placeholder="" name=""/>
+                            </div>
+                            <div>
+                                <label>Country</label>
+                                <input placeholder="" name=""/>
+                            </div>
+                            <div>
+                                <label>City</label>
+                                <input placeholder="" name=""/>
+                            </div>
+                            <div>
+                                <label>Gender</label>
+                                <input placeholder="" name=""/>
+                            </div>
+                            <button sx={styles.form.button} type='submit'>Edit profile</button>
+                        </form>
+                        <button style={{backgroundColor: 'red', padding: '10px', borderRadius: '5px'}} onClick={closeModal}>close</button>
+                    </Modal>
+                    <button sx={styles.button} onClick={openModal}><MdAddCircle/> Edit profile</button>
                 </Box>
                 <Box sx={styles.profile}>
                     <Box sx={styles.profile.details}>
@@ -234,6 +283,35 @@ const SettingCard = ({section}) => {
 export default SettingCard;
 
 const styles = {
+    form: {
+        input: {
+            height: '40px',
+        }
+    },
+    modal : {
+        button: {
+            borderRadius: "10px",
+            background: 'linear-gradient(to right, #17c671, #0059B2)',
+            padding: '10px',
+            color: 'white',
+            width: '100%',
+            display: 'block',
+        },
+        content: {
+            fontFamily: 'Quicksand, sans-serif',
+            top: '50%',
+            left: '50%',
+            fontSize: '20px',
+            right: 'auto',
+            width: '80%',
+            margin: '40px',
+            height: '500px',
+            bottom: 'auto',
+            lineHeight: 2.0,
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+        },
+    },
     customStyles : {
         rows: {
             style: {
