@@ -2,7 +2,7 @@
 import {jsx, Box, Button, Label, Input, Image, Text, Alert, Close} from 'theme-ui';
 import Head from 'next/head';
 import {useState, useReducer, useEffect} from 'react';
-import PatternBG from "../../assets/login.svg";
+import PatternBG from "../../assets/register.png";
 import {RegisterUser} from "../../dataStore/actions/userRegistrationAction";
 import checkDetailsReducer, {initialCheckDetailsState} from "../../dataStore/reducers/checkDetailsReducer";
 import {useRouter} from "next/router";
