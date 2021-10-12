@@ -375,17 +375,19 @@ const OrderCard = ({section}) => {
                                 )}
                         </>
                         : (
+                            section === 'create_order' ? '' : (
                                 <Box>
-                                <Box sx={{display: "flex", flexDirection: 'column'}}>
-                                    <center>
-                                        <Image src={NoData} alt="no-data"/><br/>
-                                        <h3>You have no Active Data</h3><br/>
-                                        <Button
-                                            sx={{background: 'linear-gradient(to right, #17c671, #0059B2)'}}><MdAddCircle/> Place
-                                            Order</Button>
-                                    </center>
+                                    <Box sx={{display: "flex", flexDirection: 'column'}}>
+                                        <center>
+                                            <Image src={NoData} alt="no-data"/><br/>
+                                            <h3>You have no Active Data</h3><br/>
+                                            <Button onClick={() => router.push('/dashboard/create_order')}
+                                                    sx={{background: 'linear-gradient(to right, #17c671, #0059B2)'}}><MdAddCircle/> Place
+                                                Order</Button>
+                                        </center>
+                                    </Box>
                                 </Box>
-                                </Box>
+                            )
                         )
                         }
                     {section === 'create_order' && (
