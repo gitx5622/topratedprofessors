@@ -51,7 +51,7 @@ const positionAnim = keyframes`
     transition: all 0.4s ease;
   }
 `;
-
+const sideBarWidth = 300
 const styles = {
   header: {
     fontFamily: 'body',
@@ -63,7 +63,7 @@ const styles = {
     color: 'text',
     fontWeight: 'body',
     py: 2,
-    width: '100%',
+    width: `calc(100% -${sideBarWidth}`,
     position: 'absolute',
     top: 0,
     left: 0,

@@ -33,7 +33,7 @@ import {columns} from "./columns.data";
 import FilterComponent from "./filter-component";
 import { ExpandedComponent } from "./order-details";
 
-const sideBarWidth = 270
+const sideBarWidth = 300
 const OrderCard = ({section}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [closeAlert, setCloseAlert] = useState(false);
