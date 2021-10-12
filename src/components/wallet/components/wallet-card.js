@@ -305,6 +305,7 @@ const styles = {
     },
     lastOrder:{
         minHeight:'200px',
+        mx: '10px',
         border: '1px solid rgba(0, 0, 0, 0.2)',
         borderRadius: '5px',
         header: {
@@ -323,6 +324,7 @@ const styles = {
     nav: {
        display: 'flex',
         marginTop: '20px',
+        mx: '10px',
         gap: '10px',
         '.wallet-button': {
            borderTopRightRadius: "10px",
