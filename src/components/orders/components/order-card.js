@@ -363,7 +363,6 @@ const OrderCard = ({section}) => {
                                             subHeaderComponent={subHeaderComponentMemo}
                                             expandableRows
                                             expandableRowsComponent={ExpandedComponent}
-                                            expandOnRowClicked
                                             persistTableHead
                                             responsive={true}
                                             customStyles={customStyles}
