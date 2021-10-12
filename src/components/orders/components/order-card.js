@@ -33,6 +33,7 @@ import {columns} from "./columns.data";
 import FilterComponent from "./filter-component";
 import { ExpandedComponent } from "./order-details";
 
+const sideBarWidth = 270
 const OrderCard = ({section}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [closeAlert, setCloseAlert] = useState(false);
@@ -319,6 +320,7 @@ const OrderCard = ({section}) => {
         addOrder();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
+
     return (
         <Box sx={styles.orderCard}>
             <Head>
@@ -341,7 +343,7 @@ const OrderCard = ({section}) => {
                             <li className={`settings ${section === 'settings' ?  'active' : '' } `}><a href='/dashboard/settings'><RiSettings2Line/> Settings</a></li>
                         </ul>
                     </Box>
-                <Box sx={{marginLeft: '23%', width: '100%', '@media screen and (max-width:768px)': {
+                <Box sx={{marginLeft: sideBarWidth, width: `calc(100% - ${sideBarWidth}px)`, '@media screen and (max-width:768px)': {
                         marginLeft: 0,
                     },}}>
                     {orderData ?
@@ -569,7 +571,7 @@ const styles = {
     },
     sidebar: {
         ml: '-10px',
-        width: '23%',
+        width: sideBarWidth,
         height: '100%',
         top: '0px',
         position: 'fixed',
