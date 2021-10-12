@@ -235,7 +235,7 @@ const WalletCard = ({section}) => {
                     <Box sx={styles.lastOrder.header}>
                         Last Order
                     </Box>
-                    <Box>
+                    <Box sx={{mx: '10px'}}>
                         <DataTable columns={columns} data={data} pagination customStyles={styles.customStyles}/>
                     </Box>
                 </Box>
