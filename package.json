@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@emotion/core": "^10.1.1",
+    "@rsuite/icons": "^1.0.2",
     "axios": "^0.21.1",
     "bootstrap": "^5.1.1",
     "counterup2": "^2.0.2",
