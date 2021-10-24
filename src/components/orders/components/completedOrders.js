@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import React, {useEffect} from 'react';
 import {Alert, jsx, Close} from 'theme-ui';
-import OrderCard from "./components/order-card";
+import OrderCard from "./order-card";
 
 const CompletedOrders = ({section}) => {
     useEffect(() => {
@@ -29,8 +29,7 @@ export default CompletedOrders;
 
 const styles = {
     completed: {
-        pt: ['50px', null, '70px'],
+        pt: ['10px', null, '10px'],
         pb: ['0px', null, '10px'],
-        px: ['0px', null, '10px']
     }
 }

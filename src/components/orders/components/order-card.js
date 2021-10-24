@@ -3,18 +3,11 @@ import React, {useState, useEffect, useMemo, useReducer} from "react";
 import Head from 'next/head';
 import {useRouter} from "next/router";
 import { useDispatch, useSelector} from "react-redux";
-import {jsx, Box, Button, Label, Input, Textarea, Select, Grid, Image, Close, Alert} from 'theme-ui';
+import {jsx, Box, Button,Image} from 'theme-ui';
 import {getOrders} from "../../../dataStore/actions/ordersAction";
 import {useDropzone} from 'react-dropzone';
-import LogoDark from 'assets/logo.png';
 import NoData from '../../../assets/no-open.svg';
-import Logo from "../../home/logo";
-import { BiCheckShield } from 'react-icons/bi';
-import { RiSettings2Line } from 'react-icons/ri';
-import { AiOutlineCheckCircle, AiOutlineStop } from 'react-icons/ai';
 import { MdAddCircle } from 'react-icons/md';
-import { FcTimeline, FcCancel } from 'react-icons/fc';
-import { BsCheckAll, BsStopwatch } from 'react-icons/bs';
 import {getLevels} from "../../../dataStore/actions/levelsAction";
 import {getPages} from "../../../dataStore/actions/pagesAction";
 import {getSources} from "../../../dataStore/actions/sourcesAction";
@@ -28,10 +21,8 @@ import {getSpacing} from "../../../dataStore/actions/spacingsAction";
 import {createOrders} from "../../../dataStore/actions/ordersAction";
 import { BoxLoading } from 'react-loadingg';
 import checkDetailsReducer, {initialCheckDetailsState} from "../../../dataStore/reducers/checkDetailsReducer";
-import DataTable from "react-data-table-component";
-import {columns} from "./columns.data";
-import FilterComponent from "./filter-component";
-import { ExpandedComponent } from "./order-details";
+import Completed from "../sections/completed";
+import CreateOrder from "../sections/create-order";
 
 const OrderCard = ({section}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -255,48 +246,7 @@ const OrderCard = ({section}) => {
     const filteredItems = orderData?.filter(
         item => item.type.name && item.type.name.toLowerCase().includes(filterText.toLowerCase()),
     );
-    const subHeaderComponentMemo = React.useMemo(() => {
-        const handleClear = () => {
-            if (filterText) {
-                setResetPaginationToggle(!resetPaginationToggle);
-                setFilterText('');
-            }
-        };
 
-        return (
-            <FilterComponent
-                onFilter={e => setFilterText(e.target.value)}
-                data={filteredItems || orderData}
-                onClear={handleClear}
-                filterText={filterText}
-                section={section}
-            />
-        );
-    }, [filterText, resetPaginationToggle]);
-
-    const customStyles = {
-        rows: {
-            style: {
-                minHeight: '60px', // override the row height
-            },
-        },
-        headCells: {
-            style: {
-                background: '#E3F2FD',
-                fontSize: '20px',
-                color: 'black',
-                fontWeight: 700,
-            },
-        },
-        cells: {
-            style: {
-                padding: '10px', // override the cell padding for data cells
-                fontSize: '18px',
-                color: 'black',
-                fontWeight: 500,
-            },
-        },
-    };
     const handleChange = event => {
         event.preventDefault();
         setOrder({
@@ -320,30 +270,12 @@ const OrderCard = ({section}) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
     return (
-        <Box sx={styles.orderCard}>
+        <Box>
             <Head>
                 <title>{section.toUpperCase().replace(/_/g, " ")}</title>
                 <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'/>
                 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
             </Head>
-                    <Box sx={styles.sidebar}  >
-                        <ul sx={styles.list}>
-                            <li style={{background: 'linear-gradient(to right, #17c671, #0059B2)'}}><a href='/dashboard/completed'><Logo src={LogoDark}/></a></li>
-                            <li className={`create_order ${section === 'create_order' ?  'active' : '' } `}><a href='/dashboard/create_order'><MdAddCircle/> Create Order</a></li>
-                            <li className={`completed ${section === 'completed' ?  'active' : '' } `}><a href='/dashboard/completed'><AiOutlineCheckCircle/> Completed</a></li>
-                            <li className={`all-orders ${section === 'all-orders' ?  'active' : '' } `}><a href='/dashboard/all-orders'><BsCheckAll/>  All Orders</a></li>
-                            <li className={`in_progress ${section === 'in_progress' ?  'active' : '' } `}><a href='/dashboard/in_progress'><i className='bx bx-loader-circle bx-spin'/> In Progress</a></li>
-                            <li className={`waiting-assign ${section === 'waiting-assign' ?  'active' : '' } `}><a href='/dashboard/waiting-assign'><BsStopwatch/> To be Assigned</a></li>
-                            <li className={`rejected ${section === 'rejected' ?  'active' : '' } `}><a href='/dashboard/rejected'><AiOutlineStop/> Rejected</a></li>
-                            <li className={`approved ${section === 'approved' ?  'active' : '' } `}><a href='/dashboard/approved'><BiCheckShield/> Approved</a></li>
-                            <li className={`pending ${section === 'pending' ?  'active' : '' } `}><a href='/dashboard/pending'><FcTimeline/> Pending</a></li>
-                            <li className={`cancelled ${section === 'cancelled' ?  'active' : '' } `}><a href='/dashboard/cancelled'><FcCancel/> Cancelled</a></li>
-                            <li className={`settings ${section === 'settings' ?  'active' : '' } `}><a href='/dashboard/settings'><RiSettings2Line/> Settings</a></li>
-                        </ul>
-                    </Box>
-                <Box sx={{marginLeft: '23%', width: '100%', '@media screen and (max-width:768px)': {
-                        marginLeft: 0,
-                    },}}>
                     {orderData ?
                         <>
                             {
@@ -352,25 +284,7 @@ const OrderCard = ({section}) => {
                                 )
                             }
                             {section === 'completed' && (
-                                <Box sx={styles.completedPage}>
-                                    <Box>
-                                        <DataTable
-                                            columns={columns}
-                                            data={filteredItems }
-                                            pagination
-                                            paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
-                                            subHeader
-                                            subHeaderComponent={subHeaderComponentMemo}
-                                            expandableRows
-                                            expandableRowsComponent={ExpandedComponent}
-                                            persistTableHead
-                                            responsive={true}
-                                            customStyles={customStyles}
-                                            highlightOnHover
-                                            pointerOnHover
-                                        />
-                                    </Box>
-                                </Box>
+                               <Completed data={filteredItems} pagination={pagination}/>
                                 )}
                         </>
                         : (
@@ -390,304 +304,9 @@ const OrderCard = ({section}) => {
                         )
                         }
                     {section === 'create_order' && (
-                        <Box>
-                            {closeAlertErrorMessage ?
-                                <Alert sx={{background: "red"}}>
-                                    {errorMessage}
-                                    <Close ml="auto" mr={-2} onClick={handleCloseErrorMessageAlert}/>
-                                </Alert>
-                                    : ''
-                            }
-                            {checkDetailsData.errorMessage && (
-                                closeAlert ?
-                                    <Alert sx={{background: "red"}}>{checkDetailsData.errorMessage}<Close ml="auto" mr={-2} onClick={handleCloseAlert}/></Alert>
-                                    : ''
-                            )}
-                            <form onSubmit={handleCreateOrderSubmit}>
-                                <Grid sx={styles.form.grid}>
-                                    <Box>
-                                        <Label htmlFor="service">Service</Label>
-                                        <Select sx={styles.form.select} onChange={parseServiceSelected} name="service_id">
-                                            {serviceSelector.services.map(service => { return (
-                                                <option key={service.id} value={JSON.stringify(service)}>{service.name}</option>
-                                            )})}
-                                        </Select>
-                                    </Box>
-                                    <Box>
-                                        <Label htmlFor="type_id">Type of Paper</Label>
-                                        <Select sx={styles.form.select} onChange={parseTypeSelected} name="type_id">
-                                            {typeSelector.types.map(type => { return (
-                                                <option key={type.id} value={JSON.stringify(type)}>{type.name}</option>
-                                            )})}
-                                        </Select>
-                                    </Box>
-                                    <Box>
-                                        <Label htmlFor="urgency_id">Urgency</Label>
-                                        <Select sx={styles.form.select} onChange={parseUrgencySelected} name="urgency_id">
-                                            {urgencySelector.urgencies.map(urgency => { return (
-                                                <option key={urgency.id} value={JSON.stringify(urgency)}>{urgency.name}</option>
-                                            )})}
-                                        </Select>
-                                    </Box>
-                                    <Box>
-                                        <Label htmlFor="style_id">Style</Label>
-                                        <Select sx={styles.form.select} onChange={handleChange} name="style_id" >
-                                            {styleSelector.styles.map(style => { return (
-                                                <option key={style.id} value={style.id}>{style.name}</option>
-                                            )})}
-                                        </Select>
-                                    </Box>
-                                    <Box>
-                                        <Label htmlFor="sources">Sources</Label>
-                                        <Select sx={styles.form.select} onChange={handleChange} name="sources_id">
-                                            {sourcesSelector.sources.map(sources => { return (
-                                                <option key={sources.id} value={sources.id}>{sources.name}</option>
-                                            )})}
-                                        </Select>
-                                    </Box>
-                                    <Box>
-                                        <Label htmlFor="language_id">Language</Label>
-                                        <Select sx={styles.form.select} onChange={handleChange} name="language_id">
-                                            {languageSelector.languages.map(language => { return (
-                                                <option key={language.id} value={language.id}>{language.name}</option>
-                                            )})}
-                                        </Select>
-                                    </Box>
-                                    <Box>
-                                        <Label htmlFor="page_id">Pages</Label>
-                                        <Select sx={styles.form.select} onChange={parsePageSelected} name="page_id" id="page_id">
-                                            {pageSelector.pages.map(page => { return (
-                                                <option key={page.id} value={JSON.stringify(page)}>{page.name}</option>
-                                            )})}
-                                        </Select>
-                                    </Box>
-                                    <Box>
-                                        <Label htmlFor="level_id">Level</Label>
-                                        <Select sx={styles.form.select} onChange={parseLevelSelected} name="level_id">
-                                            {levelSelector.levels.map(level => { return (
-                                                <option key={level.id} value={JSON.stringify(level)}>{level.name}</option>
-                                            )})}
-                                        </Select>
-                                    </Box>
-                                    <Box>
-                                        <Label htmlFor="service_id">Spacing</Label>
-                                        <Select sx={styles.form.select} onChange={parseSpacingSelected} name="spacing_id">
-                                            {spacingSelector.spacings.map(spacing => { return (
-                                                <option sx={styles.form.select.option} key={spacing.id} value={JSON.stringify(spacing)}>{spacing.name}</option>
-                                            )})}
-                                        </Select>
-                                    </Box>
-                                    <Box>
-                                        <Label htmlFor="subject_id">Subject</Label>
-                                        <Select sx={styles.form.select} name="subject_id">
-                                            {subjectSelector.subjects.map(subject => { return (
-                                                <option key={subject.id} value={subject.id}>{subject.name}</option>
-                                            )})}
-                                        </Select>
-                                    </Box>
-                                    <Box>
-                                        <Label htmlFor="spacing">Phone</Label>
-                                        <Input sx={styles.form.select} onChange={handleChange} placeholder="0712345678" name="phone" type="text"/>
-                                    </Box>
-                                </Grid>
-                                <Grid sx={styles.form.topicGrid}>
-                                    <Box>
-                                        <Label htmlFor="topic ">Topic</Label>
-                                        <Input sx={styles.form.select} onChange={handleChange} name="topic " placeholder='Topic' />
-                                    </Box>
-                                    <Box>
-                                        <Label htmlFor="username">Upload Files</Label>
-                                        <StyledDropzone/>
-                                    </Box>
-                                </Grid>
-                                <Box mt={3} >
-                                    <Label htmlFor="spacing">Instructions</Label>
-                                    <Textarea sx={styles.form.textarea} autoFocus onChange={handleChange} name="comment" id="comment" rows={6}/>
-                                </Box>
-                                <button style={styles.buttonCreate}  type='submit'>Create Order</button>
-                            </form>
-                        </Box>
+                       <CreateOrder/>
                     )}
-                </Box>
         </Box>
     );
 };
 export default OrderCard;
-
-const styles = {
-    buttonCreate: {
-            borderRadius: "10px",
-            background: 'linear-gradient(to right, #17c671, #0059B2)',
-            padding: '5px',
-            color: 'white',
-            cursor: 'pointer',
-    },
-    defaultOrder: {
-        width: '200px',
-        height: '40px',
-        '::placeholder': {
-            color: 'white'
-        }
-    },
-    completedPage:{
-        minHeight:'200px',
-        header: {
-            padding: '10px',
-            minHeight: '20px',
-            background: '#273142',
-            color: 'white',
-            borderBottom: '1px solid rgba(0, 0, 0, 0.2)'
-        },
-    },
-    baseStyle:  {
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: '20px',
-        borderWidth: 2,
-        borderRadius: 2,
-        borderColor: '#eeeeee',
-        borderStyle: 'dashed',
-        backgroundColor: '#bdbdbd',
-        color: 'black',
-        outline: 'none',
-        transition: 'border .24s ease-in-out'
-    },
-    activeStyle : {
-        borderColor: '#2196f3'
-    },
-    acceptStyle : {
-        borderColor: '#00e676'
-    },
-    rejectStyle : {
-        borderColor: '#ff1744'
-    },
-    orderCard: {
-        margin: 0,
-        padding: 0,
-        display: "flex",
-    },
-    sidebar: {
-        ml: '-10px',
-        width: '23%',
-        height: '100%',
-        top: '0px',
-        position: 'fixed',
-        backgroundColor: '#EAEEF3',
-        borderRight: '1px solid rgba(0, 0, 0, 0.2)',
-        '@media screen and (max-width:768px)': {
-            display: 'none',
-        },
-    },
-    list : {
-        '.completed': {
-            '&.active': {
-                color: '#ffffff',
-                backgroundColor: 'white',
-                boxShadow: '0 3px 4px rgba(38, 78, 118, 0.1)',
-            },
-        },
-        '.all-orders': {
-            '&.active': {
-                color: '#ffffff',
-                backgroundColor: 'white',
-                boxShadow: '0 3px 4px rgba(38, 78, 118, 0.1)',
-            },
-        },
-        '.waiting-assign': {
-            '&.active': {
-                color: '#ffffff',
-                backgroundColor: 'white',
-                boxShadow: '0 3px 4px rgba(38, 78, 118, 0.1)',
-            },
-        },
-        '.rejected': {
-            '&.active': {
-                color: '#ffffff',
-                backgroundColor: 'white',
-                boxShadow: '0 3px 4px rgba(38, 78, 118, 0.1)',
-            },
-        },
-        '.pending': {
-            '&.active': {
-                backgroundColor: 'white',
-                boxShadow: '0 3px 4px rgba(38, 78, 118, 0.1)',
-            },
-        },
-        '.approved': {
-            '&.active': {
-                color: '#ffffff',
-                backgroundColor: 'white',
-                boxShadow: '0 3px 4px rgba(38, 78, 118, 0.1)',
-            },
-        },
-        '.create_order': {
-            '&.active': {
-                color: '#ffffff',
-                backgroundColor: 'white',
-                boxShadow: '0 3px 4px rgba(38, 78, 118, 0.1)',
-            },
-        },
-
-        listStyle: 'none',
-        fontSize: [15, null, 24],
-        li : {
-            borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
-            p: ['5px', null, '5px'],
-            borderRadius: '5px',
-            a: {
-                fontFamily: 'Quicksand, sans-serif',
-                textDecoration: 'none',
-                color: 'black',
-            }
-        }
-    },
-    table : {
-        width: '100%',
-        th: {
-            fontFamily: 'Quicksand, sans-serif',
-            position: 'sticky',
-            top: '60px',
-            backgroundColor: '#EAEEF3',
-            py: ['10px', null, '10px'],
-            px: ['5px', null, '7px']
-        },
-        td: {
-            fontFamily: 'Quicksand, sans-serif',
-            borderBottom: '1px solid #E5ECF4',
-            marginBottom: '15px',
-        },
-        '.reserve-button':{
-            backgroundColor: 'secondary',
-            borderRadius: '10px',
-            padding: '12px 10px',
-        },
-    },
-    form:  {
-        grid: {
-            gridTemplateColumns: ['repeat(1,1fr)', 'repeat(2,1fr)',  'repeat(4,1fr)', 'repeat(4,1fr)'],
-        },
-        select: {
-            fontFamily: 'Quicksand, sans-serif',
-            borderColor: '#E5ECF4',
-            height: '50px',
-            option: {
-                fontFamily: 'Quicksand, sans-serif',
-                '&:focus': {
-                    borderColor: '0 0 3pt 2pt #719ECE',
-                },
-            }
-        },
-        textarea: {
-            borderColor: '#E5ECF4',
-            boxShadow: '0 0 3pt 2pt #719ECE',
-            '&:focus': {
-                boxShadow: '0 0 3pt 2pt #719ECE',
-            },
-        },
-        topicGrid: {
-            gridTemplateColumns: ['repeat(1,1fr)',null,'repeat(1,1fr)'],
-        }
-    }
-}

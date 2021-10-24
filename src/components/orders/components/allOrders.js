@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import React from 'react';
 import { jsx } from 'theme-ui';
-import OrderCard from "./components/order-card";
+import OrderCard from "./order-card";
 
-const ApprovedOrders = ({section}) => {
+const AllOrders = ({section}) => {
     return (
         <div sx={styles.completed}>
             <OrderCard
@@ -13,7 +13,7 @@ const ApprovedOrders = ({section}) => {
     );
 };
 
-export default ApprovedOrders;
+export default AllOrders;
 
 const styles = {
     completed: {

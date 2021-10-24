@@ -1,100 +1,144 @@
-import {Box, Button, jsx} from "theme-ui";
-import {formatDate} from "./dates";
-import { AiOutlineArrowRight} from 'react-icons/ai';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
+import { List, Grid, Modal, Row, Col, Tag, Panel, ButtonToolbar, Button, Form } from 'rsuite';
+// import { getUser } from '../../state/actions/usersAction';
 
-export const ExpandedComponent = ({ data }) =>
-    <Box sx={styles.orderDetails}>
-        <Box sx={styles.lastOrder}>
-            <Box sx={styles.lastOrder.header}>
-                <h3>Order Details</h3>
-            </Box>
-            <Box>
-                <Box sx={{display: 'flex', minHeight: '250px', width: '100%', borderBottom: '1px solid rgba(0, 0, 0, 0.2)',p:'10px'}}>
-                <Box  sx={{display: 'flex', width: '50%', borderRight: '1px solid rgba(0, 0, 0, 0.2)',}}>
-                    <Box sx={{width: '40%', fontSize: '18px'}}>
-                        <Box>  OrderID </Box>
-                        <Box>  Service </Box>
-                        <Box>  Urgency </Box>
-                        <Box>  Client </Box>
-                        <Box>  Sources </Box>
-                        <Box>  Amount </Box>
-                        <Box>  Subject </Box>
-                        <Box>  Type </Box>
-                        <Box><button style={{background: 'blue', padding: '10px', marginTop:"10px", color: 'white', borderRadius: '10px'}}>Edit Order</button></Box>
-                        <Box><button style={{backgroundColor: '#FFB400', padding: '10px', marginTop:"20px", color: 'white', borderRadius: '10px'}}>Cancel Order</button></Box>
-                    </Box>
-                    <Box sx={{width: '10%'}}>
-                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
-                    </Box>
-                    <Box sx={{width: '50%', fontSize: '18px'}}>
-                        <Box>  {data.id} </Box>
-                        <Box>  {data.service.name} </Box>
-                        <Box> {data.urgency.name} </Box>
-                        <Box>  {data.user.username} </Box>
-                        <Box>  {data.source.name} </Box>
-                        <Box>  {Math.round((data.amount + Number.EPSILON) * 100) / 100} </Box>
-                        <Box>  {data.subject.name} </Box>
-                        <Box>  {data.type.name} </Box>
-                    </Box>
-                </Box>
-                <Box sx={{width: '23.33%', ml: '20px', fontSize: '18px'}}>
-                    <Box>Style </Box>
-                    <Box> Deadline </Box>
-                    <Box>  Page </Box>
-                    <Box>  Level </Box>
-                    <Box>  Spacing </Box>
-                    <Box>  Language </Box>
-                    <Box>  Topic </Box>
-                    <Box>  Instructions </Box>
-                    <Box><button style={{background: 'blue', padding: '10px', marginTop:"10px", color: 'white', borderRadius: '10px'}}>Reserve Order</button></Box>
-                    <Box><button style={{background: 'green', padding: '10px',marginTop:"20px", color: 'white',  borderRadius: '10px'}}>Pay via Paypal</button></Box>
-                </Box>
-                    <Box sx={{width: '10%'}}>
-                        {/*<AiOutlineArrowRight style={{fontSize: '20px'}}/>*/}
-                    </Box>
-                <Box sx={{width: '33.33%', fontSize: '18px'}}>
-                    <Box> {data.style.name} </Box>
-                    <Box> {formatDate(data.deadline)} </Box>
-                    <Box>  {data.page.name} </Box>
-                    <Box>  {data.level.name} </Box>
-                    <Box>  {data.spacing.name} </Box>
-                    <Box>  {data.language.name} </Box>
-                    <Box>  {data.topic} </Box>
-                    <Box>  {data.instructions} </Box>
-                </Box>
-                </Box>
-            </Box>
-        </Box>
-    </Box>;
 
-const styles = {
-    orderDetails: {
-        ml: '50px',
-    },
-    lastOrder:{
-        minHeight:'200px',
-        border: '1px solid rgba(0, 0, 0, 0.2)',
-        borderRadius: '5px',
-        header: {
-            padding: '10px',
-            minHeight: '20px',
-            background: '#273142',
-            color: 'white',
-            borderBottom: '1px solid rgba(0, 0, 0, 0.2)'
-        },
-    },
-    table : {
-        fontFamily: 'arial, sans-serif',
-        width: '100%',
-        td: {
-            borderColor: '#96D4D4',
-        },
-        th : {
-            borderColor: '#96D4D4',
-        },
-        tr: {
-            padding: '20px',
-            borderColor: '#96D4D4',
-        }
-    }
+
+
+const OrderDetails = () => {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    // const router = useRouter();
+    // const { userID } = router.query;
+    // const dispatch = useDispatch();
+    // const userSelector = useSelector(state => state.usersState);
+    // const { user } = userSelector;
+
+    // React.useEffect(() => {
+    //     getUser(dispatch, userID);
+    // }, [dispatch, userID]);
+
+    return (
+        <div style={{ marginTop: "20px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
+                <h5>Order Details:</h5>
+                <Button onClick={handleOpen} color="red" appearance="primary">Delete Order</Button>
+            </div>
+            <Modal open={open} onClose={handleClose}>
+                <Modal.Header>
+                    <Modal.Title>Delete Order</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <span>Are you sure you want to delete this order</span>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={handleClose} color="red" appearance="primary">
+                        Ok
+                    </Button>
+                    <Button onClick={handleClose} color="cyan" appearance="primary">
+                        Cancel
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <br />
+            <Grid fluid>
+                <Row className="show-grid">
+                    <Col xs={12}>
+                        <List bordered>
+                            <List.Item style={{ background: "#34c3ff" }}>
+                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                    <h4>Heading</h4>
+                                    <Tag size="lg" color="violet">avatar</Tag>
+                                </div>
+                            </List.Item>
+                        </List>
+                        <Grid fluid>
+                            <Row>
+                                <Col xs={24} sm={12} md={12} style={{ borderRight: "1px solid whitesmoke", }}>
+                                    <List>
+                                        <List.Item>
+                                            First Name
+                                        </List.Item>
+                                        <List.Item>
+                                            Last Name
+                                        </List.Item>
+                                        <List.Item>
+                                            Gender
+                                        </List.Item>
+                                        <List.Item>
+                                            Email
+                                        </List.Item>
+                                        <List.Item>
+                                            Country
+                                        </List.Item>
+                                        <List.Item>
+                                            Phone Number
+                                        </List.Item>
+                                        <List.Item>
+                                            Role
+                                        </List.Item>
+                                        <List.Item>
+                                            Status
+                                        </List.Item>
+                                        <List.Item>
+                                            Created At
+                                        </List.Item>
+                                    </List>
+                                </Col>
+                                <Col xs={24} sm={12} md={12} style={{ borderRight: "1px solid whitesmoke", }}>
+                                    <List>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                            first name
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                            last
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                           gender
+                                        </List.Item>
+                                    </List>
+                                </Col>
+                            </Row>
+                        </Grid>
+                    </Col>
+                    <Col xs={12}>
+                        <Panel header="Edit Details" shaded>
+                            <Form fluid>
+                                <Form.Group controlId="name-1">
+                                    <Form.ControlLabel>First Name</Form.ControlLabel>
+                                    <Form.Control name="name" />
+                                </Form.Group>
+                                <Form.Group controlId="name-2">
+                                    <Form.ControlLabel>Last Name</Form.ControlLabel>
+                                    <Form.Control name="name"  />
+                                </Form.Group>
+                                <Form.Group controlId="email-1">
+                                    <Form.ControlLabel>Email</Form.ControlLabel>
+                                    <Form.Control name="email" type="email"  />
+                                </Form.Group>
+                                <Form.Group controlId="phone-1">
+                                    <Form.ControlLabel>Phone Number</Form.ControlLabel>
+                                    <Form.Control name="name" />
+                                </Form.Group>
+                                <Form.Group controlId="country-1">
+                                    <Form.ControlLabel>Country</Form.ControlLabel>
+                                    <Form.Control name="name"  />
+                                </Form.Group>
+                                <Form.Group>
+                                    <ButtonToolbar>
+                                        <Button appearance="primary">Edit</Button>
+                                    </ButtonToolbar>
+                                </Form.Group>
+                            </Form>
+                        </Panel>
+                    </Col>
+                </Row>
+            </Grid>
+        </div>
+    );
 };
+
+export default OrderDetails;

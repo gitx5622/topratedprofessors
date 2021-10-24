@@ -1,18 +1,17 @@
 import React from 'react';
-import { ThemeProvider } from 'theme-ui';
-import theme from 'theme';
-import CompletedOrders from "../orders/completedOrders";
-import AllOrders from "../orders/allOrders";
-import WaitingAssign from "../orders/waitingAssign";
-import ApprovedOrders from "../orders/approvedOrders";
-import PendingOrders from "../orders/pendingOrders";
+import CompletedOrders from "../orders/components/completedOrders";
+import AllOrders from "../orders/components/allOrders";
+import WaitingAssign from "../orders/components/waitingAssign";
+import ApprovedOrders from "../orders/components/approvedOrders";
+import PendingOrders from "../orders/components/pendingOrders";
 import OrderLayout from "../orders/layout/order-layout";
-import CreateOrder from "../orders/createOrder";
+import CreateOrder from "../orders/components/createOrder";
 import Finances from "../wallet/finances";
 import SettingEdit from "../settings/edit";
 import SettingView from "../settings/view";
+import OrderDetails from 'components/orders/components/order-details';
 
-const Dashboard = ({section}) => {
+const Dashboard = ({ section }) => {
     const renderOrderPages = () => {
         switch (section) {
             case 'completed':
@@ -62,10 +61,16 @@ const Dashboard = ({section}) => {
                     <SettingEdit
                         section={section}
                     />
-                );
+                ); 
             case 'view':
                 return (
                     <SettingView
+                        section={section}
+                    />
+                );
+            case 'specific-order':
+                return (
+                    <OrderDetails
                         section={section}
                     />
                 );
@@ -83,11 +88,9 @@ const Dashboard = ({section}) => {
     }
     return (
         <div>
-            <ThemeProvider theme={theme}>
             <OrderLayout>
                 {renderOrderPages()}
             </OrderLayout>
-            </ThemeProvider>
         </div>
     );
 };

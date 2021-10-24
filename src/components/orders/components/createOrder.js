@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import React from 'react';
 import { jsx } from 'theme-ui';
-import OrderCard from "./components/order-card";
+import OrderCard from "./order-card";
 
-const RejectedOrders = ({section}) => {
+const CreateOrder = ({section}) => {
     return (
         <div sx={styles.completed}>
             <OrderCard
@@ -13,11 +13,11 @@ const RejectedOrders = ({section}) => {
     );
 };
 
-export default RejectedOrders;
+export default CreateOrder;
 
 const styles = {
     completed: {
-        pt: ['50px', null, '70px'],
+        pt: ['10px', null, '10px'],
         pb: ['0px', null, '10px'],
         px: ['0px', null, '10px']
     }

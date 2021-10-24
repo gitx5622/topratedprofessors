@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import React from 'react';
 import { jsx } from 'theme-ui';
-import OrderCard from "./components/order-card";
+import OrderCard from "./order-card";
 
 const PendingOrders = ({section}) => {
     return (

@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import React from 'react';
 import { jsx } from 'theme-ui';
-import OrderCard from "./components/order-card";
+import OrderCard from "./order-card";
 
-const WaitingAssign = ({section}) => {
+const RejectedOrders = ({section}) => {
     return (
         <div sx={styles.completed}>
             <OrderCard
@@ -13,7 +13,7 @@ const WaitingAssign = ({section}) => {
     );
 };
 
-export default WaitingAssign;
+export default RejectedOrders;
 
 const styles = {
     completed: {
