@@ -175,7 +175,7 @@ const styles = {
             gridTemplateColumns: ['repeat(1,1fr)', null, 'repeat(2,1fr)'],
         },
         bannerCard: {
-            width: ['100%', null, '95%'],
+            width: ['100%', null, '100%'],
             padding: "20px",
             paddingBottom:"0px",
             mr: [0, 2, 4, null, null, 6, 8, 10],
