@@ -9,28 +9,43 @@ import { jsx, Box } from 'theme-ui';
 import Payment from '../../../assets/payment.png';
 
 const ActionCell = ({ rowData, dataKey, ...props }) => {
-    function handleAction() {
-        alert(`id:${rowData[dataKey]}`);
-    }
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const router = useRouter();
     return (
         <Table.Cell {...props} className="link-group">
-            <Box sx={{ display: "flex", gap: 1 }}>
-                <Box sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#5CB85C", borderRadius: '5px' }}>
+            <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+                <Box onClick={() => router.push(`/dashboard/order/${rowData.id}`)} sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#5CB85C", borderRadius: '5px' }}>
                     <center><AiOutlineEye style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
                 </Box>
-                <Box sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#d9534f", borderRadius: '5px' }}>
+                <Box onClick={handleOpen} sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#d9534f", borderRadius: '5px' }}>
                     <center><AiTwotoneDelete style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
                 </Box>
-                <Box sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#337AB7", borderRadius: '5px' }}>
+                <Box onClick={handleOpen} sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#337AB7", borderRadius: '5px' }}>
                     <center><FiEdit style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
                 </Box>
+                <Modal open={open} onClose={handleClose}>
+                    <Modal.Header>
+                        <Modal.Title>Delete Order</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <span>Are you sure you want to delete this order</span>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={handleClose} color="red" appearance="primary">
+                            Ok
+                        </Button>
+                        <Button onClick={handleClose} color="cyan" appearance="primary">
+                            Cancel
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </Box>
         </Table.Cell>
     );
 };
-
-const data = ['Roses are red', 'Violets are blue', 'Sugar is sweet', 'And so are you'];
-
 const WalletCard = ({ section }) => {
     const [openWithHeader, setOpenWithHeader] = useState(false);
     return (
@@ -115,47 +130,24 @@ const WalletCard = ({ section }) => {
                         <Row className="show-grid">
                             <Col xs={12} style={{ borderRight: "1px solid whitesmoke" }}>
                                 <h5>Trasanctions</h5><br />
-                                <Grid fluid>
-                                    <Row>
-                                        <Col xs={6}>
-                                            <List>
-                                                <List.Item>
-                                                    Date
-                                                </List.Item>
-                                            </List>
-                                        </Col>
-                                        <Col xs={6}>
-                                            <List>
-                                                <List.Item>
-                                                    Type
-                                                </List.Item>
-                                            </List>
-                                        </Col>
-                                        <Col xs={6}>
-                                            <List>
-                                                <List.Item>
-                                                    Amount
-                                                </List.Item>
-                                            </List>
-                                        </Col>
-                                        <Col xs={6}>
-                                            <List>
-                                                <List.Item>
-                                                    Balance
-                                                </List.Item>
-                                            </List>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <List>
-                                            {data.map((item, index) => (
-                                                <List.Item key={index} index={index}>
-                                                    {item}
-                                                </List.Item>
-                                            ))}
-                                        </List>
-                                    </Row>
-                                </Grid>
+                                <Table bordered={true} cellBordered={true} height={350} style={{ color: "black", fontWeight: 500, fontFamily: "Quicksand, sans-serif" }}>
+                                    <Table.Column width={100} flexGrow={1} align="center">
+                                        <Table.HeaderCell style={{ background: "#fdaa8f" }}><h6>Date</h6></Table.HeaderCell>
+                                        <Table.Cell dataKey="id" style={{ color: "black" }} />
+                                    </Table.Column>
+                                    <Table.Column width={200} flexGrow={1}>
+                                        <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Type</h6></Table.HeaderCell>
+                                        <Table.Cell dataKey="phone" />
+                                    </Table.Column>
+                                    <Table.Column width={200} flexGrow={1}>
+                                        <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Amount</h6></Table.HeaderCell>
+                                        <Table.Cell dataKey="phone" />
+                                    </Table.Column>
+                                    <Table.Column width={200} flexGrow={1}>
+                                        <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Balance</h6></Table.HeaderCell>
+                                        <ActionCell dataKey="id" />
+                                    </Table.Column>
+                                </Table>
                             </Col>
                             <Col xs={12}>
                                 <Form fluid style={{ background: "whitesmoke", borderRadius: '20px', padding: "20px" }}>

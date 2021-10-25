@@ -1,146 +1,243 @@
-import React from 'react';
-import { Grid, Row, Col, Divider, Uploader, Steps, ButtonGroup, Input, InputGroup, Panel } from 'rsuite';
-import { Box } from 'theme-ui';
-import {
-    Label,
-    Textarea,
-    Select,
-    Button,
-} from 'theme-ui'
+import React, { useState, useEffect, useReducer } from 'react';
+import { Grid, Row, Col, Divider, Uploader, Steps, ButtonGroup, InputGroup, Panel, Message } from 'rsuite';
+import checkDetailsReducer, { initialCheckDetailsState } from "../../../dataStore/reducers/checkDetailsReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { Label, Textarea, Select, Button } from 'theme-ui';
+import { getLevels } from "../../../dataStore/actions/levelsAction";
+import { getPages } from "../../../dataStore/actions/pagesAction";
+import { getSources } from "../../../dataStore/actions/sourcesAction";
+import { getStyles } from "../../../dataStore/actions/stylesAction";
+import { getSubjects } from "../../../dataStore/actions/subjectsAction";
+import { getTypes } from "../../../dataStore/actions/typesAction";
+import { getUrgencies } from "../../../dataStore/actions/urgenciesAction";
+import { getServices } from "../../../dataStore/actions/servicesAction";
+import { getLanguages } from "../../../dataStore/actions/languagesAction";
+import { getSpacing } from "../../../dataStore/actions/spacingsAction";
+import { createOrders } from "../../../dataStore/actions/ordersAction";
+import { Box, Input } from 'theme-ui';
+import { useRouter } from 'next/router';
 
 const CreateOrder = () => {
     const [step, setStep] = React.useState(0);
+    const [selected, setSelected] = React.useState("");
+    const [myservice, setmyservice] = React.useState(8);
+    const [mytype, setmytype] = React.useState(1);
+    const [myurgency, setmyurgency] = React.useState(1);
+    const [mypages, setmypages] = React.useState(1);
+    const [mylevel, setmylevel] = React.useState(1);
+    const [myspacing, setmyspacing] = React.useState(1);
+    const [order, setOrder] = React.useState({
+        user_id: '',
+        service_id: 1,
+        type_id: 1,
+        style_id: 1,
+        level_id: 1,
+        pages_id: 1,
+        urgency_id: 1,
+        subject_id: 1,
+        sources_id: 1,
+        spacing_id: 1,
+        language_id: 1,
+        phone: '',
+        topic: '',
+        instructions: '',
+        pagesummary: '',
+        plagreport: '',
+        initialdraft: '',
+        qualitycheck: '',
+        topwriter: '',
+        promocode: ''
+    });
+
+    const levelSelector = useSelector(state => state.levelState);
+    const pageSelector = useSelector(state => state.pageState);
+    const serviceSelector = useSelector(state => state.serviceState);
+    const sourcesSelector = useSelector(state => state.sourceState);
+    const spacingSelector = useSelector(state => state.spacingState);
+    const styleSelector = useSelector(state => state.styleState);
+    const subjectSelector = useSelector(state => state.subjectState);
+    const typeSelector = useSelector(state => state.typeState);
+    const urgencySelector = useSelector(state => state.urgencyState);
+    const languageSelector = useSelector(state => state.languageState);
+    const orderSelector = useSelector(state => state.orderState);
+    const { errorMessage } = orderSelector;
+
+    const dispatch = useDispatch();
+    const router = useRouter();
+
+    const [checkDetailsData, dispatchCheckDetails] = useReducer(
+        checkDetailsReducer,
+        initialCheckDetailsState
+    );
+
     const onChange = nextStep => {
-        setStep(nextStep < 0 ? 0 : nextStep > 3 ? 3 : nextStep);
+        setStep(nextStep < 0 ? 0 : nextStep > 2 ? 2 : nextStep);
     };
 
-    const onNext = () => onChange(step + 1);
+    const onNext = () => {
+        onChange(step + 1);
+        localStorage.service_id = order.service_id;
+        localStorage.urgency_id = order.urgency_id;
+        localStorage.spacing_id = order.spacing_id;
+        localStorage.type_id = order.type_id;
+        localStorage.style_id = order.style_id;
+        localStorage.language_id = order.language_id;
+        localStorage.level_id = order.level_id;
+        localStorage.sources_id = order.sources_id;
+        localStorage.pages_id = order.pages_id;
+        localStorage.subject_id = order.subject_id;
+    }
     const onPrevious = () => onChange(step - 1);
+
+    const handleChange = (event) => {
+        let value = event.target.value;
+        let name = event.target.name;
+
+        setOrder((order) => {
+            return {
+                ...order,   // Spread Operator               
+                [name]: value
+            }
+        })
+    }
+    const parseServiceSelected = (event) => {
+        const valueToParse = event.target.value;
+        const service_id_index = Object.values(JSON.parse(valueToParse));
+        const service_id = service_id_index[0];
+        const itemSelected = JSON.parse(valueToParse);
+        setSelected(itemSelected);
+        setmyservice(itemSelected.factor);
+        setOrder({
+            ...order,
+            [event.target.name]: service_id
+        })
+    };
+    const parseTypeSelected = (event) => {
+        const valueToParse = event.target.value;
+        const type_id_index = Object.values(JSON.parse(valueToParse));
+        const type_id = type_id_index[0];
+        const itemSelected = JSON.parse(valueToParse);
+        setSelected(itemSelected);
+        setmytype(itemSelected.factor);
+        setOrder({
+            ...order,
+            [event.target.name]: type_id
+        })
+    };
+    const parseUrgencySelected = (event) => {
+        const valueToParse = event.target.value;
+        const urgency_id_index = Object.values(JSON.parse(valueToParse));
+        const urgency_id = urgency_id_index[0];
+        const itemSelected = JSON.parse(valueToParse);
+        setSelected(itemSelected);
+        setmyurgency(itemSelected.factor);
+        setOrder({
+            ...order,
+            [event.target.name]: urgency_id
+        })
+    };
+    const parsePageSelected = (event) => {
+        const valueToParse = event.target.value;
+        const page_id_index = Object.values(JSON.parse(valueToParse));
+        const page_id = page_id_index[0];
+        const itemSelected = JSON.parse(valueToParse);
+        setSelected(itemSelected);
+        setmypages(itemSelected.factor);
+        setOrder({
+            ...order,
+            [event.target.name]: page_id
+        })
+    };
+    const parseLevelSelected = (event) => {
+        const valueToParse = event.target.value;
+        const level_id_index = Object.values(JSON.parse(valueToParse));
+        const level_id = level_id_index[0];
+        const itemSelected = JSON.parse(valueToParse);
+        setSelected(itemSelected);
+        setmylevel(itemSelected.factor);
+        setOrder({
+            ...order,
+            [event.target.name]: level_id
+        })
+    };
+    const parseSpacingSelected = (event) => {
+        const valueToParse = event.target.value;
+        const spacing_id_index = Object.values(JSON.parse(valueToParse));
+        const spacing_id = spacing_id_index[0];
+        const itemSelected = JSON.parse(valueToParse);
+        setSelected(itemSelected);
+        setmyspacing(itemSelected.factor);
+        setOrder({
+            ...order,
+            [event.target.name]: spacing_id
+        })
+    };
+
+    const addOrder = (credentials) => createOrders(dispatch, credentials);
+
+    const handleCreateOrderSubmit = (event) => {
+        event.persist();
+        event.preventDefault();
+        const { id: userID } = JSON.parse(localStorage.currentUser);
+        const bodyData = {
+            user_id: parseInt(userID),
+            service_id: parseInt(order.service_id, 10),
+            type_id: parseInt(order.type_id, 10),
+            style_id: parseInt(order.style_id, 10),
+            level_id: parseInt(order.level_id, 10),
+            pages_id: parseInt(order.pages_id, 10),
+            urgency_id: parseInt(order.urgency_id, 10),
+            subject_id: parseInt(order.subject_id, 10),
+            sources_id: parseInt(order.sources_id, 10),
+            spacing_id: parseInt(order.spacing_id, 10),
+            language_id: parseInt(order.language_id, 10),
+            phone: order.phone,
+            topic: order.topic,
+            instructions: order.instructions,
+            pagesummary: false,
+            plagreport: true,
+            initialdraft: false,
+            qualitycheck: false,
+            topwriter: true,
+            promocode: '',
+        }
+        if (order.phone !== "" && order.topic !== "" && order.instructions !== "") {
+            addOrder(bodyData);
+            router.push("/dashboard/completed")
+        } else {
+            dispatchCheckDetails({
+                type: 'ERROR',
+                errorMessage: 'Make sure all the fields all filled',
+            });
+            if (errorMessage.errorMessage) {
+                <Message type="error">Error</Message>
+            }
+        }
+    };
+
+    useEffect(() => {
+        getLevels(dispatch);
+        getPages(dispatch);
+        getSources(dispatch);
+        getStyles(dispatch);
+        getSubjects(dispatch);
+        getTypes(dispatch);
+        getUrgencies(dispatch);
+        getServices(dispatch);
+        getLanguages(dispatch);
+        getSpacing(dispatch);
+        addOrder();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch]);
 
     return (
         <Box sx={{ marginLeft: "10px", marginRight: "10px" }}>
-            {/* {closeAlertErrorMessage ?
-            <Alert sx={{background: "red"}}>
-                {errorMessage}
-                <Close ml="auto" mr={-2} onClick={handleCloseErrorMessageAlert}/>
-            </Alert>
-                : ''
-        }
-        {checkDetailsData.errorMessage && (
-            closeAlert ?
-                <Alert sx={{background: "red"}}>{checkDetailsData.errorMessage}<Close ml="auto" mr={-2} onClick={handleCloseAlert}/></Alert>
-                : ''
-        )}
-        <form onSubmit={handleCreateOrderSubmit}>
-            <Grid sx={styles.form.grid}>
-                <Box>
-                    <Label htmlFor="service">Service</Label>
-                    <Select sx={styles.form.select} onChange={parseServiceSelected} name="service_id">
-                        {serviceSelector.services.map(service => { return (
-                            <option key={service.id} value={JSON.stringify(service)}>{service.name}</option>
-                        )})}
-                    </Select>
-                </Box>
-                <Box>
-                    <Label htmlFor="type_id">Type of Paper</Label>
-                    <Select sx={styles.form.select} onChange={parseTypeSelected} name="type_id">
-                        {typeSelector.types.map(type => { return (
-                            <option key={type.id} value={JSON.stringify(type)}>{type.name}</option>
-                        )})}
-                    </Select>
-                </Box>
-                <Box>
-                    <Label htmlFor="urgency_id">Urgency</Label>
-                    <Select sx={styles.form.select} onChange={parseUrgencySelected} name="urgency_id">
-                        {urgencySelector.urgencies.map(urgency => { return (
-                            <option key={urgency.id} value={JSON.stringify(urgency)}>{urgency.name}</option>
-                        )})}
-                    </Select>
-                </Box>
-                <Box>
-                    <Label htmlFor="style_id">Style</Label>
-                    <Select sx={styles.form.select} onChange={handleChange} name="style_id" >
-                        {styleSelector.styles.map(style => { return (
-                            <option key={style.id} value={style.id}>{style.name}</option>
-                        )})}
-                    </Select>
-                </Box>
-                <Box>
-                    <Label htmlFor="sources">Sources</Label>
-                    <Select sx={styles.form.select} onChange={handleChange} name="sources_id">
-                        {sourcesSelector.sources.map(sources => { return (
-                            <option key={sources.id} value={sources.id}>{sources.name}</option>
-                        )})}
-                    </Select>
-                </Box>
-                <Box>
-                    <Label htmlFor="language_id">Language</Label>
-                    <Select sx={styles.form.select} onChange={handleChange} name="language_id">
-                        {languageSelector.languages.map(language => { return (
-                            <option key={language.id} value={language.id}>{language.name}</option>
-                        )})}
-                    </Select>
-                </Box>
-                <Box>
-                    <Label htmlFor="page_id">Pages</Label>
-                    <Select sx={styles.form.select} onChange={parsePageSelected} name="page_id" id="page_id">
-                        {pageSelector.pages.map(page => { return (
-                            <option key={page.id} value={JSON.stringify(page)}>{page.name}</option>
-                        )})}
-                    </Select>
-                </Box>
-                <Box>
-                    <Label htmlFor="level_id">Level</Label>
-                    <Select sx={styles.form.select} onChange={parseLevelSelected} name="level_id">
-                        {levelSelector.levels.map(level => { return (
-                            <option key={level.id} value={JSON.stringify(level)}>{level.name}</option>
-                        )})}
-                    </Select>
-                </Box>
-                <Box>
-                    <Label htmlFor="service_id">Spacing</Label>
-                    <Select sx={styles.form.select} onChange={parseSpacingSelected} name="spacing_id">
-                        {spacingSelector.spacings.map(spacing => { return (
-                            <option sx={styles.form.select.option} key={spacing.id} value={JSON.stringify(spacing)}>{spacing.name}</option>
-                        )})}
-                    </Select>
-                </Box>
-                <Box>
-                    <Label htmlFor="subject_id">Subject</Label>
-                    <Select sx={styles.form.select} name="subject_id">
-                        {subjectSelector.subjects.map(subject => { return (
-                            <option key={subject.id} value={subject.id}>{subject.name}</option>
-                        )})}
-                    </Select>
-                </Box>
-                <Box>
-                    <Label htmlFor="spacing">Phone</Label>
-                    <Input sx={styles.form.select} onChange={handleChange} placeholder="0712345678" name="phone" type="text"/>
-                </Box>
-            </Grid>
-            <Grid sx={styles.form.topicGrid}>
-                <Box>
-                    <Label htmlFor="topic ">Topic</Label>
-                    <Input sx={styles.form.select} onChange={handleChange} name="topic " placeholder='Topic' />
-                </Box>
-                <Box>
-                    <Label htmlFor="username">Upload Files</Label>
-                    <StyledDropzone/>
-                </Box>
-            </Grid>
-            <Box mt={3} >
-                <Label htmlFor="spacing">Instructions</Label>
-                <Textarea sx={styles.form.textarea} autoFocus onChange={handleChange} name="comment" id="comment" rows={6}/>
-            </Box>
-            <button style={styles.buttonCreate}  type='submit'>Create Order</button>
-        </form> */}
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <h3>Create Order:</h3>
-                <h3>Price: <span style={{ color: "orange" }}>$0.00</span></h3>
+                <h3>Price: <span style={{ color: "blue" }}>${(myservice * mytype * myurgency * mypages * mylevel * myspacing).toFixed(2)}</span></h3>
             </Box>
-
             <Divider />
-            <Box as="form">
+            <Box as="form" onSubmit={handleCreateOrderSubmit}>
                 <Grid fluid>
                     <Row>
                         <Col xs={6}>
@@ -152,91 +249,120 @@ const CreateOrder = () => {
                             </Panel>
                         </Col>
                         <Col xs={18}>
+                            {checkDetailsData.errorMessage && (
+                                <Message closable type="error">{checkDetailsData.errorMessage || errorMessage}</Message>
+                            )}
                             {step === 0 && (
                                 <Box>
-                                    <h5>Enter Order details:</h5><br />
+                                    <Box style={{display:"flex", justifyContent:"space-between"}}>
+                                        <h5>Enter Order details:</h5><br />
+                                        <Box style={{display:"flex", justifyContent:"space-between"}}>
+                                            <h5>Have a promo Code ?</h5>
+                                            <InputGroup>
+                                                <Input />
+                                                <InputGroup.Addon style={{ background: "blue", color: "white" }}>Apply</InputGroup.Addon>
+                                            </InputGroup>
+                                        </Box>
+                                    </Box><br/>
                                     <Col xs={8}>
                                         <Label htmlFor="sound">Service</Label>
-                                        <Select name="sound" id="sound" mb={3}>
-                                            <option>Beep</option>
-                                            <option>Boop</option>
-                                            <option>Blip</option>
+                                        <Select onChange={parseServiceSelected} name="service_id" mb={3}>
+                                            {serviceSelector.services.map(service => {
+                                                return (
+                                                    <option key={service.id} value={JSON.stringify(service)}>{service.name}</option>
+                                                )
+                                            })}
                                         </Select>
                                         <Label htmlFor="sound">Type of Paper</Label>
-                                        <Select name="sound" id="sound" mb={3}>
-                                            <option>Beep</option>
-                                            <option>Boop</option>
-                                            <option>Blip</option>
+                                        <Select onChange={parseTypeSelected} name="type_id" mb={3}>
+                                            {typeSelector.types.map(type => {
+                                                return (
+                                                    <option key={type.id} value={JSON.stringify(type)}>{type.name}</option>
+                                                )
+                                            })}
                                         </Select>
                                         <Label htmlFor="sound">Level</Label>
-                                        <Select name="sound" id="sound" mb={3}>
-                                            <option>Beep</option>
-                                            <option>Boop</option>
-                                            <option>Blip</option>
+                                        <Select onChange={parseLevelSelected} name="level_id" mb={3}>
+                                            {levelSelector.levels.map(level => {
+                                                return (
+                                                    <option key={level.id} value={JSON.stringify(level)}>{level.name}</option>
+                                                )
+                                            })}
                                         </Select>
                                         <Label htmlFor="sound">Subject</Label>
-                                        <Select name="sound" id="sound" mb={3}>
-                                            <option>Beep</option>
-                                            <option>Boop</option>
-                                            <option>Blip</option>
+                                        <Select onChange={handleChange} name="subject_id" mb={3}>
+                                            {subjectSelector.subjects.map(subject => {
+                                                return (
+                                                    <option key={subject.id} value={subject.id}>{subject.name}</option>
+                                                )
+                                            })}
                                         </Select>
                                     </Col>
                                     <Col xs={8}>
                                         <Label htmlFor="sound">Urgency</Label>
-                                        <Select name="sound" id="sound" mb={3}>
-                                            <option>Beep</option>
-                                            <option>Boop</option>
-                                            <option>Blip</option>
+                                        <Select onChange={parseUrgencySelected} name="urgency_id" mb={3}>
+                                            {urgencySelector.urgencies.map(urgency => {
+                                                return (
+                                                    <option key={urgency.id} value={JSON.stringify(urgency)}>{urgency.name}</option>
+                                                )
+                                            })}
                                         </Select>
                                         <Label htmlFor="sound">Style</Label>
-                                        <Select name="sound" id="sound" mb={3}>
-                                            <option>Beep</option>
-                                            <option>Boop</option>
-                                            <option>Blip</option>
+                                        <Select onChange={handleChange} name="style_id" mb={3}>
+                                            {styleSelector.styles.map(style => {
+                                                return (
+                                                    <option key={style.id} value={style.id}>{style.name}</option>
+                                                )
+                                            })}
                                         </Select>
                                         <Label htmlFor="sound">Sources</Label>
-                                        <Select name="sound" id="sound" mb={3}>
-                                            <option>Beep</option>
-                                            <option>Boop</option>
-                                            <option>Blip</option>
+                                        <Select onChange={handleChange} name="sources_id" mb={3}>
+                                            {sourcesSelector.sources.map(source => {
+                                                return (
+                                                    <option key={source.id} value={source.id}>{source.name}</option>
+                                                )
+                                            })}
                                         </Select>
-                                        <h5>Have a prome Code ?</h5>
-                                        <InputGroup>
-                                            <Input />
-                                            <InputGroup.Addon style={{ background: "blue", color: "white" }}>Apply</InputGroup.Addon>
-                                        </InputGroup>
                                     </Col>
                                     <Col xs={8}>
                                         <Label htmlFor="sound">Spacing</Label>
-                                        <Select name="sound" id="sound" mb={3}>
-                                            <option>Beep</option>
-                                            <option>Boop</option>
-                                            <option>Blip</option>
+                                        <Select onChange={parseSpacingSelected} name="spacing_id" mb={3}>
+                                            {spacingSelector.spacings.map(spacing => {
+                                                return (
+                                                    <option key={spacing.id} value={JSON.stringify(spacing)}>{spacing.name}</option>
+                                                )
+                                            })}
                                         </Select>
                                         <Label htmlFor="sound">Language</Label>
-                                        <Select name="sound" id="sound" mb={3}>
-                                            <option>Beep</option>
-                                            <option>Boop</option>
-                                            <option>Blip</option>
+                                        <Select onChange={handleChange} name="language_id" mb={3}>
+                                            {languageSelector.languages.map(language => {
+                                                return (
+                                                    <option key={language.id} value={language.id}>{language.name}</option>
+                                                )
+                                            })}
                                         </Select>
                                         <Label htmlFor="sound">Pages</Label>
-                                        <Select name="sound" id="sound" mb={3}>
-                                            <option>Beep</option>
-                                            <option>Boop</option>
-                                            <option>Blip</option>
+                                        <Select onChange={parsePageSelected} name="page_id" id="page_id" mb={3}>
+                                            {pageSelector.pages.map(page => {
+                                                return (
+                                                    <option key={page.id} value={JSON.stringify(page)}>{page.name}</option>
+                                                )
+                                            })}
                                         </Select>
                                     </Col>
                                 </Box>
                             )}
                             {step === 1 && (
                                 <Box>
-                                    <Label htmlFor="username">Topic*</Label>
-                                    <Input name="username" id="username" mb={3} />
-                                    <Label htmlFor="username">Instructions*</Label>
-                                    <Textarea name="comment" id="comment" rows={4} mb={3} />
-                                    <Label htmlFor="username">Upload files (optional)</Label>
+                                    <Label htmlFor="phone">Phone*</Label>
+                                    <Input onChange={handleChange} name="phone" type='text' mb={3} />
+                                    <Label htmlFor="topic">Topic*</Label>
+                                    <Input onChange={handleChange} name="topic" type='text' mb={3} />
+                                    <Label htmlFor="instructions">Instructions*</ Label>
+                                    <Textarea onChange={handleChange} name="instructions" type='text' rows={3} mb={3} />
+                                    <Label htmlFor="upload">Upload files (optional)</Label>
                                     <Uploader action="//jsonplaceholder.typicode.com/posts/" draggable>
-                                        <div style={{ lineHeight: '100px', background: "whitesmoke" }}>Click or Drag files to this area to upload</div>
+                                        <div style={{ lineHeight: '80px', background: "whitesmoke" }}>Click or Drag files to this area to upload</div>
                                     </Uploader>
                                 </Box>
                             )}

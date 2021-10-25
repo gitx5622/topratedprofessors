@@ -22,7 +22,7 @@ const CalculatorCard = ({
             </Head>
             <Box sx={styles.calculator} as="form" onSubmit={(e) => e.preventDefault()}>
                 <Box sx={{display: 'flex', justifyContent:'center', gap: '10px'}}>
-                    <Heading as="h3" sx={styles.calculator.CalTitle}>Calculate Price</Heading>
+                    <h3>Calculate Price</h3>
                     <Image src={Mcafee} alt="mcafee" sx={styles.calculator.mcafee}/>
                 </Box>
                 <Select sx={{border: '1px solid #becad6', fontFamily: 'Quicksand, sans-serif'}} onChange={parseServiceSelected} name="sound" id="sound" mb={3}>
@@ -82,10 +82,6 @@ const styles = {
         outline: 0,
         color: 'background'
     },
-        CalTitle: {
-            fontFamily: 'body',
-            textAlign: 'center',
-        },
         mcafee: {
             width: ['50px', null, '100px']
         }

@@ -49,6 +49,7 @@ const NavToggle = ({ expand, onChange }) => {
 };
 
 const OrderLayout = ({ children }) => {
+    const [username, setUsername] = React.useState(null);
     const [expand, setExpand] = React.useState(true);
     const router = useRouter();
     const dispatch = useDispatch();
@@ -75,6 +76,12 @@ const OrderLayout = ({ children }) => {
             window.location.replace('/');
         }
     }, []);
+
+    React.useEffect(() => {
+        const value = localStorage.currentUser;
+        const user = value ? JSON.parse(value) : undefined;
+        setUsername(user.username);
+    }, [])
 
     return (
         <div className="show-fake-browser sidebar-page" style={{ color: "black" }}>
@@ -204,7 +211,7 @@ const OrderLayout = ({ children }) => {
                                      />
                                 <Nav.Item>
                                     <center>
-                                        <div style={{ marginTop: "-10px", textDecoration: "none" }}>John Doe<br />Admin</div>
+                                        <div style={{ marginTop: "-10px", textDecoration: "none" }}>{username}</div>
                                     </center>
                                 </Nav.Item>
                                 <Nav.Item

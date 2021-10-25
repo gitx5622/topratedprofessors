@@ -22,6 +22,7 @@ export const getOrders = (dispatch, userId) => {
             },
         })
         .then(response => {
+            console.log(response);
             dispatch({
                 type: GET_ORDERS_SUCCESS,
                 orders: response.data,

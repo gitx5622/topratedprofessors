@@ -10,7 +10,7 @@ const HomeworkCard = ({title,number, content}) => {
             {number && (
                 <Heading sx={styles.number}>{number}</Heading>
             )}
-            <Text>{content}</Text>
+            <p>{content}</p>
         </Card>
     );
 };
@@ -27,7 +27,8 @@ const styles = {
     },
     title: {
         fontFamily: 'body',
-        fontSize: ['16px', null, '20px'],
+        lineHeight:1.5,
+        fontSize: ['16px', null, '18px'],
     },
     number: {
         fontSize: [30, 36, 40],

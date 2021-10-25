@@ -2,24 +2,45 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { List, Grid, Modal, Row, Col, Tag, Panel, ButtonToolbar, Button, Form } from 'rsuite';
-// import { getUser } from '../../state/actions/usersAction';
-
-
-
+import { getOrder } from 'dataStore/actions/ordersAction';
+import { formatDate, formatDeadline } from '../../../../utils/dates';
 
 const OrderDetails = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    // const router = useRouter();
-    // const { userID } = router.query;
-    // const dispatch = useDispatch();
-    // const userSelector = useSelector(state => state.usersState);
-    // const { user } = userSelector;
+    const router = useRouter();
+    const { orderID } = router.query;
+    const dispatch = useDispatch();
+    const orderSelector = useSelector(state => state.orderState);
+    const {
+        order : {
+            id:orderId ,
+            topic,
+            phone,
+            instructions,
+            deadline,
+            service,
+            user,
+            type,
+            style,
+            source,
+            subject,
+            language,
+            page,
+            level,
+            spacing,
+            urgency,
+            amount,
+            created_at,
+        }} = orderSelector;
 
-    // React.useEffect(() => {
-    //     getUser(dispatch, userID);
-    // }, [dispatch, userID]);
+
+    React.useEffect(() => {
+        getOrder(dispatch, orderID);
+    }, [dispatch, orderID]);
+
+    console.log(orderID);
 
     return (
         <div style={{ marginTop: "20px" }}>
@@ -48,10 +69,10 @@ const OrderDetails = () => {
                 <Row className="show-grid">
                     <Col xs={12}>
                         <List bordered>
-                            <List.Item style={{ background: "#34c3ff" }}>
+                            <List.Item style={{ background: "#fdaa8f" }}>
                                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                    <h4>Heading</h4>
-                                    <Tag size="lg" color="violet">avatar</Tag>
+                                    <h4>{topic}</h4>
+                                    <Tag size="lg"style={{background:"#17c671", color: "white"}}>${amount && amount.toFixed(2)}</Tag>
                                 </div>
                             </List.Item>
                         </List>
@@ -60,28 +81,49 @@ const OrderDetails = () => {
                                 <Col xs={24} sm={12} md={12} style={{ borderRight: "1px solid whitesmoke", }}>
                                     <List>
                                         <List.Item>
-                                            First Name
+                                            ID
                                         </List.Item>
                                         <List.Item>
-                                            Last Name
+                                            Topic
                                         </List.Item>
                                         <List.Item>
-                                            Gender
+                                            Deadline
                                         </List.Item>
                                         <List.Item>
-                                            Email
+                                            Language
                                         </List.Item>
                                         <List.Item>
-                                            Country
+                                            Level
                                         </List.Item>
                                         <List.Item>
-                                            Phone Number
+                                            Subject
                                         </List.Item>
                                         <List.Item>
-                                            Role
+                                            Type of paper
                                         </List.Item>
                                         <List.Item>
-                                            Status
+                                            Service
+                                        </List.Item>
+                                        <List.Item>
+                                           Style
+                                        </List.Item>
+                                        <List.Item>
+                                            Urgency
+                                        </List.Item>
+                                        <List.Item>
+                                            Amount
+                                        </List.Item>
+                                        <List.Item>
+                                            Pages
+                                        </List.Item>
+                                        <List.Item>
+                                            Spacing
+                                        </List.Item>
+                                        <List.Item>
+                                            Sources
+                                        </List.Item>
+                                        <List.Item>
+                                            Phone
                                         </List.Item>
                                         <List.Item>
                                             Created At
@@ -91,13 +133,52 @@ const OrderDetails = () => {
                                 <Col xs={24} sm={12} md={12} style={{ borderRight: "1px solid whitesmoke", }}>
                                     <List>
                                         <List.Item style={{ color: "#1675e0" }}>
-                                            first name
+                                            {orderId}
                                         </List.Item>
                                         <List.Item style={{ color: "#1675e0" }}>
-                                            last
+                                            {topic}
                                         </List.Item>
                                         <List.Item style={{ color: "#1675e0" }}>
-                                           gender
+                                            {formatDeadline(deadline)}
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                            { language && language.name}
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                        { level && level.name}
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                        { subject && subject.name}
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                        { type && type.name}
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                        { service && service.name}
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                        { style && style.name}
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                        { urgency && urgency.name}
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                        { amount && amount.toFixed(2)}
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                        { page && page.name}
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                        { spacing && spacing.name}
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                        { source && source.name}
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                        { phone }
+                                        </List.Item>
+                                        <List.Item style={{ color: "#1675e0" }}>
+                                        {formatDate(created_at)}
                                         </List.Item>
                                     </List>
                                 </Col>
@@ -105,29 +186,44 @@ const OrderDetails = () => {
                         </Grid>
                     </Col>
                     <Col xs={12}>
-                        <Panel header="Edit Details" shaded>
+                        <Panel shaded style={{background:"#fdaa8f"}}>
+                        <h5>Edit Details</h5>
+                        </Panel>
+                        <Panel shaded style={{background: "#f2faff"}}>
                             <Form fluid>
                                 <Form.Group controlId="name-1">
-                                    <Form.ControlLabel>First Name</Form.ControlLabel>
+                                    <Form.ControlLabel>Topic</Form.ControlLabel>
                                     <Form.Control name="name" />
                                 </Form.Group>
                                 <Form.Group controlId="name-2">
-                                    <Form.ControlLabel>Last Name</Form.ControlLabel>
-                                    <Form.Control name="name"  />
+                                    <Form.ControlLabel>Language</Form.ControlLabel>
+                                    <Form.Control name="name" />
                                 </Form.Group>
                                 <Form.Group controlId="email-1">
-                                    <Form.ControlLabel>Email</Form.ControlLabel>
-                                    <Form.Control name="email" type="email"  />
+                                    <Form.ControlLabel>Level</Form.ControlLabel>
+                                    <Form.Control name="email" type="email" />
                                 </Form.Group>
                                 <Form.Group controlId="phone-1">
-                                    <Form.ControlLabel>Phone Number</Form.ControlLabel>
+                                    <Form.ControlLabel>Subject</Form.ControlLabel>
                                     <Form.Control name="name" />
                                 </Form.Group>
                                 <Form.Group controlId="country-1">
-                                    <Form.ControlLabel>Country</Form.ControlLabel>
-                                    <Form.Control name="name"  />
+                                    <Form.ControlLabel>Type of Paper</Form.ControlLabel>
+                                    <Form.Control name="name" />
+                                </Form.Group>
+                                <Form.Group controlId="country-1">
+                                    <Form.ControlLabel>Service</Form.ControlLabel>
+                                    <Form.Control name="name" />
+                                </Form.Group>
+                                <Form.Group controlId="country-1">
+                                    <Form.ControlLabel>Style</Form.ControlLabel>
+                                    <Form.Control name="name" />
                                 </Form.Group>
                                 <Form.Group>
+                                <Form.Group controlId="country-1">
+                                    <Form.ControlLabel>Urgency</Form.ControlLabel>
+                                    <Form.Control name="name" />
+                                </Form.Group>
                                     <ButtonToolbar>
                                         <Button appearance="primary">Edit</Button>
                                     </ButtonToolbar>

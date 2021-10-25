@@ -77,7 +77,7 @@ class WhyChooseUs extends Component {
             <section id='why-choose-us'  sx={{variant: 'section.whyChooseUs'}}>
                 <Grid sx={styles.grid}>
                     <Box sx={{ml: '20px'}}>
-                        <h1 style={{textAlign: 'center'}}>Why Choose Us</h1>
+                        <h3 style={{textAlign: 'center'}}>Why Choose Us</h3>
                         <Text sx={{lineHeight: 2.0}}>
                             Students go through a lot of challenges. Imagine having five assignments, all due tonight.
                             I bet you would break down as you figure out a way of handling all of them.
@@ -111,7 +111,7 @@ class WhyChooseUs extends Component {
                     </Box>
                     <Box>
                         <Card sx={styles.card}>
-                            <h2 style={{textAlign: 'center', fontFamily: 'Quicksand, sans-serif'}}>Why Top Rated Professors</h2>
+                            <h3 style={{textAlign: 'center', fontFamily: 'Quicksand, sans-serif'}}>Why Top Rated Professors</h3>
                             <ul style={{listStyle: 'none', textAlign: 'center', lineHeight: [2.5], marginTop: '10px'}}>
                                 <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                                     <Image src={Check} alt="deadline" sx={styles.cardImage}/>
@@ -137,7 +137,7 @@ class WhyChooseUs extends Component {
                             <Image src={Satisfaction} alt='100% original'/>
                         </Card><br/>
                         <Card className=".image__card" sx={styles.card}>
-                            <h2 style={{textAlign: 'center'}}>100% Money-Back Guarantee</h2>
+                            <h3 style={{textAlign: 'center'}}>100% Money-Back Guarantee</h3>
                             <Image src={Original} alt='wall_clock'/>
                         </Card>
                     </Box>

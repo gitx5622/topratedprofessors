@@ -85,9 +85,7 @@ export default function Banner() {
         <section sx={styles.banner} id="home">
             <Grid sx={styles.banner.grid}>
                 <Box sx={styles.banner.bannerCard}>
-                    <Heading sx={styles.banner.mainTitle}>
-                        Hire Experts to Do Your Assignment
-                    </Heading>
+                    <center><h3>Hire Experts to Do Your Assignment</h3></center>
                     <Box sx={styles.banner.buttonGroup}>
                         <Box sx={{lineHeight: 3.0}}>
                             <Text><Image src={Check} alt="checks" sx={styles.banner.checks}/> A+ Quality Paper</Text>
@@ -98,8 +96,8 @@ export default function Banner() {
                             <Text><Image src={Check} alt="checks" sx={styles.banner.checks}/> On Time Delivery </Text>
                         </Box>
                     </Box>
-                    <Text sx={styles.banner.services}>We are the best custom essay writers online.</Text><br/>
-                    <Heading sx={styles.banner.services}>100% SATISFACTION GUARANTEED</Heading>
+                    <center><p>We are the best custom essay writers online.</p></center><br/>
+                    <center><h4>100% SATISFACTION GUARANTEED</h4></center>
                     <Box sx={styles.banner.buttonGroup}>
                         <Button className='buttons' onClick={() => router.push('/dashboard/completed')} >Dashboard</Button>
                         <Button className='buttons' onClick={() => router.push('/dashboard/completed')} >Order Now</Button>
@@ -183,10 +181,6 @@ const styles = {
             boxShadow: '0 1px 0px 1px rgba(0, 0, 0, 0.2)',
             opacity: 0.96,
         },
-        mainTitle: {
-            fontFamily: 'Quicksand, sans-serif',
-            fontSize: ['22px', null, '36px'],
-        },
         buttonGroup: {
             display: 'flex',
             justifyContent: 'space-between',
@@ -207,14 +201,6 @@ const styles = {
                     outline: 0,
                 },
             },
-        },
-        services: {
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            textAlign: 'center',
-            lineHeight: 'body',
-            fontFamily: 'Quicksand, sans-serif',
         },
         checks: {
             width: ['7%', null, '8%']

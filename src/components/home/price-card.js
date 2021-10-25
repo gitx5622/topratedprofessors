@@ -1,7 +1,8 @@
 /** @jsx jsx */
+import React from 'react';
 import { jsx, Box, Card, Text, Heading } from 'theme-ui';
 import { FaAngleDoubleRight } from 'react-icons/fa';
-import React from 'react';
+
 
 export default function PriceCard({
   data: {
@@ -20,7 +21,7 @@ export default function PriceCard({
         {header && <Text sx={styles.header}>{header}</Text>}
         <Box>
           <Box className="package__header" sx={styles.pricingHeader}>
-            <Heading className="package__name" variant="title">{name}</Heading>
+            <h3 className="package__name" variant="title">{name}</h3>
             <Text as='p'><FaAngleDoubleRight/> {point1}</Text>
             {point2 && (
                 <Text as='p'><FaAngleDoubleRight/> {point2}</Text>

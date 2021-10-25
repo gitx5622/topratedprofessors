@@ -11,6 +11,7 @@ export default function Footer() {
           <Grid sx={styles.footer.grid}>
               <Box>
                   <Heading as="h1" sx={styles.footer.heading}>COMPANY</Heading>
+                  <center>
                   <ul>
                       <li>FAQ</li>
                       <li>Reviews</li>
@@ -19,9 +20,11 @@ export default function Footer() {
                       <li>Essay Writing App</li>
                       <li>Become a Freelance Writer</li>
                   </ul>
+                  </center>
               </Box>
               <Box>
                   <Heading as="h1" sx={styles.footer.heading}>LEGAL</Heading>
+                  <center>
                   <ul>
                       <li>Cookie Policy</li>
                       <li>Privacy Policy</li>
@@ -30,9 +33,11 @@ export default function Footer() {
                       <li>Confidentiality Policy</li>
                       <li>Money Back Guarantee</li>
                   </ul>
+                  </center>
               </Box>
               <Box>
                   <Heading as="h1" sx={styles.footer.heading}>SERVICES</Heading>
+                  <center>
                   <ul>
                       <li>Online Tutors</li>
                       <li>Best online tutors</li>
@@ -41,9 +46,11 @@ export default function Footer() {
                       <li>Maths & Statistics help</li>
                       <li>Dissertation/Thesis writing</li>
                   </ul>
+                  </center>
               </Box>
               <Box>
                   <Heading as="h1" sx={styles.footer.heading}>TOPRATED</Heading>
+                  <center>
                   <ul>
                       <li>Paper revision</li>
                       <li>Custom writing</li>
@@ -52,6 +59,7 @@ export default function Footer() {
                       <li>Urgent essay writing</li>
                       <li>Write my paper cheap</li>
                   </ul>
+                  </center>
               </Box>
           </Grid>
         <Container>
@@ -110,6 +118,7 @@ const styles = {
           fontFamily: 'body',
           color: 'primary',
           ml: 4,
+          textAlign:'center',
           fontSize: [25, null, 30],
           '@media screen and (max-width:768px)': {
               textAlign: 'center',

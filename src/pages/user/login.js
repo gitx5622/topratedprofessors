@@ -74,7 +74,7 @@ export default function Login() {
                     </Box>
                     <Box sx={styles.form}>
                     <Box sx={styles.formLogin} as="form" onSubmit={handleUserLogin}>
-                        <center><h1 sx={{fontFamily: 'Quicksand, sans-serif'}}>Welcome to TopRatedProfessors</h1><br/>
+                        <center><h3 sx={{fontFamily: 'Quicksand, sans-serif'}}>Welcome to TopRatedProfessors</h3><br/>
                             <Button sx={{background: "#17a2b8", display: 'block',width: '100%', borderColor: '#17a2b8'}} href="/" block theme="info"><BiArrowBack/> Go Home</Button><br/>
                             {loginStatus.error && (
                                 <Alert sx={{background: 'red', mt:'10px'}}>
