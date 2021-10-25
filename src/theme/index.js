@@ -88,8 +88,7 @@ export default  {
   section: {
     reviews: {
       fontFamily: 'body',
-      pt: [3, null, 8, '70px', null, 8, null, '25px'],
-      pb: ['50px', null, 9, null, null, 10, null, '50px'],
+      pb: ['10px', null, 6, null, null, 7, null, '20px'],
       overflow: 'hidden',
     },
     writingService: {

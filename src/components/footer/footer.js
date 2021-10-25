@@ -1,5 +1,6 @@
 /** @jsx jsx */
-import { jsx, Box, Container, Grid, Heading, Text} from 'theme-ui';
+import { jsx, Box, Grid, Heading, Text} from 'theme-ui';
+import { Container } from 'rsuite';
 import Lets from 'assets/footer/lets.png';
 import Mcafee from 'assets/footer/mcafee.png';
 import Paypal from 'assets/footer/paypal.png';
@@ -12,7 +13,7 @@ export default function Footer() {
               <Box>
                   <Heading as="h1" sx={styles.footer.heading}>COMPANY</Heading>
                   <center>
-                  <ul>
+                  <ul style={{fontSize:"16px"}}>
                       <li>FAQ</li>
                       <li>Reviews</li>
                       <li>About Us</li>
@@ -25,7 +26,7 @@ export default function Footer() {
               <Box>
                   <Heading as="h1" sx={styles.footer.heading}>LEGAL</Heading>
                   <center>
-                  <ul>
+                  <ul style={{fontSize:"16px"}}>
                       <li>Cookie Policy</li>
                       <li>Privacy Policy</li>
                       <li>Ratings & Reviews</li>
@@ -38,7 +39,7 @@ export default function Footer() {
               <Box>
                   <Heading as="h1" sx={styles.footer.heading}>SERVICES</Heading>
                   <center>
-                  <ul>
+                  <ul style={{fontSize:"16px"}}>
                       <li>Online Tutors</li>
                       <li>Best online tutors</li>
                       <li>Do my homework</li>
@@ -51,7 +52,7 @@ export default function Footer() {
               <Box>
                   <Heading as="h1" sx={styles.footer.heading}>TOPRATED</Heading>
                   <center>
-                  <ul>
+                  <ul style={{fontSize:"16px"}}>
                       <li>Paper revision</li>
                       <li>Custom writing</li>
                       <li>English essays</li>
@@ -62,14 +63,14 @@ export default function Footer() {
                   </center>
               </Box>
           </Grid>
-        <Container>
+        <Grid>
                 <ul sx={{display: 'flex', justifyContent: 'center',   '@media screen and (max-width:768px)': {display: 'none'},}}>
                     <li><img src={Lets} alt="lets_encrypt" width="200px" height="70px"/></li>
                     <li><img src={Mcafee} alt="mcafee" width="100px"/></li>
                     <li><img src={Paypal} alt="paypal" width="100px"/></li>
                     <li><img src={Visa} alt="visa" width="100px"/></li>
                 </ul>
-            <Text sx={{lineHeight: 1.5, textAlign: 'center',  color: '#A1A9B3', px: 8}}>
+            <p style={{lineHeight: 1.5, textAlign: 'center',  color: '#A1A9B3', paddingLeft: "50px", paddingRight:"50px"}}>
                 Write My Paper for Cheap |
                 Fast Essay Writing Service |
                 Pay for Term Papers  |
@@ -87,10 +88,10 @@ export default function Footer() {
                 Case Study Writing Service |
                 Article Review Writing Service  |
                 Research Proposal Writing Service
-            </Text>
+            </p>
             <Text sx={{textAlign: 'center',color: '#A1A9B3'}}>Rated 4.8 / 5 based on Reviews. |All Reviews</Text>
             <Text sx={{textAlign: 'center',  color: '#A1A9B3'}}>All Rights Reserved</Text>
-        </Container>
+        </Grid>
     </footer>
   );
 }
@@ -115,7 +116,7 @@ const styles = {
           gridTemplateColumns: ['repeat(1,1fr)', 'repeat(2,1fr)',  'repeat(2,1fr)', 'repeat(4,1fr)'],
       },
       heading: {
-          fontFamily: 'body',
+          fontFamily: 'Quicksand, sans-serif',
           color: 'primary',
           ml: 4,
           textAlign:'center',

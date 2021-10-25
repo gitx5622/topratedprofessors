@@ -53,7 +53,7 @@ export default function HowItWorks() {
                   <Box key={item.id} sx={styles.card}>
                     <Box sx={styles.iconBox}>{`0${item.id}`}</Box>
                     <Box sx={styles.wrapper}>
-                      <Heading sx={styles.wrapper.title}>{item.title}</Heading>
+                      <h4>{item.title}</h4>
                     </Box>
                   </Box>
               ))}

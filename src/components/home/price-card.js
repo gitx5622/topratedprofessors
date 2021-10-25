@@ -44,7 +44,7 @@ const styles = {
     width: ['100%', '75%', '100%'],
     mb: '40px',
     mt: '80px',
-    mx: [0, 'auto', 0],
+    mx: "5em",
     '&:before': {
       position: 'absolute',
       content: "''",

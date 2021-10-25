@@ -78,7 +78,7 @@ class WhyChooseUs extends Component {
                 <Grid sx={styles.grid}>
                     <Box sx={{ml: '20px'}}>
                         <h3 style={{textAlign: 'center'}}>Why Choose Us</h3>
-                        <Text sx={{lineHeight: 2.0}}>
+                        <p style={{lineHeight: 2.0, fontSize:"16px"}}>
                             Students go through a lot of challenges. Imagine having five assignments, all due tonight.
                             I bet you would break down as you figure out a way of handling all of them.
                             We understand the challenges students face and, as such always seek to help whenever we can.
@@ -93,16 +93,16 @@ class WhyChooseUs extends Component {
                             The experience within our team guarantees you of quality work, 100% original and on-time delivery.
                             You would have no reason to panic if you hire a professor to do your homework.
                             We boast of helping over 100,000 students from across the globe because they trust us with their assignments and we never fail to deliver.
-                        </Text>
+                        </p>
                         <Text><br/>
-                            <Heading sx={{fontFamily: 'body',fontSize: '20px'}}>Features of Our Assignment Help :</Heading><br/>
+                            <h3 style={{fontSize: '20px'}}>Features of Our Assignment Help :</h3><br/>
                             <Grid sx={styles.featureGrid}>
                                 {data.map((item, index) => (
                                     <Box key={index}>
-                                        <Heading sx={{fontFamily: 'body',fontSize: '17px'}}>{item.title}</Heading>
+                                        <h4 style={{fontSize: '17px'}}>{item.title}</h4>
                                         <Box  sx={styles.assignment}>
                                             <Image src={item.image} alt='wall_clock' sx={styles.image}/>
-                                            <Text sx={{lineHeight: 1.5,}}>{item.text}</Text>
+                                            <p sx={{lineHeight: 1.5,fontSize:"16px"}}>{item.text}</p>
                                         </Box>
                                     </Box>
                                 ))}
@@ -115,23 +115,23 @@ class WhyChooseUs extends Component {
                             <ul style={{listStyle: 'none', textAlign: 'center', lineHeight: [2.5], marginTop: '10px'}}>
                                 <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                                     <Image src={Check} alt="deadline" sx={styles.cardImage}/>
-                                    <li>Any Deadline - Any Subject</li>
+                                    <li style={{fontSize:"16px"}}>Any Deadline - Any Subject</li>
                                 </Box>
                                 <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                                     <Image src={Check} alt="deadline" sx={styles.cardImage}/>
-                                    <li>Detailed Writer Profiles</li>
+                                    <li style={{fontSize:"16px"}}>Detailed Writer Profiles</li>
                                 </Box>
                                 <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                                     <Image src={Check} alt="deadline" sx={styles.cardImage}/>
-                                    <li>Chat With Your Writer</li>
+                                    <li style={{fontSize:"16px"}}>Chat With Your Writer</li>
                                 </Box>
                                 <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                                     <Image src={Check} alt="deadline" sx={styles.cardImage}/>
-                                    <li>Plagiarism Free Papers</li>
+                                    <li style={{fontSize:"16px"}}>Plagiarism Free Papers</li>
                                 </Box>
                                 <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                                     <Image src={Check} alt="deadline" sx={styles.cardImage}/>
-                                    <li>Email and SMS Notifications</li>
+                                    <li style={{fontSize:"16px"}}>Email and SMS Notifications</li>
                                 </Box>
                             </ul>
                             <Image src={Satisfaction} alt='100% original'/>
@@ -188,8 +188,8 @@ const styles = {
             }
             },
         image: {
-            width: '100px',
-            height: '28px'
+            width: '120px',
+            height: '38px'
         },
         assignment: {
             display: 'flex',
@@ -205,6 +205,7 @@ const styles = {
         cardImage: {
             width: '25px',
             height: '25px',
+            marginTop:"10px",
             mr: [1, null, 5],
         },
     }

@@ -8,32 +8,32 @@ import LogoDark from 'assets/logo.png';
 import MobileDrawer from './mobile-drawer';
 import menuItems from './header.data';
 
-const Header  = ({ className }) => {
+const Header = ({ className }) => {
   const router = useRouter();
   return (
-      <header sx={styles.header} className={className}>
-          <Logo src={LogoDark}/>
-            <Flex as="nav" sx={styles.nav}>
-              {menuItems.map((menuItem, i) => (
-                  <Link
-                  activeClass="active"
-                  to={menuItem.path}
-                  spy={true}
-                  smooth={true}
-                  offset={-70}
-                  duration={500}
-                  key={i}
-                  >
-                    {menuItem.label}
-                  </Link>
-              ))}
-            </Flex>
-        <Box sx={{display: 'flex', gap: '10px'}}>
-          <Button className="login__btn" onClick={() => router.push('/user/login')} variant="secondary" aria-label="Get Started">Login</Button>
-          <Button className="register__btn" onClick={() => router.push('/user/register')}  variant="secondary" aria-label="Get Started">Get Started</Button>
-        </Box>
-          <MobileDrawer/>
-      </header>
+    <header sx={styles.header} className={className}>
+      <Logo src={LogoDark} />
+      <Flex as="nav" sx={styles.nav}>
+        {menuItems.map((menuItem, i) => (
+          <Link
+            activeClass="active"
+            to={menuItem.path}
+            spy={true}
+            smooth={true}
+            offset={-70}
+            duration={500}
+            key={i}
+          >
+            {menuItem.label}
+          </Link>
+        ))}
+      </Flex>
+      <Box sx={{ display: 'flex', gap: '10px' }}>
+        <Button className="login__btn" onClick={() => router.push('/user/login')} variant="secondary" aria-label="Get Started">Login</Button>
+        <Button className="register__btn" onClick={() => router.push('/user/register')} variant="secondary" aria-label="Get Started">Get Started</Button>
+      </Box>
+      <MobileDrawer />
+    </header>
   );
 }
 
@@ -186,6 +186,8 @@ const styles = {
       display: 'none',
     },
     a: {
+      color: "black",
+      textDecoration: "none",
       fontSize: 2,
       fontWeight: 'body',
       px: 5,

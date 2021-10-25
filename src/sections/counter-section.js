@@ -27,7 +27,7 @@ const CounterSection = () => {
             <Grid sx={styles.counter.grid}>
                 {data.map((item, index) => (
                     <Box  key={index} sx={styles.counter.vertical}>
-                    <Heading sx={styles.counter.number}><CountUp  start={10} duration={6} end={item.number} /></Heading>
+                    <center><h1 style={{color:"white"}}><CountUp  start={10} duration={6} end={item.number} /></h1></center>
                     <Text sx={styles.counter.content}>{item.content}</Text>
                     </Box>
                 ))}
@@ -62,12 +62,6 @@ const styles = {
                 '80px 90px',
             ],
             gridTemplateColumns: ['repeat(1,1fr)', 'repeat(2,1fr)',  'repeat(2,1fr)', 'repeat(4,1fr)'],
-        },
-        number: {
-            fontFamily: 'body',
-            textAlign: 'center',
-            fontSize: [4, null, 45],
-            color: 'white',
         },
         content: {
             fontFamily: 'body',

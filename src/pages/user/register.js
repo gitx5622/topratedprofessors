@@ -79,7 +79,7 @@ export default function Register() {
                         <center>
                             <h3 sx={{fontFamily: 'Quicksand, sans-serif'}}>Welcome to TopRatedProfessors</h3><br/>
                             <Button sx={{background: "#17a2b8", display: 'block',width: '100%', borderColor: '#17a2b8'}}
-                                    href="/" block theme="info"><BiArrowBack/> Go Home</Button><br/>
+                                    onClick={()=> router.push("/")} block theme="info"><BiArrowBack/> Go Home</Button><br/>
                             {checkDetailsData.errorMessage && (
                                 <Alert sx={{background: 'red', mt:'10px'}}>
                                 {checkDetailsData.errorMessage }

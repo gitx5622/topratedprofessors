@@ -1,19 +1,21 @@
 /** @jsx jsx */
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { jsx } from 'theme-ui';
-import { Image, Grid, Box, Heading, Text, Button } from 'theme-ui';
-import {useDispatch, useSelector} from "react-redux";
+import { Image, Box, Heading,Button } from 'theme-ui';
+import { Grid, Row, Col } from "rsuite";
+import { useDispatch, useSelector } from "react-redux";
 import Original from 'assets/original-stamp.png';
 import Check from 'assets/check.png';
 import ShapeLeft from 'assets/shape-left.png';
 import ShapeRight from 'assets/shape-right.png';
 import CalculatorCard from "../components/home/calculator_card";
-import {getLevels} from "../dataStore/actions/levelsAction";
-import {getTypes} from "../dataStore/actions/typesAction";
-import {getUrgencies} from "../dataStore/actions/urgenciesAction";
-import {getServices} from "../dataStore/actions/servicesAction";
-import {getPages} from "../dataStore/actions/pagesAction";
+import { getLevels } from "../dataStore/actions/levelsAction";
+import { getTypes } from "../dataStore/actions/typesAction";
+import { getUrgencies } from "../dataStore/actions/urgenciesAction";
+import { getServices } from "../dataStore/actions/servicesAction";
+import { getPages } from "../dataStore/actions/pagesAction";
+import { Divider } from "rsuite";
 
 export default function Banner() {
     const levelsSelector = useSelector(store => store.levelState);
@@ -83,47 +85,53 @@ export default function Banner() {
     };
     return (
         <section sx={styles.banner} id="home">
-            <Grid sx={styles.banner.grid}>
-                <Box sx={styles.banner.bannerCard}>
-                    <center><h3>Hire Experts to Do Your Assignment</h3></center>
-                    <Box sx={styles.banner.buttonGroup}>
-                        <Box sx={{lineHeight: 3.0}}>
-                            <Text><Image src={Check} alt="checks" sx={styles.banner.checks}/> A+ Quality Paper</Text>
-                            <Text><Image src={Check} alt="checks" sx={styles.banner.checks}/> 100% Written from Scratch</Text>
+            <Grid fluid>
+                <Row>
+                    <Col xs={10} mdOffset={2}>
+                        <Box sx={styles.banner.bannerCard}>
+                            <center><h3>Hire Experts to Do Your Assignment</h3></center>
+                            <Box sx={styles.banner.buttonGroup}>
+                                <Box sx={{ lineHeight: 3.0 }}>
+                                    <p style={{ fontSize: "16px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> A+ Quality Paper</p>
+                                    <p style={{ fontSize: "16px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> 100% Written from Scratch</p>
+                                </Box>
+                                <Box sx={{ lineHeight: 3.0 }}>
+                                    <p style={{ fontSize: "16px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> Unlimited Free Revisions</p>
+                                    <p style={{ fontSize: "16px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> On Time Delivery </p>
+                                </Box>
+                            </Box>
+                            <center><p style={{ fontSize: "16px" }}>We are the best custom essay writers online.</p></center><br />
+                            <center><h4>100% SATISFACTION GUARANTEED</h4></center>
+                            <Box sx={styles.banner.buttonGroup}>
+                                <Button className='buttons' onClick={() => router.push('/dashboard/completed')} >Dashboard</Button>
+                                <Button className='buttons' onClick={() => router.push('/dashboard/completed')} >Order Now</Button>
+                            </Box>
                         </Box>
-                        <Box sx={{lineHeight: 3.0}}>
-                            <Text><Image src={Check} alt="checks" sx={styles.banner.checks}/> Unlimited Free Revisions</Text>
-                            <Text><Image src={Check} alt="checks" sx={styles.banner.checks}/> On Time Delivery </Text>
+                    </Col>
+                    <Col xs={10} mdOffset={2}>
+                        <Box sx={styles.calculatorCard}>
+                            <CalculatorCard
+                                myLevel={mylevel}
+                                myPages={mypages}
+                                myService={myservice}
+                                myType={mytype}
+                                myUrgency={myurgency}
+                                levelsData={levelsData}
+                                serviceData={servicesData}
+                                pagesData={pagesData}
+                                typesData={typesData}
+                                urgenciesData={urgenciesData}
+                                parsePageSelected={parsePageSelected}
+                                parseServiceSelected={parseServiceSelected}
+                                parseTypeSelected={parseTypeSelected}
+                                parseLevelSelected={parseLevelSelected}
+                                parseUrgencySelected={parseUrgencySelected}
+                            />
                         </Box>
-                    </Box>
-                    <center><p>We are the best custom essay writers online.</p></center><br/>
-                    <center><h4>100% SATISFACTION GUARANTEED</h4></center>
-                    <Box sx={styles.banner.buttonGroup}>
-                        <Button className='buttons' onClick={() => router.push('/dashboard/completed')} >Dashboard</Button>
-                        <Button className='buttons' onClick={() => router.push('/dashboard/completed')} >Order Now</Button>
-                    </Box>
-                </Box>
-                <Box sx={styles.calculatorCard}>
-                    <CalculatorCard
-                        myLevel={mylevel }
-                        myPages={mypages}
-                        myService={myservice}
-                        myType={mytype}
-                        myUrgency={myurgency}
-                        levelsData={levelsData}
-                        serviceData={servicesData}
-                        pagesData={pagesData}
-                        typesData={typesData}
-                        urgenciesData={urgenciesData}
-                        parsePageSelected={parsePageSelected}
-                        parseServiceSelected={parseServiceSelected}
-                        parseTypeSelected={parseTypeSelected}
-                        parseLevelSelected={parseLevelSelected}
-                        parseUrgencySelected={parseUrgencySelected}
-                    />
-                </Box>
+                    </Col>
+                </Row>
             </Grid>
-            <hr sx={{border: '1px solid rgba(0, 0, 0, 0.2)'}}/>
+            <Divider />
         </section>
     );
 }
@@ -132,7 +140,6 @@ const styles = {
     banner: {
         fontFamily: 'body',
         pt: ['40px', '45px', '55px', '70px', null, null, '80px', '115px'],
-        pb: [2, null, 0, null, 2, 0, null, 5],
         position: 'relative',
         zIndex: 2,
         '&::before': {
@@ -168,12 +175,12 @@ const styles = {
             gridTemplateColumns: ['repeat(1,1fr)', null, 'repeat(2,1fr)'],
         },
         bannerCard: {
-            width: ['100%', null, '100%'],
-            py: [2, null, null, null, null, null, 3],
+            width: ['100%', null, '95%'],
+            padding: "20px",
+            paddingBottom:"0px",
             mr: [0, 2, 4, null, null, 6, 8, 10],
             ml: [2, null, null, null, null, null, 3],
-            mt: [6, null, null, 5, null, null, 4 ],
-            px: [2, null, null, 3, null, null, 4],
+            mt: '20px',
             border: '1px solid whitesmoke',
             borderRadius: '10px',
             transition: 'all 0.3s',
@@ -186,11 +193,11 @@ const styles = {
             justifyContent: 'space-between',
             mx: ['10px', '30px', '50px'],
             py: [2, null, null, 3, null, null, 6],
-            '.buttons' : {
+            '.buttons': {
                 borderRadius: '10px',
                 fontSize: ['14px', null, null, 2],
                 letterSpacings: '-0.15px',
-                padding: ['12px 20px', null, '15px 30px'],
+                padding: ['12px 20px', null, '15px 15px'],
                 fontFamily: 'body',
                 backgroundColor: 'secondary',
                 cursor: 'pointer',

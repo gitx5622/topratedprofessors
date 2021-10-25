@@ -5,12 +5,12 @@ const HomeworkCard = ({title,number, content}) => {
     return (
         <Card sx={styles.card}>
             {title && (
-                <Heading sx={styles.title}>{title}</Heading>
+                <h5>{title}</h5>
             )}
             {number && (
                 <Heading sx={styles.number}>{number}</Heading>
             )}
-            <p>{content}</p>
+            <p style={{fontSize:"16px"}}>{content}</p>
         </Card>
     );
 };
@@ -24,11 +24,6 @@ const styles = {
         borderRadius: '10px',
         padding: '20px',
         lineHeight: 1.5,
-    },
-    title: {
-        fontFamily: 'body',
-        lineHeight:1.5,
-        fontSize: ['16px', null, '18px'],
     },
     number: {
         fontSize: [30, 36, 40],
