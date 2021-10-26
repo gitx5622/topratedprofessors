@@ -87,12 +87,12 @@ export default function Banner() {
         <section sx={styles.banner} id="home">
             <Grid fluid>
                 <Row>
-                    <Col xs={10} mdOffset={2}>
+                    <Col xs={24} sm={24} md={10} mdOffset={2}>
                         <Box sx={styles.banner.bannerCard}>
                             <center><h3>Hire Experts to Do Your Assignment</h3></center>
                             <Box sx={styles.banner.buttonGroup}>
                                 <Box sx={{ lineHeight: 3.0 }}>
-                                    <p style={{ fontSize: "16px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> A+ Quality Paper</p>
+                                    <p style={{ fontSize: "15px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> A+ Quality Paper</p>
                                     <p style={{ fontSize: "16px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> 100% Written from Scratch</p>
                                 </Box>
                                 <Box sx={{ lineHeight: 3.0 }}>
@@ -108,7 +108,7 @@ export default function Banner() {
                             </Box>
                         </Box>
                     </Col>
-                    <Col xs={10} mdOffset={2}>
+                    <Col xs={22} sm={22} md={10} mdOffset={2}>
                         <Box sx={styles.calculatorCard}>
                             <CalculatorCard
                                 myLevel={mylevel}
@@ -176,10 +176,9 @@ const styles = {
         },
         bannerCard: {
             width: ['100%', null, '100%'],
-            padding: "20px",
-            paddingBottom:"0px",
-            mr: [0, 2, 4, null, null, 6, 8, 10],
-            ml: [2, null, null, null, null, null, 3],
+            paddingLeft: "20px",
+            paddingRight: "20px",
+            paddingTop:"20px",
             mt: '20px',
             border: '1px solid whitesmoke',
             borderRadius: '10px',
@@ -192,7 +191,7 @@ const styles = {
             display: 'flex',
             justifyContent: 'space-between',
             mx: ['10px', '30px', '50px'],
-            py: [2, null, null, 3, null, null, 6],
+            py: [2, null, null, 3, null, null, 4],
             '.buttons': {
                 borderRadius: '10px',
                 fontSize: ['14px', null, null, 2],
