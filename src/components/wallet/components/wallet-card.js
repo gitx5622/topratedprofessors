@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import {
     Button, Panel, Row, Col, Grid, ButtonToolbar,
-    Table, Divider, Drawer, Form, Checkbox, Message, Modal,
+    Table, Divider, Drawer, Form, Message, Modal, Placeholder,
 } from 'rsuite';
 import { LoopCircleLoading } from 'react-loadingg';
 import { jsx, Box, } from 'theme-ui';
@@ -173,7 +173,9 @@ const WalletCard = ({ section }) => {
                 </Box>
                 <Divider />
                 {walletLoading && (
+                    <Placeholder.Paragraph rows={8}>
                     <LoopCircleLoading />
+                    </Placeholder.Paragraph>
                 )}
                 <Panel shaded>
                     <Grid fluid>
@@ -201,13 +203,19 @@ const WalletCard = ({ section }) => {
                             </Col>
                             <Col xs={12}>
                                 <form onSubmit={handleMakePaymentSubmit} style={{ background: "whitesmoke", borderRadius: '20px', padding: "20px" }}>
+                                    <center>
                                     <h3>Add funds to your account</h3><br />
-                                    <h5>Amount (USD): (Min amount: $0.01)</h5>
-                                    <input style={{ height: '30px' }} name="order_amount" onChange={handleChange} /><br /><br />
+                                    <h5>Amount (USD): (Min amount: $0.01)</h5><br/>
+                                    <input style={{borderRadius:"5px", fontSize:"24px",border:"1px solid #444141",  height: '40px', width:"80%" }} name="order_amount" onChange={handleChange} /><br /><br />
                                     <h5>Payment Methods</h5>
-                                    <Checkbox defaultChecked><img src={Payment} width="100" alt="" /></Checkbox>
-                                    <button style={{ background: "#17c671", padding: "10px", borderRadius: "5px" }} type="submit">Proceed</button>
-                                    {/* <Form.Group controlId="amount">
+                                    <img src={Payment} width="100" alt="" /><br/><br/>
+                                    <p>
+                                    By clicking proceed button, means I understand and agree to the Terms of Service , including the Privacy
+                                    Policy and Refund Policy
+                                    </p>
+                                    <button style={{ background: "#17c671", width:"80%", padding: "10px", borderRadius: "5px" }} type="submit">Proceed</button>
+                                    </center>
+                                        {/* <Form.Group controlId="amount">
                                         <h5>Amount (USD): (Min amount: $0.01)</h5>
                                         <Form.ControlLabel>Amount</Form.ControlLabel>
                                         <Form.Control name="amount" onChange={handleChange} mb={3} />
