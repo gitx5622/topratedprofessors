@@ -5,11 +5,11 @@ import {
     Button, Panel, Row, Col, Grid, ButtonToolbar,
     Table, Divider, Drawer, Form, Message, Modal, Placeholder,
 } from 'rsuite';
-import { LoopCircleLoading } from 'react-loadingg';
 import { jsx, Box, } from 'theme-ui';
 import Payment from '../../../assets/payment.png';
 import { makePayment } from '../../../dataStore/actions/walletAction';
 import { useDispatch, useSelector } from "react-redux";
+import Loading from './loading';
 import { useRouter } from 'next/router';
 
 const ActionCell = ({ rowData, dataKey, ...props }) => {
@@ -173,17 +173,16 @@ const WalletCard = ({ section }) => {
                 </Box>
                 <Divider />
                 {walletLoading && (
-                    <Placeholder.Paragraph rows={8}>
-                    <LoopCircleLoading />
-                    </Placeholder.Paragraph>
+                    <Loading/>
                 )}
                 <Panel shaded>
                     <Grid fluid>
                         <Row className="show-grid">
                             <Col xs={12} style={{ borderRight: "1px solid whitesmoke" }}>
+                                <Panel style={{background:"whitesmoke", borderRadius:"20px"}}>
                                 <h5>Trasanctions</h5><br />
-                                <Table bordered={true} cellBordered={true} height={350} style={{ color: "black", fontWeight: 500, fontFamily: "Quicksand, sans-serif" }}>
-                                    <Table.Column width={100} align="center">
+                                <Table bordered={true} cellBordered={true} style={{ minHeight: 275, color: "black", fontWeight: 500, fontFamily: "Quicksand, sans-serif" }}>
+                                    <Table.Column width={50} align="center">
                                         <Table.HeaderCell style={{ background: "#fdaa8f" }}><h6>Date</h6></Table.HeaderCell>
                                         <Table.Cell dataKey="id" style={{ color: "black" }} />
                                     </Table.Column>
@@ -200,6 +199,7 @@ const WalletCard = ({ section }) => {
                                         <ActionCell dataKey="id" />
                                     </Table.Column>
                                 </Table>
+                                </Panel>
                             </Col>
                             <Col xs={12}>
                                 <form onSubmit={handleMakePaymentSubmit} style={{ background: "whitesmoke", borderRadius: '20px', padding: "20px" }}>
