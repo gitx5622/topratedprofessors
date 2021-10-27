@@ -10,6 +10,7 @@ import Finances from "../wallet/finances";
 import SettingEdit from "../settings/edit";
 import SettingView from "../settings/view";
 import OrderDetails from 'components/orders/components/order-details';
+import Transactions from "../wallet/transactions";
 
 const Dashboard = ({ section }) => {
     const renderOrderPages = () => {
@@ -53,6 +54,12 @@ const Dashboard = ({ section }) => {
             case 'wallet':
                 return (
                     <Finances
+                        section={section}
+                    />
+                );
+            case 'transactions':
+                return (
+                    <Transactions
                         section={section}
                     />
                 );

@@ -80,19 +80,7 @@ const WalletCard = ({ section }) => {
         if (payment.amount !== "") {
             makePaypalPayment(bodyData).then(response => {
                 const links = response.data.links[1].href;
-                    if (response.status === 200)router.replace(links)
-                    .then(response => {
-                        const { id: userID } = JSON.parse(localStorage.currentUser);
-                        const payerID = router.query.PayerID;
-                        const paymentId = router.query.paymentId;
-                        console.log(payerID);
-                        console.log(paymentId);
-                        if (payerID && paymentId) {
-                            executePayment(dispatch, userID, paymentId, payerID).then(response => {
-                                console.log(response);
-                            })
-                        }
-                    })
+                if (response.status === 200)router.replace(links)
             })
         } else {
             dispatchCheckDetails({
