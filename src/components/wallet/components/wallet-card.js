@@ -5,7 +5,7 @@ import {
     Button, Panel, Row, Col, Grid, ButtonToolbar,
     Table, Divider, Drawer, Form, Checkbox, List
 } from 'rsuite';
-import { jsx, Box,  } from 'theme-ui';
+import { jsx, Box, } from 'theme-ui';
 import Payment from '../../../assets/payment.png';
 import { executePayment, makePayment } from '../../../dataStore/actions/walletAtion';
 import { useDispatch, useSelector } from "react-redux";
@@ -94,14 +94,16 @@ const WalletCard = ({ section }) => {
             }
         }
     };
-    
+    const payerID = router.query.PayerID;
+    const paymentId = router.query.paymentId;
+
     React.useEffect(() => {
         const { id: userID } = JSON.parse(localStorage.currentUser);
-        const payerID = router.query.PayerID;
-        const paymentId = router.query.paymentId;
-        if(userID && payerID && paymentId){
-            executePayment(dispatch, userID, paymentId, payerID)
-        } 
+        if (payerID && paymentId) {
+            executePayment(dispatch, userID, paymentId, payerID).then(response => {
+                console.log(response);
+            })
+        }
     }, [dispatch])
     return (
         <Box>
