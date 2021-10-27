@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from "react-redux";
 import WalletCard from "./components/wallet-card";
-import { executePayment } from "../../dataStore/actions/walletAtion";
+import { executePayment } from "../../dataStore/actions/walletAction";
 import { useRouter } from "next/router";
 
 const Transactions = ({ section }) => {
