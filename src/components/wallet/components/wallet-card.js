@@ -100,7 +100,7 @@ const WalletCard = ({ section }) => {
         const payerID = router.query.PayerID;
         const paymentId = router.query.paymentId;
         if(userID && payerID && paymentId){
-            executePayment(dispatch, userID, payerID, paymentId)
+            executePayment(dispatch, userID, paymentId, payerID)
         } 
     }, [dispatch])
     return (

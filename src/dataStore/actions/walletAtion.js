@@ -38,7 +38,7 @@ export const executePayment= async (dispatch,userID, paymentId, PayerID) => {
     });
     try {
 
-        return await axiosConfig.post(`/users/${userID}/paypal_success_callback?paymentId=${paymentId}&PayerID=${PayerID}`, bodyData,{
+        return await axiosConfig.post(`/users/${userID}/paypal_success_callback?paymentId=${paymentId}&PayerID=${PayerID}`,{
             headers: {
                 'x-toprated-token': localStorage.token,
             }
