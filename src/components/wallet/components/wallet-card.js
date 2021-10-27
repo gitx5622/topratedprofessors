@@ -96,7 +96,7 @@ const WalletCard = ({ section }) => {
         }
     };
     
-    useEffect(() => {
+    React.useEffect(() => {
         const userID = JSON.parse(localStorage.currentUser.id)
         const payerID = router.query.PayerID;
         const paymentId = router.query.paymentId;
