@@ -7,7 +7,7 @@ import {
 } from 'rsuite';
 import { jsx, Box, } from 'theme-ui';
 import Payment from '../../../assets/payment.png';
-import { executePayment, makePayment } from '../../../dataStore/actions/walletAtion';
+import { makePayment } from '../../../dataStore/actions/walletAtion';
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from 'next/router';
 
@@ -194,12 +194,12 @@ const WalletCard = ({ section }) => {
                                 </Table>
                             </Col>
                             <Col xs={12}>
-                                <form onSubmit={handleMakePaymentSubmit} fluid style={{ background: "whitesmoke", borderRadius: '20px', padding: "20px" }}>
+                                <form onSubmit={handleMakePaymentSubmit}  style={{ background: "whitesmoke", borderRadius: '20px', padding: "20px" }}>
                                     <h3>Add funds to your account</h3><br />
                                     <h5>Amount (USD): (Min amount: $0.01)</h5>
                                     <input style={{ height: '30px' }} name="order_amount" onChange={handleChange} /><br /><br />
                                     <h5>Payment Methods</h5>
-                                    <Checkbox defaultChecked><img src={Payment} width="100" /></Checkbox>
+                                    <Checkbox defaultChecked><img src={Payment} width="100"  alt=""/></Checkbox>
                                     <button style={{ background: "#17c671", padding: "10px", borderRadius: "5px" }} type="submit">Proceed</button>
                                     {/* <Form.Group controlId="amount">
                                         <h5>Amount (USD): (Min amount: $0.01)</h5>
