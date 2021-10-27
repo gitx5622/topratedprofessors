@@ -32,4 +32,32 @@ export const makePayment= async (dispatch, bodyData) => {
     }
 };
 
+export const executePayment= async (dispatch,userID, paymentId, PayerID) => {
+    dispatch({
+        type: EXECUTE_PAYMENT,
+    });
+    try {
+
+        return await axiosConfig.post(`/users/${userID}/paypal_success_callback?paymentId=${paymentId}&PayerID=${PayerID}`, bodyData,{
+            headers: {
+                'x-toprated-token': localStorage.token,
+            }
+            }).then(response => {
+            
+            dispatch({
+                type: EXECUTE_PAYMENT_SUCCESS,
+            });
+
+            return response;
+        });
+    } catch (error) {
+        dispatch({
+            type: EXECUTE_PAYMENT_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+
 
