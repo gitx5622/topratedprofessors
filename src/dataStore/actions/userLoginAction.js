@@ -40,7 +40,7 @@ export const loginUser = async (dispatch, bodyData) => {
             type: ERROR,
             errorMessage:
                 knownErrorStatusCodesResponses[error.response.status] ||
-                error.response.data.error_message,
+                error.response.data.message,
         });
 
         return error.response;

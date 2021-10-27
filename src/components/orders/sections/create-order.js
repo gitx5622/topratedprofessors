@@ -87,7 +87,20 @@ const CreateOrder = () => {
         localStorage.pages_id = order.pages_id;
         localStorage.subject_id = order.subject_id;
     }
-    const onPrevious = () => onChange(step - 1);
+    const onPrevious = () => {
+        onChange(step - 1);
+        // order.service_id = parseInt(localStorage.service_id, 10),
+        // order.urgency_id = parseInt(localStorage.urgency_id, 10)
+        // order.spacing_id = parseInt(localStorage.spacing_id, 10)
+        // order.type_id = parseInt(localStorage.type_id, 10),
+        // order.style_id = parseInt(localStorage.style_id, 10),
+        // order.language_id = parseInt(localStorage.language_id, 10), 
+        // order.level_id  = parseInt(localStorage.level_id, 10),
+        // order.sources_id = parseInt(localStorage.sources_id, 10),
+        // order.pages_id = parseInt(localStorage.pages_id, 10),
+        // order.subject_id = parseInt(localStorage.subject_id, 10)
+
+    }
 
     const handleChange = (event) => {
         let value = event.target.value;
@@ -181,16 +194,16 @@ const CreateOrder = () => {
         const { id: userID } = JSON.parse(localStorage.currentUser);
         const bodyData = {
             user_id: parseInt(userID),
-            service_id: parseInt(order.service_id, 10),
-            type_id: parseInt(order.type_id, 10),
-            style_id: parseInt(order.style_id, 10),
-            level_id: parseInt(order.level_id, 10),
-            pages_id: parseInt(order.pages_id, 10),
-            urgency_id: parseInt(order.urgency_id, 10),
-            subject_id: parseInt(order.subject_id, 10),
-            sources_id: parseInt(order.sources_id, 10),
-            spacing_id: parseInt(order.spacing_id, 10),
-            language_id: parseInt(order.language_id, 10),
+            service_id: parseInt(localStorage.service_id, 10),
+            type_id: parseInt(localStorage.type_id, 10),
+            style_id: parseInt(localStorage.style_id, 10),
+            level_id: parseInt(localStorage.level_id,10),
+            pages_id: parseInt(localStorage.pages_id,10),
+            urgency_id: parseInt(localStorage.urgency_id,10),
+            subject_id: parseInt(localStorage.subject_id,10),
+            sources_id: parseInt(localStorage.sources_id,10),
+            spacing_id: parseInt(localStorage.spacing_id,10),
+            language_id: parseInt(localStorage.language_id,10),
             phone: order.phone,
             topic: order.topic,
             instructions: order.instructions,
@@ -201,6 +214,7 @@ const CreateOrder = () => {
             topwriter: true,
             promocode: '',
         }
+        console.log(bodyData)
         if (order.phone !== "" && order.topic !== "" && order.instructions !== "") {
             addOrder(bodyData);
             router.push("/dashboard/completed")
@@ -254,16 +268,16 @@ const CreateOrder = () => {
                             )}
                             {step === 0 && (
                                 <Box>
-                                    <Box style={{display:"flex", justifyContent:"space-between"}}>
+                                    <Box style={{ display: "flex", justifyContent: "space-between" }}>
                                         <h5>Enter Order details:</h5><br />
-                                        <Box style={{display:"flex", justifyContent:"space-between"}}>
+                                        <Box style={{ display: "flex", justifyContent: "space-between" }}>
                                             <h5>Have a promo Code ?</h5>
                                             <InputGroup>
                                                 <Input />
                                                 <InputGroup.Addon style={{ background: "blue", color: "white" }}>Apply</InputGroup.Addon>
                                             </InputGroup>
                                         </Box>
-                                    </Box><br/>
+                                    </Box><br />
                                     <Col xs={8}>
                                         <Label htmlFor="sound">Service</Label>
                                         <Select onChange={parseServiceSelected} name="service_id" mb={3}>
@@ -342,7 +356,7 @@ const CreateOrder = () => {
                                             })}
                                         </Select>
                                         <Label htmlFor="sound">Pages</Label>
-                                        <Select onChange={parsePageSelected} name="page_id" id="page_id" mb={3}>
+                                        <Select onChange={parsePageSelected} name="pages_id" id="pages_id" mb={3}>
                                             {pageSelector.pages.map(page => {
                                                 return (
                                                     <option key={page.id} value={JSON.stringify(page)}>{page.name}</option>

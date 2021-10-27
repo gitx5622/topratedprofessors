@@ -211,7 +211,7 @@ const OrderLayout = ({ children }) => {
                                      />
                                 <Nav.Item>
                                     <center>
-                                        <div style={{ marginTop: "-10px", textDecoration: "none" }}>{username}</div>
+                                        <div style={{ textDecoration: "none" }}>{username}</div>
                                     </center>
                                 </Nav.Item>
                                 <Nav.Item

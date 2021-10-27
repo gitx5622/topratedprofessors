@@ -5,8 +5,11 @@ import {
     Button, Panel, Row, Col, Grid, ButtonToolbar,
     Table, Divider, Drawer, Form, Checkbox, List
 } from 'rsuite';
-import { jsx, Box } from 'theme-ui';
+import { jsx, Box, Input, Label } from 'theme-ui';
 import Payment from '../../../assets/payment.png';
+import { makePayment } from '../../../dataStore/actions/walletAtion';
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from 'next/router';
 
 const ActionCell = ({ rowData, dataKey, ...props }) => {
     const [open, setOpen] = React.useState(false);
@@ -48,6 +51,51 @@ const ActionCell = ({ rowData, dataKey, ...props }) => {
 };
 const WalletCard = ({ section }) => {
     const [openWithHeader, setOpenWithHeader] = useState(false);
+    const [payment, setPayment] = useState({
+        order_amount: "",
+        user_id: "",
+    });
+
+    const dispatch = useDispatch();
+    const router = useRouter();
+    const handleChange = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        setPayment({
+            ...payment,
+            [name]: value,
+        })
+    };
+
+    const makePaypalPayment = (credentials) => makePayment(dispatch, credentials);
+
+    const handleMakePaymentSubmit = (event) => {
+        event.persist();
+        event.preventDefault();
+        const { id: userID } = JSON.parse(localStorage.currentUser);
+        const bodyData = {
+            user_id: parseInt(userID),
+            order_amount: parseInt(payment.order_amount, 10)
+
+        }
+        if (payment.amount !== "") {
+            makePaypalPayment(bodyData).then(response => {
+                const links = response.data.links[1].href;
+                if (response.status === 200) router.replace(links);
+                if (response.data.message)
+                    setLoginStatus({ loading: false, error: response.data.message });
+            })
+        } else {
+            dispatchCheckDetails({
+                type: 'ERROR',
+                errorMessage: 'Make sure all the fields all filled',
+            });
+            if (errorMessage.errorMessage) {
+                <Message type="error">Error</Message>
+            }
+        }
+    };
+    console.log(router.query);
     return (
         <Box>
             <Head>
@@ -131,30 +179,36 @@ const WalletCard = ({ section }) => {
                             <Col xs={12} style={{ borderRight: "1px solid whitesmoke" }}>
                                 <h5>Trasanctions</h5><br />
                                 <Table bordered={true} cellBordered={true} height={350} style={{ color: "black", fontWeight: 500, fontFamily: "Quicksand, sans-serif" }}>
-                                    <Table.Column width={100} flexGrow={1} align="center">
+                                    <Table.Column width={100} align="center">
                                         <Table.HeaderCell style={{ background: "#fdaa8f" }}><h6>Date</h6></Table.HeaderCell>
                                         <Table.Cell dataKey="id" style={{ color: "black" }} />
                                     </Table.Column>
-                                    <Table.Column width={200} flexGrow={1}>
+                                    <Table.Column width={100}>
                                         <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Type</h6></Table.HeaderCell>
                                         <Table.Cell dataKey="phone" />
                                     </Table.Column>
-                                    <Table.Column width={200} flexGrow={1}>
+                                    <Table.Column width={120}>
                                         <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Amount</h6></Table.HeaderCell>
                                         <Table.Cell dataKey="phone" />
                                     </Table.Column>
-                                    <Table.Column width={200} flexGrow={1}>
+                                    <Table.Column width={200}>
                                         <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Balance</h6></Table.HeaderCell>
                                         <ActionCell dataKey="id" />
                                     </Table.Column>
                                 </Table>
                             </Col>
                             <Col xs={12}>
-                                <Form fluid style={{ background: "whitesmoke", borderRadius: '20px', padding: "20px" }}>
+                                <form onSubmit={handleMakePaymentSubmit} fluid style={{ background: "whitesmoke", borderRadius: '20px', padding: "20px" }}>
                                     <h3>Add funds to your account</h3><br />
-                                    <Form.Group controlId="name-1">
+                                    <h5>Amount (USD): (Min amount: $0.01)</h5>
+                                    <input style={{ height: '30px' }} name="order_amount" onChange={handleChange} /><br /><br />
+                                    <h5>Payment Methods</h5>
+                                    <Checkbox defaultChecked><img src={Payment} width="100" /></Checkbox>
+                                    <button style={{ background: "#17c671", padding: "10px", borderRadius: "5px" }} type="submit">Proceed</button>
+                                    {/* <Form.Group controlId="amount">
                                         <h5>Amount (USD): (Min amount: $0.01)</h5>
-                                        <Form.Control name="name" />
+                                        <Form.ControlLabel>Amount</Form.ControlLabel>
+                                        <Form.Control name="amount" onChange={handleChange} mb={3} />
                                         <Form.HelpText>Required</Form.HelpText>
                                     </Form.Group>
                                     <Form.Group controlId="name-1">
@@ -167,10 +221,10 @@ const WalletCard = ({ section }) => {
                                     </Checkbox>
                                     <Form.Group>
                                         <ButtonToolbar>
-                                            <Button appearance="primary">Proceed</Button>
+                                            <Button type="submit" appearance="primary">Proceed</Button>
                                         </ButtonToolbar>
-                                    </Form.Group>
-                                </Form>
+                                    </Form.Group> */}
+                                </form>
                             </Col>
                         </Row>
                     </Grid>

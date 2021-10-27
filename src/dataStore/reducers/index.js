@@ -10,6 +10,7 @@ import {stylesReducers} from "./stylesReducer";
 import {subjectsReducers} from "./subjectReducer";
 import {typesReducers} from "./typesReducer";
 import {urgenciesReducers} from "./urgencyReducer";
+import { walletReducer } from './walletReducer';
 
 
 const rootReducer = combineReducers({
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
     styleState: stylesReducers,
     subjectState: subjectsReducers,
     typeState: typesReducers,
-    urgencyState: urgenciesReducers
+    urgencyState: urgenciesReducers,
+    walletState: walletReducer,
 });
 
 export default rootReducer;
