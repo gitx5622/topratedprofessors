@@ -15,7 +15,6 @@ const ActionCell = ({ rowData, dataKey, ...props }) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
     const router = useRouter();
     return (
         <Table.Cell {...props} className="link-group">
@@ -97,7 +96,7 @@ const WalletCard = ({ section }) => {
     };
     
     React.useEffect(() => {
-        const userID = JSON.parse(localStorage.currentUser.id)
+        const { id: userID } = JSON.parse(localStorage.currentUser);
         const payerID = router.query.PayerID;
         const paymentId = router.query.paymentId;
         if(userID && payerID && paymentId){
