@@ -40,7 +40,7 @@ const SettingCard = ({ section }) => {
             </Head>
             <Box sx={{ mt: "10px", mx: "10px" }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: '20px' }}>
-                    <h3>My profile</h3>
+                    <h3>My profile:</h3>
                     <Button
                         color="cyan"
                         appearance="primary"
@@ -130,41 +130,41 @@ const SettingCard = ({ section }) => {
                         </Row>
                     </Grid>
                 </Box><br />
-                <Panel shaded style={{ background: "whitesmoke", }}>
+                <Panel shaded>
                     Last Orders
                     <Table bordered={true} cellBordered={true} height={350} style={{ color: "black", fontFamily: "Quicksand, sans-serif" }}>
                         <Table.Column width={50} align="center" resizable>
-                            <Table.HeaderCell style={{ background: "#34c3ff" }}><h6>Id</h6></Table.HeaderCell>
+                            <Table.HeaderCell style={{ background: "#fdaa8f" }}><h6>Id</h6></Table.HeaderCell>
                             <Table.Cell dataKey="id" style={{ color: "#1675E0" }} />
                         </Table.Column>
                         <Table.Column width={100} resizable>
-                            <Table.HeaderCell style={{ background: "#34c3ff", color: "black" }}><h6>Order Number</h6></Table.HeaderCell>
+                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Order Number</h6></Table.HeaderCell>
                             <Table.Cell dataKey="order_number" />
                         </Table.Column>
 
                         <Table.Column width={100}>
-                            <Table.HeaderCell style={{ background: "#34c3ff", color: "black" }}><h6>Deadline</h6></Table.HeaderCell>
+                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Deadline</h6></Table.HeaderCell>
                             <Table.Cell dataKey="deadline" />
                         </Table.Column>
 
                         <Table.Column width={200}>
-                            <Table.HeaderCell style={{ background: "#34c3ff", color: "black" }}><h6>Email</h6></Table.HeaderCell>
+                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Email</h6></Table.HeaderCell>
                             <Table.Cell dataKey="type.name" style={{ color: "#1675E0" }} />
                         </Table.Column>
                         <Table.Column width={200} flexGrow={1}>
-                            <Table.HeaderCell style={{ background: "#34c3ff", color: "black" }}><h6>Phone</h6></Table.HeaderCell>
+                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Phone</h6></Table.HeaderCell>
                             <Table.Cell dataKey="phone" />
                         </Table.Column>
                         <Table.Column width={200} flexGrow={1}>
-                            <Table.HeaderCell style={{ background: "#34c3ff", color: "black" }}><h6>Country</h6></Table.HeaderCell>
+                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Country</h6></Table.HeaderCell>
                             <Table.Cell dataKey="country" />
                         </Table.Column>
                         <Table.Column width={200} flexGrow={1}>
-                            <Table.HeaderCell style={{ background: "#34c3ff", color: "black" }}><h6>Created At</h6></Table.HeaderCell>
+                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Created At</h6></Table.HeaderCell>
                             <Table.Cell dataKey="created_at" />
                         </Table.Column>
                         <Table.Column width={200} flexGrow={1}>
-                            <Table.HeaderCell style={{ background: "#34c3ff", color: "black" }}><h6>Actions</h6></Table.HeaderCell>
+                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Actions</h6></Table.HeaderCell>
                             <ActionCell dataKey="id" />
                         </Table.Column>
                     </Table>

@@ -80,7 +80,7 @@ const WalletCard = ({ section }) => {
             user_id: parseInt(userID),
             order_amount: parseInt(payment.order_amount, 10)
         }
-        if (payment.amount !== "") {
+        if (payment.order_amount !== "") {
             makePaypalPayment(bodyData).then(response => {
                 const links = response.data.links[1].href;
                 if (response.status === 200) router.push(links)
@@ -90,11 +90,12 @@ const WalletCard = ({ section }) => {
                 type: 'MAKE_PAYMENT_ERROR',
                 errorMessage: 'Make sure all the fields all filled',
             });
-            if (walletError) {
-                <Message type="error">{walletError}</Message>
-            }
         }
     };
+
+    if (walletLoading){
+        <Loading/>
+    }
     return (
         <Box>
             <Head>
@@ -104,7 +105,7 @@ const WalletCard = ({ section }) => {
             </Head>
             <Box sx={{ mt: "10px", mx: "10px" }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: '20px' }}>
-                    <h3>My Balance $0.00</h3>
+                    <h3>My Balance: <span style={{color:"blue"}}>$0.00</span></h3>
                     <Box>
                         <Button
                             color="cyan"
@@ -172,8 +173,8 @@ const WalletCard = ({ section }) => {
                     </Drawer>
                 </Box>
                 <Divider />
-                {walletLoading && (
-                    <Loading/>
+                {walletError && (
+                    <Message type="error">{walletError}</Message>
                 )}
                 <Panel shaded>
                     <Grid fluid>
@@ -215,25 +216,6 @@ const WalletCard = ({ section }) => {
                                     </p>
                                     <button style={{ background: "#17c671", width:"80%", padding: "10px", borderRadius: "5px" }} type="submit">Proceed</button>
                                     </center>
-                                        {/* <Form.Group controlId="amount">
-                                        <h5>Amount (USD): (Min amount: $0.01)</h5>
-                                        <Form.ControlLabel>Amount</Form.ControlLabel>
-                                        <Form.Control name="amount" onChange={handleChange} mb={3} />
-                                        <Form.HelpText>Required</Form.HelpText>
-                                    </Form.Group>
-                                    <Form.Group controlId="name-1">
-                                        <h5>Payment Methods</h5>
-                                        <Checkbox defaultChecked><img src={Payment} width="100" /></Checkbox>
-                                    </Form.Group>
-                                    <Checkbox>
-                                        Yes, I understand and agree to the Terms of Service , including the Privacy
-                                        Policy and Refund Policy
-                                    </Checkbox>
-                                    <Form.Group>
-                                        <ButtonToolbar>
-                                            <Button type="submit" appearance="primary">Proceed</Button>
-                                        </ButtonToolbar>
-                                    </Form.Group> */}
                                 </form>
                             </Col>
                         </Row>
