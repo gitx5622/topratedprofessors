@@ -16,7 +16,7 @@ const Transactions = ({section}) => {
         const { id: userID } = JSON.parse(localStorage.currentUser);
         if (payerID && paymentId) {
             executePayment(dispatch, userID, paymentId, payerID).then(response => {
-                console.log(response);
+                if (response) router.push('/dashboard/transactions', undefined, {shallow: true});
             })
         }
     }, [dispatch, payerID, paymentId])
