@@ -1,4 +1,6 @@
 import {
+    EXECUTE_PAYMENT_SUCCESS,
+    EXECUTE_PAYMENT_ERROR,
     MAKE_PAYMENT_ERROR,
     MAKE_PAYMENT_SUCCESS,
 } from "../dispatchTypes";
@@ -25,6 +27,22 @@ export const walletReducer = (
             };
         }
         case MAKE_PAYMENT_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case EXECUTE_PAYMENT_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: true,
+                isLoading: false,
+                results: action.results,
+            };
+        }
+        case EXECUTE_PAYMENT_ERROR: {
             return {
                 ...state,
                 isSuccess: false,

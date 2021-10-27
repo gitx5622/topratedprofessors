@@ -1,5 +1,8 @@
 import axiosConfig from '../../config/axios';
 import {
+    EXECUTE_PAYMENT,
+    EXECUTE_PAYMENT_SUCCESS,
+    EXECUTE_PAYMENT_ERROR,
     MAKE_PAYMENT,
     MAKE_PAYMENT_SUCCESS,
     MAKE_PAYMENT_ERROR,
