@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import WalletCard from "./components/wallet-card";
 import { executePayment } from "../../dataStore/actions/walletAtion";
 import { useRouter } from "next/router";
-import { loc } from "globby";
 
 const Transactions = ({ section }) => {
     const dispatch = useDispatch();
