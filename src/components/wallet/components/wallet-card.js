@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import {
     Button, Panel, Row, Col, Grid, ButtonToolbar,
-    Table, Divider, Drawer, Form, Checkbox, List
+    Table, Divider, Drawer, Form, Checkbox, Message, Modal,
 } from 'rsuite';
 import { jsx, Box, } from 'theme-ui';
 import Payment from '../../../assets/payment.png';
@@ -96,6 +96,8 @@ const WalletCard = ({ section }) => {
     };
     const payerID = router.query.PayerID;
     const paymentId = router.query.paymentId;
+    console.log(payerID);
+    console.log(paymentId);
 
     React.useEffect(() => {
         const { id: userID } = JSON.parse(localStorage.currentUser);
@@ -104,7 +106,7 @@ const WalletCard = ({ section }) => {
                 console.log(response);
             })
         }
-    }, [dispatch])
+    }, [dispatch, payerID, paymentId])
     return (
         <Box>
             <Head>

@@ -5,17 +5,17 @@ import {
     MAKE_PAYMENT_ERROR,
 } from '../dispatchTypes';
 
-export const makePayment= async (dispatch, bodyData) => {
+export const makePayment = async (dispatch, bodyData) => {
     dispatch({
         type: MAKE_PAYMENT,
     });
     try {
-        return await axiosConfig.post('/make_payment', bodyData,{
+        return await axiosConfig.post('/make_payment', bodyData, {
             headers: {
                 'x-toprated-token': localStorage.token,
             }
-            }).then(response => {
-            
+        }).then(response => {
+
             dispatch({
                 type: MAKE_PAYMENT_SUCCESS,
             });
@@ -32,18 +32,18 @@ export const makePayment= async (dispatch, bodyData) => {
     }
 };
 
-export const executePayment= async (dispatch,userID, paymentId, PayerID) => {
+export const executePayment = async (dispatch, userID, paymentId, PayerID) => {
     dispatch({
         type: EXECUTE_PAYMENT,
     });
     try {
 
-        return await axiosConfig.post(`/users/${userID}/paypal_success_callback?paymentId=${paymentId}&PayerID=${PayerID}`,{
+        return await axiosConfig.post(`/users/${userID}/paypal_success_callback?paymentId=${paymentId}&PayerID=${PayerID}`, {
             headers: {
                 'x-toprated-token': localStorage.token,
             }
-            }).then(response => {
-            
+        }).then(response => {
+
             dispatch({
                 type: EXECUTE_PAYMENT_SUCCESS,
             });
