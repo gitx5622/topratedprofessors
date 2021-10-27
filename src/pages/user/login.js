@@ -37,8 +37,8 @@ export default function Login() {
 
         loginUser(dispatch, bodyData).then(response => {
             if (response.status === 200) router.push('/dashboard/completed');
-            if (response.data.error_message)
-                setLoginStatus({ loading: false, error: response.data.error_message });
+            if (response.data.message)
+                setLoginStatus({ loading: false, error: response.data.message });
         });
     };
 

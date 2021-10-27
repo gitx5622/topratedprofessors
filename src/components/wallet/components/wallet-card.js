@@ -5,6 +5,7 @@ import {
     Button, Panel, Row, Col, Grid, ButtonToolbar,
     Table, Divider, Drawer, Form, Checkbox, Message, Modal,
 } from 'rsuite';
+import { LoopCircleLoading } from 'react-loadingg';
 import { jsx, Box, } from 'theme-ui';
 import Payment from '../../../assets/payment.png';
 import { makePayment } from '../../../dataStore/actions/walletAtion';
@@ -57,6 +58,10 @@ const WalletCard = ({ section }) => {
 
     const dispatch = useDispatch();
     const router = useRouter();
+
+    const walletSelector = useSelector(state => state.walletState);
+    const { isLoading: walletLoading, errorMessage: walletError } = walletSelector;
+
     const handleChange = (e) => {
         let name = e.target.name;
         let value = e.target.value;
@@ -81,12 +86,12 @@ const WalletCard = ({ section }) => {
                 if (response.status === 200) router.push(links)
             })
         } else {
-            dispatchCheckDetails({
-                type: 'ERROR',
+            dispatch({
+                type: 'MAKE_PAYMENT_ERROR',
                 errorMessage: 'Make sure all the fields all filled',
             });
-            if (errorMessage.errorMessage) {
-                <Message type="error">Error</Message>
+            if (walletError) {
+                <Message type="error">{walletError}</Message>
             }
         }
     };
@@ -167,6 +172,9 @@ const WalletCard = ({ section }) => {
                     </Drawer>
                 </Box>
                 <Divider />
+                { walletLoading && (
+                    <LoopCircleLoading />
+                )}
                 <Panel shaded>
                     <Grid fluid>
                         <Row className="show-grid">

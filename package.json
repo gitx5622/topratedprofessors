@@ -51,10 +51,5 @@
     "imagemin-svgo": "^8.0.0",
     "next-sitemap": "^1.2.4",
     "react-data-table-component": "^7.3.1"
-  },
-  "browser": {
-    "fs": false,
-    "path": false,
-    "os": false
   }
 }
