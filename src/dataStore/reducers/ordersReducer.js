@@ -13,7 +13,29 @@ import {
     DELETE_ORDER_ERROR,
     UPDATE_ORDER,
     UPDATE_ORDER_SUCCESS,
-    UPDATE_ORDER_ERROR
+    UPDATE_ORDER_ERROR,
+    GET_COMPLETED_ORDERS,
+    GET_COMPLETED_ORDERS_SUCCESS,
+    GET_COMPLETED_ORDERS_ERROR,
+    GET_APPROVED_ORDERS,
+    GET_APPROVED_ORDERS_SUCCESS,
+    GET_APPROVED_ORDERS_ERROR,
+    GET_REJECTED_ORDERS,
+    GET_REJECTED_ORDERS_SUCCESS,
+    GET_REJECTED_ORDERS_ERROR,
+    GET_CANCELLED_ORDERS,
+    GET_CANCELLED_ORDERS_SUCCESS,
+    GET_CANCELLED_ORDERS_ERROR,
+    GET_PENDING_ORDERS,
+    GET_PENDING_ORDERS_SUCCESS,
+    GET_PENDING_ORDERS_ERROR,
+    GET_ACTIVE_ORDERS,
+    GET_ACTIVE_ORDERS_SUCCESS,
+    GET_ACTIVE_ORDERS_ERROR,
+    GET_WAITING_ASSIGN_ORDERS,
+    GET_WAITING_ASSIGN_ORDERS_SUCCESS,
+    GET_WAITING_ASSIGN_ORDERS_ERROR
+
 } from "../dispatchTypes";
 
 export const initialOrdersState = {
@@ -49,6 +71,174 @@ export const ordersReducers = (
             };
         }
         case GET_ORDERS_ERROR: {
+            return {
+                ...state,
+                isError: true,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case GET_COMPLETED_ORDERS: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case GET_COMPLETED_ORDERS_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                isSuccess: true,
+                orders: action.orders,
+            };
+        }
+        case GET_COMPLETED_ORDERS_ERROR: {
+            return {
+                ...state,
+                isError: true,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case GET_APPROVED_ORDERS: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case GET_APPROVED_ORDERS_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                isSuccess: true,
+                orders: action.orders,
+            };
+        }
+        case GET_APPROVED_ORDERS_ERROR: {
+            return {
+                ...state,
+                isError: true,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case GET_REJECTED_ORDERS: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case GET_REJECTED_ORDERS_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                isSuccess: true,
+                orders: action.orders,
+            };
+        }
+        case GET_REJECTED_ORDERS_ERROR: {
+            return {
+                ...state,
+                isError: true,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case GET_CANCELLED_ORDERS: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case GET_CANCELLED_ORDERS_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                isSuccess: true,
+                orders: action.orders,
+            };
+        }
+        case GET_CANCELLED_ORDERS_ERROR: {
+            return {
+                ...state,
+                isError: true,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case GET_PENDING_ORDERS: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case GET_PENDING_ORDERS_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                isSuccess: true,
+                orders: action.orders,
+            };
+        }
+        case GET_PENDING_ORDERS_ERROR: {
+            return {
+                ...state,
+                isError: true,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case GET_ACTIVE_ORDERS: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case GET_ACTIVE_ORDERS_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                isSuccess: true,
+                orders: action.orders,
+            };
+        }
+        case GET_ACTIVE_ORDERS_ERROR: {
+            return {
+                ...state,
+                isError: true,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case GET_WAITING_ASSIGN_ORDERS: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case GET_WAITING_ASSIGN_ORDERS_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                isSuccess: true,
+                orders: action.orders,
+            };
+        }
+        case GET_WAITING_ASSIGN_ORDERS_ERROR: {
             return {
                 ...state,
                 isError: true,

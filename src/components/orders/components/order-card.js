@@ -6,7 +6,13 @@ import { jsx, Box } from 'theme-ui';
 import { getOrders } from "../../../dataStore/actions/ordersAction";
 import { BoxLoading } from 'react-loadingg';
 import Completed from "../sections/completed";
+import Approved from "../sections/approved";
 import CreateOrder from "../sections/create-order";
+import AllOrders from "../sections/all-orders";
+import Rejected from "../sections/rejected";
+import Cancelled from "../sections/cancelled";
+import Pending from "../sections/pending";
+import WaitingAssign from "../sections/waiting-assign";
 
 const OrderCard = ({ section }) => {
     const dispatch = useDispatch();
@@ -42,6 +48,36 @@ const OrderCard = ({ section }) => {
             {
                 section === 'completed' && (
                     <Completed data={orderData} pagination={pagination} />
+                )
+            }
+            {
+                section === 'approved' && (
+                    <Approved data={orderData} pagination={pagination} />
+                )
+            }
+            {
+                section === 'all-orders' && (
+                    <AllOrders data={orderData} pagination={pagination} />
+                )
+            }
+            {
+                section === 'rejected' && (
+                    <Rejected data={orderData} pagination={pagination} />
+                )
+            }
+            {
+                section === 'cancelled' && (
+                    <Cancelled data={orderData} pagination={pagination} />
+                )
+            }
+            {
+                section === 'pending' && (
+                    <Pending data={orderData} pagination={pagination} />
+                )
+            }
+            {
+                section === 'waiting-assign' && (
+                    <WaitingAssign data={orderData} pagination={pagination} />
                 )
             }
             {section === 'create_order' && (

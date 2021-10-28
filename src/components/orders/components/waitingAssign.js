@@ -17,7 +17,7 @@ export default WaitingAssign;
 
 const styles = {
     completed: {
-        pt: ['50px', null, '70px'],
+        pt: ['10px', null, '10px'],
         pb: ['0px', null, '10px'],
         px: ['0px', null, '10px']
     }

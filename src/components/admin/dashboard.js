@@ -51,6 +51,18 @@ const Dashboard = ({ section }) => {
                         section={section}
                     />
                 );
+            case 'available':
+                return (
+                    <PendingOrders
+                        section={section}
+                    />
+                );
+            case 'cancelled':
+                return (
+                    <PendingOrders
+                        section={section}
+                    />
+                );
             case 'wallet':
                 return (
                     <Finances
@@ -68,7 +80,7 @@ const Dashboard = ({ section }) => {
                     <SettingEdit
                         section={section}
                     />
-                ); 
+                );
             case 'view':
                 return (
                     <SettingView

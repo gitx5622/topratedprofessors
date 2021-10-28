@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatDate, formatDeadline } from '../../../../utils/dates';
 import { makePayment } from 'dataStore/actions/walletAction';
-import { getCompletedOrders } from 'dataStore/actions/ordersAction';
+import { getActiveOrders } from 'dataStore/actions/ordersAction';
 
 
 
@@ -55,7 +55,7 @@ const CreateAtCell = ({ rowData, dataKey, ...props }) => {
         </Table.Cell>
     );
 };
-const Completed = () => {
+const InProgress = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const [openWithHeader, setOpenWithHeader] = useState(false);
@@ -71,7 +71,7 @@ const Completed = () => {
 
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
-        getCompletedOrders(dispatch, userId)
+        getActiveOrders(dispatch, userId)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 
@@ -116,7 +116,7 @@ const Completed = () => {
     return (
         <div style={{ marginLeft: "10px", marginRight: "10px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
-                <h3>Completed Orders:</h3>
+                <h3>Active Orders:</h3>
                 <Button
                     style={{ background: "#17c671" }}
                     appearance="primary"
@@ -233,4 +233,4 @@ const Completed = () => {
     );
 };
 
-export default Completed;
+export default InProgress;

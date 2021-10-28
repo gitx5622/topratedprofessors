@@ -21,8 +21,8 @@ const CreateOrder = () => {
     const [step, setStep] = React.useState(0);
     const [selected, setSelected] = React.useState("");
     const [myservice, setmyservice] = React.useState(8);
-    const [mytype, setmytype] = React.useState(1);
-    const [myurgency, setmyurgency] = React.useState(1);
+    const [mytype, setmytype] = React.useState(1.2);
+    const [myurgency, setmyurgency] = React.useState(2.5);
     const [mypages, setmypages] = React.useState(1);
     const [mylevel, setmylevel] = React.useState(1);
     const [myspacing, setmyspacing] = React.useState(1);
