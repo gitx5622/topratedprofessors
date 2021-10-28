@@ -13,11 +13,11 @@ const Transactions = ({ section }) => {
     React.useEffect(() => {
         localStorage.PID = payerID;
         localStorage.Pid = paymentId;
-        window.history.replaceState(null, '', '/dashboard/transactions');
         const { id: userID } = JSON.parse(localStorage.currentUser);
         if (localStorage.PID && localStorage.Pid) {
             executePayment(dispatch, userID, paymentId, payerID);
         }
+        window.history.replaceState(null, '', '/dashboard/transactions');
     }, [dispatch, payerID, paymentId])
     return (
         <div>
