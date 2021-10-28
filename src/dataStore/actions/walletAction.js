@@ -35,13 +35,13 @@ export const makePayment = async (dispatch, bodyData) => {
     }
 };
 
-export const executePayment = async (dispatch, userID) => {
+export const executePayment = async (dispatch, userID, paymentId, PayerID) => {
     dispatch({
         type: EXECUTE_PAYMENT,
     });
     try {
 
-        return await axiosConfig.get(`/users/${userID}/paypal_success_callback?paymentId=${localStorage.Pid}&PayerID=${localStorage.PID}`, {
+        return await axiosConfig.get(`/users/${userID}/paypal_success_callback?paymentId=${paymentId}&PayerID=${PayerID}`, {
             headers: {
                 'x-toprated-token': localStorage.token,
             }

@@ -11,14 +11,14 @@ const Transactions = ({ section }) => {
     const paymentId = router.query.paymentId;
 
     React.useEffect(() => {
-        localStorage.PID = payerID;
-        localStorage.Pid = paymentId;
         const { id: userID } = JSON.parse(localStorage.currentUser);
-        if (localStorage.PID && localStorage.Pid) {
-            executePayment(dispatch, userID);
+        if (payerID && paymentId) {
+            executePayment(dispatch, userID, paymentId, payerID).then(response => {
+                window.history.replaceState(null, '', '/dashboard/transactions');
+            })
         }
-        window.history.replaceState(null, '', '/dashboard/transactions');
-    }, [dispatch])
+
+    }, [dispatch, paymentId, payerID])
     return (
         <div>
             <WalletCard
