@@ -1,12 +1,19 @@
 import {
-    CREATE_ORDERS_ERROR,
-    CREATE_ORDERS_SUCCESS,
+    CREATE_ORDER,
+    CREATE_ORDER_ERROR,
+    CREATE_ORDER_SUCCESS,
     GET_ORDER,
     GET_ORDER_ERROR,
     GET_ORDER_SUCCESS,
     GET_ORDERS,
     GET_ORDERS_ERROR,
-    GET_ORDERS_SUCCESS
+    GET_ORDERS_SUCCESS,
+    DELETE_ORDER,
+    DELETE_ORDER_SUCCESS,
+    DELETE_ORDER_ERROR,
+    UPDATE_ORDER,
+    UPDATE_ORDER_SUCCESS,
+    UPDATE_ORDER_ERROR
 } from "../dispatchTypes";
 
 export const initialOrdersState = {
@@ -74,7 +81,14 @@ export const ordersReducers = (
                 errorMessage: action.errorMessage,
             };
         }
-        case CREATE_ORDERS_SUCCESS: {
+        case CREATE_ORDER: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case CREATE_ORDER_SUCCESS: {
             return {
                 ...state,
                 isSuccess: true,
@@ -82,7 +96,7 @@ export const ordersReducers = (
                 orders: action.orders,
             };
         }
-        case CREATE_ORDERS_ERROR: {
+        case CREATE_ORDER_ERROR: {
             return {
                 ...state,
                 isSuccess: false,
@@ -90,7 +104,54 @@ export const ordersReducers = (
                 errorMessage: action.errorMessage,
             };
         }
-        default:
+        case DELETE_ORDER: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case DELETE_ORDER_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                order: action.order,
+                orders: state.orders.orders.filter(item => item.id !== action.orderId)
+            };
+        }
+        case DELETE_ORDER_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case UPDATE_ORDER: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case UPDATE_ORDER_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                order: action.order,
+            };
+        }
+        case UPDATE_ORDER_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        default: 
             return state
     }
 

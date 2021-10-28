@@ -197,13 +197,13 @@ const CreateOrder = () => {
             service_id: parseInt(localStorage.service_id, 10),
             type_id: parseInt(localStorage.type_id, 10),
             style_id: parseInt(localStorage.style_id, 10),
-            level_id: parseInt(localStorage.level_id,10),
-            pages_id: parseInt(localStorage.pages_id,10),
-            urgency_id: parseInt(localStorage.urgency_id,10),
-            subject_id: parseInt(localStorage.subject_id,10),
-            sources_id: parseInt(localStorage.sources_id,10),
-            spacing_id: parseInt(localStorage.spacing_id,10),
-            language_id: parseInt(localStorage.language_id,10),
+            level_id: parseInt(localStorage.level_id, 10),
+            pages_id: parseInt(localStorage.pages_id, 10),
+            urgency_id: parseInt(localStorage.urgency_id, 10),
+            subject_id: parseInt(localStorage.subject_id, 10),
+            sources_id: parseInt(localStorage.sources_id, 10),
+            spacing_id: parseInt(localStorage.spacing_id, 10),
+            language_id: parseInt(localStorage.language_id, 10),
             phone: order.phone,
             topic: order.topic,
             instructions: order.instructions,
@@ -240,7 +240,6 @@ const CreateOrder = () => {
         getServices(dispatch);
         getLanguages(dispatch);
         getSpacing(dispatch);
-        addOrder();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 

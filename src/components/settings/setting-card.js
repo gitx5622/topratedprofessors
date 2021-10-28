@@ -101,8 +101,8 @@ const SettingCard = ({ section }) => {
                 <Box>
                     <Grid fluid>
                         <Row className="show-grid" gutter={24}>
-                            <Col xs={12}>
-                                <Panel shaded style={{ background: "whitesmoke", height: "100px" }}>
+                            <Col xs={24} sm={24} md={12} >
+                                <Panel shaded style={{ background: "whitesmoke", height: "100px", marginBottom:"20px" }}>
                                     <Grid fluid>
                                         <Row>
                                             <Col xs={8}><Avatar size="lg" circle style={{ background: 'red' }}>RS</Avatar></Col>
@@ -114,7 +114,7 @@ const SettingCard = ({ section }) => {
                                     </Grid>
                                 </Panel>
                             </Col>
-                            <Col xs={12}>
+                            <Col xs={24} sm={24} md={12} >
                                 <Panel shaded style={{ background: "whitesmoke", height: "100px" }}>
                                     <Grid fluid>
                                         <Row>

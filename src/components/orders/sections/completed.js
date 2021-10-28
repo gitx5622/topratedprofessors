@@ -1,54 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-    Table, Pagination, Tag, Modal, Button, Drawer, Form, ButtonToolbar, Divider
+    Table, Pagination, Tag, Button, Drawer, Form, ButtonToolbar, Divider
 } from 'rsuite';
 import AddOutlineIcon from '@rsuite/icons/AddOutline'
 import { Box } from 'theme-ui';
-import { AiOutlineEye, AiTwotoneDelete } from 'react-icons/ai';
+import { AiOutlineEye } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
 import { formatDate, formatDeadline } from '../../../../utils/dates';
+import { makePayment } from 'dataStore/actions/walletAction';
+import { getOrders } from 'dataStore/actions/ordersAction';
 
 
-const ActionCell = ({ rowData, dataKey, ...props }) => {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
 
-    const router = useRouter();
-    return (
-        <Table.Cell {...props} className="link-group">
-            <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
-                <Box onClick={() => router.push(`/dashboard/order/${rowData.id}`)} sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#5CB85C", borderRadius: '5px' }}>
-                    <center><AiOutlineEye style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                </Box>
-                <Box onClick={handleOpen} sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#d9534f", borderRadius: '5px' }}>
-                    <center><AiTwotoneDelete style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                </Box>
-                <Box onClick={handleOpen} sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#337AB7", borderRadius: '5px' }}>
-                    <center><FiEdit style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                </Box>
-                <Modal open={open} onClose={handleClose}>
-                    <Modal.Header>
-                        <Modal.Title>Delete Order</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <span>Are you sure you want to delete this order</span>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={handleClose} color="red" appearance="primary">
-                            Ok
-                        </Button>
-                        <Button onClick={handleClose} color="cyan" appearance="primary">
-                            Cancel
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-            </Box>
-        </Table.Cell>
-    );
-};
+
 const OrderNumberCell = ({ rowData, dataKey, ...props }) => {
     return (
         <Table.Cell {...props} className="link-group">
@@ -88,9 +55,64 @@ const CreateAtCell = ({ rowData, dataKey, ...props }) => {
         </Table.Cell>
     );
 };
-const Completed = ({ data, pagination }) => {
+const Completed = () => {
     const router = useRouter();
+    const dispatch = useDispatch();
     const [openWithHeader, setOpenWithHeader] = useState(false);
+
+    const orderSelector = useSelector(state => state.orderState);
+    const {
+        isLoading,
+        orders: {
+            orders: orderData,
+            pagination
+        }
+    } = orderSelector;
+
+    useEffect(() => {
+        const { id: userId } = JSON.parse(localStorage.currentUser);
+        getOrders(dispatch, userId)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch]);
+
+    const ActionCell = ({ rowData, dataKey, ...props }) => {
+        const handleReserveOrder = () => {
+            const { id: userID } = JSON.parse(localStorage.currentUser);
+            const bodyData = {
+                order_number: rowData.order_number,
+                order_amount: rowData.amount,
+                user_id: userID
+            }
+            makePayment(dispatch, bodyData).then(response => {
+                const links = response.data.links[1].href;
+                if (response.status === 200) {
+                    router.push(links)
+                } else if (response.status !== 200) {
+                    dispatch({
+                        type: 'MAKE_PAYMENT_ERROR',
+                        errorMessage: 'There was an error while making payment',
+                    });
+                }
+            })
+        }
+        return (
+            <center>
+                <Table.Cell {...props} className="link-group">
+                    <Box sx={{ display: "flex", gap: 1, }}>
+                        <Box onClick={() => router.push(`/dashboard/order/${rowData.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#5CB85C", borderRadius: '5px' }}>
+                            <center><AiOutlineEye style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
+                        </Box>
+                        <Box onClick={() => router.push(`/dashboard/order/${rowData.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#337AB7", borderRadius: '5px' }}>
+                            <center><FiEdit style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
+                        </Box>
+                        <Box>
+                            <Button sx={{ marginBottom: "2px" }} onClick={handleReserveOrder} color="green" appearance="primary">Reserve Order</Button>
+                        </Box>
+                    </Box>
+                </Table.Cell>
+            </center>
+        );
+    };
     return (
         <div style={{ marginLeft: "10px", marginRight: "10px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
@@ -152,17 +174,17 @@ const Completed = ({ data, pagination }) => {
                 </Drawer>
             </div>
             <Divider />
-            <Table bordered={true} cellBordered={true} height={550} data={data} style={{ color: "black", fontWeight: 500, fontFamily: "Quicksand, sans-serif" }}>
+            <Table bordered={true} cellBordered={true} height={550} data={orderData} style={{ color: "black", fontWeight: 500, fontFamily: "Quicksand, sans-serif" }}>
                 <Table.Column width={50} align="center">
                     <Table.HeaderCell style={{ background: "#fdaa8f" }}><h6>Id</h6></Table.HeaderCell>
                     <Table.Cell dataKey="id" style={{ color: "black" }} />
                 </Table.Column>
-                <Table.Column width={100} flexGrow={1}>
+                <Table.Column width={120}>
                     <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Order Number</h6></Table.HeaderCell>
                     <OrderNumberCell dataKey="order_number" style={{ color: "#1675E0" }} />
                 </Table.Column>
 
-                <Table.Column width={100} flexGrow={1}>
+                <Table.Column width={170}>
                     <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Deadline</h6></Table.HeaderCell>
                     <DeadlineCell dataKey="deadline" />
                 </Table.Column>
@@ -171,7 +193,7 @@ const Completed = ({ data, pagination }) => {
                     <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Amount</h6></Table.HeaderCell>
                     <AmountCell dataKey="amount" style={{ color: "#1675E0" }} />
                 </Table.Column>
-                <Table.Column width={200} flexGrow={1}>
+                <Table.Column width={120}>
                     <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Phone</h6></Table.HeaderCell>
                     <Table.Cell dataKey="phone" />
                 </Table.Column>
@@ -179,16 +201,16 @@ const Completed = ({ data, pagination }) => {
                     <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Promocode</h6></Table.HeaderCell>
                     <PromoCell dataKey="promocode" />
                 </Table.Column>
-                <Table.Column width={200} resizable>
+                <Table.Column width={170} resizable>
                     <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Created At</h6></Table.HeaderCell>
                     <CreateAtCell dataKey="created_at" />
                 </Table.Column>
-                <Table.Column width={200} flexGrow={1}>
+                <Table.Column width={240}>
                     <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Actions</h6></Table.HeaderCell>
                     <ActionCell dataKey="id" />
                 </Table.Column>
             </Table>
-            <div style={{ padding: 20 }}>
+            {/* <div style={{ padding: 20 }}>
                 <Pagination
                     prev
                     next
@@ -199,14 +221,14 @@ const Completed = ({ data, pagination }) => {
                     maxButtons={5}
                     size="xs"
                     layout={['total', '-', 'limit', '|', 'pager', 'skip']}
-                    total={pagination.count}
+                    total={pagination > 0 ? pagination.count : ""}
                     limitOptions={[10, 20]}
                     limit={pagination.per}
                     activePage={pagination.page}
                 // onChangePage={setPage}
                 // onChangeLimit={handleChangeLimit}
                 />
-            </div>
+            </div> */}
         </div>
     );
 };

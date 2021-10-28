@@ -111,13 +111,6 @@ const WalletCard = ({ section }) => {
                             color="cyan"
                             appearance="primary"
                             onClick={() => setOpenWithHeader(true)}>
-                            Add Funds
-                        </Button>
-                        {" "}
-                        <Button
-                            color="green"
-                            appearance="primary"
-                            onClick={() => setOpenWithHeader(true)}>
                             Withdraw Funds
                         </Button>
                     </Box>
@@ -179,8 +172,8 @@ const WalletCard = ({ section }) => {
                 <Panel shaded>
                     <Grid fluid>
                         <Row className="show-grid">
-                            <Col xs={12} style={{ borderRight: "1px solid whitesmoke" }}>
-                                <Panel style={{background:"whitesmoke", borderRadius:"20px"}}>
+                            <Col xs={24} sm={24} md={12}  style={{ borderRight: "1px solid whitesmoke" }}>
+                                <Panel style={{background:"whitesmoke", borderRadius:"20px", marginBottom:"20px"}}>
                                 <h5>Trasanctions</h5><br />
                                 <Table bordered={true} cellBordered={true} style={{ minHeight: 275, color: "black", fontWeight: 500, fontFamily: "Quicksand, sans-serif" }}>
                                     <Table.Column width={50} align="center">
@@ -202,7 +195,7 @@ const WalletCard = ({ section }) => {
                                 </Table>
                                 </Panel>
                             </Col>
-                            <Col xs={12}>
+                            <Col xs={24} sm={24} md={12} >
                                 <form onSubmit={handleMakePaymentSubmit} style={{ background: "whitesmoke", borderRadius: '20px', padding: "20px" }}>
                                     <center>
                                     <h3>Add funds to your account</h3><br />
@@ -214,7 +207,7 @@ const WalletCard = ({ section }) => {
                                     By clicking proceed button, means I understand and agree to the Terms of Service , including the Privacy
                                     Policy and Refund Policy
                                     </p>
-                                    <button style={{ background: "#17c671", width:"80%", padding: "10px", borderRadius: "5px" }} type="submit">Proceed</button>
+                                    <button style={{ background: "#17c671",color:"white", width:"80%", padding: "10px", borderRadius: "5px" }} type="submit">Proceed</button>
                                     </center>
                                 </form>
                             </Col>
