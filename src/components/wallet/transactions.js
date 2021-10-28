@@ -15,10 +15,10 @@ const Transactions = ({ section }) => {
         localStorage.Pid = paymentId;
         const { id: userID } = JSON.parse(localStorage.currentUser);
         if (localStorage.PID && localStorage.Pid) {
-            executePayment(dispatch, userID, paymentId, payerID);
+            executePayment(dispatch, userID);
         }
         window.history.replaceState(null, '', '/dashboard/transactions');
-    }, [dispatch, payerID, paymentId])
+    }, [dispatch])
     return (
         <div>
             <WalletCard
