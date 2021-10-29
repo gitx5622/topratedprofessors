@@ -63,12 +63,9 @@ const CalculatorCard = ({
 const styles = {
     calculator: {
         width: ['100%', null, '80%'],
-        paddingLeft: "20px",
-        paddingRight: "20px",
-        paddingTop: "20px",
+        ml: ["15px", null, '0px'],
         mt: '20px',
         padding: "20px",
-        px: [2, null, null, 3, null, null, 4],
         border: '1px solid whitesmoke',
         borderRadius: '10px',
         fontSize: "16px",

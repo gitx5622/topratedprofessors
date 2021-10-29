@@ -139,7 +139,7 @@ export const getCancelledOrders = (dispatch, userId) => {
         type: GET_CANCELLED_ORDERS,
     });
     axiosConfig
-        .get(`/users/${userId}/orders?cancelled=true`, {
+        .get(`/users/${userId}/orders?cancelled_status=true`, {
             headers: {
                 'x-toprated-token': localStorage.token,
             },

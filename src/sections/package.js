@@ -136,8 +136,8 @@ const fadeIn2 = keyframes`
 const styles = {
   pricingWrapper: {
     mb: '-40px',
-    mt: '-40px',
-    mx: ['30px', null, '50px'],
+    mt: ['20px',null, '-40px'],
+    mx: ['20px', null, '50px'],
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'wrap',
