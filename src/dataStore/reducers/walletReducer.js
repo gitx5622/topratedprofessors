@@ -52,7 +52,7 @@ export const walletReducer = (
             return {
                 ...state,
                 isSuccess: true,
-                isLoading: true,
+                isLoading: false,
                 results: action.results,
             };
         }

@@ -28,11 +28,11 @@ const Rejected = () => {
         }
     } = orderSelector;
 
-    const handleReserveOrder = () => {
+    const handleReserveOrder = (data) => {
         const { id: userID } = JSON.parse(localStorage.currentUser);
         const bodyData = {
-            order_number: rowData.order_number,
-            order_amount: rowData.amount,
+            order_number: data.order_number,
+            order_amount: data.amount,
             user_id: userID
         }
         makePayment(dispatch, bodyData).then(response => {
@@ -153,7 +153,7 @@ const Rejected = () => {
                                     <center><FiEdit style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
                                 </Box>
                                 <Box>
-                                    <Button size="sm" onClick={handleReserveOrder} color="green" appearance="primary">Reserve Order</Button>
+                                    <Button size="sm" onClick={() => handleReserveOrder(data)} color="green" appearance="primary">Reserve Order</Button>
                                 </Box>
                             </Box>
                         </td>
