@@ -11,6 +11,7 @@ import SettingEdit from "../settings/edit";
 import SettingView from "../settings/view";
 import OrderDetails from 'components/orders/components/order-details';
 import Transactions from "../wallet/transactions";
+import InProgress from 'components/orders/sections/in-progress';
 
 const Dashboard = ({ section }) => {
     const renderOrderPages = () => {
@@ -48,6 +49,12 @@ const Dashboard = ({ section }) => {
             case 'pending':
                 return (
                     <PendingOrders
+                        section={section}
+                    />
+                );
+            case 'in-progress':
+                return (
+                    <InProgress
                         section={section}
                     />
                 );

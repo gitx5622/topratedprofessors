@@ -38,385 +38,345 @@ import {
     GET_WAITING_ASSIGN_ORDERS_ERROR
 } from '../dispatchTypes';
 
-export const getOrders = (dispatch, userId) => {
+
+export const getOrders = async (dispatch, userId) => {
     dispatch({
         type: GET_ORDERS,
     });
-    axiosConfig
-        .get(`/users/${userId}/orders`, {
-            headers: {
-                'x-toprated-token': localStorage.token,
-            },
-        })
-        .then(response => {
-            console.log(response);
-            dispatch({
-                type: GET_ORDERS_SUCCESS,
-                orders: response.data,
+    try {
+        return await axiosConfig
+            .get(`/users/${userId}/orders`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: GET_ORDERS_SUCCESS,
+                    orders: response.data,
+                });
+                return response;
             });
-        })
-        .catch(error => {
-            dispatch({
-                type: GET_ORDERS_ERROR,
-                errorMessage: error.response.data.error_message,
-            });
-        })
-        .catch(() => {
-            dispatch({
-                type: GET_ORDERS_ERROR,
-                errorMessage:
-                    'Lost connection to the server. Kindly check your internet connection',
-            });
+    } catch (error) {
+        dispatch({
+            type: GET_ORDERS_ERROR,
+            errorMessage: error.response.data.message,
         });
+
+        return error.response;
+    }
 };
 
-export const getCompletedOrders = (dispatch, userId) => {
+export const getCompletedOrders = async (dispatch, userId) => {
     dispatch({
         type: GET_COMPLETED_ORDERS,
     });
-    axiosConfig
-        .get(`/users/${userId}/orders?completed_status=true`, {
-            headers: {
-                'x-toprated-token': localStorage.token,
-            },
-        })
-        .then(response => {
-            console.log(response);
-            dispatch({
-                type: GET_COMPLETED_ORDERS_SUCCESS,
-                orders: response.data,
+    try {
+        return await axiosConfig
+            .get(`/users/${userId}/orders?completed_status=true`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: GET_COMPLETED_ORDERS_SUCCESS,
+                    completed_orders: response.data,
+                });
+                return response;
             });
-        })
-        .catch(error => {
-            dispatch({
-                type: GET_COMPLETED_ORDERS_ERROR,
-                errorMessage: error.response.data.error_message,
-            });
-        })
-        .catch(() => {
-            dispatch({
-                type: GET_COMPLETED_ORDERS_ERROR,
-                errorMessage:
-                    'Lost connection to the server. Kindly check your internet connection',
-            });
+    } catch (error) {
+        dispatch({
+            type: GET_COMPLETED_ORDERS_ERROR,
+            errorMessage: error.response.data.message,
         });
+
+        return error.response;
+    }
 };
 
-export const getRejectedOrders = (dispatch, userId) => {
-    dispatch({
-        type: GET_REJECTED_ORDERS,
-    });
-    axiosConfig
-        .get(`/users/${userId}/orders?rejected_status=true`, {
-            headers: {
-                'x-toprated-token': localStorage.token,
-            },
-        })
-        .then(response => {
-            console.log(response);
-            dispatch({
-                type: GET_REJECTED_ORDERS_SUCCESS,
-                orders: response.data,
-            });
-        })
-        .catch(error => {
-            dispatch({
-                type: GET_REJECTED_ORDERS_ERROR,
-                errorMessage: error.response.data.error_message,
-            });
-        })
-        .catch(() => {
-            dispatch({
-                type: GET_REJECTED_ORDERS_ERROR,
-                errorMessage:
-                    'Lost connection to the server. Kindly check your internet connection',
-            });
-        });
-};
-
-export const getCancelledOrders = (dispatch, userId) => {
-    dispatch({
-        type: GET_CANCELLED_ORDERS,
-    });
-    axiosConfig
-        .get(`/users/${userId}/orders?cancelled_status=true`, {
-            headers: {
-                'x-toprated-token': localStorage.token,
-            },
-        })
-        .then(response => {
-            console.log(response);
-            dispatch({
-                type: GET_CANCELLED_ORDERS_SUCCESS,
-                orders: response.data,
-            });
-        })
-        .catch(error => {
-            dispatch({
-                type: GET_CANCELLED_ORDERS_ERROR,
-                errorMessage: error.response.data.error_message,
-            });
-        })
-        .catch(() => {
-            dispatch({
-                type: GET_CANCELLED_ORDERS_ERROR,
-                errorMessage:
-                    'Lost connection to the server. Kindly check your internet connection',
-            });
-        });
-};
-
-export const getPendingOrders = (dispatch, userId) => {
-    dispatch({
-        type: GET_PENDING_ORDERS,
-    });
-    axiosConfig
-        .get(`/users/${userId}/orders?pending_status=true`, {
-            headers: {
-                'x-toprated-token': localStorage.token,
-            },
-        })
-        .then(response => {
-            console.log(response);
-            dispatch({
-                type: GET_PENDING_ORDERS_SUCCESS,
-                orders: response.data,
-            });
-        })
-        .catch(error => {
-            dispatch({
-                type: GET_PENDING_ORDERS_ERROR,
-                errorMessage: error.response.data.error_message,
-            });
-        })
-        .catch(() => {
-            dispatch({
-                type: GET_PENDING_ORDERS_ERROR,
-                errorMessage:
-                    'Lost connection to the server. Kindly check your internet connection',
-            });
-        });
-};
-
-export const getApprovedOrders = (dispatch, userId) => {
+export const getApprovedOrders = async (dispatch, userId) => {
     dispatch({
         type: GET_APPROVED_ORDERS,
     });
-    axiosConfig
-        .get(`/users/${userId}/orders?approval_status=true`, {
-            headers: {
-                'x-toprated-token': localStorage.token,
-            },
-        })
-        .then(response => {
-            console.log(response);
-            dispatch({
-                type: GET_APPROVED_ORDERS_SUCCESS,
-                orders: response.data,
+    try {
+        return await axiosConfig
+            .get(`/users/${userId}/orders?approval_status=true`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: GET_APPROVED_ORDERS_SUCCESS,
+                    approved_orders: response.data,
+                });
+                return response;
             });
-        })
-        .catch(error => {
-            dispatch({
-                type: GET_APPROVED_ORDERS_ERROR,
-                errorMessage: error.response.data.error_message,
-            });
-        })
-        .catch(() => {
-            dispatch({
-                type: GET_APPROVED_ORDERS_ERROR,
-                errorMessage:
-                    'Lost connection to the server. Kindly check your internet connection',
-            });
+    } catch (error) {
+        dispatch({
+            type: GET_APPROVED_ORDERS_ERROR,
+            errorMessage: error.response.data.message,
         });
+
+        return error.response;
+    }
 };
 
-export const getWaitingAssignOrders = (dispatch, userId) => {
+export const getRejectedOrders = async (dispatch, userId) => {
+    dispatch({
+        type: GET_REJECTED_ORDERS,
+    });
+    try {
+        return await axiosConfig
+            .get(`/users/${userId}/orders?rejected_status=true`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: GET_REJECTED_ORDERS_SUCCESS,
+                    rejected_orders: response.data,
+                });
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: GET_REJECTED_ORDERS_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+
+export const getCancelledOrders = async (dispatch, userId) => {
+    dispatch({
+        type: GET_CANCELLED_ORDERS,
+    });
+    try {
+        return await axiosConfig
+            .get(`/users/${userId}/orders?cancelled_status=true`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: GET_CANCELLED_ORDERS_SUCCESS,
+                    cancelled_orders: response.data,
+                });
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: GET_CANCELLED_ORDERS_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+
+export const getPendingOrders = async (dispatch, userId) => {
+    dispatch({
+        type: GET_PENDING_ORDERS,
+    });
+    try {
+        return await axiosConfig
+            .get(`/users/${userId}/orders?pending_status=true`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: GET_PENDING_ORDERS_SUCCESS,
+                    pending_orders: response.data,
+                });
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: GET_PENDING_ORDERS_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+
+
+export const getWaitingAssignOrders = async (dispatch, userId) => {
     dispatch({
         type: GET_WAITING_ASSIGN_ORDERS,
     });
-    axiosConfig
-        .get(`/users/${userId}/orders?available_status=true`, {
-            headers: {
-                'x-toprated-token': localStorage.token,
-            },
-        })
-        .then(response => {
-            console.log(response);
-            dispatch({
-                type: GET_WAITING_ASSIGN_ORDERS_SUCCESS,
-                orders: response.data,
+    try {
+        return await axiosConfig
+            .get(`/users/${userId}/orders?available_status=true`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: GET_WAITING_ASSIGN_ORDERS_SUCCESS,
+                    waiting_assign: response.data,
+                });
+                return response;
             });
-        })
-        .catch(error => {
-            dispatch({
-                type: GET_WAITING_ASSIGN_ORDERS_ERROR,
-                errorMessage: error.response.data.error_message,
-            });
-        })
-        .catch(() => {
-            dispatch({
-                type: GET_WAITING_ASSIGN_ORDERS_ERROR,
-                errorMessage:
-                    'Lost connection to the server. Kindly check your internet connection',
-            });
+    } catch (error) {
+        dispatch({
+            type: GET_WAITING_ASSIGN_ORDERS_ERROR,
+            errorMessage: error.response.data.message,
         });
+
+        return error.response;
+    }
 };
 
-export const getActiveOrders = (dispatch, userId) => {
+export const getActiveOrders = async (dispatch, userId) => {
     dispatch({
         type: GET_ACTIVE_ORDERS,
     });
-    axiosConfig
-        .get(`/users/${userId}/orders?active_status=true`, {
-            headers: {
-                'x-toprated-token': localStorage.token,
-            },
-        })
-        .then(response => {
-            console.log(response);
-            dispatch({
-                type: GET_ACTIVE_ORDERS_SUCCESS,
-                orders: response.data,
+    try {
+        return await axiosConfig
+            .get(`/users/${userId}/orders?active_status=true`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: GET_ACTIVE_ORDERS_SUCCESS,
+                    active_orders: response.data,
+                });
+                return response;
             });
-        })
-        .catch(error => {
-            dispatch({
-                type: GET_ACTIVE_ORDERS_ERROR,
-                errorMessage: error.response.data.error_message,
-            });
-        })
-        .catch(() => {
-            dispatch({
-                type: GET_ACTIVE_ORDERS_ERROR,
-                errorMessage:
-                    'Lost connection to the server. Kindly check your internet connection',
-            });
+    } catch (error) {
+        dispatch({
+            type: GET_ACTIVE_ORDERS_ERROR,
+            errorMessage: error.response.data.message,
         });
+
+        return error.response;
+    }
 };
 
-export const createOrders = (dispatch, credentials) => {
+
+export const createOrders = async (dispatch, credentials) => {
     dispatch({
-        type: CREATE_ORDER
+        type: CREATE_ORDER,
     });
-
-    axiosConfig
-        .post(`/orders`, credentials, {
-            headers: {
-                'x-toprated-token': localStorage.token,
-            },
-        })
-        .then(response => {
-            dispatch({
-                type: CREATE_ORDER_SUCCESS,
-                orders: response.data,
+    try {
+        return await axiosConfig
+            .post(`/orders`, credentials, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: CREATE_ORDER_SUCCESS,
+                    orders: response.data,
+                });
+                return response;
             });
-        })
-        .catch(error => {
-            dispatch({
-                type: CREATE_ORDER_ERROR,
-                errorMessage: error.response.data.error_message,
-            });
-        })
-        .catch(() => {
-            dispatch({
-                type: CREATE_ORDER_ERROR,
-                errorMessage:
-                    'Lost connection to the server. Kindly check your internet connection',
-            });
+    } catch (error) {
+        dispatch({
+            type: CREATE_ORDER_ERROR,
+            errorMessage: error.response.data.message,
         });
-}
 
-export const getOrder = (dispatch, orderID) => {
+        return error.response;
+    }
+};
+
+
+export const getOrder = async (dispatch, orderID) => {
     dispatch({
         type: GET_ORDER,
     });
-    axiosConfig
-        .get(`/orders/${orderID}`, {
-            headers: {
-                'x-toprated-token': localStorage.token,
-            },
-        })
-        .then(response => {
-            dispatch({
-                type: GET_ORDER_SUCCESS,
-                order: response.data,
+    try {
+        return await axiosConfig
+            .get(`/orders/${orderID}`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
             })
-        })
-        .catch(error => {
-            dispatch({
-                type: GET_ORDER_ERROR,
-                errorMessage: error.response.data.error_message,
+            .then(response => {
+                dispatch({
+                    type: GET_ORDER_SUCCESS,
+                    order: response.data,
+                });
+                return response;
             });
-        })
-        .catch(() => {
-            dispatch({
-                type: GET_ORDER_ERROR,
-                errorMessage:
-                    'Lost connection to the server. Kindly check your internet connection',
-            });
+    } catch (error) {
+        dispatch({
+            type: GET_ORDER_ERROR,
+            errorMessage: error.response.data.message,
         });
+
+        return error.response;
+    }
 };
 
-export const deleleOrder = (dispatch, orderID) => {
+export const deleleOrder = async (dispatch, orderID) => {
     dispatch({
         type: DELETE_ORDER,
     });
-    axiosConfig
-        .delete(`/orders/${orderID}`, {
-            headers: {
-                'x-toprated-token': localStorage.token,
-            },
-        })
-        .then(response => {
-            dispatch({
-                type: DELETE_ORDER_SUCCESS,
-                order: response.data,
-                orderId: orderID,
+    try {
+        return await axiosConfig
+            .delete(`/orders/${orderID}`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
             })
-        })
-        .catch(error => {
-            dispatch({
-                type: DELETE_ORDER_ERROR,
-                errorMessage: error.response.data.message,
+            .then(response => {
+                dispatch({
+                    type: DELETE_ORDER_SUCCESS,
+                    order: response.data,
+                    orderId: orderID,
+                })
+                return response;
             });
-        })
-        .catch(() => {
-            dispatch({
-                type: DELETE_ORDER_ERROR,
-                errorMessage:
-                    'Lost connection to the server. Kindly check your internet connection',
-            });
+    } catch (error) {
+        dispatch({
+            type: DELETE_ORDER_ERROR,
+            errorMessage: error.response.data.message,
         });
+
+        return error.response;
+    }
 };
 
-export const updateOrder = (dispatch, orderID, bodyData) => {
+
+export const updateOrder = async (dispatch, orderID, bodyData) => {
     dispatch({
         type: UPDATE_ORDER,
     });
-    axiosConfig
+    try {
+        return await axiosConfig
         .put(`/orders/${orderID}`, bodyData, {
             headers: {
                 'x-toprated-token': localStorage.token,
             },
         })
-        .then(response => {
-            dispatch({
-                type: UPDATE_ORDER_SUCCESS,
-                order: response.data,
-                orderId: orderID,
-            })
-        })
-        .catch(error => {
-            dispatch({
-                type: UPDATE_ORDER_ERROR,
-                errorMessage: error.response.data.message,
+            .then(response => {
+                dispatch({
+                    type: UPDATE_ORDER_SUCCESS,
+                    order: response.data,
+                    orderId: orderID,
+                })
+                return response;
             });
-        })
-        .catch(() => {
-            dispatch({
-                type: UPDATE_ORDER_ERROR,
-                errorMessage:
-                    'Lost connection to the server. Kindly check your internet connection',
-            });
+    } catch (error) {
+        dispatch({
+            type: UPDATE_ORDER_ERROR,
+            errorMessage: error.response.data.message,
         });
+
+        return error.response;
+    }
 };

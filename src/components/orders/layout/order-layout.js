@@ -140,19 +140,14 @@ const OrderLayout = ({ children }) => {
                                     eventKey="5"
                                     icon={<AlipayIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/waiting-assign', undefined, { shallow: true })}>
-                                    Waiting to be Assigned
+                                    Available Orders
                                 </Nav.Item>
-                                <Dropdown
+                                <Nav.Item
                                     eventKey="8"
-                                    trigger="hover"
-                                    title="In progress"
                                     icon={<PeoplesIcon color="#3498FF" />}
-                                    placement="rightStart"
-                                >
-                                    <Dropdown.Item eventKey="4-1" icon={<UserBadgeIcon color="green" />} onClick={() => router.push('/dashboard/inprogress', undefined, { shallow: true })}>All Users</Dropdown.Item>
-                                    <Dropdown.Item eventKey="4-2" icon={<UserBadgeIcon color="green" />} onClick={() => router.push('/dashboard/inprogress', undefined, { shallow: true })}>All Servicemen</Dropdown.Item>
-                                    <Dropdown.Item eventKey="4-3" icon={<UserBadgeIcon color="green" />} onClick={() => router.push('/dashboard/inprogress', undefined, { shallow: true })}>All Clients</Dropdown.Item>
-                                </Dropdown>
+                                    onClick={() => router.push('/dashboard/in-progress', undefined, { shallow: true })}>
+                                    Active Orders
+                                </Nav.Item>
                                 <Nav.Item
                                     eventKey="9"
                                     icon={<ExploreIcon color="#3498FF" />}
@@ -204,11 +199,11 @@ const OrderLayout = ({ children }) => {
                                 <Nav.Item
                                     icon={<Badge color="green" content={`$0.00`}><ShieldIcon style={{ fontSize: "2em" }} /></Badge>}
                                     onClick={() => router.push('/dashboard/wallet', undefined, { shallow: true })}
-                                     />
+                                />
                                 <Nav.Item
                                     icon={<PeoplesCostomizeIcon style={{ fontSize: "2em" }} />}
                                     onClick={() => router.push('/settings/view', undefined, { shallow: true })}
-                                     />
+                                />
                                 <Nav.Item>
                                     <center>
                                         <div style={{ textDecoration: "none" }}>{username}</div>

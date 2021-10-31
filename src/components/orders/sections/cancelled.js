@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Table, Pagination, Tag, Button, Drawer, Form, ButtonToolbar, Divider
-} from 'rsuite';
+import {Tag, Button, Drawer, Form, ButtonToolbar, Divider} from 'rsuite';
 import AddOutlineIcon from '@rsuite/icons/AddOutline'
 import { Box } from 'theme-ui';
 import { AiOutlineEye } from 'react-icons/ai';
@@ -14,47 +12,6 @@ import { makePayment } from 'dataStore/actions/walletAction';
 import { getCancelledOrders } from 'dataStore/actions/ordersAction';
 
 
-
-
-const OrderNumberCell = ({ rowData, dataKey, ...props }) => {
-    return (
-        <Table.Cell {...props} className="link-group">
-            <center>
-                <Link href={`/dashboard/order/${rowData.id}`}>
-                    <a>{rowData.order_number}</a>
-                </Link>
-            </center>
-        </Table.Cell>
-    );
-};
-const PromoCell = ({ rowData, dataKey, ...props }) => {
-    return (
-        <Table.Cell {...props} className="link-group">
-            <center><Tag color="orange">{rowData.promocode === "" ? "none" : promocode}</Tag></center>
-        </Table.Cell>
-    );
-};
-const DeadlineCell = ({ rowData, dataKey, ...props }) => {
-    return (
-        <Table.Cell {...props} className="link-group">
-            {formatDeadline(rowData.deadline)}
-        </Table.Cell>
-    );
-};
-const AmountCell = ({ rowData, dataKey, ...props }) => {
-    return (
-        <Table.Cell {...props} className="link-group">
-            <center>${(rowData.amount).toFixed(2)}</center>
-        </Table.Cell>
-    );
-};
-const CreateAtCell = ({ rowData, dataKey, ...props }) => {
-    return (
-        <Table.Cell {...props} className="link-group">
-            {formatDate(rowData.created_at)}
-        </Table.Cell>
-    );
-};
 const Cancelled = () => {
     const router = useRouter();
     const dispatch = useDispatch();
@@ -63,56 +20,37 @@ const Cancelled = () => {
     const orderSelector = useSelector(state => state.orderState);
     const {
         isLoading,
-        orders: {
-            orders: orderData,
+        cancelled_orders: {
+            orders: cancelled_orders,
             pagination
         }
     } = orderSelector;
+
+    const handleReserveOrder = () => {
+        const { id: userID } = JSON.parse(localStorage.currentUser);
+        const bodyData = {
+            order_number: rowData.order_number,
+            order_amount: rowData.amount,
+            user_id: userID
+        }
+        makePayment(dispatch, bodyData).then(response => {
+            const links = response.data.links[1].href;
+            if (response.status === 200) {
+                router.push(links)
+            } else if (response.status !== 200) {
+                dispatch({
+                    type: 'MAKE_PAYMENT_ERROR',
+                    errorMessage: 'There was an error while making payment',
+                });
+            }
+        })
+    }
 
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
         getCancelledOrders(dispatch, userId)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
-
-    const ActionCell = ({ rowData, dataKey, ...props }) => {
-        const handleReserveOrder = () => {
-            const { id: userID } = JSON.parse(localStorage.currentUser);
-            const bodyData = {
-                order_number: rowData.order_number,
-                order_amount: rowData.amount,
-                user_id: userID
-            }
-            makePayment(dispatch, bodyData).then(response => {
-                const links = response.data.links[1].href;
-                if (response.status === 200) {
-                    router.push(links)
-                } else if (response.status !== 200) {
-                    dispatch({
-                        type: 'MAKE_PAYMENT_ERROR',
-                        errorMessage: 'There was an error while making payment',
-                    });
-                }
-            })
-        }
-        return (
-            <center>
-                <Table.Cell {...props} className="link-group">
-                    <Box sx={{ display: "flex", gap: 1, }}>
-                        <Box onClick={() => router.push(`/dashboard/order/${rowData.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#5CB85C", borderRadius: '5px' }}>
-                            <center><AiOutlineEye style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                        </Box>
-                        <Box onClick={() => router.push(`/dashboard/order/${rowData.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#337AB7", borderRadius: '5px' }}>
-                            <center><FiEdit style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                        </Box>
-                        <Box>
-                            <Button sx={{ marginBottom: "2px" }} onClick={handleReserveOrder} color="green" appearance="primary">Reserve Order</Button>
-                        </Box>
-                    </Box>
-                </Table.Cell>
-            </center>
-        );
-    };
     return (
         <div style={{ marginLeft: "10px", marginRight: "10px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
@@ -174,63 +112,72 @@ const Cancelled = () => {
                 </Drawer>
             </div>
             <Divider />
-            <Table bordered={true} cellBordered={true} height={550} data={orderData} style={{ color: "black", fontWeight: 500, fontFamily: "Quicksand, sans-serif" }}>
-                <Table.Column width={50} align="center">
-                    <Table.HeaderCell style={{ background: "#fdaa8f" }}><h6>Id</h6></Table.HeaderCell>
-                    <Table.Cell dataKey="id" style={{ color: "black" }} />
-                </Table.Column>
-                <Table.Column width={120}>
-                    <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Order Number</h6></Table.HeaderCell>
-                    <OrderNumberCell dataKey="order_number" style={{ color: "#1675E0" }} />
-                </Table.Column>
-
-                <Table.Column width={170}>
-                    <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Deadline</h6></Table.HeaderCell>
-                    <DeadlineCell dataKey="deadline" />
-                </Table.Column>
-
-                <Table.Column width={100}>
-                    <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Amount</h6></Table.HeaderCell>
-                    <AmountCell dataKey="amount" style={{ color: "#1675E0" }} />
-                </Table.Column>
-                <Table.Column width={120}>
-                    <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Phone</h6></Table.HeaderCell>
-                    <Table.Cell dataKey="phone" />
-                </Table.Column>
-                <Table.Column width={100}>
-                    <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Promocode</h6></Table.HeaderCell>
-                    <PromoCell dataKey="promocode" />
-                </Table.Column>
-                <Table.Column width={170} resizable>
-                    <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Created At</h6></Table.HeaderCell>
-                    <CreateAtCell dataKey="created_at" />
-                </Table.Column>
-                <Table.Column width={240}>
-                    <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Actions</h6></Table.HeaderCell>
-                    <ActionCell dataKey="id" />
-                </Table.Column>
-            </Table>
-            {/* <div style={{ padding: 20 }}>
-                <Pagination
-                    prev
-                    next
-                    first
-                    last
-                    ellipsis
-                    boundaryLinks
-                    maxButtons={5}
-                    size="xs"
-                    layout={['total', '-', 'limit', '|', 'pager', 'skip']}
-                    total={pagination > 0 ? pagination.count : ""}
-                    limitOptions={[10, 20]}
-                    limit={pagination.per}
-                    activePage={pagination.page}
-                // onChangePage={setPage}
-                // onChangeLimit={handleChangeLimit}
-                />
-            </div> */}
+            <table style={styles.table}>
+                <tr>
+                    <th style={styles.table.th}>ID</th>
+                    <th style={styles.table.th}>Order Number</th>
+                    <th style={styles.table.th}>Deadline</th>
+                    <th style={styles.table.th}>Amount</th>
+                    <th style={styles.table.th}>Phone</th>
+                    <th style={styles.table.th}>Promo Code</th>
+                    <th style={styles.table.th}>Created At</th>
+                    <th style={styles.table.th}>Actions</th>
+                </tr>
+                {cancelled_orders?.map((data) => (
+                    <tr>
+                        <td style={styles.table.td}>{data.id}</td>
+                        <td style={styles.table.td}>
+                            <Link href={`/dashboard/order/${data.id}`}>
+                                <a>{data.order_number}</a>
+                            </Link>
+                        </td>
+                        <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
+                        <td style={styles.table.td}>{data.amount}</td>
+                        <td style={styles.table.td}>{data.phone}</td>
+                        <td style={styles.table.td}>
+                            <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>
+                            </center>
+                        </td>
+                        <td style={styles.table.td}>
+                            {formatDate(data.created_at)}
+                        </td>
+                        <td style={styles.table.td}>
+                            <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+                                <Box onClick={() => router.push(`/dashboard/order/${data.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#5CB85C", borderRadius: '5px' }}>
+                                    <center><AiOutlineEye style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
+                                </Box>
+                                <Box onClick={() => router.push(`/dashboard/order/${rowData.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#337AB7", borderRadius: '5px' }}>
+                                    <center><FiEdit style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
+                                </Box>
+                                <Box>
+                                    <Button size="sm" onClick={handleReserveOrder} color="green" appearance="primary">Reserve Order</Button>
+                                </Box>
+                            </Box>
+                        </td>
+                    </tr>
+                ))}
+            </table>
         </div>
     );
 };
 
 export default Cancelled;
+
+const styles = {
+    table: {
+        fontFamily: 'Quicksand, sans-serif',
+        borderCollapse: 'collapse',
+        width: '100%',
+        td: {
+            border: '1px solid #dddddd',
+            textAlign: 'left',
+            padding: '8px',
+        },
+        th: {
+            border: '1px solid #dddddd',
+            textAlign: 'left',
+            padding: '8px',
+            background: '#fdaa8f',
+        }
+    },
+}

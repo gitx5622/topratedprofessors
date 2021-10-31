@@ -47,7 +47,36 @@ export const initialOrdersState = {
         orders: [],
         pagination: {}
     },
+    completed_orders: {
+        orders: [],
+        pagination: {}
+    },
+    approved_orders: {
+        orders: [],
+        pagination: {}
+    },
+    rejected_orders: {
+        orders: [],
+        pagination: {}
+    },
+    cancelled_orders: {
+        orders: [],
+        pagination: {}
+    },
+    pending_orders: {
+        orders: [],
+        pagination: {}
+    },
+    active_orders: {
+        orders: [],
+        pagination: {}
+    },
+    waiting_assign: {
+        orders: [],
+        pagination: {}
+    },
     order: {},
+
 }
 
 export const ordersReducers = (
@@ -91,7 +120,7 @@ export const ordersReducers = (
                 ...state,
                 isLoading: false,
                 isSuccess: true,
-                orders: action.orders,
+                completed_orders: action.completed_orders,
             };
         }
         case GET_COMPLETED_ORDERS_ERROR: {
@@ -115,7 +144,7 @@ export const ordersReducers = (
                 ...state,
                 isLoading: false,
                 isSuccess: true,
-                orders: action.orders,
+                approved_orders: action.approved_orders,
             };
         }
         case GET_APPROVED_ORDERS_ERROR: {
@@ -139,7 +168,7 @@ export const ordersReducers = (
                 ...state,
                 isLoading: false,
                 isSuccess: true,
-                orders: action.orders,
+                rejected_orders: action.rejected_orders,
             };
         }
         case GET_REJECTED_ORDERS_ERROR: {
@@ -163,7 +192,7 @@ export const ordersReducers = (
                 ...state,
                 isLoading: false,
                 isSuccess: true,
-                orders: action.orders,
+                cancelled_orders: action.cancelled_orders,
             };
         }
         case GET_CANCELLED_ORDERS_ERROR: {
@@ -187,7 +216,7 @@ export const ordersReducers = (
                 ...state,
                 isLoading: false,
                 isSuccess: true,
-                orders: action.orders,
+                pending_orders: action.pending_orders,
             };
         }
         case GET_PENDING_ORDERS_ERROR: {
@@ -211,7 +240,7 @@ export const ordersReducers = (
                 ...state,
                 isLoading: false,
                 isSuccess: true,
-                orders: action.orders,
+                active_orders: action.active_orders,
             };
         }
         case GET_ACTIVE_ORDERS_ERROR: {
@@ -235,7 +264,7 @@ export const ordersReducers = (
                 ...state,
                 isLoading: false,
                 isSuccess: true,
-                orders: action.orders,
+                waiting_assign: action.waiting_assign,
             };
         }
         case GET_WAITING_ASSIGN_ORDERS_ERROR: {
@@ -341,7 +370,7 @@ export const ordersReducers = (
                 errorMessage: action.errorMessage,
             };
         }
-        default: 
+        default:
             return state
     }
 
