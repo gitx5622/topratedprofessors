@@ -6,6 +6,7 @@ import { AiOutlineEye } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import NoData from 'assets/no-open.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatDate, formatDeadline } from '../../../../utils/dates';
 import { makePayment } from 'dataStore/actions/walletAction';
@@ -158,7 +159,7 @@ const AllOrders = () => {
                                         <Box onClick={() => router.push(`/dashboard/order/${data.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#5CB85C", borderRadius: '5px' }}>
                                             <center><AiOutlineEye style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
                                         </Box>
-                                        <Box onClick={() => router.push(`/dashboard/order/${rowData.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#337AB7", borderRadius: '5px' }}>
+                                        <Box onClick={() => router.push(`/dashboard/order/${data.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#337AB7", borderRadius: '5px' }}>
                                             <center><FiEdit style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
                                         </Box>
                                         <Box>
@@ -169,6 +170,19 @@ const AllOrders = () => {
                             </tr>
                         ))}
                     </table>
+                    {!all_orders && (
+                        <div>
+                            <Panel>
+                                <div style={{ marginTop: "100px" }}>
+                                    <center>
+                                        <img src={NoData} alt="" />
+                                        <h6>You have no Orders</h6>
+                                        <Button onClick={() => router.push('/dashboard/create_order')} color="green" appearance="primary">Create Order</Button>
+                                    </center>
+                                </div>
+                            </Panel>
+                        </div>
+                    )}
                 </>
             )}
         </div>

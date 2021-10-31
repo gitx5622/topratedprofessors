@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Tag, Button, Drawer, Form, ButtonToolbar, Divider } from 'rsuite';
+import { Tag, Panel, Button, Drawer, Form, ButtonToolbar, Divider } from 'rsuite';
 import AddOutlineIcon from '@rsuite/icons/AddOutline'
 import { Box } from 'theme-ui';
 import { AiOutlineEye } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import NoData from 'assets/no-open.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatDate, formatDeadline } from '../../../../utils/dates';
 import { makePayment } from 'dataStore/actions/walletAction';
@@ -165,6 +166,18 @@ const WaitingAssign = () => {
                             </tr>
                         ))}
                     </table>
+                    {!waiting_assign && (
+                <div>
+                    <Panel>
+                        <div style={{ marginTop: "100px" }}>
+                            <center>
+                                <img src={NoData} alt="" />
+                                <h6>No Available Orders</h6>
+                            </center>
+                        </div>
+                    </Panel>
+                </div>
+            )}
                 </div>
             )}
         </div>

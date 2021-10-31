@@ -3,8 +3,8 @@ import { LoopCircleLoading } from 'react-loadingg';
 
 const Loading = () => {
     return (
-        <div style={{width: '50vw', height:'50vh'}}>
-            <center><h3>Initiating payment</h3></center>
+        <div style={{marginTop: 150, width: '50vw', height:'50vh'}}>
+            <center><h3 style={{marginLeft:"120px"}}>Initiating payment</h3></center>
             <LoopCircleLoading />           
         </div>
     )

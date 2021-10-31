@@ -115,7 +115,7 @@ const OrderLayout = ({ children }) => {
                                 <Nav.Item
                                     eventKey="1"
                                     active icon={<DashboardIcon />}
-                                    onClick={() => router.push('/dashboard/completed', undefined, { shallow: true })}>
+                                    onClick={() => router.push('/dashboard/all-orders', undefined, { shallow: true })}>
                                     Dashboard
                                 </Nav.Item>
                                 <Nav.Item
