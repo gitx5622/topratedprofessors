@@ -1,7 +1,11 @@
 export default [
   {
-    path: 'home',
-    label: 'Home',
+    path: 'reviews',
+    label: 'Reviews',
+  },
+  {
+    path: 'how-it-works',
+    label: 'How it Works',
   },
   {
     path: 'why-choose-us',
@@ -12,11 +16,6 @@ export default [
     label: 'Services',
   },
   {
-    path: 'how-it-works',
-    label: 'How it Works',
-  },
-  {
-    path: 'reviews',
-    label: 'Reviews',
+    label: '+1-814-250-1019',
   },
 ];

@@ -18,8 +18,6 @@ export default function Footer() {
                       <li>Reviews</li>
                       <li>About Us</li>
                       <li>Contact Us</li>
-                      <li>Essay Writing App</li>
-                      <li>Become a Freelance Writer</li>
                   </ul>
                   </center>
               </Box>
@@ -31,8 +29,6 @@ export default function Footer() {
                       <li>Privacy Policy</li>
                       <li>Ratings & Reviews</li>
                       <li>Terms & Conditions</li>
-                      <li>Confidentiality Policy</li>
-                      <li>Money Back Guarantee</li>
                   </ul>
                   </center>
               </Box>
@@ -44,8 +40,6 @@ export default function Footer() {
                       <li>Best online tutors</li>
                       <li>Do my homework</li>
                       <li>Essay writing online</li>
-                      <li>Maths & Statistics help</li>
-                      <li>Dissertation/Thesis writing</li>
                   </ul>
                   </center>
               </Box>
@@ -57,8 +51,6 @@ export default function Footer() {
                       <li>Custom writing</li>
                       <li>English essays</li>
                       <li>Plagiarism report</li>
-                      <li>Urgent essay writing</li>
-                      <li>Write my paper cheap</li>
                   </ul>
                   </center>
               </Box>

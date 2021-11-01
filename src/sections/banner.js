@@ -91,17 +91,19 @@ export default function Banner() {
                         <Box sx={styles.banner.bannerCard}>
                             <center><h3>Hire Experts to Do Your Assignment</h3></center>
                             <Box sx={styles.banner.buttonGroup}>
-                                <Box sx={{ lineHeight: 3.0 }}>
+                                <Box sx={{ lineHeight: 2.5 }}>
                                     <p style={{ fontSize: "15px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> A+ Quality Paper</p>
+                                    <p style={{ fontSize: "16px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> On Time Delivery </p>
                                     <p style={{ fontSize: "16px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> 100% Written from Scratch</p>
                                 </Box>
-                                <Box sx={{ lineHeight: 3.0 }}>
+                                <Box sx={{ lineHeight: 2.5 }}>
+                                    <p style={{ fontSize: "16px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> Plagiarism Free Work</p>
+                                    <p style={{ fontSize: "16px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> 24/7 Customer Support</p>
                                     <p style={{ fontSize: "16px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> Unlimited Free Revisions</p>
-                                    <p style={{ fontSize: "16px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> On Time Delivery </p>
                                 </Box>
                             </Box>
                             <center><p style={{ fontSize: "16px" }}>We are the best custom essay writers online.</p></center><br />
-                            <center><h4>100% SATISFACTION GUARANTEED</h4></center>
+                            <center><h4>100% SATISFACTION GUARANTEED</h4></center><br/>
                             <Box sx={styles.banner.buttonGroup}>
                                 <Button className='buttons' onClick={() => router.push('/dashboard/completed')} >Dashboard</Button>
                                 <Button className='buttons' onClick={() => router.push('/dashboard/completed')} >Order Now</Button>
@@ -197,7 +199,7 @@ const styles = {
                 borderRadius: '10px',
                 fontSize: ['14px', null, null, 2],
                 letterSpacings: '-0.15px',
-                padding: ['12px 20px', null, '15px 15px'],
+                padding: ['12px 12px', null, '15px 15px'],
                 fontFamily: 'body',
                 backgroundColor: 'secondary',
                 cursor: 'pointer',

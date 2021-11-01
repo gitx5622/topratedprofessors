@@ -60,61 +60,6 @@ const Completed = () => {
         <div style={{ marginLeft: "10px", marginRight: "10px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
                 <h3>Completed Orders:</h3>
-                <Button
-                    style={{ background: "#17c671" }}
-                    appearance="primary"
-                    onClick={() => setOpenWithHeader(true)}><AddOutlineIcon color="white" style={{ fontSize: '2em' }} />
-                </Button>
-                <Drawer
-                    size='xs'
-                    open={openWithHeader}
-                    onClose={() => setOpenWithHeader(false)}>
-                    <Drawer.Header>
-                        <Drawer.Title>Add User</Drawer.Title>
-                        <Drawer.Actions>
-                            <Button onClick={() => setOpenWithHeader(false)} appearance="primary">
-                                Close
-                            </Button>
-                        </Drawer.Actions>
-                    </Drawer.Header>
-                    <Drawer.Body>
-                        <Form fluid>
-                            <Form.Group controlId="name-1">
-                                <Form.ControlLabel>First Name</Form.ControlLabel>
-                                <Form.Control name="name" />
-                                <Form.HelpText>Required</Form.HelpText>
-                            </Form.Group>
-                            <Form.Group controlId="name-2">
-                                <Form.ControlLabel>Last Name</Form.ControlLabel>
-                                <Form.Control name="name" />
-                                <Form.HelpText>Required</Form.HelpText>
-                            </Form.Group>
-                            <Form.Group controlId="email-1">
-                                <Form.ControlLabel>Email</Form.ControlLabel>
-                                <Form.Control name="email" type="email" />
-                                <Form.HelpText>Required</Form.HelpText>
-                            </Form.Group>
-                            <Form.Group controlId="phone-1">
-                                <Form.ControlLabel>Phone</Form.ControlLabel>
-                                <Form.Control name="name" />
-                            </Form.Group>
-                            <Form.Group controlId="gender-1">
-                                <Form.ControlLabel>Gender</Form.ControlLabel>
-                                <Form.Control name="name" />
-                            </Form.Group>
-                            <Form.Group controlId="country-1">
-                                <Form.ControlLabel>Gender</Form.ControlLabel>
-                                <Form.Control name="name" />
-                            </Form.Group>
-                            <Form.Group>
-                                <ButtonToolbar>
-                                    <Button appearance="primary">Submit</Button>
-                                    <Button appearance="default">Cancel</Button>
-                                </ButtonToolbar>
-                            </Form.Group>
-                        </Form>
-                    </Drawer.Body>
-                </Drawer>
             </div>
             <Divider />
             <table style={styles.table}>

@@ -9,7 +9,6 @@ import HowItWorks from "../sections/how-it-works";
 import WhyChooseUs from "../sections/why-choose-us";
 import HomeworkServices from "../sections/homework-services";
 import CounterSection from "../sections/counter-section";
-import Package from "../sections/package";
 import Head from "next/head";
 
 export default function IndexPage() {
@@ -27,7 +26,6 @@ export default function IndexPage() {
             <WhyChooseUs/>
             <CounterSection/>
             <HomeworkServices/>
-            <Package/>
         </Layout>
     </ThemeProvider>
   );

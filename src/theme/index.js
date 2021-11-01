@@ -101,9 +101,6 @@ export default  {
       fontFamily: 'body',
       pb: [0, null, 1]
     },
-    HowItWorks: {
-      mt: ['20px', null, '-20px']
-    },
   },
   sectionHeader: {
     width: ['100%', null, '540px'],

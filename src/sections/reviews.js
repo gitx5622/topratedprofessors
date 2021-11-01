@@ -103,10 +103,8 @@ export default function TestimonialCard() {
   return (
       <section id="reviews" sx={{ variant: 'section.reviews'}}>
         <Container css={{ textAlign: 'center'}}>
-          <SectionHeader
-              slogan="Customer Reviews"
-              title="Avg rating for all reviews:"
-          />
+          <h3 style={{color:"#fdaa8f"}}>Customer Reviews</h3>
+          <h6>Avg rating for all reviews:</h6>
         </Container>
         <Box sx={styles.carouselWrapper}>
           <Carousel {...carouselParams}>

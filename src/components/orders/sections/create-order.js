@@ -215,7 +215,7 @@ const CreateOrder = () => {
             promocode: '',
         }
         console.log(bodyData)
-        if (order.phone !== "" && order.topic !== "" && order.instructions !== "") {
+        if (order.topic !== "" && order.instructions !== "") {
             addOrder(bodyData);
             router.push("/dashboard/completed")
         } else {
@@ -247,7 +247,6 @@ const CreateOrder = () => {
         <Box sx={{ marginLeft: "10px", marginRight: "10px" }}>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <h3>Create Order:</h3>
-                <h3>Price: <span style={{ color: "blue" }}>${(myservice * mytype * myurgency * mypages * mylevel * myspacing).toFixed(2)}</span></h3>
             </Box>
             <Divider />
             <Box as="form" onSubmit={handleCreateOrderSubmit}>
@@ -268,11 +267,12 @@ const CreateOrder = () => {
                             {step === 0 && (
                                 <Box>
                                     <Box style={{ display: "flex", justifyContent: "space-between" }}>
-                                        <h5>Enter Order details:</h5><br />
-                                        <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                                        <h3>Enter Order details:</h3><br />
+                                        <h3>Price: <span style={{ color: "blue" }}>${(myservice * mytype * myurgency * mypages * mylevel * myspacing).toFixed(2)}</span></h3>
+                                        <Box>
                                             <h5>Have a promo Code ?</h5>
                                             <InputGroup>
-                                                <Input />
+                                                <Input width={100}/>
                                                 <InputGroup.Addon style={{ background: "blue", color: "white" }}>Apply</InputGroup.Addon>
                                             </InputGroup>
                                         </Box>

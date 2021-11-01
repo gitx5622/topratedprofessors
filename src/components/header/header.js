@@ -1,5 +1,6 @@
 /** @jsx jsx */
-import { jsx, Box, Flex, Button } from 'theme-ui';
+import { jsx, Box, Flex } from 'theme-ui';
+import { Button } from 'rsuite';
 import { useRouter } from 'next/router';
 import { keyframes } from '@emotion/core';
 import { Link } from 'react-scroll';
@@ -14,6 +15,7 @@ const Header = ({ className }) => {
     <header sx={styles.header} className={className}>
       <Logo src={LogoDark} />
       <Flex as="nav" sx={styles.nav}>
+      <a>About Us</a>
         {menuItems.map((menuItem, i) => (
           <Link
             activeClass="active"
@@ -29,8 +31,8 @@ const Header = ({ className }) => {
         ))}
       </Flex>
       <Box sx={{ display: 'flex', gap: '10px' }}>
-        <Button className="login__btn" onClick={() => router.push('/user/login')} variant="secondary" aria-label="Get Started">Login</Button>
-        <Button className="register__btn" onClick={() => router.push('/user/register')} variant="secondary" aria-label="Get Started">Get Started</Button>
+        <Button className="login__btn" size="sm" onClick={() => router.push('/user/login')} variant="secondary" aria-label="Get Started">Login</Button>
+        <Button className="register__btn" size="sm" onClick={() => router.push('/user/register')} variant="secondary" aria-label="Get Started">Get Started</Button>
       </Box>
       <MobileDrawer />
     </header>
@@ -71,13 +73,12 @@ const styles = {
     transition: 'all 0.4s ease',
     animation: `${positionAnim} 0.4s ease`,
     '.login__btn': {
-      borderRadius: '45px',
+      borderRadius: '10px',
       fontSize: ['14px', null, null, 2],
+      padding: "10px",
       letterSpacings: '-0.15px',
-      padding: ['12px 20px', null, '15px 30px'],
       fontFamily: 'body',
       cursor: 'pointer',
-      lineHeight: 1.2,
       transition: 'all 0.25s',
       fontWeight: 500,
       backgroundColor: 'secondary',
@@ -95,13 +96,11 @@ const styles = {
       },
     },
     '.register__btn': {
-      borderRadius: '45px',
-      fontSize: ['14px', null, null, 2],
+      borderRadius: '10px',
+      fontSize: ['14px', null, null, 1],
       letterSpacings: '-0.15px',
-      padding: ['12px 20px', null, '15px 30px'],
       fontFamily: 'body',
       cursor: 'pointer',
-      lineHeight: 1.2,
       transition: 'all 0.25s',
       fontWeight: 500,
       backgroundColor: 'secondary',
@@ -134,7 +133,7 @@ const styles = {
         borderRadius: '45px',
         fontSize: ['14px', null, null, 2],
         letterSpacings: '-0.15px',
-        padding: ['12px 20px', null, '15px 30px'],
+        padding: "15px",
         fontFamily: 'body',
         cursor: 'pointer',
         lineHeight: 1.2,
@@ -154,7 +153,7 @@ const styles = {
         borderRadius: '45px',
         fontSize: ['14px', null, null, 2],
         letterSpacings: '-0.15px',
-        padding: ['12px 20px', null, '15px 30px'],
+        padding: "15px",
         fontFamily: 'body',
         cursor: 'pointer',
         lineHeight: 1.2,
@@ -188,7 +187,7 @@ const styles = {
     a: {
       color: "black",
       textDecoration: "none",
-      fontSize: 2,
+      fontSize: 1,
       fontWeight: 'body',
       px: 5,
       cursor: 'pointer',

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Container, Header, Content, Nav, Sidebar, Dropdown, Navbar } from 'rsuite';
+import { Container, Header, Content, Nav, Sidebar, Dropdown, Navbar, Tag } from 'rsuite';
 import { logoutUser } from "../../../dataStore/actions/userLogoutAction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Sidenav, Badge } from 'rsuite';
-import ShieldIcon from '@rsuite/icons/Shield';
+import { FaWallet, FaUserCircle } from 'react-icons/fa';
 import { Box } from 'theme-ui';
 import Geal from '../../../assets/logo.png';
 import ArowBackIcon from '@rsuite/icons/ArowBack';
@@ -16,10 +16,10 @@ import CheckOutlineIcon from '@rsuite/icons/CheckOutline';
 import AlipayIcon from '@rsuite/icons/Alipay';
 import OffIcon from '@rsuite/icons/Off';
 import PageNextIcon from '@rsuite/icons/PageNext';
-import UserBadgeIcon from '@rsuite/icons/UserBadge';
 import NoticeIcon from '@rsuite/icons/Notice';
 import PeoplesCostomizeIcon from '@rsuite/icons/PeoplesCostomize';
 import { useRouter } from "next/router";
+import { getOrders, getPendingOrders, getCompletedOrders } from 'dataStore/actions/ordersAction';
 
 
 const NavToggle = ({ expand, onChange }) => {
@@ -54,6 +54,18 @@ const OrderLayout = ({ children }) => {
     const router = useRouter();
     const dispatch = useDispatch();
 
+    const orderSelector = useSelector(state => state.orderState);
+    const {
+        orders: {
+            pagination: allOrdersCount
+        },
+        pending_orders: {
+            pagination: allPendingCount
+        },
+        completed_orders: {
+            pagination: allCompletedCount
+        }
+    } = orderSelector;
 
     const handleLogout = () => {
         const sessionID = localStorage.sessionID
@@ -67,6 +79,13 @@ const OrderLayout = ({ children }) => {
             </Alert>
         }
     }
+    React.useEffect(() => {
+        const { id: userId } = JSON.parse(localStorage.currentUser);
+        getOrders(dispatch, userId);
+        getPendingOrders(dispatch, userId)
+        getCompletedOrders(dispatch, userId);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch]);
 
     React.useEffect(() => {
         try {
@@ -117,36 +136,52 @@ const OrderLayout = ({ children }) => {
                                     active icon={<DashboardIcon />}
                                     onClick={() => router.push('/dashboard/all-orders', undefined, { shallow: true })}>
                                     Dashboard
+                                    <Tag style={{ float: "right" }} color="green">{allOrdersCount.count}</Tag>
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="2"
                                     icon={<PeopleBranchIcon color="#3498FF" />}
-                                    onClick={() => router.push('/dashboard/completed', undefined, { shallow: true })}>
-                                    Completed
+                                    onClick={() => router.push('/dashboard/create_order', undefined, { shallow: true })}>
+                                    Place Order
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="3"
-                                    icon={<PeopleBranchIcon color="#3498FF" />}
-                                    onClick={() => router.push('/dashboard/create_order', undefined, { shallow: true })}>
-                                    Create Order
+                                    icon={<LocationIcon color="#3498FF" />}
+                                    onClick={() => router.push('/dashboard/pending', undefined, { shallow: true })}>
+                                    Pending
+                                    <Tag style={{ float: "right" }} color="green">{allPendingCount.count}</Tag>
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="4"
                                     icon={<AlipayIcon color="#3498FF" />}
-                                    onClick={() => router.push('/dashboard/all-orders', undefined, { shallow: true })}>
-                                    All Orders
+                                    onClick={() => router.push('/dashboard/waiting-assign', undefined, { shallow: true })}>
+                                    Waiting to be Assigned
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="5"
-                                    icon={<AlipayIcon color="#3498FF" />}
-                                    onClick={() => router.push('/dashboard/waiting-assign', undefined, { shallow: true })}>
-                                    Available Orders
+                                    icon={<PeoplesIcon color="#3498FF" />}
+                                    onClick={() => router.push('/dashboard/in-progress', undefined, { shallow: true })}>
+                                    In  Progress
+                                </Nav.Item>
+                                <Nav.Item
+                                    eventKey="6"
+                                    icon={<CheckOutlineIcon color="#3498FF" />}
+                                    onClick={() => router.push('/dashboard/cancelled', undefined, { shallow: true })}>
+                                    Cancelled
+                                </Nav.Item>
+                                <Nav.Item
+                                    eventKey="7"
+                                    icon={<PeopleBranchIcon color="#3498FF" />}
+                                    onClick={() => router.push('/dashboard/revision', undefined, { shallow: true })}>
+                                    Revision
+                                    <Tag style={{ float: "right" }} color="green">{allCompletedCount === undefined ? "" : allCompletedCount.count}</Tag>
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="8"
-                                    icon={<PeoplesIcon color="#3498FF" />}
-                                    onClick={() => router.push('/dashboard/in-progress', undefined, { shallow: true })}>
-                                    Active Orders
+                                    icon={<PeopleBranchIcon color="#3498FF" />}
+                                    onClick={() => router.push('/dashboard/completed', undefined, { shallow: true })}>
+                                    Completed
+                                    <Tag style={{ float: "right" }} color="green">0</Tag>
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="9"
@@ -160,18 +195,22 @@ const OrderLayout = ({ children }) => {
                                     onClick={() => router.push('/dashboard/rejected', undefined, { shallow: true })}>
                                     Rejected
                                 </Nav.Item>
-                                <Nav.Item
-                                    eventKey="11"
-                                    icon={<LocationIcon color="#3498FF" />}
-                                    onClick={() => router.push('/dashboard/pending', undefined, { shallow: true })}>
-                                    Pending
+                                <Nav.Item>
+                                <Dropdown title="Default">
+                                    <Dropdown.Item>New File</Dropdown.Item>
+                                    <Dropdown.Item>New File with Current Profile</Dropdown.Item>
+                                    <Dropdown.Item>Download As...</Dropdown.Item>
+                                    <Dropdown.Item>Export PDF</Dropdown.Item>
+                                    <Dropdown.Item>Export HTML</Dropdown.Item>
+                                    <Dropdown.Item>Settings</Dropdown.Item>
+                                    <Dropdown.Item>About</Dropdown.Item>
+                                </Dropdown>
                                 </Nav.Item>
-                                <Nav.Item
-                                    eventKey="12"
-                                    icon={<CheckOutlineIcon color="#3498FF" />}
-                                    onClick={() => router.push('/dashboard/cancelled', undefined, { shallow: true })}>
-                                    Cancelled
-                                </Nav.Item>
+                                
+                                <Dropdown eventKey="3" title="Settings" icon={<ExploreIcon />}>
+                                    <Dropdown.Item eventKey="3-1">Profile</Dropdown.Item>
+                                    <Dropdown.Item eventKey="3-2">Account</Dropdown.Item>
+                                </Dropdown>
                             </Nav>
                         </Sidenav.Body>
                     </Sidenav>
@@ -184,11 +223,8 @@ const OrderLayout = ({ children }) => {
                     <Header>
                         <Navbar
                             style={{ color: "black", fontSize: "16px", fontFamily: "Montserrat,Helvetica,Arial,serif" }}>
-                            <Navbar.Brand href="#">
-                                Dashboard
-                            </Navbar.Brand>
                             <Nav>
-                                <Nav.Item onClick={() => router.push('/dashboard/completed', undefined, { shallow: true })}>My Order</Nav.Item>
+                                <Nav.Item onClick={() => router.push('/dashboard/all-orders', undefined, { shallow: true })}>My Orders</Nav.Item>
                                 <Nav.Item onClick={() => router.push('/dashboard/create_order', undefined, { shallow: true })}>Create Order</Nav.Item>
                                 <Nav.Item onClick={() => router.push('/settings/view', undefined, { shallow: true })}>Profile</Nav.Item>
                                 <Nav.Item onClick={() => router.push('/dashboard/wallet', undefined, { shallow: true })}>Wallet</Nav.Item>
@@ -197,14 +233,12 @@ const OrderLayout = ({ children }) => {
                                 <Nav.Item
                                     icon={<Badge color="green" content={10}><NoticeIcon style={{ fontSize: "2em" }} /></Badge>} />
                                 <Nav.Item
-                                    icon={<Badge color="green" content={`$0.00`}><ShieldIcon style={{ fontSize: "2em" }} /></Badge>}
+                                    icon={<FaWallet style={{ fontSize: "2em" }} />}
                                     onClick={() => router.push('/dashboard/wallet', undefined, { shallow: true })}
-                                />
-                                <Nav.Item
-                                    icon={<PeoplesCostomizeIcon style={{ fontSize: "2em" }} />}
-                                    onClick={() => router.push('/settings/view', undefined, { shallow: true })}
-                                />
-                                <Nav.Item>
+                                >
+                                    <span  style={{marginTop:"-10px"}}>$0.00</span>
+                                    </Nav.Item>
+                                <Nav.Item icon={<FaUserCircle style={{ fontSize: "2em" }} />}>
                                     <center>
                                         <div style={{ textDecoration: "none" }}>{username}</div>
                                     </center>

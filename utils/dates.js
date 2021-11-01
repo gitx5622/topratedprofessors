@@ -10,8 +10,8 @@ export function formatDeadline(date) {
   const formatedDate = dayjs(date);
   const timeNow = dayjs(new Date());
   const differenceInDays = formatedDate.diff(timeNow, 'day');
-  if (differenceInDays === 0) return formatedDate.fromNow();
-  if (differenceInDays < 0 ) return "Deadline passed";
+  if (differenceInDays === 0) return <div style={{color: "green"}}>{formatedDate.fromNow()}</div>
+  if (differenceInDays < 0 ) return <div style={{color: "red"}}>Deadline passed</div>;
   return formatedDate.calendar(null, {
     lastWeek: 'ddd [at] LT',
     sameElse: 'LT [on] ddd MMM DD YYYY',
