@@ -226,25 +226,7 @@ const OrderDetails = () => {
         <div style={{ marginTop: "20px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
                 <h5>Order Details:</h5>
-                <Button onClick={handleOpen} color="red" appearance="primary">Delete Order</Button>
             </div>
-            <Modal open={open} onClose={handleClose}>
-                <Modal.Header>
-                    <Modal.Title>Delete Order</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <span>Are you sure you want to delete this order</span>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={() => handleDelete(orderId)} color="red" appearance="primary">
-                        Ok
-                    </Button>
-                    <Button onClick={handleClose} color="cyan" appearance="primary">
-                        Cancel
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            <br />
             <Grid fluid>
                 <Row className="show-grid">
                     <Col xs={12}>

@@ -1,12 +1,11 @@
 /** @jsx jsx */
 import React, { useState } from 'react';
-import {Box, jsx} from 'theme-ui';
+import { Box, jsx } from 'theme-ui';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Drawer from 'components/home/drawer';
 import { IoMdClose, IoMdMenu } from 'react-icons/io';
-import { Link } from 'react-scroll';
+import Link from 'next/link';
 import { FaFacebookF, FaTwitter, FaGithubAlt, FaDribbble } from 'react-icons/fa';
-import menuItems from './header.data';
 
 const social = [
   {
@@ -30,50 +29,57 @@ const social = [
 export default function MobileDrawer() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   return (
-      <Drawer
+    <Drawer
       width="320px"
       drawerHandler={
         <Box sx={styles.handler}>
-          <IoMdMenu size="26px"/>
+          <IoMdMenu size="26px" />
         </Box>
       }
       open={isDrawerOpen}
       toggleHandler={() => setIsDrawerOpen((previousState) => !previousState)}
-      closeButton={<IoMdClose size="24px" color="#000000"/>}
+      closeButton={<IoMdClose size="24px" color="#000000" />}
       drawerStyle={styles.drawer}
       closeBtnStyle={styles.close}
-      >
-        <Scrollbars autoHide>
-          <Box sx={styles.content}>
-            <Box sx={styles.menu}>
-              {menuItems.map((menuItem, i) => (
-                  <Link
-                      activeClass="active"
-                      to={menuItem.path}
-                      spy={true}
-                      smooth={true}
-                      offset={-70}
-                      duration={500}
-                      key={i}
-                  >
-                    {menuItem.label}
+    >
+      <Scrollbars autoHide>
+        <Box sx={styles.content}>
+          <Box sx={styles.menu}>
+              <div>
+                <Link href="/">
+                  <a>About Us</a>
+                </Link>
+                <Link href="/">
+                  <a>Reviews</a>
+                </Link>
+                <Link href="/">
+                  <a>How it Works</a>
+                </Link>
+                <Link href="/">
+                  <a>Why Us</a>
+                </Link>
+                <Link href="/">
+                  <a>Services</a>
+                </Link>
+                <Link href="/">
+                  <a>+1-814-250-1019</a>
+                </Link>
+              </div>
+          </Box>
+          <Box sx={styles.menuFooter}>
+            <Box sx={styles.social}>
+              {social?.map((socialItem, i) => (
+                <Box as='span' key={i} sx={styles.social.icon}>
+                  <Link to={socialItem.path}>
+                    {socialItem.icon}
                   </Link>
+                </Box>
               ))}
             </Box>
-            <Box sx={styles.menuFooter}>
-              <Box sx={styles.social}>
-                {social?.map((socialItem,i) => (
-                    <Box as='span' key={i} sx={styles.social.icon}>
-                      <Link to={socialItem.path}>
-                        {socialItem.icon}
-                      </Link>
-                    </Box>
-                ))}
-              </Box>
-            </Box>
           </Box>
-        </Scrollbars>
-      </Drawer>
+        </Box>
+      </Scrollbars>
+    </Drawer>
   );
 };
 

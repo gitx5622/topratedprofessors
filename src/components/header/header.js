@@ -3,11 +3,10 @@ import { jsx, Box, Flex } from 'theme-ui';
 import { Button } from 'rsuite';
 import { useRouter } from 'next/router';
 import { keyframes } from '@emotion/core';
-import { Link } from 'react-scroll';
+import Link from 'next/link';
 import Logo from 'components/home/logo';
 import LogoDark from 'assets/logo.png';
 import MobileDrawer from './mobile-drawer';
-import menuItems from './header.data';
 
 const Header = ({ className }) => {
   const router = useRouter();
@@ -15,20 +14,24 @@ const Header = ({ className }) => {
     <header sx={styles.header} className={className}>
       <Logo src={LogoDark} />
       <Flex as="nav" sx={styles.nav}>
-      <a>About Us</a>
-        {menuItems.map((menuItem, i) => (
-          <Link
-            activeClass="active"
-            to={menuItem.path}
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={500}
-            key={i}
-          >
-            {menuItem.label}
+          <Link href="/">
+            <a>About Us</a>
           </Link>
-        ))}
+          <Link href="/">
+            <a>Reviews</a>
+          </Link>
+          <Link href="/">
+            <a>How it Works</a>
+          </Link>
+          <Link href="/">
+            <a>Why Us</a>
+          </Link>
+          <Link href="/">
+            <a>Services</a>
+          </Link>
+          <Link href="/">
+            <a>+1-814-250-1019</a>
+          </Link>
       </Flex>
       <Box sx={{ display: 'flex', gap: '10px' }}>
         <Button className="login__btn" size="sm" onClick={() => router.push('/user/login')} variant="secondary" aria-label="Get Started">Login</Button>
@@ -189,7 +192,7 @@ const styles = {
       textDecoration: "none",
       fontSize: 1,
       fontWeight: 'body',
-      px: 5,
+      px: 4,
       cursor: 'pointer',
       lineHeight: '1.2',
       transition: 'all 0.15s',
