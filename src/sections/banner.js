@@ -105,8 +105,8 @@ export default function Banner() {
                             <center><p style={{ fontSize: "16px" }}>We are the best custom essay writers online.</p></center><br />
                             <center><h4>100% SATISFACTION GUARANTEED</h4></center><br/>
                             <Box sx={styles.banner.buttonGroup}>
-                                <Button className='buttons' onClick={() => router.push('/dashboard/completed')} >Dashboard</Button>
-                                <Button className='buttons' onClick={() => router.push('/dashboard/completed')} >Order Now</Button>
+                                <Button className='buttons' onClick={() => router.push('/dashboard/all-orders')} >Dashboard</Button>
+                                <Button className='buttons' onClick={() => router.push('/dashboard/all-orders')} >Order Now</Button>
                             </Box>
                         </Box>
                     </Col>

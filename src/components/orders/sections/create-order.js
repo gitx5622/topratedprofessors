@@ -16,6 +16,12 @@ import { getSpacing } from "../../../dataStore/actions/spacingsAction";
 import { createOrders } from "../../../dataStore/actions/ordersAction";
 import { Box, Input } from 'theme-ui';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic'
+
+const ReactQuill = dynamic(import('react-quill'), {
+    ssr: false,
+    loading: () => <p>Loading ...</p>,
+})
 
 const CreateOrder = () => {
     const [step, setStep] = React.useState(0);
@@ -26,6 +32,7 @@ const CreateOrder = () => {
     const [mypages, setmypages] = React.useState(1);
     const [mylevel, setmylevel] = React.useState(1);
     const [myspacing, setmyspacing] = React.useState(1);
+    const [instructions, setinstructions] = React.useState('');
     const [order, setOrder] = React.useState({
         user_id: '',
         service_id: 1,
@@ -99,7 +106,6 @@ const CreateOrder = () => {
         // order.sources_id = parseInt(localStorage.sources_id, 10),
         // order.pages_id = parseInt(localStorage.pages_id, 10),
         // order.subject_id = parseInt(localStorage.subject_id, 10)
-
     }
 
     const handleChange = (event) => {
@@ -112,6 +118,9 @@ const CreateOrder = () => {
                 [name]: value
             }
         })
+    }
+    const handleInstructionsChange = (value) => {
+        setinstructions(value);
     }
     const parseServiceSelected = (event) => {
         const valueToParse = event.target.value;
@@ -206,7 +215,7 @@ const CreateOrder = () => {
             language_id: parseInt(localStorage.language_id, 10),
             phone: order.phone,
             topic: order.topic,
-            instructions: order.instructions,
+            instructions: instructions,
             pagesummary: false,
             plagreport: true,
             initialdraft: false,
@@ -215,7 +224,7 @@ const CreateOrder = () => {
             promocode: '',
         }
         console.log(bodyData)
-        if (order.topic !== "" && order.instructions !== "") {
+        if (order.topic !== "" && bodyData.instructions !== "") {
             addOrder(bodyData);
             router.push("/dashboard/completed")
         } else {
@@ -272,7 +281,7 @@ const CreateOrder = () => {
                                         <Box>
                                             <h5>Have a promo Code ?</h5>
                                             <InputGroup>
-                                                <Input width={100}/>
+                                                <Input width={100} />
                                                 <InputGroup.Addon style={{ background: "blue", color: "white" }}>Apply</InputGroup.Addon>
                                             </InputGroup>
                                         </Box>
@@ -367,16 +376,18 @@ const CreateOrder = () => {
                             )}
                             {step === 1 && (
                                 <Box>
-                                    <Label htmlFor="phone">Phone*</Label>
+                                    <Label htmlFor="phone">Phone</Label>
                                     <Input onChange={handleChange} name="phone" type='text' mb={3} />
                                     <Label htmlFor="topic">Topic*</Label>
                                     <Input onChange={handleChange} name="topic" type='text' mb={3} />
                                     <Label htmlFor="instructions">Instructions*</ Label>
-                                    <Textarea onChange={handleChange} name="instructions" type='text' rows={3} mb={3} />
-                                    <Label htmlFor="upload">Upload files (optional)</Label>
+                                    <ReactQuill value={instructions}
+                                        onChange={handleInstructionsChange}
+                                        theme='snow' />
+                                    {/* <Label htmlFor="upload">Upload files (optional)</Label>
                                     <Uploader action="//jsonplaceholder.typicode.com/posts/" draggable>
                                         <div style={{ lineHeight: '80px', background: "whitesmoke" }}>Click or Drag files to this area to upload</div>
-                                    </Uploader>
+                                    </Uploader> */}
                                 </Box>
                             )}
                             <Row>
@@ -386,15 +397,17 @@ const CreateOrder = () => {
                                             <Button sx={{ background: "blue" }} onClick={onPrevious} disabled={step === 0}>
                                                 Previous
                                             </Button>{" "}
-                                            <Button sx={{ background: "orange" }} onClick={onNext} disabled={step === 1}>
-                                                Next
-                                            </Button>
+                                            {step === 0 && (
+                                                <Button sx={{ background: "orange" }} onClick={onNext} disabled={step === 1}>
+                                                    Next
+                                                </Button>
+                                            )}
+                                            {step === 1 && (
+                                                <Button type='submit' sx={{ background: "green" }} >
+                                                    Create Order
+                                                </Button>
+                                            )}
                                         </ButtonGroup>
-                                        {step === 1 && (
-                                            <Button type='submit' sx={{ background: "green" }} >
-                                                Create Order
-                                            </Button>
-                                        )}
                                     </Box>
                                 </Col>
                             </Row>
@@ -411,5 +424,5 @@ export default CreateOrder;
 const styles = {
     width: '200px',
     display: 'inline-table',
-    verticalAlign: 'top'
+    verticalAlign: 'top',
 };

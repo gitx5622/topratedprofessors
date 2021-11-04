@@ -1,6 +1,7 @@
 import { Provider } from 'react-redux';
 import 'rsuite/dist/rsuite.min.css';
 import { useStore } from '../dataStore';
+import 'react-quill/dist/quill.snow.css'
 import 'react-multi-carousel/lib/styles.css';
 import 'rc-drawer/assets/index.css';
 import '../styles/index.css';
