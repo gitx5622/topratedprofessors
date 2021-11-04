@@ -39,7 +39,6 @@ export const loginUser = async (dispatch, bodyData) => {
         dispatch({
             type: ERROR,
             errorMessage:
-                knownErrorStatusCodesResponses[error.response.status] ||
                 error.response.data.message,
         });
 

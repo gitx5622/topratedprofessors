@@ -252,6 +252,11 @@ const CreateOrder = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 
+    const modules = {
+        clipboard: {
+            matchVisual: false // https://quilljs.com/docs/modules/clipboard/#matchvisual
+        }
+    }
     return (
         <Box sx={{ marginLeft: "10px", marginRight: "10px" }}>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -383,6 +388,7 @@ const CreateOrder = () => {
                                     <Label htmlFor="instructions">Instructions*</ Label>
                                     <ReactQuill value={instructions}
                                         onChange={handleInstructionsChange}
+                                        modules={modules}
                                         theme='snow' />
                                     {/* <Label htmlFor="upload">Upload files (optional)</Label>
                                     <Uploader action="//jsonplaceholder.typicode.com/posts/" draggable>

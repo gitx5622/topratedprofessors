@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Tag, Button, Drawer,Panel, Form, ButtonToolbar, Divider } from 'rsuite';
-import AddOutlineIcon from '@rsuite/icons/AddOutline'
+import { Tag, Button,Panel,  Divider } from 'rsuite';
 import { Box } from 'theme-ui';
 import { AiOutlineEye } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';

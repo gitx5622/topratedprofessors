@@ -1,6 +1,7 @@
 /** @jsx jsx */
-import {jsx, Box, Button, Label, Input, Image, Text, Alert, Close} from 'theme-ui';
+import {jsx, Box, Button, Label, Input, Image, Text} from 'theme-ui';
 import Head from 'next/head';
+import { Message }  from 'rsuite';
 import {useState, useReducer, useEffect} from 'react';
 import PatternBG from "../../assets/register.png";
 import {RegisterUser} from "../../dataStore/actions/userRegistrationAction";
@@ -81,10 +82,9 @@ export default function Register() {
                             <Button sx={{background: "#17a2b8", display: 'block',width: '100%', borderColor: '#17a2b8'}}
                                     onClick={()=> router.push("/")} block theme="info"><BiArrowBack/> Go Home</Button><br/>
                             {checkDetailsData.errorMessage && (
-                                <Alert sx={{background: 'red', mt:'10px'}}>
-                                {checkDetailsData.errorMessage }
-                                <Close ml="auto" mr={-2} />
-                            </Alert>
+                                <Message closable type="error">
+                                    {checkDetailsData.errorMessage }
+                                </Message>
                             )}
                         </center><br/>
                         <h3 sx={{textAlign: 'center', fontFamily: 'Quicksand, sans-serif'}}>Register</h3><br/>
@@ -156,9 +156,8 @@ export default function Register() {
                             />
                         </Box>
                     </Box>
-                        <Button sx={styles.formLogin.login}>Register</Button>
-                        <Text as='p'>Already have an account ? Login Here</Text>
-                        <Button sx={styles.formLogin.register}><Link href='/user/login'><a>Login</a></Link></Button>
+                        <Button sx={styles.formLogin.login}>Register</Button><br/>
+                        <Text as='p'>Already have an account ? <Link href='/user/login'><a style={{color: "blue"}}>Login Here</a></Link></Text>
                 </Box>
                 </Box>
             </Box>
@@ -177,11 +176,12 @@ const styles = {
     },
     loginImage: {
         display: 'grid',
-        height: '100%',
+        height: '100vh',
+        borderRight: '1px solid whitesmoke'
     },
     patternImage: {
         maxWidth: '100%',
-        maxHeight: '100vh',
+        height: '100vh',
         margin: 'auto',
     },
     form: {
@@ -199,11 +199,6 @@ const styles = {
     },
     formLogin: {
         wordWrap: 'break-word',
-        padding: '30px',
-        border: '1px solid #c9c9c9',
-        boxShadow: t => `0 0 0 2px rgba(0, 0, 0, 0.2)`,
-        borderRadius: '5px',
-        background: '#f5f5f5',
         width: ['250px', '420px',],
         label: {
             fontFamily: 'Quicksand, sans-serif',

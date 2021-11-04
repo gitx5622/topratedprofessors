@@ -34,7 +34,10 @@ import {
     GET_ACTIVE_ORDERS_ERROR,
     GET_WAITING_ASSIGN_ORDERS,
     GET_WAITING_ASSIGN_ORDERS_SUCCESS,
-    GET_WAITING_ASSIGN_ORDERS_ERROR
+    GET_WAITING_ASSIGN_ORDERS_ERROR,
+    GET_USER_COUNT_SUMMARY,
+    GET_USER_COUNT_SUMMARY_SUCCESS,
+    GET_USER_COUNT_SUMMARY_ERROR
 
 } from "../dispatchTypes";
 
@@ -76,7 +79,7 @@ export const initialOrdersState = {
         pagination: {}
     },
     order: {},
-
+    user_order_count_summary: {}
 }
 
 export const ordersReducers = (
@@ -363,6 +366,29 @@ export const ordersReducers = (
             };
         }
         case UPDATE_ORDER_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case GET_USER_COUNT_SUMMARY: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case GET_USER_COUNT_SUMMARY_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                user_order_count_summary: action.user_order_count_summary,
+            };
+        }
+        case GET_USER_COUNT_SUMMARY_ERROR: {
             return {
                 ...state,
                 isSuccess: false,

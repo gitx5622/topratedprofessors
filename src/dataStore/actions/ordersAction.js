@@ -35,7 +35,10 @@ import {
     GET_ACTIVE_ORDERS_ERROR,
     GET_WAITING_ASSIGN_ORDERS,
     GET_WAITING_ASSIGN_ORDERS_SUCCESS,
-    GET_WAITING_ASSIGN_ORDERS_ERROR
+    GET_WAITING_ASSIGN_ORDERS_ERROR,
+    GET_USER_COUNT_SUMMARY,
+    GET_USER_COUNT_SUMMARY_SUCCESS,
+    GET_USER_COUNT_SUMMARY_ERROR
 } from '../dispatchTypes';
 
 
@@ -374,6 +377,34 @@ export const updateOrder = async (dispatch, orderID, bodyData) => {
     } catch (error) {
         dispatch({
             type: UPDATE_ORDER_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+
+export const userCountOrderSummary = async (dispatch, userID) => {
+    dispatch({
+        type: GET_USER_COUNT_SUMMARY,
+    });
+    try {
+        return await axiosConfig
+            .get(`/users/${userID}/order_count`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: GET_USER_COUNT_SUMMARY_SUCCESS,
+                    user_order_count_summary: response.data,
+                })
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: GET_USER_COUNT_SUMMARY_ERROR,
             errorMessage: error.response.data.message,
         });
 

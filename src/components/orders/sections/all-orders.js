@@ -17,41 +17,18 @@ import Loading from 'components/wallet/components/loading';
 const AllOrders = () => {
     const router = useRouter();
     const dispatch = useDispatch();
-    const [openWithHeader, setOpenWithHeader] = useState(false);
 
     const orderSelector = useSelector(state => state.orderState);
     const {
-        isLoading: ordersLoading,
         orders: {
             orders: all_orders,
-            pagination
         },
-        errorMessage,
     } = orderSelector;
 
     const walletSelector = useSelector(state => state.walletState);
     const { isLoading: walletLoading } = walletSelector;
 
-    const handleReserveOrder = (data) => {
-        const { id: userID } = JSON.parse(localStorage.currentUser);
-        const bodyData = {
-            order_number: data.order_number,
-            order_amount: data.amount,
-            user_id: userID
-        }
-        makePayment(dispatch, bodyData).then(response => {
-            const links = response.data.links[1].href;
-            if (response.status === 200) {
-                router.push(links)
-            } else if (response.status !== 200) {
-                dispatch({
-                    type: 'MAKE_PAYMENT_ERROR',
-                    errorMessage: 'There was an error while making payment',
-                });
-            }
-        })
-    }
-
+  
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
         getOrders(dispatch, userId)
@@ -80,7 +57,6 @@ const AllOrders = () => {
                             <th style={styles.table.th}>Promo Code</th>
                             <th style={styles.table.th}>Pages</th>
                             <th style={styles.table.th}>Status</th>
-                            <th style={styles.table.th}>Actions</th>
                         </tr>
                         {all_orders?.map((data, index) => (
                             <tr>
@@ -102,19 +78,6 @@ const AllOrders = () => {
                                 </td>
                                 <td style={styles.table.td}>
                                     <Tag color="cyan">Pending</Tag>
-                                </td>
-                                <td style={styles.table.td}>
-                                    <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
-                                        <Box onClick={() => router.push(`/dashboard/order/${data.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#5CB85C", borderRadius: '5px' }}>
-                                            <center><AiOutlineEye style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                                        </Box>
-                                        <Box onClick={() => router.push(`/dashboard/order/${data.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#337AB7", borderRadius: '5px' }}>
-                                            <center><FiEdit style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                                        </Box>
-                                        <Box>
-                                            <Button size="sm" onClick={() => handleReserveOrder(data)} color="green" appearance="primary">Reserve Order</Button>
-                                        </Box>
-                                    </Box>
                                 </td>
                             </tr>
                         ))}

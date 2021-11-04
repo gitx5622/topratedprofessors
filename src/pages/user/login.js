@@ -1,13 +1,15 @@
 /** @jsx jsx */
-import {jsx, Box, Button, Label, Input, Text, Image, Alert, Close} from 'theme-ui';
+import {jsx, Box, Button, Label, Input, Text, Image} from 'theme-ui';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { Message } from 'rsuite';
+import {useEffect, useReducer, useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { BiArrowBack } from 'react-icons/bi';
 import { loginUser } from "../../dataStore/actions/userLoginAction";
 import PatternBG from "../../assets/login.svg";
+import checkDetailsReducer, {initialCheckDetailsState} from "../../dataStore/reducers/checkDetailsReducer";
 
 export default function Login() {
     const router = useRouter();
@@ -16,17 +18,13 @@ export default function Login() {
         email: '',
         password: '',
     });
-    const [loginStatus, setLoginStatus] = useState({
-        error: '',
-        loading: false,
-    });
+    const [checkDetailsData, dispatchCheckDetails] = useReducer(
+        checkDetailsReducer,
+        initialCheckDetailsState
+    );
 
     const handleUserLogin = e => {
-        setLoginStatus(status => ({
-            ...status,
-            loading: true,
-            error: '',
-        }));
+        e.persist();
         e.preventDefault();
         const { email, password } = loginDetails;
 
@@ -34,12 +32,17 @@ export default function Login() {
             email,
             password,
         };
+        if(bodyData.email !== "" && bodyData.password !== ""){
+            loginUser(dispatch, bodyData).then(response => {
+                if (response.status === 200) router.push('/dashboard/all-orders');
+            });
+        }else {
+            dispatchCheckDetails({
+                type: 'ERROR',
+                errorMessage: 'Make sure all the fields all filled',
+            });
+        }
 
-        loginUser(dispatch, bodyData).then(response => {
-            if (response.status === 200) router.push('/dashboard/all-orders');
-            if (response.data.message)
-                setLoginStatus({ loading: false, error: response.data.message });
-        });
     };
 
     const handleInputChange = e => {
@@ -76,11 +79,10 @@ export default function Login() {
                     <Box sx={styles.formLogin} as="form" onSubmit={handleUserLogin}>
                         <center><h3 sx={{fontFamily: 'Quicksand, sans-serif'}}>Welcome to TopRatedProfessors</h3><br/>
                             <Button sx={{background: "#17a2b8", display: 'block',width: '100%', borderColor: '#17a2b8'}} onClick={() => router.push('/')} block theme="info"><BiArrowBack/> Go Home</Button><br/>
-                            {loginStatus.error && (
-                                <Alert sx={{background: 'red', mt:'10px'}}>
-                                    {loginStatus.error }
-                                    <Close ml="auto" mr={-2} />
-                                </Alert>
+                            {checkDetailsData.errorMessage && (
+                                <Message style={{marginTop:"10px"}} closable type="error">
+                                    {checkDetailsData.errorMessage }
+                                </Message>
                             )}
                         </center><br/>
                         <h3 sx={{textAlign: 'center', fontFamily: 'Quicksand, sans-serif'}}>Login</h3>
@@ -102,9 +104,8 @@ export default function Login() {
                             value={loginDetails.password}
                             onChange={handleInputChange}
                         />
-                        <Button sx={styles.formLogin.login}>Login</Button>
-                        <Text as='p'>Don't have an account ? Register Here</Text>
-                        <Button sx={styles.formLogin.register}><Link href='/user/register'><a>Register</a></Link></Button>
+                        <Button sx={styles.formLogin.login}>Login</Button><br/>
+                        <Text as='p'>Don't have an account ? <Link href='/user/register'><a style={{color: 'blue'}}>Register Here</a></Link></Text>
                     </Box>
                     </Box>
             </Box>
@@ -132,22 +133,20 @@ const styles = {
     },
     loginImage: {
         display: 'grid',
-        height: '100%',
+        maxHeight: '100vh',
+        borderRight: '1px solid whitesmoke'
     },
     patternImage: {
         maxWidth: '100%',
-        maxHeight: '100vh',
+        height: '100vh',
         margin: 'auto',
     },
     form: {
         margin: 'auto',
+        height: '100vh',
     },
     formLogin: {
         padding: '30px',
-        border: '1px solid #c9c9c9',
-        boxShadow: t => `0 0 0 2px rgba(0, 0, 0, 0.2)`,
-        borderRadius: '5px',
-        background: '#f5f5f5',
         width: ['250px', '420px',],
         display: 'block',
         label: {

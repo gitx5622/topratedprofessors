@@ -6,8 +6,38 @@ import {
     MAKE_PAYMENT,
     MAKE_PAYMENT_SUCCESS,
     MAKE_PAYMENT_ERROR,
+    GET_USER_WALLET_SUMMARY,
+    GET_USER_WALLET_SUMMARY_SUCCESS,
+    GET_USER_WALLET_SUMMARY_ERROR,
 } from '../dispatchTypes';
 
+export const userWalletSummary = async (dispatch, userID) => {
+    dispatch({
+        type: GET_USER_WALLET_SUMMARY,
+    });
+    try {
+        return await axiosConfig.get(`/users/${userID}/wallet_summary`,  {
+            headers: {
+                'x-toprated-token': localStorage.token,
+            }
+        }).then(response => {
+
+            dispatch({
+                type: GET_USER_WALLET_SUMMARY_SUCCESS,
+                user_wallet_summary: response.data,
+            });
+
+            return response;
+        });
+    } catch (error) {
+        dispatch({
+            type: GET_USER_WALLET_SUMMARY_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
 export const makePayment = async (dispatch, bodyData) => {
     dispatch({
         type: MAKE_PAYMENT,

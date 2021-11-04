@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import {
     Button, Panel, Row, Col, Grid, ButtonToolbar,
-    Table, Divider, Drawer, Form, Message, Modal, Placeholder,
+    Table, Divider, Drawer, Form, Message, Modal, Placeholder, Tag,
 } from 'rsuite';
 import { jsx, Box, } from 'theme-ui';
 import Payment from '../../../assets/payment.png';
@@ -11,6 +11,10 @@ import { makePayment } from '../../../dataStore/actions/walletAction';
 import { useDispatch, useSelector } from "react-redux";
 import Loading from './loading';
 import { useRouter } from 'next/router';
+import Link from "next/link";
+import {formatDate, formatDeadline} from "../../../../utils/dates";
+import {AiOutlineEye} from "react-icons/ai";
+import {FiEdit} from "react-icons/fi";
 
 const ActionCell = ({ rowData, dataKey, ...props }) => {
     const [open, setOpen] = React.useState(false);
@@ -107,64 +111,6 @@ const WalletCard = ({ section }) => {
                 <Box sx={{ mt: "10px", mx: "10px" }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: '20px' }}>
                         <h3>My Balance: <span style={{ color: "blue" }}>$0.00</span></h3>
-                        <Box>
-                            <Button
-                                color="cyan"
-                                appearance="primary"
-                                onClick={() => setOpenWithHeader(true)}>
-                                Withdraw Funds
-                            </Button>
-                        </Box>
-                        <Drawer
-                            size='xs'
-                            open={openWithHeader}
-                            onClose={() => setOpenWithHeader(false)}>
-                            <Drawer.Header>
-                                <Drawer.Title>Deposit</Drawer.Title>
-                                <Drawer.Actions>
-                                    <Button onClick={() => setOpenWithHeader(false)} appearance="primary">
-                                        Close
-                                    </Button>
-                                </Drawer.Actions>
-                            </Drawer.Header>
-                            <Drawer.Body>
-                                <Form fluid>
-                                    <Form.Group controlId="name-1">
-                                        <Form.ControlLabel>First Name</Form.ControlLabel>
-                                        <Form.Control name="name" />
-                                        <Form.HelpText>Required</Form.HelpText>
-                                    </Form.Group>
-                                    <Form.Group controlId="name-2">
-                                        <Form.ControlLabel>Last Name</Form.ControlLabel>
-                                        <Form.Control name="name" />
-                                        <Form.HelpText>Required</Form.HelpText>
-                                    </Form.Group>
-                                    <Form.Group controlId="email-1">
-                                        <Form.ControlLabel>Email</Form.ControlLabel>
-                                        <Form.Control name="email" type="email" />
-                                        <Form.HelpText>Required</Form.HelpText>
-                                    </Form.Group>
-                                    <Form.Group controlId="phone-1">
-                                        <Form.ControlLabel>Phone</Form.ControlLabel>
-                                        <Form.Control name="name" />
-                                    </Form.Group>
-                                    <Form.Group controlId="gender-1">
-                                        <Form.ControlLabel>Gender</Form.ControlLabel>
-                                        <Form.Control name="name" />
-                                    </Form.Group>
-                                    <Form.Group controlId="country-1">
-                                        <Form.ControlLabel>Gender</Form.ControlLabel>
-                                        <Form.Control name="name" />
-                                    </Form.Group>
-                                    <Form.Group>
-                                        <ButtonToolbar>
-                                            <Button appearance="primary">Submit</Button>
-                                            <Button appearance="default">Cancel</Button>
-                                        </ButtonToolbar>
-                                    </Form.Group>
-                                </Form>
-                            </Drawer.Body>
-                        </Drawer>
                     </Box>
                     <Divider />
                     {walletError && (
@@ -176,24 +122,18 @@ const WalletCard = ({ section }) => {
                                 <Col xs={24} sm={24} md={12} style={{ borderRight: "1px solid whitesmoke" }}>
                                     <Panel style={{ background: "whitesmoke", borderRadius: "20px", marginBottom: "20px" }}>
                                         <h5>Trasanctions</h5><br />
-                                        <Table bordered={true} cellBordered={true} style={{ minHeight: 275, color: "black", fontWeight: 500, fontFamily: "Quicksand, sans-serif" }}>
-                                            <Table.Column width={50} align="center">
-                                                <Table.HeaderCell style={{ background: "#fdaa8f" }}><h6>Date</h6></Table.HeaderCell>
-                                                <Table.Cell dataKey="id" style={{ color: "black" }} />
-                                            </Table.Column>
-                                            <Table.Column width={100}>
-                                                <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Type</h6></Table.HeaderCell>
-                                                <Table.Cell dataKey="phone" />
-                                            </Table.Column>
-                                            <Table.Column width={120}>
-                                                <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Amount</h6></Table.HeaderCell>
-                                                <Table.Cell dataKey="phone" />
-                                            </Table.Column>
-                                            <Table.Column width={200}>
-                                                <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Balance</h6></Table.HeaderCell>
-                                                <ActionCell dataKey="id" />
-                                            </Table.Column>
-                                        </Table>
+                                        <table style={styles.table}>
+                                            <tr>
+                                                <th style={styles.table.th}>ID</th>
+                                                <th style={styles.table.th}>Order Number</th>
+                                                <th style={styles.table.th}>Deadline</th>
+                                            </tr>
+                                                <tr>
+                                                    <td style={styles.table.td}>ID</td>
+                                                    <td style={styles.table.td}>Order Number</td>
+                                                    <td style={styles.table.td}>Deadline</td>
+                                                </tr>
+                                        </table>
                                     </Panel>
                                 </Col>
                                 <Col xs={24} sm={24} md={12} >
@@ -222,3 +162,22 @@ const WalletCard = ({ section }) => {
 };
 
 export default WalletCard;
+
+const styles = {
+    table: {
+        fontFamily: 'Quicksand, sans-serif',
+        borderCollapse: 'collapse',
+        width: '100%',
+        td: {
+            border: '1px solid #dddddd',
+            textAlign: 'left',
+            padding: '8px',
+        },
+        th: {
+            border: '1px solid #dddddd',
+            textAlign: 'left',
+            padding: '8px',
+            background: '#fdaa8f',
+        }
+    },
+}

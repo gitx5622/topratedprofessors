@@ -17,11 +17,16 @@ import AlipayIcon from '@rsuite/icons/Alipay';
 import OffIcon from '@rsuite/icons/Off';
 import PageNextIcon from '@rsuite/icons/PageNext';
 import { useRouter } from "next/router";
-import { getOrders, getPendingOrders, getCompletedOrders } from 'dataStore/actions/ordersAction';
+import {
+    getOrders,
+    getPendingOrders,
+    getCompletedOrders,
+    userCountOrderSummary
+} from 'dataStore/actions/ordersAction';
+import {userWalletSummary} from "../../../dataStore/actions/walletAction";
 
 
 const NavToggle = ({ expand, onChange }) => {
-    const router = useRouter();
     return (
         <Navbar appearance="subtle" className="nav-toggle">
             <Navbar.Body>
@@ -51,6 +56,26 @@ const OrderLayout = ({ children }) => {
     const [expand, setExpand] = React.useState(true);
     const router = useRouter();
     const dispatch = useDispatch();
+    const userCountOrderSummarySelector = useSelector(state => state.orderState);
+    const user_Wallet_Summary = useSelector(state => state.walletState);
+    const { user_wallet_summary } = user_Wallet_Summary;
+    const { user_balance } = user_wallet_summary;
+    const { user_order_count_summary } = userCountOrderSummarySelector;
+    const {
+        all_orders_count,
+        pending_orders_count,
+        revision_orders_count,
+        paid_orders_count,
+        available_orders_count,
+        editing_orders_count,
+        confirmed_orders_count,
+        active_orders_count,
+        complete_orders_count,
+        rejected_orders_count,
+        disputed_orders_count,
+        approved_orders_count,
+        cancelled_orders_count,
+    } = user_order_count_summary;
 
     const handleLogout = () => {
         const sessionID = localStorage.sessionID
@@ -78,6 +103,8 @@ const OrderLayout = ({ children }) => {
         getOrders(dispatch, userId);
         getPendingOrders(dispatch, userId)
         getCompletedOrders(dispatch, userId);
+        userCountOrderSummary(dispatch, userId);
+        userWalletSummary(dispatch, userId);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 
@@ -130,7 +157,9 @@ const OrderLayout = ({ children }) => {
                                     active icon={<DashboardIcon />}
                                     onClick={() => router.push('/dashboard/all-orders', undefined, { shallow: true })}>
                                     Dashboard
-                                    <Tag style={{ float: "right" }} color="green">0</Tag>
+                                    {all_orders_count > 0 && (
+                                        <Tag style={{ float: "right" }} color="green">{all_orders_count}</Tag>
+                                    )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="2"
@@ -143,51 +172,72 @@ const OrderLayout = ({ children }) => {
                                     icon={<LocationIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/pending', undefined, { shallow: true })}>
                                     Pending
-                                    <Tag style={{ float: "right" }} color="green">0</Tag>
+                                    {pending_orders_count > 0 && (
+                                        <Tag style={{ float: "right" }} color="green">{pending_orders_count}</Tag>
+                                    )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="4"
                                     icon={<AlipayIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/waiting-assign', undefined, { shallow: true })}>
-                                    Waiting to be Assigned
+                                    To be Assigned
+                                    {available_orders_count > 0 && (
+                                        <Tag style={{ float: "right" }} color="green">{available_orders_count}</Tag>
+                                    )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="5"
                                     icon={<PeoplesIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/in-progress', undefined, { shallow: true })}>
                                     In  Progress
+                                    {active_orders_count > 0 && (
+                                        <Tag style={{ float: "right" }} color="green">{active_orders_count}</Tag>
+                                    )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="6"
                                     icon={<CheckOutlineIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/cancelled', undefined, { shallow: true })}>
                                     Cancelled
+                                    {cancelled_orders_count > 0 && (
+                                        <Tag style={{ float: "right" }} color="green">{cancelled_orders_count}</Tag>
+                                    )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="7"
                                     icon={<PeopleBranchIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/revision', undefined, { shallow: true })}>
                                     Revision
-                                    <Tag style={{ float: "right" }} color="green">0</Tag>
+                                    {revision_orders_count > 0 && (
+                                        <Tag style={{ float: "right" }} color="green">{revision_orders_count}</Tag>
+                                    )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="8"
                                     icon={<PeopleBranchIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/completed', undefined, { shallow: true })}>
                                     Completed
-                                    <Tag style={{ float: "right" }} color="green">0</Tag>
+                                    { complete_orders_count > 0 && (
+                                        <Tag style={{ float: "right" }} color="green">{complete_orders_count}</Tag>
+                                    )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="9"
                                     icon={<ExploreIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/approved', undefined, { shallow: true })}>
                                     Approved
+                                    {approved_orders_count > 0 && (
+                                        <Tag style={{ float: "right" }} color="green">{approved_orders_count}</Tag>
+                                    )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="10"
                                     icon={<ExploreIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/rejected', undefined, { shallow: true })}>
                                     Rejected
+                                    {rejected_orders_count > 0 && (
+                                        <Tag style={{ float: "right" }} color="green">{rejected_orders_count}</Tag>
+                                    )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="10"
@@ -220,7 +270,7 @@ const OrderLayout = ({ children }) => {
                                     <div style={{ display: "flex", justifyContent: "center" }}>
                                         <FaWallet style={{ fontSize: "2em" }} /> &#160;&#160;
                                         <span style={{ marginTop: "-3px", fontSize: "24px" }}>
-                                            $0.00
+                                            ${user_balance}
                                         </span>
                                     </div>
                                 </Nav.Item>
