@@ -1,36 +1,40 @@
 /** @jsx jsx */
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Head from 'next/head';
-import {
-    Button, Panel, Row, Col, Grid, ButtonToolbar,
-    Avatar, Table, Divider, Drawer, Form
-} from 'rsuite';
-import AddOutlineIcon from '@rsuite/icons/AddOutline';
+import { Panel, Row, Col, Grid, Avatar, Table, Divider, Tag } from 'rsuite';
 import { jsx, Box } from 'theme-ui';
-
-const ActionCell = ({ rowData, dataKey, ...props }) => {
-    function handleAction() {
-        alert(`id:${rowData[dataKey]}`);
-    }
-    return (
-        <Table.Cell {...props} className="link-group">
-            <Box sx={{ display: "flex", gap: 1 }}>
-                <Box sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#5CB85C", borderRadius: '5px' }}>
-                    <center><AiOutlineEye style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                </Box>
-                <Box sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#d9534f", borderRadius: '5px' }}>
-                    <center><AiTwotoneDelete style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                </Box>
-                <Box sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#337AB7", borderRadius: '5px' }}>
-                    <center><FiEdit style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                </Box>
-            </Box>
-        </Table.Cell>
-    );
-};
+import Link from "next/link";
+import {formatDate, formatDeadline} from "../../../utils/dates";
+import {useDispatch, useSelector} from "react-redux";
+import {getOrders, userCountOrderSummary} from "../../dataStore/actions/ordersAction";
 
 const SettingCard = ({ section }) => {
-    const [openWithHeader, setOpenWithHeader] = useState(false);
+    const [user, setUser] = React.useState({});
+    const [activePage, setActivePage] = React.useState(1);
+    const [per, setPer] = React.useState(5);
+    const dispatch = useDispatch();
+    const orderSelector = useSelector(state => state.orderState);
+    const {
+        isLoading,
+        orders: {
+            orders: all_orders,
+        },
+    } = orderSelector;
+    const { user_order_count_summary } = orderSelector;
+    const {all_orders_count, approved_orders_count, paid_orders_count} = user_order_count_summary;
+
+    useEffect(() => {
+        const { id: userId } = JSON.parse(localStorage.currentUser);
+        getOrders(dispatch, userId, activePage, per);
+        userCountOrderSummary(dispatch, userId);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, activePage, per]);
+
+    useEffect(() => {
+        const value = localStorage.currentUser;
+        const user = value ? JSON.parse(value) : undefined;
+        setUser(user);
+    }, []);
     return (
         <Box>
             <Head>
@@ -41,61 +45,6 @@ const SettingCard = ({ section }) => {
             <Box sx={{ mt: "10px", mx: "10px" }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: '20px' }}>
                     <h3>My profile:</h3>
-                    <Button
-                        color="cyan"
-                        appearance="primary"
-                        onClick={() => setOpenWithHeader(true)}><AddOutlineIcon color="white" style={{ fontSize: '2em' }} />
-                    </Button>
-                    <Drawer
-                        size='xs'
-                        open={openWithHeader}
-                        onClose={() => setOpenWithHeader(false)}>
-                        <Drawer.Header>setStartDate
-                            <Drawer.Title>Add User</Drawer.Title>
-                            <Drawer.Actions>
-                                <Button onClick={() => setOpenWithHeader(false)} appearance="primary">
-                                    Close
-                                </Button>
-                            </Drawer.Actions>
-                        </Drawer.Header>
-                        <Drawer.Body>
-                            <Form fluid>
-                                <Form.Group controlId="name-1">
-                                    <Form.ControlLabel>First Name</Form.ControlLabel>
-                                    <Form.Control name="name" />
-                                    <Form.HelpText>Required</Form.HelpText>
-                                </Form.Group>
-                                <Form.Group controlId="name-2">
-                                    <Form.ControlLabel>Last Name</Form.ControlLabel>
-                                    <Form.Control name="name" />
-                                    <Form.HelpText>Required</Form.HelpText>
-                                </Form.Group>
-                                <Form.Group controlId="email-1">
-                                    <Form.ControlLabel>Email</Form.ControlLabel>
-                                    <Form.Control name="email" type="email" />
-                                    <Form.HelpText>Required</Form.HelpText>
-                                </Form.Group>
-                                <Form.Group controlId="phone-1">
-                                    <Form.ControlLabel>Phone</Form.ControlLabel>
-                                    <Form.Control name="name" />
-                                </Form.Group>
-                                <Form.Group controlId="gender-1">
-                                    <Form.ControlLabel>Gender</Form.ControlLabel>
-                                    <Form.Control name="name" />
-                                </Form.Group>
-                                <Form.Group controlId="country-1">
-                                    <Form.ControlLabel>Gender</Form.ControlLabel>
-                                    <Form.Control name="name" />
-                                </Form.Group>
-                                <Form.Group>
-                                    <ButtonToolbar>
-                                        <Button appearance="primary">Submit</Button>
-                                        <Button appearance="default">Cancel</Button>
-                                    </ButtonToolbar>
-                                </Form.Group>
-                            </Form>
-                        </Drawer.Body>
-                    </Drawer>
                 </Box>
                 <Divider />
                 <Box>
@@ -105,11 +54,11 @@ const SettingCard = ({ section }) => {
                                 <Panel shaded style={{ background: "whitesmoke", height: "100px", marginBottom:"20px" }}>
                                     <Grid fluid>
                                         <Row>
-                                            <Col xs={8}><Avatar size="lg" circle style={{ background: 'red' }}>RS</Avatar></Col>
-                                            <Col xs={16}><center><h6>
-                                                434696  <br/>
-                                                2:33 PM <br/>
-                                                Member since: Nov 6, 2020</h6></center></Col>
+                                            <Col xs={6}><Avatar size="lg" circle style={{ background: 'red' }}>TRP</Avatar></Col>
+                                            <Col xs={18}><center><h6>
+                                                {user.username}  <br/>
+                                                {user.email} <br/>
+                                                Member since: {formatDate(user.created_at)}</h6></center></Col>
                                         </Row>
                                     </Grid>
                                 </Panel>
@@ -118,11 +67,11 @@ const SettingCard = ({ section }) => {
                                 <Panel shaded style={{ background: "whitesmoke", height: "100px" }}>
                                     <Grid fluid>
                                         <Row>
-                                            <Col xs={8} style={{ borderRight: "1px solid black" }}><center><h6>114 <br /> Orders</h6></center></Col>
+                                            <Col xs={8} style={{ borderRight: "1px solid black" }}><center><h6>{all_orders_count} <br />All Orders</h6></center></Col>
                                             <Col xs={8} style={{ borderRight: "1px solid black" }}>
-                                                <center><h6>114 <br /> Orders</h6></center>
+                                                <center><h6>{approved_orders_count} <br />Approved Orders</h6></center>
                                             </Col>
-                                            <Col xs={8}><center><h6>114 <br /> Orders</h6></center></Col>
+                                            <Col xs={8}><center><h6>{paid_orders_count} <br />Paid Orders</h6></center></Col>
                                         </Row>
                                     </Grid>
                                 </Panel>
@@ -131,43 +80,34 @@ const SettingCard = ({ section }) => {
                     </Grid>
                 </Box><br />
                 <Panel shaded>
-                    Last Orders
-                    <Table bordered={true} cellBordered={true} height={350} style={{ color: "black", fontFamily: "Quicksand, sans-serif" }}>
-                        <Table.Column width={50} align="center" resizable>
-                            <Table.HeaderCell style={{ background: "#fdaa8f" }}><h6>Id</h6></Table.HeaderCell>
-                            <Table.Cell dataKey="id" style={{ color: "#1675E0" }} />
-                        </Table.Column>
-                        <Table.Column width={100} resizable>
-                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Order Number</h6></Table.HeaderCell>
-                            <Table.Cell dataKey="order_number" />
-                        </Table.Column>
-
-                        <Table.Column width={100}>
-                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Deadline</h6></Table.HeaderCell>
-                            <Table.Cell dataKey="deadline" />
-                        </Table.Column>
-
-                        <Table.Column width={200}>
-                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Email</h6></Table.HeaderCell>
-                            <Table.Cell dataKey="type.name" style={{ color: "#1675E0" }} />
-                        </Table.Column>
-                        <Table.Column width={200} flexGrow={1}>
-                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Phone</h6></Table.HeaderCell>
-                            <Table.Cell dataKey="phone" />
-                        </Table.Column>
-                        <Table.Column width={200} flexGrow={1}>
-                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Country</h6></Table.HeaderCell>
-                            <Table.Cell dataKey="country" />
-                        </Table.Column>
-                        <Table.Column width={200} flexGrow={1}>
-                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Created At</h6></Table.HeaderCell>
-                            <Table.Cell dataKey="created_at" />
-                        </Table.Column>
-                        <Table.Column width={200} flexGrow={1}>
-                            <Table.HeaderCell style={{ background: "#fdaa8f", color: "black" }}><h6>Actions</h6></Table.HeaderCell>
-                            <ActionCell dataKey="id" />
-                        </Table.Column>
-                    </Table>
+                    <h5>Last Orders created</h5>
+                    <table style={styles.table}>
+                        <tr>
+                            <th style={styles.table.th}>ID</th>
+                            <th style={styles.table.th}>Order Number</th>
+                            <th style={styles.table.th}>Type of Paper</th>
+                            <th style={styles.table.th}>Deadline</th>
+                            <th style={styles.table.th}>Promo Code</th>
+                            <th style={styles.table.th}>Amount</th>
+                        </tr>
+                        {all_orders?.slice(0, 5).map((data) => (
+                            <tr>
+                                <td style={styles.table.td}>{data.id}</td>
+                                <td style={styles.table.td}>
+                                    <Link href={`/dashboard/order/${data.id}`}>
+                                        <a>{data.order_number}</a>
+                                    </Link>
+                                </td>
+                                <td style={styles.table.td}>{data.type && (data.type.name)}</td>
+                                <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
+                                <td style={styles.table.td}>
+                                    <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>
+                                    </center>
+                                </td>
+                                <td style={styles.table.td}>{data.amount}</td>
+                            </tr>
+                        ))}
+                    </table><br/>
                 </Panel>
             </Box>
 
@@ -176,3 +116,22 @@ const SettingCard = ({ section }) => {
 };
 
 export default SettingCard;
+
+const styles = {
+    table: {
+        fontFamily: 'Quicksand, sans-serif',
+        borderCollapse: 'collapse',
+        width: '100%',
+        td: {
+            border: '1px solid #dddddd',
+            textAlign: 'left',
+            padding: '8px',
+        },
+        th: {
+            border: '1px solid #dddddd',
+            textAlign: 'left',
+            padding: '8px',
+            background: '#fdaa8f',
+        }
+    },
+}

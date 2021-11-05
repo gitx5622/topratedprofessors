@@ -64,14 +64,14 @@ const OrderDetails = () => {
     return (
         <div style={{ marginTop: "20px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
-                <h4>Order #{orderId}</h4>
+                <h4>Order Details</h4>
                 <div style={{display: "flex", gap: '1em'}}>
-                <Button color="blue" appearance="primary">Update</Button>
+                <Button onClick={() => router.push('/dashboard/order-update')} color="blue" appearance="primary">Update</Button>
                 <Button color="yellow" appearance="primary">Cancel</Button>
                 <Button color="green" onClick={handleOpen} appearance="primary">Reserve Payment</Button>
                     <Modal open={open} onClose={handleClose}>
                         <Modal.Header>
-                            <Modal.Title>Reserve Payment</Modal.Title>
+                            <Modal.Title><h5>Reserve Payment</h5></Modal.Title>
                             <Divider/>
                         </Modal.Header>
                         <Modal.Body>
@@ -91,7 +91,7 @@ const OrderDetails = () => {
             </div>
             <Divider />
             <Panel style={{marginTop: "-20px"}}>
-            <div style={{background: "#fdaa8f", height:'40px', padding: "10px"}}>Order Number</div>
+            <div style={{background: "#fdaa8f", height:'40px', padding: "10px"}}><h5>Order #{orderId}</h5></div>
             <table style={styles.table}>
                     <tr>
                         <td style={styles.table.td}><strong>Order ID</strong></td>
@@ -130,7 +130,7 @@ const OrderDetails = () => {
                     <td style={styles.table.td}>{language && language.name}</td>
                 </tr>
                 <tr>
-                    <td style={styles.table.td}><b>Phone Number</b></td>
+                    <td style={styles.table.td}><b>Phone</b></td>
                     <td style={styles.table.td} colSpan="3">{phone}</td>
                 </tr>
                 <tr>

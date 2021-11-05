@@ -92,8 +92,8 @@ const OrderLayout = ({ children }) => {
 
     const CustomDropdown = ({ ...props }) => (
         <Dropdown {...props}>
-            <Dropdown.Item style={{ fontSize: "1.2em" }} icon={<FaWallet color="black" />}> Profile</Dropdown.Item>
-            <Dropdown.Item style={{ fontSize: "1.2em" }} icon={<FaWallet color="black" />}> My Finances</Dropdown.Item>
+            <Dropdown.Item onClick={() => router.push('/settings/view')} style={{ fontSize: "1.2em" }} icon={<FaWallet color="black" />}> Profile</Dropdown.Item>
+            <Dropdown.Item onClick={() => router.push('/dashboard/wallet')} style={{ fontSize: "1.2em" }} icon={<FaWallet color="black" />}> My Finances</Dropdown.Item>
             <Dropdown.Item style={{ fontSize: "1.2em" }} onClick={handleLogout} icon={<OffIcon color="red" />}> Logout({username})</Dropdown.Item>
         </Dropdown>
     );

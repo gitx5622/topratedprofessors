@@ -6,6 +6,7 @@ import { jsx, Box, } from 'theme-ui';
 import Payment from '../../../assets/payment.png';
 import {filterWalletTransactions, makePayment, userWalletSummary} from '../../../dataStore/actions/walletAction';
 import { useDispatch, useSelector } from "react-redux";
+import { formatDate } from "../../../../utils/dates";
 import { BoxLoading } from 'react-loadingg';
 import { useRouter } from 'next/router';
 
@@ -134,9 +135,9 @@ const WalletCard = ({ section }) => {
                             {wallets?.map((transaction) => (
                                 <tr>
                                     <td style={styles.table.td}>{transaction.id}</td>
-                                    <td style={styles.table.td}>${transaction.deposit}</td>
+                                    <td style={styles.table.td}><center>${(transaction.deposit).toFixed(2)}</center></td>
                                     <td style={styles.table.td}>{transaction.narrative}</td>
-                                    <td style={styles.table.td}>{transaction.created_at}</td>
+                                    <td style={styles.table.td}>{formatDate(transaction.created_at)}</td>
                                 </tr>
                             ))}
                         </table><br/>

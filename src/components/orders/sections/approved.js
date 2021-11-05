@@ -37,10 +37,10 @@ const Approved = () => {
                     <th style={styles.table.th}>ID</th>
                     <th style={styles.table.th}>Order Number</th>
                     <th style={styles.table.th}>Deadline</th>
-                    <th style={styles.table.th}>Amount</th>
-                    <th style={styles.table.th}>Phone</th>
+                    <th style={styles.table.th}>Type of paper</th>
                     <th style={styles.table.th}>Promo Code</th>
                     <th style={styles.table.th}>Created At</th>
+                    <th style={styles.table.th}>Amount</th>
                 </tr>
                 {approved_orders?.map((data) => (
                     <tr>
@@ -51,8 +51,7 @@ const Approved = () => {
                             </Link>
                         </td>
                         <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
-                        <td style={styles.table.td}>{data.amount}</td>
-                        <td style={styles.table.td}>{data.phone}</td>
+                        <td style={styles.table.td}>{data.type && (data.type.name)}</td>
                         <td style={styles.table.td}>
                             <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>
                             </center>
@@ -60,6 +59,7 @@ const Approved = () => {
                         <td style={styles.table.td}>
                             {formatDate(data.created_at)}
                         </td>
+                        <td style={styles.table.td}>{data.amount}</td>
                     </tr>
                 ))}
             </table><br/>
