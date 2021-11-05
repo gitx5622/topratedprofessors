@@ -1,25 +1,27 @@
 /** @jsx jsx */
 import React, { useState } from 'react';
 import Head from 'next/head';
-import { Panel, Row, Col, Grid, Divider, Message, Button } from 'rsuite';
+import { Panel, Row, Col, Grid, Divider, Message, Pagination, Button } from 'rsuite';
 import { jsx, Box, } from 'theme-ui';
 import Payment from '../../../assets/payment.png';
-import {makePayment, userWalletSummary} from '../../../dataStore/actions/walletAction';
+import {filterWalletTransactions, makePayment, userWalletSummary} from '../../../dataStore/actions/walletAction';
 import { useDispatch, useSelector } from "react-redux";
 import { BoxLoading } from 'react-loadingg';
 import { useRouter } from 'next/router';
 
 const WalletCard = ({ section }) => {
+    const [activePage, setActivePage] = React.useState(1);
+    const [per, setPer] = React.useState(5);
     const [payment, setPayment] = useState({
         order_amount: "",
         user_id: "",
     });
-
     const dispatch = useDispatch();
     const router = useRouter();
 
     const walletSelector = useSelector(state => state.walletState);
-    const { user_wallet_summary } = walletSelector;
+    const { user_wallet_summary, wallet_transactions } = walletSelector;
+    const { wallets, pagination } = wallet_transactions;
     const { user_balance, deposit, withdrawals } = user_wallet_summary;
     const { isLoading: walletLoading, errorMessage: walletError } = walletSelector;
 
@@ -56,8 +58,9 @@ const WalletCard = ({ section }) => {
     React.useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
         userWalletSummary(dispatch, userId);
+        filterWalletTransactions(dispatch, userId, per, activePage );
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
+    }, [dispatch, per, activePage]);
     return (
         <Box>
             <Head>
@@ -124,16 +127,27 @@ const WalletCard = ({ section }) => {
                         <table style={styles.table}>
                             <tr>
                                 <th style={styles.table.th}>ID</th>
-                                <th style={styles.table.th}>Order Number</th>
-                                <th style={styles.table.th}>Deadline</th>
+                                <th style={styles.table.th}>Deposit</th>
+                                <th style={styles.table.th}>Narrative</th>
+                                <th style={styles.table.th}>Time Payment Made</th>
                             </tr>
-                            <tr>
-                                <td style={styles.table.td}>ID</td>
-                                <td style={styles.table.td}>Order Number</td>
-                                <td style={styles.table.td}>Deadline</td>
-                            </tr>
-                        </table>
+                            {wallets?.map((transaction) => (
+                                <tr>
+                                    <td style={styles.table.td}>{transaction.id}</td>
+                                    <td style={styles.table.td}>${transaction.deposit}</td>
+                                    <td style={styles.table.td}>{transaction.narrative}</td>
+                                    <td style={styles.table.td}>{transaction.created_at}</td>
+                                </tr>
+                            ))}
+                        </table><br/>
+                        {!wallets && (
+                            <p>No data</p>
+                        )}
+                        {wallets && (
+                            <Pagination size="md" total={pagination.count} limit={per} activePage={activePage} onChangePage={(page) => setActivePage(page)}/>
+                        )}
                     </Panel>
+                    <Divider/>
                 </Box>
         </Box>
     );

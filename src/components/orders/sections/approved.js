@@ -1,23 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Panel, Tag, Button, Drawer, Form, ButtonToolbar, Divider } from 'rsuite';
-import AddOutlineIcon from '@rsuite/icons/AddOutline'
-import { Box } from 'theme-ui';
-import { AiOutlineEye } from 'react-icons/ai';
-import { FiEdit } from 'react-icons/fi';
-import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
+import {Panel, Tag, Divider, Pagination} from 'rsuite';
 import Link from 'next/link';
 import NoData from 'assets/no-open.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatDate, formatDeadline } from '../../../../utils/dates';
-import { makePayment } from '../../../dataStore/actions/walletAction';
 import { getApprovedOrders } from '../../../dataStore/actions/ordersAction';
 
-
 const Approved = () => {
-    const router = useRouter();
+    const [activePage, setActivePage] = React.useState(1);
+    const [per, setPer] = React.useState(10);
     const dispatch = useDispatch();
-    const [openWithHeader, setOpenWithHeader] = useState(false);
-
     const orderSelector = useSelector(state => state.orderState);
     const {
         isLoading,
@@ -28,31 +20,11 @@ const Approved = () => {
         errorMessage,
     } = orderSelector;
 
-    const handleReserveOrder = (data) => {
-        const { id: userID } = JSON.parse(localStorage.currentUser);
-        const bodyData = {
-            order_number: data.order_number,
-            order_amount: data.amount,
-            user_id: userID
-        }
-        makePayment(dispatch, bodyData).then(response => {
-            const links = response.data.links[1].href;
-            if (response.status === 200) {
-                router.push(links)
-            } else if (response.status !== 200) {
-                dispatch({
-                    type: 'MAKE_PAYMENT_ERROR',
-                    errorMessage: 'There was an error while making payment',
-                });
-            }
-        })
-    }
-
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
-        getApprovedOrders(dispatch, userId)
+        getApprovedOrders(dispatch, userId, activePage, per)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
+    }, [dispatch, activePage, per]);
 
     return (
         <div style={{ marginLeft: "10px", marginRight: "10px" }}>
@@ -69,7 +41,6 @@ const Approved = () => {
                     <th style={styles.table.th}>Phone</th>
                     <th style={styles.table.th}>Promo Code</th>
                     <th style={styles.table.th}>Created At</th>
-                    <th style={styles.table.th}>Actions</th>
                 </tr>
                 {approved_orders?.map((data) => (
                     <tr>
@@ -89,22 +60,12 @@ const Approved = () => {
                         <td style={styles.table.td}>
                             {formatDate(data.created_at)}
                         </td>
-                        <td style={styles.table.td}>
-                            <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
-                                <Box onClick={() => router.push(`/dashboard/order/${data.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#5CB85C", borderRadius: '5px' }}>
-                                    <center><AiOutlineEye style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                                </Box>
-                                <Box onClick={() => router.push(`/dashboard/order/${rowData.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#337AB7", borderRadius: '5px' }}>
-                                    <center><FiEdit style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                                </Box>
-                                <Box>
-                                    <Button size="sm" onClick={() => handleReserveOrder(data)} color="green" appearance="primary">Reserve Order</Button>
-                                </Box>
-                            </Box>
-                        </td>
                     </tr>
                 ))}
-            </table>
+            </table><br/>
+            {approved_orders && (
+                <Pagination size="md" total={pagination.count} limit={per} activePage={activePage} onChangePage={(page) => setActivePage(page)}/>
+            )}
             {!approved_orders && (
                 <div>
                     <Panel>

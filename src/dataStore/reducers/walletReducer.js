@@ -7,7 +7,10 @@ import {
     MAKE_PAYMENT,
     EXECUTE_PAYMENT,
     GET_USER_WALLET_SUMMARY,
-    GET_USER_WALLET_SUMMARY_SUCCESS, GET_USER_COUNT_SUMMARY_ERROR,
+    GET_USER_WALLET_SUMMARY_SUCCESS,
+    GET_USER_COUNT_SUMMARY_ERROR,
+    FILTER_WALLET_TRANSACTIONS,
+    FILTER_WALLET_TRANSACTIONS_SUCCESS, FILTER_WALLET_TRANSACTIONS_ERROR,
 } from "../dispatchTypes";
 
 export const initialOrdersState = {
@@ -16,7 +19,8 @@ export const initialOrdersState = {
     isSuccess: false,
     errorMessage: '',
     results: {},
-    user_wallet_summary: {}
+    user_wallet_summary: {},
+    wallet_transactions: {},
 }
 
 export const walletReducer = (
@@ -86,6 +90,29 @@ export const walletReducer = (
             };
         }
         case EXECUTE_PAYMENT_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case FILTER_WALLET_TRANSACTIONS: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case FILTER_WALLET_TRANSACTIONS_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: true,
+                isLoading: false,
+                wallet_transactions: action.wallet_transactions,
+            };
+        }
+        case FILTER_WALLET_TRANSACTIONS_ERROR: {
             return {
                 ...state,
                 isSuccess: false,

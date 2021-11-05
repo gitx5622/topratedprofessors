@@ -42,13 +42,13 @@ import {
 } from '../dispatchTypes';
 
 
-export const getOrders = async (dispatch, userId) => {
+export const getOrders = async (dispatch, userId, page, per) => {
     dispatch({
         type: GET_ORDERS,
     });
     try {
         return await axiosConfig
-            .get(`/users/${userId}/orders`, {
+            .get(`/users/${userId}/orders?page=${page}&per=${per}`, {
                 headers: {
                     'x-toprated-token': localStorage.token,
                 },
@@ -70,13 +70,13 @@ export const getOrders = async (dispatch, userId) => {
     }
 };
 
-export const getCompletedOrders = async (dispatch, userId) => {
+export const getCompletedOrders = async (dispatch, userId, page, per) => {
     dispatch({
         type: GET_COMPLETED_ORDERS,
     });
     try {
         return await axiosConfig
-            .get(`/users/${userId}/orders?completed_status=true`, {
+            .get(`/users/${userId}/orders?page=${page}&per=${per}&completed_status=true`, {
                 headers: {
                     'x-toprated-token': localStorage.token,
                 },
@@ -98,13 +98,13 @@ export const getCompletedOrders = async (dispatch, userId) => {
     }
 };
 
-export const getApprovedOrders = async (dispatch, userId) => {
+export const getApprovedOrders = async (dispatch, userId, page, per) => {
     dispatch({
         type: GET_APPROVED_ORDERS,
     });
     try {
         return await axiosConfig
-            .get(`/users/${userId}/orders?approval_status=true`, {
+            .get(`/users/${userId}/orders?page=${page}&per=${per}&approval_status=true`, {
                 headers: {
                     'x-toprated-token': localStorage.token,
                 },
@@ -126,13 +126,13 @@ export const getApprovedOrders = async (dispatch, userId) => {
     }
 };
 
-export const getRejectedOrders = async (dispatch, userId) => {
+export const getRejectedOrders = async (dispatch, userId, page, per) => {
     dispatch({
         type: GET_REJECTED_ORDERS,
     });
     try {
         return await axiosConfig
-            .get(`/users/${userId}/orders?rejected_status=true`, {
+            .get(`/users/${userId}/orders?page=${page}&per=${per}&rejected_status=true`, {
                 headers: {
                     'x-toprated-token': localStorage.token,
                 },
@@ -154,13 +154,13 @@ export const getRejectedOrders = async (dispatch, userId) => {
     }
 };
 
-export const getCancelledOrders = async (dispatch, userId) => {
+export const getCancelledOrders = async (dispatch, userId, page, per) => {
     dispatch({
         type: GET_CANCELLED_ORDERS,
     });
     try {
         return await axiosConfig
-            .get(`/users/${userId}/orders?cancelled_status=true`, {
+            .get(`/users/${userId}/orders?page=${page}&per=${per}&cancelled_status=true`, {
                 headers: {
                     'x-toprated-token': localStorage.token,
                 },
@@ -182,13 +182,13 @@ export const getCancelledOrders = async (dispatch, userId) => {
     }
 };
 
-export const getPendingOrders = async (dispatch, userId) => {
+export const getPendingOrders = async (dispatch, userId, page, per) => {
     dispatch({
         type: GET_PENDING_ORDERS,
     });
     try {
         return await axiosConfig
-            .get(`/users/${userId}/orders?pending_status=true`, {
+            .get(`/users/${userId}/orders?page=${page}&per=${per}&pending_status=true`, {
                 headers: {
                     'x-toprated-token': localStorage.token,
                 },
@@ -211,13 +211,13 @@ export const getPendingOrders = async (dispatch, userId) => {
 };
 
 
-export const getWaitingAssignOrders = async (dispatch, userId) => {
+export const getWaitingAssignOrders = async (dispatch, userId, page, per) => {
     dispatch({
         type: GET_WAITING_ASSIGN_ORDERS,
     });
     try {
         return await axiosConfig
-            .get(`/users/${userId}/orders?available_status=true`, {
+            .get(`/users/${userId}/orders?page=${page}&per=${per}&available_status=true`, {
                 headers: {
                     'x-toprated-token': localStorage.token,
                 },
@@ -239,13 +239,13 @@ export const getWaitingAssignOrders = async (dispatch, userId) => {
     }
 };
 
-export const getActiveOrders = async (dispatch, userId) => {
+export const getActiveOrders = async (dispatch, userId, page, per) => {
     dispatch({
         type: GET_ACTIVE_ORDERS,
     });
     try {
         return await axiosConfig
-            .get(`/users/${userId}/orders?active_status=true`, {
+            .get(`/users/${userId}/orders?page=${page}&per=${per}&active_status=true`, {
                 headers: {
                     'x-toprated-token': localStorage.token,
                 },

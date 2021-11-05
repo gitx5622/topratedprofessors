@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Tag, Button,Panel,  Divider } from 'rsuite';
-import { Box } from 'theme-ui';
-import { AiOutlineEye } from 'react-icons/ai';
-import { FiEdit } from 'react-icons/fi';
-import { useRouter } from 'next/router';
+import {Tag, Panel, Divider, Pagination} from 'rsuite';
 import Link from 'next/link';
 import NoData from 'assets/no-open.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatDate, formatDeadline } from '../../../../utils/dates';
-import { makePayment } from 'dataStore/actions/walletAction';
 import { getCompletedOrders } from 'dataStore/actions/ordersAction';
 
-
-
 const Completed = () => {
-    const router = useRouter();
+    const [activePage, setActivePage] = useState(1);
+    const [per, setPer] = useState(10);
     const dispatch = useDispatch();
-    const [openWithHeader, setOpenWithHeader] = useState(false);
-
     const orderSelector = useSelector(state => state.orderState);
     const {
         isLoading,
@@ -28,32 +20,11 @@ const Completed = () => {
         errorMessage,
     } = orderSelector;
 
-
-    const handleReserveOrder = (data) => {
-        const { id: userID } = JSON.parse(localStorage.currentUser);
-        const bodyData = {
-            order_number: data.order_number,
-            order_amount: data.amount,
-            user_id: userID
-        }
-        makePayment(dispatch, bodyData).then(response => {
-            const links = response.data.links[1].href;
-            if (response.status === 200) {
-                router.push(links)
-            } else if (response.status !== 200) {
-                dispatch({
-                    type: 'MAKE_PAYMENT_ERROR',
-                    errorMessage: 'There was an error while making payment',
-                });
-            }
-        })
-    }
-
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
-        getCompletedOrders(dispatch, userId)
+        getCompletedOrders(dispatch, userId, activePage, per)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
+    }, [dispatch, activePage, per]);
 
     return (
         <div style={{ marginLeft: "10px", marginRight: "10px" }}>
@@ -66,11 +37,10 @@ const Completed = () => {
                     <th style={styles.table.th}>ID</th>
                     <th style={styles.table.th}>Order Number</th>
                     <th style={styles.table.th}>Deadline</th>
-                    <th style={styles.table.th}>Amount</th>
-                    <th style={styles.table.th}>Phone</th>
+                    <th style={styles.table.th}>Type of Paper</th>
                     <th style={styles.table.th}>Promo Code</th>
                     <th style={styles.table.th}>Created At</th>
-                    <th style={styles.table.th}>Actions</th>
+                    <th style={styles.table.th}>Amount</th>
                 </tr>
                 {completed_orders?.map((data) => (
                     <tr>
@@ -81,8 +51,7 @@ const Completed = () => {
                             </Link>
                         </td>
                         <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
-                        <td style={styles.table.td}>{data.amount}</td>
-                        <td style={styles.table.td}>{data.phone}</td>
+                        <td style={styles.table.td}>{data.type && (data.type.name)}</td>
                         <td style={styles.table.td}>
                             <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>
                             </center>
@@ -90,22 +59,13 @@ const Completed = () => {
                         <td style={styles.table.td}>
                             {formatDate(data.created_at)}
                         </td>
-                        <td style={styles.table.td}>
-                            <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
-                                <Box onClick={() => router.push(`/dashboard/order/${data.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#5CB85C", borderRadius: '5px' }}>
-                                    <center><AiOutlineEye style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                                </Box>
-                                <Box onClick={() => router.push(`/dashboard/order/${rowData.id}`)} sx={{ cursor: "pointer", justifyContent: "center", height: "30px", width: "30px", background: "#337AB7", borderRadius: '5px' }}>
-                                    <center><FiEdit style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                                </Box>
-                                <Box>
-                                    <Button size="sm" onClick={() => handleReserveOrder(data)} color="green" appearance="primary">Reserve Order</Button>
-                                </Box>
-                            </Box>
-                        </td>
+                        <td style={styles.table.td}>{data.amount}</td>
                     </tr>
                 ))}
-            </table>
+            </table><br/>
+            {completed_orders && (
+                <Pagination size="md" total={pagination.count} limit={per} activePage={activePage} onChangePage={(page) => setActivePage(page)}/>
+            )}
             {!completed_orders && (
                 <div>
                     <Panel>

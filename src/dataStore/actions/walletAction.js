@@ -9,6 +9,9 @@ import {
     GET_USER_WALLET_SUMMARY,
     GET_USER_WALLET_SUMMARY_SUCCESS,
     GET_USER_WALLET_SUMMARY_ERROR,
+    FILTER_WALLET_TRANSACTIONS,
+    FILTER_WALLET_TRANSACTIONS_SUCCESS,
+    FILTER_WALLET_TRANSACTIONS_ERROR,
 } from '../dispatchTypes';
 
 export const userWalletSummary = async (dispatch, userID) => {
@@ -79,6 +82,7 @@ export const executePayment = async (dispatch, userID, paymentId, PayerID) => {
 
             dispatch({
                 type: EXECUTE_PAYMENT_SUCCESS,
+                results: response.data,
             });
 
             return response;
@@ -93,4 +97,32 @@ export const executePayment = async (dispatch, userID, paymentId, PayerID) => {
     }
 };
 
+export const filterWalletTransactions= async (dispatch, userID, per, page) => {
+    dispatch({
+        type: FILTER_WALLET_TRANSACTIONS,
+    });
+    try {
+        return await axiosConfig
+            .get(`/users/${userID}/wallet_transactions?page=${page}&per=${per}`, {
+            headers: {
+                'x-toprated-token': localStorage.token,
+            }
+        }).then(response => {
+
+            dispatch({
+                type: FILTER_WALLET_TRANSACTIONS_SUCCESS,
+                wallet_transactions: response.data,
+            });
+
+            return response;
+        });
+    } catch (error) {
+        dispatch({
+            type: FILTER_WALLET_TRANSACTIONS_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
 

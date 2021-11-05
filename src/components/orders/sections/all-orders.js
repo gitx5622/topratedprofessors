@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Tag, Button, Drawer, Form, ButtonToolbar, Divider } from 'rsuite';
+import {Tag, Button, Divider, Pagination} from 'rsuite';
 import { BoxLoading } from 'react-loadingg';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -9,6 +9,8 @@ import { formatDate, formatDeadline } from '../../../../utils/dates';
 import { getOrders } from 'dataStore/actions/ordersAction';
 
 const AllOrders = () => {
+    const [activePage, setActivePage] = React.useState(1);
+    const [per, setPer] = React.useState(10);
     const router = useRouter();
     const dispatch = useDispatch();
 
@@ -17,14 +19,15 @@ const AllOrders = () => {
         isLoading,
         orders: {
             orders: all_orders,
+            pagination,
         },
     } = orderSelector;
 
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
-        getOrders(dispatch, userId)
+        getOrders(dispatch, userId, activePage, per)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
+    }, [dispatch, activePage, per]);
 
 
     return (
@@ -49,8 +52,8 @@ const AllOrders = () => {
                             <th style={styles.table.th}>Status</th>
                         </tr>
                         {all_orders?.map((data, index) => (
-                            <tr>
-                                <td style={styles.table.td}>{index}</td>
+                            <tr key={index}>
+                                <td style={styles.table.td}>{data.id}</td>
                                 <td style={styles.table.td}>
                                     <Link href={`/dashboard/order/${data.id}`}>
                                         <a>{data.order_number}</a>
@@ -71,7 +74,10 @@ const AllOrders = () => {
                                 </td>
                             </tr>
                         ))}
-                    </table>
+                    </table><br/>
+                    {all_orders && (
+                        <Pagination size="md" total={pagination.count} limit={per} activePage={activePage} onChangePage={(page) => setActivePage(page)}/>
+                    )}
                     {!all_orders && (
                         <div>
                             <Panel>
