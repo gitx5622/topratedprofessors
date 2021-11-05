@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Tag, Button, Drawer, Form, ButtonToolbar, Divider } from 'rsuite';
-import AddOutlineIcon from '@rsuite/icons/AddOutline'
-import { Box } from 'theme-ui';
-import { AiOutlineEye } from 'react-icons/ai';
-import { FiEdit } from 'react-icons/fi';
+import { BoxLoading } from 'react-loadingg';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import NoData from 'assets/no-open.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatDate, formatDeadline } from '../../../../utils/dates';
-import { makePayment } from 'dataStore/actions/walletAction';
 import { getOrders } from 'dataStore/actions/ordersAction';
-import Loading from 'components/wallet/components/loading';
-
 
 const AllOrders = () => {
     const router = useRouter();
@@ -20,15 +14,12 @@ const AllOrders = () => {
 
     const orderSelector = useSelector(state => state.orderState);
     const {
+        isLoading,
         orders: {
             orders: all_orders,
         },
     } = orderSelector;
 
-    const walletSelector = useSelector(state => state.walletState);
-    const { isLoading: walletLoading } = walletSelector;
-
-  
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
         getOrders(dispatch, userId)
@@ -38,10 +29,9 @@ const AllOrders = () => {
 
     return (
         <div style={{ marginLeft: "10px", marginRight: "10px" }}>
-            {walletLoading && (
-                <Loading />
+            {isLoading && (
+                <BoxLoading />
             )}
-            {!walletLoading && (
                 <>
                     <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
                         <h3>All Orders:</h3>
@@ -53,9 +43,9 @@ const AllOrders = () => {
                             <th style={styles.table.th}>Order ID</th>
                             <th style={styles.table.th}>Deadline</th>
                             <th style={styles.table.th}>Type</th>
-                            <th style={styles.table.th}>Amount</th>
                             <th style={styles.table.th}>Promo Code</th>
                             <th style={styles.table.th}>Pages</th>
+                            <th style={styles.table.th}>Amount</th>
                             <th style={styles.table.th}>Status</th>
                         </tr>
                         {all_orders?.map((data, index) => (
@@ -68,7 +58,6 @@ const AllOrders = () => {
                                 </td>
                                 <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
                                 <td style={styles.table.td}>{data && data.type.name}</td>
-                                <td style={styles.table.td}>{(data.amount.toFixed(2))}</td>
                                 <td style={styles.table.td}>
                                     <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>
                                     </center>
@@ -76,6 +65,7 @@ const AllOrders = () => {
                                 <td style={styles.table.td}>
                                     {data && data.page.name}
                                 </td>
+                                <td style={styles.table.td}>${(data.amount.toFixed(2))}</td>
                                 <td style={styles.table.td}>
                                     <Tag color="cyan">Pending</Tag>
                                 </td>
@@ -96,7 +86,6 @@ const AllOrders = () => {
                         </div>
                     )}
                 </>
-            )}
         </div>
     );
 };

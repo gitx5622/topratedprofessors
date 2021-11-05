@@ -1,60 +1,15 @@
 /** @jsx jsx */
 import React, { useState } from 'react';
 import Head from 'next/head';
-import {
-    Button, Panel, Row, Col, Grid, ButtonToolbar,
-    Table, Divider, Drawer, Form, Message, Modal, Placeholder, Tag,
-} from 'rsuite';
+import { Panel, Row, Col, Grid, Divider, Message, Button } from 'rsuite';
 import { jsx, Box, } from 'theme-ui';
 import Payment from '../../../assets/payment.png';
-import { makePayment } from '../../../dataStore/actions/walletAction';
+import {makePayment, userWalletSummary} from '../../../dataStore/actions/walletAction';
 import { useDispatch, useSelector } from "react-redux";
-import Loading from './loading';
+import { BoxLoading } from 'react-loadingg';
 import { useRouter } from 'next/router';
-import Link from "next/link";
-import {formatDate, formatDeadline} from "../../../../utils/dates";
-import {AiOutlineEye} from "react-icons/ai";
-import {FiEdit} from "react-icons/fi";
 
-const ActionCell = ({ rowData, dataKey, ...props }) => {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const router = useRouter();
-    return (
-        <Table.Cell {...props} className="link-group">
-            <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
-                <Box onClick={() => router.push(`/dashboard/order/${rowData.id}`)} sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#5CB85C", borderRadius: '5px' }}>
-                    <center><AiOutlineEye style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                </Box>
-                <Box onClick={handleOpen} sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#d9534f", borderRadius: '5px' }}>
-                    <center><AiTwotoneDelete style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                </Box>
-                <Box onClick={handleOpen} sx={{ justifyContent: "center", height: "30px", width: "30px", background: "#337AB7", borderRadius: '5px' }}>
-                    <center><FiEdit style={{ fontSize: '20px', color: "white", marginTop: "5px" }} /></center>
-                </Box>
-                <Modal open={open} onClose={handleClose}>
-                    <Modal.Header>
-                        <Modal.Title>Delete Order</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <span>Are you sure you want to delete this order</span>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={handleClose} color="red" appearance="primary">
-                            Ok
-                        </Button>
-                        <Button onClick={handleClose} color="cyan" appearance="primary">
-                            Cancel
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-            </Box>
-        </Table.Cell>
-    );
-};
 const WalletCard = ({ section }) => {
-    const [openWithHeader, setOpenWithHeader] = useState(false);
     const [payment, setPayment] = useState({
         order_amount: "",
         user_id: "",
@@ -64,6 +19,8 @@ const WalletCard = ({ section }) => {
     const router = useRouter();
 
     const walletSelector = useSelector(state => state.walletState);
+    const { user_wallet_summary } = walletSelector;
+    const { user_balance, deposit, withdrawals } = user_wallet_summary;
     const { isLoading: walletLoading, errorMessage: walletError } = walletSelector;
 
     const handleChange = (e) => {
@@ -96,7 +53,11 @@ const WalletCard = ({ section }) => {
             });
         }
     };
-
+    React.useEffect(() => {
+        const { id: userId } = JSON.parse(localStorage.currentUser);
+        userWalletSummary(dispatch, userId);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch]);
     return (
         <Box>
             <Head>
@@ -105,12 +66,11 @@ const WalletCard = ({ section }) => {
                 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
             </Head>
             {walletLoading && (
-                <Loading />
+                    <BoxLoading />
             )}
-            {!walletLoading && (
                 <Box sx={{ mt: "10px", mx: "10px" }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: '20px' }}>
-                        <h3>My Balance: <span style={{ color: "blue" }}>$0.00</span></h3>
+                        <h3>My Wallet</h3>
                     </Box>
                     <Divider />
                     {walletError && (
@@ -120,20 +80,24 @@ const WalletCard = ({ section }) => {
                         <Grid fluid>
                             <Row className="show-grid">
                                 <Col xs={24} sm={24} md={12} style={{ borderRight: "1px solid whitesmoke" }}>
-                                    <Panel style={{ background: "whitesmoke", borderRadius: "20px", marginBottom: "20px" }}>
-                                        <h5>Trasanctions</h5><br />
-                                        <table style={styles.table}>
-                                            <tr>
-                                                <th style={styles.table.th}>ID</th>
-                                                <th style={styles.table.th}>Order Number</th>
-                                                <th style={styles.table.th}>Deadline</th>
-                                            </tr>
-                                                <tr>
-                                                    <td style={styles.table.td}>ID</td>
-                                                    <td style={styles.table.td}>Order Number</td>
-                                                    <td style={styles.table.td}>Deadline</td>
-                                                </tr>
-                                        </table>
+                                    <Panel style={{ borderRadius: "20px", marginBottom: "20px" }}>
+                                        <center>
+                                        <Message><h3>Balance </h3></Message><Divider/>
+                                        <h3>${user_balance}</h3>
+                                        <Divider/>
+                                            <Grid fluid>
+                                                <Row>
+                                                    <Col xs={12} style={{borderRight:"1px solid whitesmoke"}}>
+                                                        <Button color="cyan" appearance="ghost">Deposits</Button>
+                                                        <br/> <h3>${deposit}</h3>
+                                                    </Col>
+                                                    <Col xs={12}>
+                                                        <Button color="cyan" appearance="ghost">Withdrawals</Button>
+                                                        <br/><h3>${withdrawals}</h3>
+                                                    </Col>
+                                                </Row>
+                                            </Grid>
+                                        </center>
                                     </Panel>
                                 </Col>
                                 <Col xs={24} sm={24} md={12} >
@@ -155,8 +119,22 @@ const WalletCard = ({ section }) => {
                             </Row>
                         </Grid>
                     </Panel>
+                    <Panel>
+                        <h5>Trasanctions</h5><br />
+                        <table style={styles.table}>
+                            <tr>
+                                <th style={styles.table.th}>ID</th>
+                                <th style={styles.table.th}>Order Number</th>
+                                <th style={styles.table.th}>Deadline</th>
+                            </tr>
+                            <tr>
+                                <td style={styles.table.td}>ID</td>
+                                <td style={styles.table.td}>Order Number</td>
+                                <td style={styles.table.td}>Deadline</td>
+                            </tr>
+                        </table>
+                    </Panel>
                 </Box>
-            )}
         </Box>
     );
 };

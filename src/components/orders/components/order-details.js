@@ -1,12 +1,15 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import {Panel, Divider, Button} from 'rsuite';
+import {Panel, Divider, Button, Modal} from 'rsuite';
 import { getOrder } from 'dataStore/actions/ordersAction';
 import { formatDate, formatDeadline } from '../../../../utils/dates';
-
+import {makePayment} from "../../../dataStore/actions/walletAction";
 
 const OrderDetails = () => {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const router = useRouter();
     const { orderID } = router.query;
     const dispatch = useDispatch();
@@ -14,6 +17,7 @@ const OrderDetails = () => {
     const {
         order: {
             id: orderId,
+            order_number,
             topic,
             phone,
             instructions,
@@ -33,6 +37,26 @@ const OrderDetails = () => {
             created_at,
         } } = orderSelector;
 
+    const handleReserveOrder = () => {
+        const { id: userID } = JSON.parse(localStorage.currentUser);
+        const bodyData = {
+            order_number: order_number,
+            order_amount: amount,
+            user_id: userID
+        }
+        makePayment(dispatch, bodyData).then(response => {
+            const links = response.data.links[1].href;
+            if (response.status === 200) {
+                router.push(links)
+            } else if (response.status !== 200) {
+                dispatch({
+                    type: 'MAKE_PAYMENT_ERROR',
+                    errorMessage: 'There was an error while making payment',
+                });
+            }
+        })
+    }
+
     React.useEffect(() => {
         getOrder(dispatch, orderID);
     }, [dispatch, orderID]);
@@ -44,7 +68,25 @@ const OrderDetails = () => {
                 <div style={{display: "flex", gap: '1em'}}>
                 <Button color="blue" appearance="primary">Update</Button>
                 <Button color="yellow" appearance="primary">Cancel</Button>
-                <Button color="green" appearance="primary">Reserve Payment</Button>
+                <Button color="green" onClick={handleOpen} appearance="primary">Reserve Payment</Button>
+                    <Modal open={open} onClose={handleClose}>
+                        <Modal.Header>
+                            <Modal.Title>Reserve Payment</Modal.Title>
+                            <Divider/>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <h6>Choose one of the options to reserve the payment for the order.</h6>
+                            <div style={{display: "flex", justifyContent: "space-between", marginTop:"40px", marginLeft:"20px", marginRight:"20px"}}>
+                                <Button color="green" appearance="primary">Reserve from your Wallet</Button>
+                                <Button color="cyan" appearance="primary" onClick={handleReserveOrder}>Reserve with Paypal</Button>
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button onClick={handleClose} appearance="ghost">
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </div>
             </div>
             <Divider />
