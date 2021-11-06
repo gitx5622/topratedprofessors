@@ -24,7 +24,7 @@
     "next-optimized-images": "^2.5.4",
     "prettier": "^2.1.2",
     "rc-drawer": "^4.1.0",
-    "react": "^17.0.2",
+    "react": "^16.13.0",
     "react-countup": "^5.2.0",
     "react-csv": "^2.0.3",
     "react-custom-scrollbars": "^4.2.1",
