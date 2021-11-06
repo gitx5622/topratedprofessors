@@ -1,8 +1,7 @@
-/** @jsx jsx */
 import React, { useEffect } from "react";
 import Head from 'next/head';
 import { useDispatch, useSelector } from "react-redux";
-import { jsx, Box } from 'theme-ui';
+import {  Box } from 'theme-ui';
 import { getOrders } from "../../../dataStore/actions/ordersAction";
 import { BoxLoading } from 'react-loadingg';
 import Completed from "../sections/completed";

@@ -240,7 +240,7 @@ const OrderUpdate = () => {
                                                 <Select onChange={handleChange} name="subject_id" mb={3}>
                                                     {subjectSelector.subjects.map(subject => {
                                                         return (
-                                                            <option key={subject.id} value={subject.id}>{subject.name}</option>
+                                                            <option key={subject.id} selected={selected} value={subject.id}>{subject.name}</option>
                                                         )
                                                     })}
                                                 </Select>
@@ -329,9 +329,9 @@ const OrderUpdate = () => {
                                 <Label htmlFor="topic">Topic*</Label>
                                 <Input onChange={handleChange} name="topic"  type='text' mb={3} />
                                 <Label htmlFor="instructions">Instructions*</ Label>
-                                <ReactQuill value={instructions}
-                                            onChange={handleInstructionsChange}
-                                            theme='snow' /><br/>
+                                <Input style={{border:"1px solid #C9BBB8 "}} as="textarea" value={instructions}
+                                       rows={8} onChange={handleInstructionsChange}  placeholder="Fill in instructions" />
+                                <br/>
                                 <Button type="submit" color="cyan" appearance="primary">Edit Order</Button>
                             </Box>
                         </Panel>

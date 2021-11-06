@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import { Grid, Row, Col, Divider, Uploader, Steps, ButtonGroup, InputGroup, Panel, Message } from 'rsuite';
+import React, { useEffect, useReducer, } from 'react';
+import { Grid, Row, Col, Divider, Uploader, Input, Steps, ButtonGroup, InputGroup, Panel, Message } from 'rsuite';
 import checkDetailsReducer, { initialCheckDetailsState } from "../../../dataStore/reducers/checkDetailsReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { Label, Textarea, Select, Button } from 'theme-ui';
+import { Label, Select, Button } from 'theme-ui';
 import { getLevels } from "../../../dataStore/actions/levelsAction";
 import { getPages } from "../../../dataStore/actions/pagesAction";
 import { getSources } from "../../../dataStore/actions/sourcesAction";
@@ -14,14 +14,8 @@ import { getServices } from "../../../dataStore/actions/servicesAction";
 import { getLanguages } from "../../../dataStore/actions/languagesAction";
 import { getSpacing } from "../../../dataStore/actions/spacingsAction";
 import { createOrders } from "../../../dataStore/actions/ordersAction";
-import { Box, Input } from 'theme-ui';
+import { Box, } from 'theme-ui';
 import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic'
-
-const ReactQuill = dynamic(import('react-quill'), {
-    ssr: false,
-    loading: () => <p>Loading ...</p>,
-})
 
 const CreateOrder = () => {
     const [step, setStep] = React.useState(0);
@@ -32,7 +26,7 @@ const CreateOrder = () => {
     const [mypages, setmypages] = React.useState(1);
     const [mylevel, setmylevel] = React.useState(1);
     const [myspacing, setmyspacing] = React.useState(1);
-    const [instructions, setinstructions] = React.useState('');
+    const [instructions, setinstructions] = React.useState("");
     const [order, setOrder] = React.useState({
         user_id: '',
         service_id: 1,
@@ -108,7 +102,7 @@ const CreateOrder = () => {
         // order.subject_id = parseInt(localStorage.subject_id, 10)
     }
 
-    const handleChange = (event) => {
+    const handleChange = (valuex, event) => {
         let value = event.target.value;
         let name = event.target.name;
 
@@ -119,9 +113,11 @@ const CreateOrder = () => {
             }
         })
     }
+
     const handleInstructionsChange = (value) => {
         setinstructions(value);
     }
+
     const parseServiceSelected = (event) => {
         const valueToParse = event.target.value;
         const service_id_index = Object.values(JSON.parse(valueToParse));
@@ -226,7 +222,7 @@ const CreateOrder = () => {
         console.log(bodyData)
         if (order.topic !== "" && bodyData.instructions !== "") {
             addOrder(bodyData);
-            router.push("/dashboard/completed")
+            router.push("/dashboard/all-orders")
         } else {
             dispatchCheckDetails({
                 type: 'ERROR',
@@ -252,11 +248,6 @@ const CreateOrder = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 
-    const modules = {
-        clipboard: {
-            matchVisual: false // https://quilljs.com/docs/modules/clipboard/#matchvisual
-        }
-    }
     return (
         <Box sx={{ marginLeft: "10px", marginRight: "10px" }}>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -382,18 +373,16 @@ const CreateOrder = () => {
                             {step === 1 && (
                                 <Box>
                                     <Label htmlFor="phone">Phone</Label>
-                                    <Input onChange={handleChange} name="phone" type='text' mb={3} />
+                                    <Input style={{border:"1px solid #C9BBB8 "}} onChange={handleChange} name="phone" type='text' mb={3} /><br/>
                                     <Label htmlFor="topic">Topic*</Label>
-                                    <Input onChange={handleChange} name="topic" type='text' mb={3} />
+                                    <Input style={{border:"1px solid #C9BBB8 "}} onChange={handleChange} name="topic" type='text' mb={3} /><br/>
                                     <Label htmlFor="instructions">Instructions*</ Label>
-                                    <ReactQuill value={instructions}
-                                        onChange={handleInstructionsChange}
-                                        modules={modules}
-                                        theme='snow' />
+                                    <Input style={{border:"1px solid #C9BBB8 "}} as="textarea" value={instructions}
+                                           rows={8} onChange={handleInstructionsChange}  placeholder="Fill in instructions" />
                                     {/* <Label htmlFor="upload">Upload files (optional)</Label>
                                     <Uploader action="//jsonplaceholder.typicode.com/posts/" draggable>
                                         <div style={{ lineHeight: '80px', background: "whitesmoke" }}>Click or Drag files to this area to upload</div>
-                                    </Uploader> */}
+                                    </Uploader> */}<br/>
                                 </Box>
                             )}
                             <Row>

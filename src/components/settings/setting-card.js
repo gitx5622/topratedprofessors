@@ -1,8 +1,7 @@
-/** @jsx jsx */
 import React, {useEffect, useState} from 'react';
 import Head from 'next/head';
 import { Panel, Row, Col, Grid, Avatar, Table, Divider, Tag } from 'rsuite';
-import { jsx, Box } from 'theme-ui';
+import { Box } from 'theme-ui';
 import Link from "next/link";
 import {formatDate, formatDeadline} from "../../../utils/dates";
 import {useDispatch, useSelector} from "react-redux";

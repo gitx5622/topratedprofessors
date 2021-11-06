@@ -1,8 +1,7 @@
-/** @jsx jsx */
 import React, { useState } from 'react';
 import Head from 'next/head';
 import { Panel, Row, Col, Grid, Divider, Message, Pagination, Button } from 'rsuite';
-import { jsx, Box, } from 'theme-ui';
+import {  Box, } from 'theme-ui';
 import Payment from '../../../assets/payment.png';
 import {filterWalletTransactions, makePayment, userWalletSummary} from '../../../dataStore/actions/walletAction';
 import { useDispatch, useSelector } from "react-redux";
@@ -75,36 +74,25 @@ const WalletCard = ({ section }) => {
                 <Box sx={{ mt: "10px", mx: "10px" }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: '20px' }}>
                         <h3>My Wallet</h3>
+                        <div style={{display: 'flex', justifyContent: 'space-between', gap: "2em"}}>
+                            <div>
+                                <Button color="cyan" appearance="ghost">Withdrawals</Button>
+                                <h3>${withdrawals}</h3>
+                            </div>
+                            <div>
+                                <Button color="cyan" appearance="ghost">Deposits</Button>
+                                <h3>${deposit}</h3>
+                            </div>
+                        </div>
                     </Box>
                     <Divider />
                     {walletError && (
                         <Message type="error">{walletError}</Message>
                     )}
-                    <Panel shaded>
+                    <Panel>
                         <Grid fluid>
                             <Row className="show-grid">
-                                <Col xs={24} sm={24} md={12} style={{ borderRight: "1px solid whitesmoke" }}>
-                                    <Panel style={{ borderRadius: "20px", marginBottom: "20px" }}>
-                                        <center>
-                                        <Message><h3>Balance </h3></Message><Divider/>
-                                        <h3>${user_balance}</h3>
-                                        <Divider/>
-                                            <Grid fluid>
-                                                <Row>
-                                                    <Col xs={12} style={{borderRight:"1px solid whitesmoke"}}>
-                                                        <Button color="cyan" appearance="ghost">Deposits</Button>
-                                                        <br/> <h3>${deposit}</h3>
-                                                    </Col>
-                                                    <Col xs={12}>
-                                                        <Button color="cyan" appearance="ghost">Withdrawals</Button>
-                                                        <br/><h3>${withdrawals}</h3>
-                                                    </Col>
-                                                </Row>
-                                            </Grid>
-                                        </center>
-                                    </Panel>
-                                </Col>
-                                <Col xs={24} sm={24} md={12} >
+                                <Col xs={24} sm={24} md={10}>
                                     <form onSubmit={handleMakePaymentSubmit} style={{ background: "whitesmoke", borderRadius: '20px', padding: "20px" }}>
                                         <center>
                                             <h3>Add funds to your account</h3><br />
@@ -120,33 +108,35 @@ const WalletCard = ({ section }) => {
                                         </center>
                                     </form>
                                 </Col>
+                                <Col xs={24} sm={24} md={14} >
+                                    <Panel>
+                                        <h5>Trasanctions</h5><br />
+                                        <table style={styles.table}>
+                                            <tr>
+                                                <th style={styles.table.th}>ID</th>
+                                                <th style={styles.table.th}>Deposit</th>
+                                                <th style={styles.table.th}>Narrative</th>
+                                                <th style={styles.table.th}>Time Payment Made</th>
+                                            </tr>
+                                            {wallets?.map((transaction) => (
+                                                <tr>
+                                                    <td style={styles.table.td}>{transaction.id}</td>
+                                                    <td style={styles.table.td}><center>${(transaction.deposit).toFixed(2)}</center></td>
+                                                    <td style={styles.table.td}>{transaction.narrative}</td>
+                                                    <td style={styles.table.td}>{formatDate(transaction.created_at)}</td>
+                                                </tr>
+                                            ))}
+                                        </table><br/>
+                                        {!wallets && (
+                                            <p>No data</p>
+                                        )}
+                                        {wallets && (
+                                            <Pagination size="md" total={pagination.count} limit={per} activePage={activePage} onChangePage={(page) => setActivePage(page)}/>
+                                        )}
+                                    </Panel>
+                                </Col>
                             </Row>
                         </Grid>
-                    </Panel>
-                    <Panel>
-                        <h5>Trasanctions</h5><br />
-                        <table style={styles.table}>
-                            <tr>
-                                <th style={styles.table.th}>ID</th>
-                                <th style={styles.table.th}>Deposit</th>
-                                <th style={styles.table.th}>Narrative</th>
-                                <th style={styles.table.th}>Time Payment Made</th>
-                            </tr>
-                            {wallets?.map((transaction) => (
-                                <tr>
-                                    <td style={styles.table.td}>{transaction.id}</td>
-                                    <td style={styles.table.td}><center>${(transaction.deposit).toFixed(2)}</center></td>
-                                    <td style={styles.table.td}>{transaction.narrative}</td>
-                                    <td style={styles.table.td}>{formatDate(transaction.created_at)}</td>
-                                </tr>
-                            ))}
-                        </table><br/>
-                        {!wallets && (
-                            <p>No data</p>
-                        )}
-                        {wallets && (
-                            <Pagination size="md" total={pagination.count} limit={per} activePage={activePage} onChangePage={(page) => setActivePage(page)}/>
-                        )}
                     </Panel>
                     <Divider/>
                 </Box>

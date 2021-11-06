@@ -1,6 +1,5 @@
-/** @jsx jsx */
 import React, {useEffect} from 'react';
-import {Alert, jsx, Close} from 'theme-ui';
+import {Alert, Close} from 'theme-ui';
 import OrderCard from "./order-card";
 
 const CompletedOrders = ({section}) => {

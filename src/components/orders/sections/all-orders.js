@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Tag, Button, Divider, Pagination} from 'rsuite';
+import {Tag, Button, Divider, Pagination, Panel} from 'rsuite';
 import { BoxLoading } from 'react-loadingg';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
