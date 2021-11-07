@@ -1,12 +1,12 @@
-/** @jsx jsx */
-import { jsx, Box, Grid, Heading, Text} from 'theme-ui';
-import { Container } from 'rsuite';
+import { Box, Grid, Heading, Text} from 'theme-ui';
 import Lets from 'assets/footer/lets.png';
 import Mcafee from 'assets/footer/mcafee.png';
 import Paypal from 'assets/footer/paypal.png';
 import Visa from 'assets/footer/visa.png';
+import { useRouter } from "next/router";
 
 export default function Footer() {
+    const router = useRouter();
   return (
     <footer sx={styles.footer}>
           <Grid sx={styles.footer.grid}>
@@ -14,10 +14,10 @@ export default function Footer() {
                   <Heading as="h1" sx={styles.footer.heading}>COMPANY</Heading>
                   <center>
                   <ul style={{fontSize:"16px"}}>
-                      <li>FAQ</li>
-                      <li>Reviews</li>
-                      <li>About Us</li>
-                      <li>Contact Us</li>
+                      <li onClick={() => router.push('/fags')}>FAQ</li>
+                      <li  onClick={() => router.push('/reviews')}>Reviews</li>
+                      <li  onClick={() => router.push('/about-us')}>About Us</li>
+                      <li  onClick={() => router.push('/contact-us')}>Contact Us</li>
                   </ul>
                   </center>
               </Box>
@@ -25,10 +25,10 @@ export default function Footer() {
                   <Heading as="h1" sx={styles.footer.heading}>LEGAL</Heading>
                   <center>
                   <ul style={{fontSize:"16px"}}>
-                      <li>Cookie Policy</li>
-                      <li>Privacy Policy</li>
-                      <li>Ratings & Reviews</li>
-                      <li>Terms & Conditions</li>
+                      <li  onClick={() => router.push('/fags')}>Cookie Policy</li>
+                      <li  onClick={() => router.push('/privacy_policy')}>Privacy Policy</li>
+                      <li  onClick={() => router.push('/reviews')}>Ratings & Reviews</li>
+                      <li  onClick={() => router.push('/terms_and_conditions')}>Terms and Conditions</li>
                   </ul>
                   </center>
               </Box>
@@ -36,10 +36,10 @@ export default function Footer() {
                   <Heading as="h1" sx={styles.footer.heading}>SERVICES</Heading>
                   <center>
                   <ul style={{fontSize:"16px"}}>
-                      <li>Online Tutors</li>
-                      <li>Best online tutors</li>
-                      <li>Do my homework</li>
-                      <li>Essay writing online</li>
+                      <li  onClick={() => router.push('/online-tutors')}>Online Tutors</li>
+                      <li  onClick={() => router.push('/best-online-tutors')}>Best online tutors</li>
+                      <li  onClick={() => router.push('/do-my-homework')}>Do my homework</li>
+                      <li  onClick={() => router.push('/essay-writing-online')}>Essay writing online</li>
                   </ul>
                   </center>
               </Box>
@@ -47,10 +47,10 @@ export default function Footer() {
                   <Heading as="h1" sx={styles.footer.heading}>TOPRATED</Heading>
                   <center>
                   <ul style={{fontSize:"16px"}}>
-                      <li>Paper revision</li>
-                      <li>Custom writing</li>
-                      <li>English essays</li>
-                      <li>Plagiarism report</li>
+                      <li  onClick={() => router.push('/paper-revision')}>Paper revision</li>
+                      <li  onClick={() => router.push('/custom-writing')}>Custom writing</li>
+                      <li  onClick={() => router.push('/english-essays')}>English essays</li>
+                      <li  onClick={() => router.push('/plagiarism-report')}>Plagiarism report</li>
                   </ul>
                   </center>
               </Box>

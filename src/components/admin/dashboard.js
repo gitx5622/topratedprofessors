@@ -12,7 +12,6 @@ import SettingView from "../settings/view";
 import OrderDetails from 'components/orders/components/order-details';
 import Transactions from "../wallet/transactions";
 import InProgress from 'components/orders/sections/in-progress';
-import OrderUpdate from "../orders/components/order-update";
 
 const Dashboard = ({ section }) => {
     const renderOrderPages = () => {
@@ -110,12 +109,6 @@ const Dashboard = ({ section }) => {
             case 'create_order':
                 return (
                     <CreateOrder
-                        section={section}
-                    />
-                );
-            case 'order-update':
-                return (
-                    <OrderUpdate
                         section={section}
                     />
                 );

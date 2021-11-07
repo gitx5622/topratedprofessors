@@ -66,11 +66,6 @@ const CreateOrder = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
-    const [checkDetailsData, dispatchCheckDetails] = useReducer(
-        checkDetailsReducer,
-        initialCheckDetailsState
-    );
-
     const onChange = nextStep => {
         setStep(nextStep < 0 ? 0 : nextStep > 2 ? 2 : nextStep);
     };
@@ -224,13 +219,10 @@ const CreateOrder = () => {
             addOrder(bodyData);
             router.push("/dashboard/all-orders")
         } else {
-            dispatchCheckDetails({
-                type: 'ERROR',
+            dispatch({
+                type: 'CREATE_ORDER_ERROR',
                 errorMessage: 'Make sure all the fields all filled',
             });
-            if (errorMessage.errorMessage) {
-                <Message type="error">Error</Message>
-            }
         }
     };
 
@@ -266,14 +258,19 @@ const CreateOrder = () => {
                             </Panel>
                         </Col>
                         <Col xs={18}>
-                            {checkDetailsData.errorMessage && (
-                                <Message closable type="error">{checkDetailsData.errorMessage || errorMessage}</Message>
+                            {errorMessage && (
+                                <Message closable type="error">{ errorMessage}</Message>
                             )}
                             {step === 0 && (
                                 <Box>
                                     <Box style={{ display: "flex", justifyContent: "space-between" }}>
                                         <h3>Enter Order details:</h3><br />
-                                        <h3>Price: <span style={{ color: "blue" }}>${(myservice * mytype * myurgency * mypages * mylevel * myspacing).toFixed(2)}</span></h3>
+                                        <h3>
+                                            Price:
+                                            <span style={{ color: "blue" }}>
+                                            ${(myservice * mytype * myurgency * mypages * mylevel * myspacing).toFixed(2)}
+                                            </span>
+                                        </h3>
                                         <Box>
                                             <h5>Have a promo Code ?</h5>
                                             <InputGroup>
@@ -413,7 +410,6 @@ const CreateOrder = () => {
         </Box>
     )
 }
-
 export default CreateOrder;
 
 const styles = {
