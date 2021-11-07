@@ -1,4 +1,5 @@
-import { Box, Grid, Heading, Text} from 'theme-ui';
+/** @jsx jsx */
+import { jsx, Box, Grid, Heading, Text} from 'theme-ui';
 import Lets from 'assets/footer/lets.png';
 import Mcafee from 'assets/footer/mcafee.png';
 import Paypal from 'assets/footer/paypal.png';
@@ -56,7 +57,7 @@ export default function Footer() {
               </Box>
           </Grid>
         <Grid>
-                <ul sx={{display: 'flex', justifyContent: 'center',   '@media screen and (max-width:768px)': {display: 'none'},}}>
+                <ul style={{display: 'flex', justifyContent: 'center',   '@media screen and (max-width:768px)': {display: 'none'},}}>
                     <li><img src={Lets} alt="lets_encrypt" width="200px" height="70px"/></li>
                     <li><img src={Mcafee} alt="mcafee" width="100px"/></li>
                     <li><img src={Paypal} alt="paypal" width="100px"/></li>

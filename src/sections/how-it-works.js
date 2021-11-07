@@ -8,6 +8,7 @@ import { jsx, Box, Flex } from 'theme-ui';
 import PatternBG from 'assets/patternBG.png';
 import ArrowOdd from 'assets/arrowOdd.svg';
 import ArrowEven from 'assets/arrowEven.svg';
+import {Button} from "rsuite";
 
 const packages = {
   instructions: [
@@ -82,6 +83,7 @@ const data = [
 
 export default function HowItWorks() {
   const { instructions, reserve_funds, completed_work, pay_your_writer } = packages;
+  const [open, setOpen] = useState(false);
   const [state, setState] = useState({
     active: 'instructions',
     openTab: instructions
@@ -105,51 +107,6 @@ export default function HowItWorks() {
           title="How it works"
           isWhite={false}
         /><br/>
-        <Flex sx={styles.buttonGroup}>
-          <Box sx={styles.buttonGroupInner}>
-            <button
-              className={state.active === "instructions" ? 'active' : ''}
-              type='button'
-              aria-label="Monthly"
-              onClick={() => handlePricingPlan('instructions')}
-            >
-              Instructions
-            </button>
-            <button
-              className={state.active === "reserve_funds" ? 'active' : ''}
-              type='button'
-              aria-label="Reserve Funds"
-              onClick={() => handlePricingPlan('reserve_funds')}
-            >
-              Reserve Funds
-            </button>
-            <button
-              className={state.active === "completed_work" ? 'active' : ''}
-              type='button'
-              aria-label="Completed Work"
-              onClick={() => handlePricingPlan('completed_work')}
-            >
-              Completed Work
-            </button>
-            <button
-              className={state.active === "pay_your_writer" ? 'active' : ''}
-              type='button'
-              aria-label="Pay_your_writer"
-              onClick={() => handlePricingPlan('pay_your_writer')}
-            >
-              Pay Your Writer
-            </button>
-          </Box>
-        </Flex><br/>
-        <Box sx={styles.pricingWrapper} className="pricing__wrapper">
-          {state.openTab.map((packageData) => (
-            <Box sx={styles.pricingItem} key={packageData.id}>
-              <PriceCard
-                data={packageData}
-              />
-            </Box>
-          ))}
-        </Box><br/>
         <Grid sx={styles.grid}>
           {data.map((item) => (
             <Box key={item.id} sx={styles.card}>
@@ -160,6 +117,63 @@ export default function HowItWorks() {
             </Box>
           ))}
         </Grid>
+        <center>
+          <Button
+              onClick={() => setOpen((open) => !open)}
+            style={{background: "#17c671", borderRadius:"50px", color:"white", padding:"15px", fontSize:"20px"}}
+        >
+            Read more
+          </Button>
+        </center>
+        { open && (
+            <div style={{marginTop:"10px"}}>
+              <Flex sx={styles.buttonGroup}>
+                <Box sx={styles.buttonGroupInner}>
+                  <button
+                      className={state.active === "instructions" ? 'active' : ''}
+                      type='button'
+                      aria-label="Monthly"
+                      onClick={() => handlePricingPlan('instructions')}
+                  >
+                    Instructions
+                  </button>
+                  <button
+                      className={state.active === "reserve_funds" ? 'active' : ''}
+                      type='button'
+                      aria-label="Reserve Funds"
+                      onClick={() => handlePricingPlan('reserve_funds')}
+                  >
+                    Reserve Funds
+                  </button>
+                  <button
+                      className={state.active === "completed_work" ? 'active' : ''}
+                      type='button'
+                      aria-label="Completed Work"
+                      onClick={() => handlePricingPlan('completed_work')}
+                  >
+                    Completed Work
+                  </button>
+                  <button
+                      className={state.active === "pay_your_writer" ? 'active' : ''}
+                      type='button'
+                      aria-label="Pay_your_writer"
+                      onClick={() => handlePricingPlan('pay_your_writer')}
+                  >
+                    Pay Your Writer
+                  </button>
+                </Box>
+              </Flex><br/>
+              <Box sx={styles.pricingWrapper} className="pricing__wrapper">
+                {state.openTab.map((packageData) => (
+                    <Box sx={styles.pricingItem} key={packageData.id}>
+                      <PriceCard
+                          data={packageData}
+                      />
+                    </Box>
+                ))}
+              </Box><br/>
+            </div>
+        )}
       </Box>
     </section>
   );
