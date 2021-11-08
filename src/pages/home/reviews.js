@@ -1,18 +1,18 @@
 import React from 'react';
 import { ThemeProvider } from 'theme-ui';
-import theme from '../theme';
+import theme from '../../theme';
 import Layout from 'components/home/layout';
-import FagsSection from '../sections/fags';
+import ReviewsSection from '../../sections/reviews';
 
-const CookiePolicy = () => {
+const Reviews = () => {
     return (
         <div>
             <ThemeProvider theme={theme}>
                 <Layout>
-                    <FagsSection/>
+                    <ReviewsSection/>
                 </Layout>
             </ThemeProvider>
         </div>
     )
 }
-export default CookiePolicy;
+export default Reviews;

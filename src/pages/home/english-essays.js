@@ -1,18 +1,18 @@
 import React from 'react';
 import { ThemeProvider } from 'theme-ui';
-import theme from '../theme';
+import theme from '../../theme';
 import Layout from 'components/home/layout';
-import ReviewsSection from '../sections/reviews';
+import FagsSection from '../../sections/fags';
 
-const Reviews = () => {
+const EnglishEssays = () => {
     return (
         <div>
             <ThemeProvider theme={theme}>
                 <Layout>
-                    <ReviewsSection/>
+                    <FagsSection/>
                 </Layout>
             </ThemeProvider>
         </div>
     )
 }
-export default Reviews;
+export default EnglishEssays;

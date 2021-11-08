@@ -1,10 +1,10 @@
 import React from 'react';
 import { ThemeProvider } from 'theme-ui';
-import theme from '../theme';
+import theme from '../../theme';
 import Layout from 'components/home/layout';
-import FagsSection from '../sections/fags';
+import FagsSection from '../../sections/fags';
 
-const DoMyHomework = () => {
+const OnlineTutors = () => {
     return (
         <div>
             <ThemeProvider theme={theme}>
@@ -15,4 +15,4 @@ const DoMyHomework = () => {
         </div>
     )
 }
-export default DoMyHomework;
+export default OnlineTutors;

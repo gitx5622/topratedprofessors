@@ -1,8 +1,8 @@
 import React from 'react';
 import { ThemeProvider } from 'theme-ui';
-import theme from '../theme';
+import theme from '../../theme';
 import Layout from 'components/home/layout';
-import WhyChooseUsSection from '../sections/why-choose-us';
+import WhyChooseUsSection from '../../sections/why-choose-us';
 
 const WhyChooseUs = () => {
     return (
