@@ -32,11 +32,11 @@ const CalculatorCard = ({
                             <label style={{ fontWeight: 600, marginTop: "10px" }}>Service:</label>
                         </Col>
                         <Col xs={24} sm={19} md={19}>
-                            <Select sx={{ border: '1px solid #becad6', fontFamily: 'Quicksand, sans-serif' }} onChange={parseServiceSelected} name="sound" id="sound" mb={3}>
+                            <select style={{ border: '1px solid #becad6', fontFamily: 'Quicksand, sans-serif', borderRadius:"5px", marginBottom:"15px", width: '100%', height: '40px', backgroundColor: 'white' }} onChange={parseServiceSelected} name="sound" id="sound" mb={3}>
                                 {serviceData?.map((service) => (
-                                    <option key={service.id} value={JSON.stringify(service)}>{service.name}</option>
+                                    <option key={service.id} selected={service.name === 'Rewriting'} value={JSON.stringify(service)}>{service.name}</option>
                                 ))}
-                            </Select>
+                            </select>
                         </Col>
                     </Row>
                 </Grid>
@@ -46,11 +46,11 @@ const CalculatorCard = ({
                             <label style={{ marginRight: "20px", fontWeight: 600 }}>Type of Paper:</label>
                         </Col>
                         <Col xs={24} sm={19} md={19}>
-                            <Select sx={{ border: '1px solid #becad6', fontFamily: 'Quicksand, sans-serif' }} onChange={parseTypeSelected} mb={3}>
+                            <select style={{ border: '1px solid #becad6', fontFamily: 'Quicksand, sans-serif',borderRadius:"5px", marginBottom:"15px",  width: '100%', height: '40px', backgroundColor: 'white' }} onChange={parseTypeSelected} mb={3}>
                                 {typesData?.map((type) => (
-                                    <option key={type.id} value={JSON.stringify(type)}>{type.name}</option>
+                                    <option key={type.id} selected={type.name === "Essay"} value={JSON.stringify(type)}>{type.name}</option>
                                 ))}
-                            </Select>
+                            </select>
                         </Col>
                     </Row>
                 </Grid>
@@ -60,11 +60,11 @@ const CalculatorCard = ({
                             <label style={{ fontWeight: 600, marginTop: "10px" }}>Urgency:</label>
                         </Col>
                         <Col xs={24} sm={19} md={19}>
-                            <Select sx={{ border: '1px solid #becad6', fontFamily: 'Quicksand, sans-serif' }} onChange={parseUrgencySelected} mb={3}>
+                            <select style={{ border: '1px solid #becad6', fontFamily: 'Quicksand, sans-serif', borderRadius:"5px", marginBottom:"15px",  width: '100%', height: '40px', backgroundColor: 'white'  }} onChange={parseUrgencySelected} mb={3}>
                                 {urgenciesData?.map((urgency) => (
-                                    <option key={urgency.id} value={JSON.stringify(urgency)}>{urgency.name}</option>
+                                    <option key={urgency.id} selected={urgency.name === "10 days"} value={JSON.stringify(urgency)}>{urgency.name}</option>
                                 ))}
-                            </Select>
+                            </select>
                         </Col>
                     </Row>
                 </Grid>
@@ -74,11 +74,11 @@ const CalculatorCard = ({
                             <label style={{ marginTop: "10px", fontWeight: 600 }}>Pages:</label>
                         </Col>
                         <Col xs={24} sm={19} md={19}>
-                            <Select sx={{ border: '1px solid #becad6', fontFamily: 'Quicksand, sans-serif' }} onChange={parsePageSelected} mb={3}>
+                            <select style={{ border: '1px solid #becad6', fontFamily: 'Quicksand, sans-serif', borderRadius:"5px", marginBottom:"15px", width: '100%', height: '40px', backgroundColor: 'white'  }} onChange={parsePageSelected}>
                                 {pagesData?.map((page) => (
-                                    <option key={page.id} value={JSON.stringify(page)}>{page.name}</option>
+                                    <option key={page.id} selected={page.name === "275 words / 1 page"} value={JSON.stringify(page)}>{page.name}</option>
                                 ))}
-                            </Select>
+                            </select>
                         </Col>
                     </Row>
                 </Grid>
@@ -88,14 +88,14 @@ const CalculatorCard = ({
                             <label style={{ marginTop: "10px", fontWeight: 600 }}>Level:</label>
                         </Col>
                         <Col xs={24} sm={19} md={19}>
-                            <Select sx={{ border: '1px solid #becad6', fontFamily: 'Quicksand, sans-serif' }} onChange={parseLevelSelected} mb={3}>
+                            <select style={{ border: '1px solid #becad6', fontFamily: 'Quicksand, sans-serif', borderRadius:"5px", marginBottom:"15px",  width: '100%', height: '40px', backgroundColor: 'white'  }} onChange={parseLevelSelected}>
                                 {levelsData?.map((level) => (
                                     <option key={level.id} value={JSON.stringify(level)}>{level.name}</option>
                                 ))}
-                            </Select>
+                            </select>
                         </Col>
                     </Row>
-                </Grid>
+                </Grid><br/>
                 <Box>
                     <Text><center><strong>Minimum Price
                         : $ {(myService * myType * myUrgency * myPages * myLevel).toFixed(2)}</strong></center></Text>

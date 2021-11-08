@@ -103,7 +103,7 @@ export default function Banner() {
                                 </Box>
                             </Box>
                             <center><p style={{ fontSize: "16px" }}>We are the best custom essay writers online.</p></center><br />
-                            <center><h4>100% SATISFACTION GUARANTEED</h4></center><br/>
+                            <center><h4>100% SATISFACTION GUARANTEED</h4></center>
                             <Box sx={styles.banner.buttonGroup}>
                                 <Button className='buttons' onClick={() => router.push('/dashboard/all-orders')} >Dashboard</Button>
                                 <Button className='buttons' onClick={() => router.push('/dashboard/all-orders')} >Order Now</Button>
@@ -199,7 +199,10 @@ const styles = {
                 borderRadius: '10px',
                 fontSize: ['14px', null, null, 2],
                 letterSpacings: '-0.15px',
-                padding: ['12px 12px', null, '15px 15px'],
+                paddingLeft:"20px",
+                paddingRight:"20px",
+                paddingTop: "10px",
+                paddingBottom: "10px",
                 fontFamily: 'body',
                 backgroundColor: 'secondary',
                 cursor: 'pointer',

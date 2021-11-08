@@ -12,21 +12,21 @@ const Header = ({ className }) => {
   const router = useRouter();
   return (
     <header sx={styles.header} className={className}>
-      <Logo src={LogoDark} />
+      <Logo src={LogoDark} href='/'/>
       <Flex as="nav" sx={styles.nav}>
-          <Link href="/">
+          <Link href="/about-us">
             <a>About Us</a>
           </Link>
-          <Link href="/">
+          <Link href="/reviews">
             <a>Reviews</a>
           </Link>
-          <Link href="/">
+          <Link href="/how-it-works">
             <a>How it Works</a>
           </Link>
-          <Link href="/">
+          <Link href="/why-us">
             <a>Why Us</a>
           </Link>
-          <Link href="/">
+          <Link href="/services">
             <a>Services</a>
           </Link>
           <Link href="/">

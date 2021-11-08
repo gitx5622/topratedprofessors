@@ -8,7 +8,7 @@ import { Panel, Grid, Row, Col, List, Button } from 'rsuite'
 import Calculator from './calculator'
 import router from 'next/router'
 
-const EssayWritingOnline = () => {
+const CookiePolicy = () => {
     return (
         <div style={{ paddingTop: "80px" }}>
             <Grid>
@@ -109,4 +109,4 @@ const EssayWritingOnline = () => {
     )
 }
 
-export default EssayWritingOnline
+export default CookiePolicy

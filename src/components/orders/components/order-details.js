@@ -6,7 +6,7 @@ import {getOrder, updateOrder} from 'dataStore/actions/ordersAction';
 import { formatDate, formatDeadline } from '../../../../utils/dates';
 import {makePayment} from "../../../dataStore/actions/walletAction";
 import { BoxLoading } from 'react-loadingg';
-import {Label, Box, Select} from "theme-ui";
+import {Label, Box} from "theme-ui";
 import {getLevels} from "../../../dataStore/actions/levelsAction";
 import {getPages} from "../../../dataStore/actions/pagesAction";
 import {getSources} from "../../../dataStore/actions/sourcesAction";
@@ -21,6 +21,13 @@ import {getSpacing} from "../../../dataStore/actions/spacingsAction";
 const OrderDetails = () => {
     const [open, setOpen] = React.useState(false);
     const [selected, setSelected] = React.useState("");
+    const [myservice, setmyservice] = React.useState(8);
+    const [mytype, setmytype] = React.useState(1.2);
+    const [myurgency, setmyurgency] = React.useState(2.5);
+    const [mypages, setmypages] = React.useState(1);
+    const [mylevel, setmylevel] = React.useState(1);
+    const [myspacing, setmyspacing] = React.useState(1);
+    const [instructionsx, setinstructions] = React.useState("");
     const [openWithHeader, setOpenWithHeader] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -87,7 +94,18 @@ const OrderDetails = () => {
     const urgencySelector = useSelector(state => state.urgencyState);
     const languageSelector = useSelector(state => state.languageState);
 
-    const handleChange = (event) => {
+    const handleChange = (vauex, event) => {
+        let value = event.target.value;
+        let name = event.target.name;
+
+        setUpdateOrderDetails((order) => {
+            return {
+                ...updateOrderDetails,   // Spread Operator
+                [name]: value
+            }
+        })
+    }
+    const handleInputChange = (event) => {
         let value = event.target.value;
         let name = event.target.name;
 
@@ -107,6 +125,7 @@ const OrderDetails = () => {
         const service_id = service_id_index[0];
         const itemSelected = JSON.parse(valueToParse);
         setSelected(itemSelected);
+        setmyservice(itemSelected.factor);
         setUpdateOrderDetails({
             ...updateOrderDetails,
             [event.target.name]: service_id
@@ -118,6 +137,7 @@ const OrderDetails = () => {
         const type_id = type_id_index[0];
         const itemSelected = JSON.parse(valueToParse);
         setSelected(itemSelected);
+        setmytype(itemSelected.factor);
         setUpdateOrderDetails({
             ...updateOrderDetails,
             [event.target.name]: type_id
@@ -129,6 +149,7 @@ const OrderDetails = () => {
         const urgency_id = urgency_id_index[0];
         const itemSelected = JSON.parse(valueToParse);
         setSelected(itemSelected);
+        setmyurgency(itemSelected.factor);
         setUpdateOrderDetails({
             ...updateOrderDetails,
             [event.target.name]: urgency_id
@@ -140,6 +161,7 @@ const OrderDetails = () => {
         const page_id = page_id_index[0];
         const itemSelected = JSON.parse(valueToParse);
         setSelected(itemSelected);
+        setmypages(itemSelected.factor);
         setUpdateOrderDetails({
             ...updateOrderDetails,
             [event.target.name]: page_id
@@ -151,6 +173,7 @@ const OrderDetails = () => {
         const level_id = level_id_index[0];
         const itemSelected = JSON.parse(valueToParse);
         setSelected(itemSelected);
+        setmylevel(itemSelected.factor);
         setUpdateOrderDetails({
             ...updateOrderDetails,
             [event.target.name]: level_id
@@ -162,6 +185,7 @@ const OrderDetails = () => {
         const spacing_id = spacing_id_index[0];
         const itemSelected = JSON.parse(valueToParse);
         setSelected(itemSelected);
+        setmyspacing(itemSelected.factor);
         setUpdateOrderDetails({
             ...updateOrderDetails,
             [event.target.name]: spacing_id
@@ -192,19 +216,19 @@ const OrderDetails = () => {
         const { id: userID } = JSON.parse(localStorage.currentUser);
         const bodyData = {
             user_id: parseInt(userID),
-            service_id: parseInt(service && service.id) || parseInt(updateOrderDetails.service_id),
-            type_id: parseInt(type && type.id) || parseInt(updateOrderDetails.type_id),
-            style_id: parseInt(style && style.id) || parseInt(updateOrderDetails.style_id),
-            level_id: parseInt(level && level.id) || parseInt(updateOrderDetails.level_id),
-            pages_id: parseInt(page && page.id)  ||  parseInt(updateOrderDetails.pages_id),
-            urgency_id: parseInt(urgency && urgency.id) || parseInt(updateOrderDetails.urgency_id),
-            subject_id: parseInt(subject && subject.id) || parseInt(updateOrderDetails.subject_id),
-            sources_id: parseInt(source && source.id) || parseInt(updateOrderDetails.sources_id),
-            spacing_id: parseInt(spacing && spacing.id) || parseInt(updateOrderDetails.spacing_id),
-            language_id: parseInt(language && language.id) || parseInt(updateOrderDetails.language_id),
-            phone: phone || updateOrderDetails.phone ,
-            topic: topic || updateOrderDetails.topic,
-            instructions:  instructions || updateOrderDetails.instructions,
+            service_id: parseInt(updateOrderDetails.service_id),
+            type_id:  parseInt(updateOrderDetails.type_id),
+            style_id:  parseInt(updateOrderDetails.style_id),
+            level_id: parseInt(updateOrderDetails.level_id),
+            pages_id: parseInt(updateOrderDetails.pages_id),
+            urgency_id: parseInt(updateOrderDetails.urgency_id),
+            subject_id: parseInt(updateOrderDetails.subject_id),
+            sources_id: parseInt(updateOrderDetails.sources_id),
+            spacing_id: parseInt(updateOrderDetails.spacing_id),
+            language_id: parseInt(updateOrderDetails.language_id),
+            phone: updateOrderDetails.phone ,
+            topic: updateOrderDetails.topic,
+            instructions:  instructions,
             pagesummary: false,
             plagreport: true,
             initialdraft: false,
@@ -248,6 +272,18 @@ const OrderDetails = () => {
         getSpacing(dispatch);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
+
+    const service_name = service ? service.name : "";
+    const subject_name = subject ? subject.name : "";
+    const style_name = style ? style.name : "";
+    const type_name = type ? type.name : "";
+    const urgency_name = urgency ? urgency.name : "";
+    const language_name = language ? language.name : "";
+    const spacing_name = spacing ? spacing.name : "";
+    const page_name = page ? page.name : "";
+    const level_name = level ? level.name : "";
+    const source_name = source ? source.name : "";
+
     return (
         <div style={{ marginTop: "20px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
@@ -257,6 +293,12 @@ const OrderDetails = () => {
                     <Drawer open={openWithHeader} onClose={() => setOpenWithHeader(false)}>
                         <Drawer.Header>
                             <Drawer.Title>Update Order</Drawer.Title>
+                            <h3>
+                                Price:
+                                <span style={{ color: "blue" }}>
+                                            ${(myservice * mytype * myurgency * mypages * mylevel * myspacing).toFixed(2)}
+                                            </span>
+                            </h3>
                         </Drawer.Header>
                         <Drawer.Body>
                             <Box as="form" onSubmit={handleUpdateOrderSubmit}>
@@ -265,118 +307,181 @@ const OrderDetails = () => {
                                     <Col xs={12}>
                                         <div>
                                             <Label htmlFor="sound">Service</Label>
-                                            <Select value={service && service.name} onChange={parseServiceSelected} name="service_id" mb={3}>
-                                                {serviceSelector.services.map(service => {
+                                            <select
+                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
+                                                onChange={parseServiceSelected}
+                                                name="service_id">
+                                                {serviceSelector.services.map(servicex => {
                                                     return (
-                                                        <option key={service.id} value={JSON.stringify(service)}>{service.name}</option>
+                                                        <option
+                                                            key={servicex.id}
+                                                            selected={servicex.name === service_name}
+                                                            value={JSON.stringify(servicex)}>{servicex.name}</option>
                                                     )
                                                 })}
-                                            </Select>
+                                            </select>
                                         </div>
                                         <div>
                                             <Label htmlFor="sound">Type of Paper</Label>
-                                            <Select value={type && type.name} onChange={parseTypeSelected} name="type_id" mb={3}>
-                                                {typeSelector.types.map(type => {
+                                            <select
+                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
+                                                onChange={parseTypeSelected}
+                                                name="type_id"
+                                            >
+                                                {typeSelector.types.map(typex => {
                                                     return (
-                                                        <option key={type.id} value={JSON.stringify(type)}>{type.name}</option>
+                                                        <option
+                                                            key={typex.id}
+                                                            selected={typex.name === type_name}
+                                                            value={JSON.stringify(typex)}>{typex.name}</option>
                                                     )
                                                 })}
-                                            </Select>
+                                            </select>
                                         </div>
                                         <div>
                                             <Label htmlFor="sound">Subject</Label>
-                                            <Select value={subject && subject.name} onChange={handleChange} name="subject_id" mb={3}>
-                                                {subjectSelector.subjects.map(subject => {
+                                            <select
+                                                value={subject && subject.name}
+                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
+                                                onChange={handleInputChange}
+                                                name="subject_id">
+                                                {subjectSelector.subjects.map(subjectx => {
                                                     return (
-                                                        <option key={subject.id} value={JSON.stringify(subject)}>{subject.name}</option>
+                                                        <option
+                                                            key={subjectx.id}
+                                                            selected={subjectx.name === subject_name}
+                                                            value={JSON.stringify(subjectx)}>{subjectx.name}</option>
                                                     )
                                                 })}
-                                            </Select>
+                                            </select>
                                         </div>
                                         <div>
                                             <Label htmlFor="sound">Urgency</Label>
-                                            <Select value={urgency && urgency.name} onChange={parseUrgencySelected} name="urgency_id" mb={3}>
-                                                {urgencySelector.urgencies.map(urgency => {
+                                            <select
+                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
+                                                onChange={parseUrgencySelected}
+                                                name="urgency_id">
+                                                {urgencySelector.urgencies.map(urgencyx => {
                                                     return (
-                                                        <option key={urgency.id} value={JSON.stringify(urgency)}>{urgency.name}</option>
+                                                        <option
+                                                            key={urgencyx.id}
+                                                            selected={urgencyx.name === urgency_name}
+                                                            value={JSON.stringify(urgencyx)}>{urgencyx.name}</option>
                                                     )
                                                 })}
-                                            </Select>
+                                            </select>
                                         </div>
                                         <div>
                                             <Label htmlFor="sound">Style</Label>
-                                            <Select value={style && style.name} onChange={handleChange} name="style_id" mb={3}>
-                                                {styleSelector.styles.map(style => {
+                                            <select
+                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
+                                                onChange={handleInputChange}
+                                                name="style_id">
+                                                {styleSelector.styles.map(stylex => {
                                                     return (
-                                                        <option key={style.id} value={style.name}>{style.name}</option>
+                                                        <option
+                                                            key={stylex.id}
+                                                            selected={stylex.name === style_name}
+                                                            value={stylex.name}>{stylex.name}</option>
                                                     )
                                                 })}
-                                            </Select>
+                                            </select>
                                         </div>
                                     </Col>
                                     <Col xs={12}>
                                         <div>
                                             <Label htmlFor="sound">Sources</Label>
-                                            <Select onChange={handleChange} name="sources_id" mb={3}>
-                                                {sourcesSelector.sources.map(source => {
+                                            <select
+                                                onChange={handleInputChange}
+                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
+                                                name="sources_id">
+                                                {sourcesSelector.sources.map(sourcex => {
                                                     return (
-                                                        <option key={source.id} value={source.id}>{source.name}</option>
+                                                        <option
+                                                            key={sourcex.id}
+                                                            selected={sourcex.name === source_name}
+                                                            value={sourcex.id}>{sourcex.name}</option>
                                                     )
                                                 })}
-                                            </Select>
+                                            </select>
                                         </div>
                                         <div>
                                             <Label htmlFor="sound">Spacing</Label>
-                                            <Select onChange={parseSpacingSelected} name="spacing_id" mb={3}>
-                                                {spacingSelector.spacings.map(spacing => {
+                                            <select
+                                                onChange={parseSpacingSelected}
+                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
+                                                name="spacing_id">
+                                                {spacingSelector.spacings.map(spacingx => {
                                                     return (
-                                                        <option key={spacing.id} value={JSON.stringify(spacing)}>{spacing.name}</option>
+                                                        <option
+                                                            key={spacingx.id}
+                                                            selected={spacingx.name === spacing_name}
+                                                            value={JSON.stringify(spacingx)}>{spacingx.name}</option>
                                                     )
                                                 })}
-                                            </Select>
+                                            </select>
                                         </div>
                                         <div>
                                             <Label htmlFor="sound">Language</Label>
-                                            <Select onChange={handleChange} name="language_id" mb={3}>
-                                                {languageSelector.languages.map(language => {
+                                            <select
+                                                onChange={handleInputChange}
+                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
+                                                name="language_id">
+                                                {languageSelector.languages.map(languagex => {
                                                     return (
-                                                        <option key={language.id} value={language.id}>{language.name}</option>
+                                                        <option
+                                                            key={languagex.id}
+                                                            selected={languagex.name === language_name}
+                                                            value={languagex.id}>{languagex.name}</option>
                                                     )
                                                 })}
-                                            </Select>
+                                            </select>
                                         </div>
                                         <div>
                                             <Label htmlFor="sound">Pages</Label>
-                                            <Select onChange={parsePageSelected} name="pages_id" id="pages_id" mb={3}>
-                                                {pageSelector.pages.map(page => {
+                                            <select
+                                                onChange={parsePageSelected}
+                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
+                                                name="pages_id"
+                                                id="pages_id">
+                                                {pageSelector.pages.map(pagex => {
                                                     return (
-                                                        <option key={page.id} value={JSON.stringify(page)}>{[page.name]}</option>
+                                                        <option
+                                                            key={pagex.id}
+                                                            selected={pagex.name === page_name}
+                                                            value={JSON.stringify(pagex)}>{[pagex.name]}</option>
                                                     )
                                                 })}
-                                            </Select>
+                                            </select>
                                         </div>
                                         <div>
                                             <Label htmlFor="sound">Level</Label>
-                                            <Select onChange={parseLevelSelected} name="level_id" mb={3}>
-                                                {levelSelector.levels.map(level => {
+                                            <select
+                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
+                                                onChange={parseLevelSelected}
+                                                name="level_id" >
+                                                {levelSelector.levels.map(levelx => {
                                                     return (
-                                                        <option key={level.id} value={JSON.stringify(level)}>{level.name}</option>
+                                                        <option
+                                                            key={levelx.id}
+                                                            selected={levelx.name === level_name}
+                                                            value={JSON.stringify(levelx)}>{levelx.name}</option>
                                                     )
                                                 })}
-                                            </Select>
+                                            </select>
                                         </div>
                                     </Col>
                                 </Row>
                             </Grid>
                             <div>
                                 <Label htmlFor="phone">Phone</Label>
-                                <Input onChange={handleChange} value={phone} name="phone" type='text' mb={3} />
+                                <Input onChange={handleChange} placeholder={phone} name="phone" type='text' mb={3} />
                             </div>
                             <Label htmlFor="topic">Topic*</Label>
-                            <Input onChange={handleChange} value={topic} name="topic"  type='text' mb={3} />
+                            <Input onChange={handleChange} placeholder={topic} name="topic"  type='text' mb={3} />
                             <Label htmlFor="instructions">Instructions*</ Label>
-                            <Input style={{border:"1px solid #C9BBB8 "}} as="textarea" value={instructions}
-                                   rows={8} onChange={handleInstructionsChange}  placeholder="Fill in instructions" /><br/>
+                            <Input style={{border:"1px solid #C9BBB8 "}} as="textarea" placeholder={instructions}
+                                   rows={8} onChange={handleInstructionsChange}/><br/>
                             <Button type="submit" color="cyan" appearance="primary">Edit Order</Button>
                             </Box>
                         </Drawer.Body>

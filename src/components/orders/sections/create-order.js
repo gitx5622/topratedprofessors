@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer, } from 'react';
-import { Grid, Row, Col, Divider, Uploader, Input, Steps, ButtonGroup, InputGroup, Panel, Message } from 'rsuite';
-import checkDetailsReducer, { initialCheckDetailsState } from "../../../dataStore/reducers/checkDetailsReducer";
+import { Grid, Row, Col, Divider, Input, Steps, ButtonGroup, InputGroup, Panel, Message } from 'rsuite';
 import { useDispatch, useSelector } from "react-redux";
 import { Label, Select, Button } from 'theme-ui';
 import { getLevels } from "../../../dataStore/actions/levelsAction";
@@ -85,25 +84,27 @@ const CreateOrder = () => {
     }
     const onPrevious = () => {
         onChange(step - 1);
-        // order.service_id = parseInt(localStorage.service_id, 10),
-        // order.urgency_id = parseInt(localStorage.urgency_id, 10)
-        // order.spacing_id = parseInt(localStorage.spacing_id, 10)
-        // order.type_id = parseInt(localStorage.type_id, 10),
-        // order.style_id = parseInt(localStorage.style_id, 10),
-        // order.language_id = parseInt(localStorage.language_id, 10), 
-        // order.level_id  = parseInt(localStorage.level_id, 10),
-        // order.sources_id = parseInt(localStorage.sources_id, 10),
-        // order.pages_id = parseInt(localStorage.pages_id, 10),
-        // order.subject_id = parseInt(localStorage.subject_id, 10)
     }
 
-    const handleChange = (valuex, event) => {
+    const handleChange = (event) => {
         let value = event.target.value;
         let name = event.target.name;
 
         setOrder((order) => {
             return {
                 ...order,   // Spread Operator               
+                [name]: value
+            }
+        })
+    }
+
+    const handleSelectChange = (valuex, event) => {
+        let value = event.target.value;
+        let name = event.target.name;
+
+        setOrder((order) => {
+            return {
+                ...order,   // Spread Operator
                 [name]: value
             }
         })
@@ -370,9 +371,9 @@ const CreateOrder = () => {
                             {step === 1 && (
                                 <Box>
                                     <Label htmlFor="phone">Phone</Label>
-                                    <Input style={{border:"1px solid #C9BBB8 "}} onChange={handleChange} name="phone" type='text' mb={3} /><br/>
+                                    <Input style={{border:"1px solid #C9BBB8 "}} onChange={handleSelectChange} name="phone" type='text' mb={3} /><br/>
                                     <Label htmlFor="topic">Topic*</Label>
-                                    <Input style={{border:"1px solid #C9BBB8 "}} onChange={handleChange} name="topic" type='text' mb={3} /><br/>
+                                    <Input style={{border:"1px solid #C9BBB8 "}} onChange={handleSelectChange} name="topic" type='text' mb={3} /><br/>
                                     <Label htmlFor="instructions">Instructions*</ Label>
                                     <Input style={{border:"1px solid #C9BBB8 "}} as="textarea" value={instructions}
                                            rows={8} onChange={handleInstructionsChange}  placeholder="Fill in instructions" />

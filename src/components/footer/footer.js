@@ -14,50 +14,50 @@ export default function Footer() {
               <Box>
                   <Heading as="h1" sx={styles.footer.heading}>COMPANY</Heading>
                   <center>
-                  <ul style={{fontSize:"16px"}}>
-                      <li onClick={() => router.push('/fags')}>FAQ</li>
-                      <li  onClick={() => router.push('/reviews')}>Reviews</li>
-                      <li  onClick={() => router.push('/about-us')}>About Us</li>
-                      <li  onClick={() => router.push('/contact-us')}>Contact Us</li>
+                  <ul style={{fontSize:"16px", cursor:"pointer"}}>
+                      <li onClick={() => { router.push('/fags'); scroll(0, 0)}}>FAQ</li>
+                      <li  onClick={() => { router.push('/reviews'); scroll(0, 0)}}>Reviews</li>
+                      <li  onClick={() => { router.push('/about-us'); scroll(0, 0)}}>About Us</li>
+                      <li  onClick={() => { router.push('/contact-us'); scroll(0, 0)}}>Contact Us</li>
                   </ul>
                   </center>
               </Box>
               <Box>
                   <Heading as="h1" sx={styles.footer.heading}>LEGAL</Heading>
                   <center>
-                  <ul style={{fontSize:"16px"}}>
-                      <li  onClick={() => router.push('/fags')}>Cookie Policy</li>
-                      <li  onClick={() => router.push('/privacy_policy')}>Privacy Policy</li>
-                      <li  onClick={() => router.push('/reviews')}>Ratings & Reviews</li>
-                      <li  onClick={() => router.push('/terms_and_conditions')}>Terms and Conditions</li>
+                  <ul style={{fontSize:"16px", cursor:"pointer"}}>
+                      <li  onClick={() => { router.push('/cookie-policy'); scroll(0, 0)}}>Cookie Policy</li>
+                      <li  onClick={() => { router.push('/privacy-policy'); scroll(0, 0)}}>Privacy Policy</li>
+                      <li  onClick={() => { router.push('/reviews'); scroll(0, 0)}}>Ratings & Reviews</li>
+                      <li  onClick={() => { router.push('/terms-and-conditions'); scroll(0, 0)}}>Terms and Conditions</li>
                   </ul>
                   </center>
               </Box>
               <Box>
                   <Heading as="h1" sx={styles.footer.heading}>SERVICES</Heading>
                   <center>
-                  <ul style={{fontSize:"16px"}}>
-                      <li  onClick={() => router.push('/online-tutors')}>Online Tutors</li>
-                      <li  onClick={() => router.push('/best-online-tutors')}>Best online tutors</li>
-                      <li  onClick={() => router.push('/do-my-homework')}>Do my homework</li>
-                      <li  onClick={() => router.push('/essay-writing-online')}>Essay writing online</li>
+                  <ul style={{fontSize:"16px", cursor:"pointer"}}>
+                      <li  onClick={() => { router.push('/online-tutors'); scroll(0, 0)}}>Online Tutors</li>
+                      <li  onClick={() => { router.push('/best-online-tutors'); scroll(0, 0)}}>Best online tutors</li>
+                      <li  onClick={() => { router.push('/do-my-homework'); scroll(0, 0)}}>Do my homework</li>
+                      <li  onClick={() => { router.push('/essay-writing-online'); scroll(0, 0)}}>Essay writing online</li>
                   </ul>
                   </center>
               </Box>
               <Box>
                   <Heading as="h1" sx={styles.footer.heading}>TOPRATED</Heading>
                   <center>
-                  <ul style={{fontSize:"16px"}}>
-                      <li  onClick={() => router.push('/paper-revision')}>Paper revision</li>
-                      <li  onClick={() => router.push('/custom-writing')}>Custom writing</li>
-                      <li  onClick={() => router.push('/english-essays')}>English essays</li>
-                      <li  onClick={() => router.push('/plagiarism-report')}>Plagiarism report</li>
+                  <ul style={{fontSize:"16px", cursor:"pointer"}}>
+                      <li  onClick={() => { router.push('/paper-revision'); scroll(0, 0)}}>Paper revision</li>
+                      <li  onClick={() => { router.push('/custom-writing'); scroll(0, 0)}}>Custom writing</li>
+                      <li  onClick={() => { router.push('/english-essays'); scroll(0, 0)}}>English essays</li>
+                      <li  onClick={() => { router.push('/plagiarism-report'); scroll(0, 0)}}>Plagiarism report</li>
                   </ul>
                   </center>
               </Box>
           </Grid>
         <Grid>
-                <ul style={{display: 'flex', justifyContent: 'center',   '@media screen and (max-width:768px)': {display: 'none'},}}>
+                <ul style={{display: 'flex', justifyContent: 'center','@media screen and (max-width: 768px)': {display: 'none'},}}>
                     <li><img src={Lets} alt="lets_encrypt" width="200px" height="70px"/></li>
                     <li><img src={Mcafee} alt="mcafee" width="100px"/></li>
                     <li><img src={Paypal} alt="paypal" width="100px"/></li>
