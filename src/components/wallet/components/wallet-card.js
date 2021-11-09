@@ -60,7 +60,7 @@ const WalletCard = ({ section }) => {
         userWalletSummary(dispatch, userId);
         filterWalletTransactions(dispatch, userId, per, activePage );
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, per, activePage]);
+    }, [dispatch, per, activePage, user_balance]);
     return (
         <Box>
             <Head>

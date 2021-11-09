@@ -106,7 +106,7 @@ const OrderLayout = ({ children }) => {
         userCountOrderSummary(dispatch, userId);
         userWalletSummary(dispatch, userId);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
+    }, [dispatch, user_balance]);
 
     React.useEffect(() => {
         try {
