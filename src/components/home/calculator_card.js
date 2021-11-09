@@ -95,7 +95,7 @@ const CalculatorCard = ({
                             </select>
                         </Col>
                     </Row>
-                </Grid><br/>
+                </Grid>
                 <Box>
                     <Text><center><strong>Minimum Price
                         : $ {(myService * myType * myUrgency * myPages * myLevel).toFixed(2)}</strong></center></Text>

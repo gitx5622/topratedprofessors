@@ -116,7 +116,7 @@ export default function HowItWorks() {
               </Box>
             </Box>
           ))}
-        </Grid>
+        </Grid><br/>
         <center>
           <Button
               onClick={() => setOpen((open) => !open)}
