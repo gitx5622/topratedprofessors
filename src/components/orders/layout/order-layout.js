@@ -242,7 +242,7 @@ const OrderLayout = ({ children }) => {
                                 <Nav.Item
                                     eventKey="10"
                                     icon={<ExploreIcon color="#3498FF" />}
-                                    onClick={() => router.push('/dashboard/rejected', undefined, { shallow: true })}>
+                                    onClick={() => router.push('/settings/view', undefined, { shallow: true })}>
                                     Settings
                                 </Nav.Item>
                             </Nav>

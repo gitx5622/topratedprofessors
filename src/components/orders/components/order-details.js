@@ -94,6 +94,23 @@ const OrderDetails = () => {
     const urgencySelector = useSelector(state => state.urgencyState);
     const languageSelector = useSelector(state => state.languageState);
 
+    const service_name = service ? service.name : "";
+    const subject_name = subject ? subject.name : "";
+    const style_name = style ? style.name : "";
+    const type_name = type ? type.name : "";
+    const urgency_name = urgency ? urgency.name : "";
+    const language_name = language ? language.name : "";
+    const spacing_name = spacing ? spacing.name : "";
+    const page_name = page ? page.name : "";
+    const level_name = level ? level.name : "";
+    const source_name = source ? source.name : "";
+    const service_factor = service ? service.factor : "";
+    const type_factor = type ? type.factor : "";
+    const urgency_factor = urgency ? urgency.factor : "";
+    const page_factor = page ? page.factor : "";
+    const level_factor = level ? level.factor : "";
+    const spacing_factor = spacing ? spacing.factor : "";
+
     const handleChange = (vauex, event) => {
         let value = event.target.value;
         let name = event.target.name;
@@ -272,17 +289,6 @@ const OrderDetails = () => {
         getSpacing(dispatch);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
-
-    const service_name = service ? service.name : "";
-    const subject_name = subject ? subject.name : "";
-    const style_name = style ? style.name : "";
-    const type_name = type ? type.name : "";
-    const urgency_name = urgency ? urgency.name : "";
-    const language_name = language ? language.name : "";
-    const spacing_name = spacing ? spacing.name : "";
-    const page_name = page ? page.name : "";
-    const level_name = level ? level.name : "";
-    const source_name = source ? source.name : "";
 
     return (
         <div style={{ marginTop: "20px" }}>
