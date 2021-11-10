@@ -16,12 +16,6 @@ import InProgress from 'components/orders/sections/in-progress';
 const Dashboard = ({ section }) => {
     const renderOrderPages = () => {
         switch (section) {
-            case 'home':
-                return (
-                    <CompletedOrders
-                        section={section}
-                    />
-                );
             case 'completed':
                 return (
                     <CompletedOrders
@@ -85,12 +79,6 @@ const Dashboard = ({ section }) => {
             case 'transactions':
                 return (
                     <Transactions
-                        section={section}
-                    />
-                );
-            case 'edit':
-                return (
-                    <SettingEdit
                         section={section}
                     />
                 );
