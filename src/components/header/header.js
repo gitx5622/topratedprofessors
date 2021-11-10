@@ -20,9 +20,6 @@ const Header = ({ className }) => {
           <Link href="/reviews">
             <a>Reviews</a>
           </Link>
-          <Link href="/how-it-works">
-            <a>How it Works</a>
-          </Link>
           <Link href="/why-us">
             <a>Why Us</a>
           </Link>
