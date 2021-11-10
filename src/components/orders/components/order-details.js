@@ -104,12 +104,6 @@ const OrderDetails = () => {
     const page_name = page ? page.name : "";
     const level_name = level ? level.name : "";
     const source_name = source ? source.name : "";
-    const service_factor = service ? service.factor : "";
-    const type_factor = type ? type.factor : "";
-    const urgency_factor = urgency ? urgency.factor : "";
-    const page_factor = page ? page.factor : "";
-    const level_factor = level ? level.factor : "";
-    const spacing_factor = spacing ? spacing.factor : "";
 
     const handleChange = (vauex, event) => {
         let value = event.target.value;
@@ -243,9 +237,9 @@ const OrderDetails = () => {
             sources_id: parseInt(updateOrderDetails.sources_id),
             spacing_id: parseInt(updateOrderDetails.spacing_id),
             language_id: parseInt(updateOrderDetails.language_id),
-            phone: updateOrderDetails.phone ,
-            topic: updateOrderDetails.topic,
-            instructions:  instructions,
+            phone: phone || updateOrderDetails.phone ,
+            topic: topic || updateOrderDetails.topic,
+            instructions:  instructions || instructionsx,
             pagesummary: false,
             plagreport: true,
             initialdraft: false,
@@ -299,12 +293,6 @@ const OrderDetails = () => {
                     <Drawer open={openWithHeader} onClose={() => setOpenWithHeader(false)}>
                         <Drawer.Header>
                             <Drawer.Title>Update Order</Drawer.Title>
-                            <h3>
-                                Price:
-                                <span style={{ color: "blue" }}>
-                                            ${(myservice * mytype * myurgency * mypages * mylevel * myspacing).toFixed(2)}
-                                            </span>
-                            </h3>
                         </Drawer.Header>
                         <Drawer.Body>
                             <Box as="form" onSubmit={handleUpdateOrderSubmit}>
@@ -503,12 +491,13 @@ const OrderDetails = () => {
                             <Divider/>
                         </Modal.Header>
                         <Modal.Body>
-                            <h6>Choose one of the options to reserve the payment for the order.</h6>
+                            <p style={{fontSize:"18px"}}>Choose one of the options to reserve the payment for the order.</p>
                             <div style={{display: "flex", justifyContent: "space-between", marginTop:"40px", marginLeft:"20px", marginRight:"20px"}}>
                                 <Button color="green" appearance="primary">Reserve from your Wallet</Button>
                                 <Button color="cyan" appearance="primary" onClick={handleReserveOrder}>Reserve with Paypal</Button>
                             </div>
                         </Modal.Body>
+                        <Divider/>
                         <Modal.Footer>
                             <Button onClick={handleClose} appearance="ghost">
                                 Close

@@ -1,12 +1,13 @@
 /** @jsx jsx */
 import { jsx, Box, Flex } from 'theme-ui';
-import { Button } from 'rsuite';
+import { Button, Dropdown } from 'rsuite';
 import { useRouter } from 'next/router';
 import { keyframes } from '@emotion/core';
 import Link from 'next/link';
 import Logo from 'components/home/logo';
 import LogoDark from 'assets/logo.png';
 import MobileDrawer from './mobile-drawer';
+import USflag from '../../assets/usa.png';
 
 const Header = ({ className }) => {
   const router = useRouter();
@@ -14,20 +15,22 @@ const Header = ({ className }) => {
     <header sx={styles.header} className={className}>
       <Logo src={LogoDark} href='/'/>
       <Flex as="nav" sx={styles.nav}>
-          <Link href="/about-us">
+          <Link href="/header/about-us">
             <a>About Us</a>
           </Link>
-          <Link href="/reviews">
+          <Link href="/header/reviews">
             <a>Reviews</a>
           </Link>
-          <Link href="/why-us">
+          <Link href="/header/why-us">
             <a>Why Us</a>
           </Link>
-          <Link href="/services">
+          <Link href="/header/services">
             <a>Services</a>
           </Link>
           <Link href="/">
-            <a>+1-814-250-1019</a>
+            <a>
+              <img src={USflag} alt="usflag" width="30" /> +1-814-250-1019
+            </a>
           </Link>
       </Flex>
       <Box sx={{ display: 'flex', gap: '10px' }}>
