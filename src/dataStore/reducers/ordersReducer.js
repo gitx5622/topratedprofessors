@@ -37,7 +37,7 @@ import {
     GET_WAITING_ASSIGN_ORDERS_ERROR,
     GET_USER_COUNT_SUMMARY,
     GET_USER_COUNT_SUMMARY_SUCCESS,
-    GET_USER_COUNT_SUMMARY_ERROR
+    GET_USER_COUNT_SUMMARY_ERROR, FILE_UPLOADING, FILE_UPLOADING_SUCCESS, FILE_UPLOADING_ERROR
 
 } from "../dispatchTypes";
 
@@ -79,6 +79,7 @@ export const initialOrdersState = {
         pagination: {}
     },
     order: {},
+    files: [],
     user_order_count_summary: {}
 }
 
@@ -389,6 +390,29 @@ export const ordersReducers = (
             };
         }
         case GET_USER_COUNT_SUMMARY_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case FILE_UPLOADING: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case FILE_UPLOADING_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                files: action.files,
+            };
+        }
+        case FILE_UPLOADING_ERROR: {
             return {
                 ...state,
                 isSuccess: false,

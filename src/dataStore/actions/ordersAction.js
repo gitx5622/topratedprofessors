@@ -38,7 +38,7 @@ import {
     GET_WAITING_ASSIGN_ORDERS_ERROR,
     GET_USER_COUNT_SUMMARY,
     GET_USER_COUNT_SUMMARY_SUCCESS,
-    GET_USER_COUNT_SUMMARY_ERROR
+    GET_USER_COUNT_SUMMARY_ERROR, FILE_UPLOADING, FILE_UPLOADING_SUCCESS, FILE_UPLOADING_ERROR
 } from '../dispatchTypes';
 
 
@@ -411,3 +411,32 @@ export const userCountOrderSummary = async (dispatch, userID) => {
         return error.response;
     }
 };
+
+export const fileUpload = async (dispatch, userID) => {
+    dispatch({
+        type: FILE_UPLOADING,
+    });
+    try {
+        return await axiosConfig
+            .get(`/users/${userID}/order_count`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: FILE_UPLOADING_SUCCESS,
+                    files: response.data,
+                })
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: FILE_UPLOADING_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+

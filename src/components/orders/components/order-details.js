@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import {Panel, Divider, Button, Input, Modal, Drawer, Grid, Row, Col} from 'rsuite';
-import {getOrder, updateOrder} from 'dataStore/actions/ordersAction';
+import {Panel, Divider, Uploader, Button, Input, Modal, Nav, Drawer, Grid, Row, Col} from 'rsuite';
+import {fileUpload, getOrder, updateOrder} from 'dataStore/actions/ordersAction';
 import { formatDate, formatDeadline } from '../../../../utils/dates';
 import {makePayment} from "../../../dataStore/actions/walletAction";
 import { BoxLoading } from 'react-loadingg';
@@ -20,6 +20,11 @@ import {getSpacing} from "../../../dataStore/actions/spacingsAction";
 
 const OrderDetails = () => {
     const [open, setOpen] = React.useState(false);
+    const [uploadOpen, setUploadOpen] = useState(false);
+    const [postImage, setPostImage] = useState({
+        myFile: "",
+    });
+    const [active, setActive] = React.useState('home');
     const [selected, setSelected] = React.useState("");
     const [myservice, setmyservice] = React.useState(8);
     const [mytype, setmytype] = React.useState(1.2);
@@ -257,7 +262,7 @@ const OrderDetails = () => {
                 }
             )
         } else {
-            dispatchCheckDetails({
+            dispatch({
                 type: 'ERROR',
                 errorMessage: 'Make sure all the fields all filled',
             });
@@ -265,6 +270,29 @@ const OrderDetails = () => {
                 <Message type="error">Error</Message>
             }
         }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        fileUpload(postImage);
+    };
+
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    };
+    const handleFileUpload = async (e) => {
+        const file = e.target.files[0];
+        const base64 = await convertToBase64(file);
+        setPostImage({ ...postImage, myFile: base64 });
     };
     React.useEffect(() => {
         getOrder(dispatch, orderID);
@@ -283,6 +311,17 @@ const OrderDetails = () => {
         getSpacing(dispatch);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
+
+const CustomNav = ({ active, onSelect, ...props }) => {
+    return (
+        <Nav {...props} activeKey={active} onSelect={onSelect} style={{marginLeft:"20px"}}>
+            <Nav.Item onClick={() => setUploadOpen(false)} eventKey="home">
+                Order Details
+            </Nav.Item>
+            <Nav.Item onClick={() => setUploadOpen(true)} eventKey="news">Upload files</Nav.Item>
+        </Nav>
+    );
+};
 
     return (
         <div style={{ marginTop: "20px" }}>
@@ -507,76 +546,104 @@ const OrderDetails = () => {
                 </div>
             </div>
             <Divider />
-            <Panel style={{marginTop: "-20px"}}>
-            <div style={{background: "#fdaa8f", height:'40px', padding: "10px"}}><h5>Order #{orderId}</h5></div>
-            <table style={styles.table}>
-                    <tr>
-                        <td style={styles.table.td}><strong>Order ID</strong></td>
-                        <td style={styles.table.tdx}>{orderId}</td>
-                        <td style={styles.table.td}><strong>Client</strong></td>
-                        <td style={styles.table.tdx}>{user && user.username}</td>
-                    </tr>
-                <tr>
-                    <td style={styles.table.td}><b>Service</b></td>
-                    <td style={styles.table.td}>{service && service.name}</td>
-                    <td style={styles.table.td}><b>Type of Paper</b></td>
-                    <td style={styles.table.td}>{type && type.name}</td>
-                </tr>
-                <tr>
-                    <td style={styles.table.td}><b>Spacing</b></td>
-                    <td style={styles.table.td}>{spacing && spacing.name}</td>
-                    <td style={styles.table.td}><b>Urgency</b></td>
-                    <td style={styles.table.td}>{urgency && urgency.name}</td>
-                </tr>
-                <tr>
-                    <td style={styles.table.td}><b>Pages</b></td>
-                    <td style={styles.table.td}>{page && page.name}</td>
-                    <td style={styles.table.td}><b>Level</b></td>
-                    <td style={styles.table.td}>{level && level.name}</td>
-                </tr>
-                <tr>
-                    <td style={styles.table.td}><b>Subject</b></td>
-                    <td style={styles.table.td}>{subject && subject.name}</td>
-                    <td style={styles.table.td}><b>Style</b></td>
-                    <td style={styles.table.td}>{style && style.name}</td>
-                </tr>
-                <tr>
-                    <td style={styles.table.td}><b>Sources</b></td>
-                    <td style={styles.table.td}>{source && source.name}</td>
-                    <td style={styles.table.td}><b>Language</b></td>
-                    <td style={styles.table.td}>{language && language.name}</td>
-                </tr>
-                <tr>
-                    <td style={styles.table.td}><b>Phone</b></td>
-                    <td style={styles.table.td} colSpan="3">{phone}</td>
-                </tr>
-                <tr>
-                    <td style={styles.table.td}><b>Topic</b></td>
-                    <td style={styles.table.td} colSpan="3">{topic}</td>
-                </tr>
-                <tr>
-                    <td style={styles.table.td}><b>Deadline</b></td>
-                    <td style={styles.table.td} colSpan="3">{formatDeadline(deadline)}</td>
-                </tr>
-                <tr>
-                    <td style={styles.table.td}><b>Created At</b></td>
-                    <td style={styles.table.td} colSpan="3">{formatDate(created_at)}</td>
-                </tr>
-                <tr>
-                    <td style={styles.table.td}><b>Amount</b></td>
-                    <td style={styles.table.td} colSpan="3">{amount}</td>
-                </tr>
-                <tr>
-                    <td style={styles.table.td}><b>Instructions</b></td>
-                    <td style={styles.table.td} colSpan="3"><b>Instructions</b><pre>{instructions}</pre></td>
-                </tr>
-            </table>
-            </Panel>
+            <CustomNav appearance="tabs" active={active} onSelect={setActive} />
+            {!uploadOpen && (
+                <Panel style={{marginTop: "-10px"}}>
+                    <div style={{background: "#fdaa8f", height:'40px', padding: "10px"}}><h5>Order #{orderId}</h5></div>
+                    <table style={styles.table}>
+                        <tr style={{borderRadius:"10px"}}>
+                            <td style={styles.table.td}><strong>Order ID</strong></td>
+                            <td style={styles.table.tdx}>{orderId}</td>
+                            <td style={styles.table.td}><strong>Client</strong></td>
+                            <td style={styles.table.tdx}>{user && user.username}</td>
+                        </tr>
+                        <tr>
+                            <td style={styles.table.td}><b>Service</b></td>
+                            <td style={styles.table.td}>{service && service.name}</td>
+                            <td style={styles.table.td}><b>Type of Paper</b></td>
+                            <td style={styles.table.td}>{type && type.name}</td>
+                        </tr>
+                        <tr>
+                            <td style={styles.table.td}><b>Spacing</b></td>
+                            <td style={styles.table.td}>{spacing && spacing.name}</td>
+                            <td style={styles.table.td}><b>Urgency</b></td>
+                            <td style={styles.table.td}>{urgency && urgency.name}</td>
+                        </tr>
+                        <tr>
+                            <td style={styles.table.td}><b>Pages</b></td>
+                            <td style={styles.table.td}>{page && page.name}</td>
+                            <td style={styles.table.td}><b>Level</b></td>
+                            <td style={styles.table.td}>{level && level.name}</td>
+                        </tr>
+                        <tr>
+                            <td style={styles.table.td}><b>Subject</b></td>
+                            <td style={styles.table.td}>{subject && subject.name}</td>
+                            <td style={styles.table.td}><b>Style</b></td>
+                            <td style={styles.table.td}>{style && style.name}</td>
+                        </tr>
+                        <tr>
+                            <td style={styles.table.td}><b>Sources</b></td>
+                            <td style={styles.table.td}>{source && source.name}</td>
+                            <td style={styles.table.td}><b>Language</b></td>
+                            <td style={styles.table.td}>{language && language.name}</td>
+                        </tr>
+                        <tr>
+                            <td style={styles.table.td}><b>Phone</b></td>
+                            <td style={styles.table.td} colSpan="3">{phone}</td>
+                        </tr>
+                        <tr>
+                            <td style={styles.table.td}><b>Topic</b></td>
+                            <td style={styles.table.td} colSpan="3">{topic}</td>
+                        </tr>
+                        <tr>
+                            <td style={styles.table.td}><b>Deadline</b></td>
+                            <td style={styles.table.td} colSpan="3">{formatDeadline(deadline)}</td>
+                        </tr>
+                        <tr>
+                            <td style={styles.table.td}><b>Created At</b></td>
+                            <td style={styles.table.td} colSpan="3">{formatDate(created_at)}</td>
+                        </tr>
+                        <tr>
+                            <td style={styles.table.td}><b>Amount</b></td>
+                            <td style={styles.table.td} colSpan="3">{amount}</td>
+                        </tr>
+                        <tr>
+                            <td style={styles.table.td}><b>Instructions</b></td>
+                            <td style={styles.table.td} colSpan="3"><b>Instructions</b><pre>{instructions}</pre></td>
+                        </tr>
+                    </table>
+                </Panel>
+            )}
+            {uploadOpen && (
+                <div style={{padding:"10px"}}>
+                <Uploader
+                    listType="picture-text"
+                    defaultFileList={fileList}
+                    action="//jsonplaceholder.typicode.com/posts/"
+                >
+                    <div style={{width: "100%",background:"#EAEEF3", lineHeight: '200px'}}>Click or Drag files to this area to upload</div>
+                </Uploader>
+                </div>
+            )}
         </div>
     );
 };
 
 export default OrderDetails;
+const fileList = [
+    {
+        name: 'a.png',
+        fileKey: 1,
+        url:
+            'https://user-images.githubusercontent.com/1203827/47638792-92414e00-db9a-11e8-89c2-f8f430a23cd3.png'
+    },
+    {
+        name: 'b.png',
+        fileKey: 2,
+        url:
+            'https://user-images.githubusercontent.com/1203827/47638807-9d947980-db9a-11e8-9ee5-e0cc9cd7e8ad.png'
+    }
+];
 const styles = {
     table: {
         fontFamily: 'Quicksand, sans-serif',
