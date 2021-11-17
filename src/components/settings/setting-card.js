@@ -53,7 +53,7 @@ const SettingCard = ({ section }) => {
                                 <Panel shaded style={{ background: "whitesmoke", height: "100px", marginBottom:"20px" }}>
                                     <Grid fluid>
                                         <Row>
-                                            <Col xs={6}><Avatar size="lg" circle style={{ background: 'red' }}>TRP</Avatar></Col>
+                                            <Col xs={6}><Avatar size="lg" circle style={{ background: "linear-gradient(to left, #17c671, #fdaa8f)" }}>TRP</Avatar></Col>
                                             <Col xs={18}><center><h6>
                                                 {user.username}  <br/>
                                                 {user.email} <br/>

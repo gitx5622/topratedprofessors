@@ -38,7 +38,12 @@ import {
     GET_WAITING_ASSIGN_ORDERS_ERROR,
     GET_USER_COUNT_SUMMARY,
     GET_USER_COUNT_SUMMARY_SUCCESS,
-    GET_USER_COUNT_SUMMARY_ERROR, FILE_UPLOADING, FILE_UPLOADING_SUCCESS, FILE_UPLOADING_ERROR
+    GET_USER_COUNT_SUMMARY_ERROR,
+    FILE_UPLOADING,
+    FILE_UPLOADING_SUCCESS,
+    FILE_UPLOADING_ERROR,
+    ORDER_FILES,
+    ORDER_FILES_SUCCESS, ORDER_FILES_ERROR
 } from '../dispatchTypes';
 
 
@@ -412,13 +417,13 @@ export const userCountOrderSummary = async (dispatch, userID) => {
     }
 };
 
-export const fileUpload = async (dispatch, userID) => {
+export const fileUpload = async (dispatch, uploadedFiles) => {
     dispatch({
         type: FILE_UPLOADING,
     });
     try {
         return await axiosConfig
-            .get(`/users/${userID}/order_count`, {
+            .post('/files', uploadedFiles, {
                 headers: {
                     'x-toprated-token': localStorage.token,
                 },
@@ -426,7 +431,7 @@ export const fileUpload = async (dispatch, userID) => {
             .then(response => {
                 dispatch({
                     type: FILE_UPLOADING_SUCCESS,
-                    files: response.data,
+                    uploaded_files: response.data,
                 })
                 return response;
             });
@@ -440,3 +445,30 @@ export const fileUpload = async (dispatch, userID) => {
     }
 };
 
+export const getOrderfiles = async (dispatch, orderID) => {
+    dispatch({
+        type: ORDER_FILES,
+    });
+    try {
+        return await axiosConfig
+            .get(`/orders/${orderID}/files`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: ORDER_FILES_SUCCESS,
+                    order_files: response.data,
+                })
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: ORDER_FILES_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};

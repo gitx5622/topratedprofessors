@@ -74,16 +74,6 @@ const WalletCard = ({ section }) => {
                 <Box sx={{ mt: "10px", mx: "10px" }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: '20px' }}>
                         <h3>My Wallet</h3>
-                        <div style={{display: 'flex', justifyContent: 'space-between', gap: "2em"}}>
-                            <div>
-                                <Button color="cyan" appearance="ghost">Withdrawals</Button>
-                                <h3>${withdrawals}</h3>
-                            </div>
-                            <div>
-                                <Button color="cyan" appearance="ghost">Deposits</Button>
-                                <h3>${deposit}</h3>
-                            </div>
-                        </div>
                     </Box>
                     <Divider />
                     {walletError && (
@@ -93,7 +83,8 @@ const WalletCard = ({ section }) => {
                         <Grid fluid>
                             <Row className="show-grid">
                                 <Col xs={24} sm={24} md={10}>
-                                    <form onSubmit={handleMakePaymentSubmit} style={{ background: "whitesmoke", borderRadius: '20px', padding: "20px" }}>
+                                    <div style={{border: "1px solid whitesmoke",borderRadius: '20px', boxShadow:"0px 0px 10px 10px #A0C1B3 "}}>
+                                    <form onSubmit={handleMakePaymentSubmit} style={{padding: "20px" }}>
                                         <center>
                                             <h3>Add funds to your account</h3><br />
                                             <h5>Amount (USD): (Min amount: $0.01)</h5><br />
@@ -107,14 +98,16 @@ const WalletCard = ({ section }) => {
                                             <button style={{ background: "#17c671", color: "white", width: "80%", padding: "10px", borderRadius: "5px" }} type="submit">Proceed</button>
                                         </center>
                                     </form>
+                                    </div>
                                 </Col>
-                                <Col xs={24} sm={24} md={14} >
-                                    <Panel>
-                                        <h5>Trasanctions</h5><br />
+                                <Col xsHidden md={1}/>
+                                <Col xs={24} sm={24} md={13} >
+                                    <Panel shaded style={{background:"whitesmoke"}}>
+                                        <h5 style={{color:"#17c671"}}>Trasanctions</h5><br />
                                         <table style={styles.table}>
                                             <tr>
                                                 <th style={styles.table.th}>ID</th>
-                                                <th style={styles.table.th}>Deposit</th>
+                                                <th style={styles.table.th}>Amount</th>
                                                 <th style={styles.table.th}>Narrative</th>
                                                 <th style={styles.table.th}>Time Payment Made</th>
                                             </tr>

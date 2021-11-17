@@ -11,7 +11,7 @@ const ViewSetting = () => {
         }
     }, []);
     return (
-        <Dashboard page='settings' section='edit'/>
+        <Dashboard page='settings' section='view'/>
     );
 };
 

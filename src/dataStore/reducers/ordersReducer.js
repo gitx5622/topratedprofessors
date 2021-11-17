@@ -37,7 +37,12 @@ import {
     GET_WAITING_ASSIGN_ORDERS_ERROR,
     GET_USER_COUNT_SUMMARY,
     GET_USER_COUNT_SUMMARY_SUCCESS,
-    GET_USER_COUNT_SUMMARY_ERROR, FILE_UPLOADING, FILE_UPLOADING_SUCCESS, FILE_UPLOADING_ERROR
+    GET_USER_COUNT_SUMMARY_ERROR,
+    FILE_UPLOADING,
+    FILE_UPLOADING_SUCCESS,
+    FILE_UPLOADING_ERROR,
+    ORDER_FILES,
+    ORDER_FILES_SUCCESS, ORDER_FILES_ERROR
 
 } from "../dispatchTypes";
 
@@ -79,7 +84,8 @@ export const initialOrdersState = {
         pagination: {}
     },
     order: {},
-    files: [],
+    uploaded_files: [],
+    order_files: [],
     user_order_count_summary: {}
 }
 
@@ -409,10 +415,33 @@ export const ordersReducers = (
                 ...state,
                 isSuccess: false,
                 isLoading: false,
-                files: action.files,
+                uploaded_files: action.uploaded_files,
             };
         }
         case FILE_UPLOADING_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case ORDER_FILES: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case ORDER_FILES_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                order_files: action.order_files,
+            };
+        }
+        case ORDER_FILES_ERROR: {
             return {
                 ...state,
                 isSuccess: false,
