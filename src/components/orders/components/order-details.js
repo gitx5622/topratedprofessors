@@ -695,7 +695,7 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                         </Col>
                         <Col xs={24} sm={24} md={8}>
                             <div style={{background: "#fdaa8f", height:'40px', marginTop:"10px", padding: "10px"}}><h5>Order Instructions</h5></div>
-                            <pre style={{color:"black", fontWeight:600}}>{instructions
+                            <pre style={{color:"black", fontWeight:600}}>{instructions && instructions
                                 .replace(/<style([\s\S]*?)<\/style>/gi, '')
                                 .replace(/<script([\s\S]*?)<\/script>/gi, '')
                                 .replace(/<\/div>/ig, '\n')
