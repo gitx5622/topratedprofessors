@@ -20,7 +20,7 @@ import {getServices} from "../../../dataStore/actions/servicesAction";
 import {getLanguages} from "../../../dataStore/actions/languagesAction";
 import {getSpacing} from "../../../dataStore/actions/spacingsAction";
 
-const OrderDetails = () => {
+const OrderDetails = ({section}) => {
     const [open, setOpen] = React.useState(false);
     const [uploadOpen, setUploadOpen] = useState(true);
     const [uploadFiles, setUploadFiles] = useState({
@@ -346,6 +346,11 @@ const CustomNav = ({ active, onSelect, ...props }) => {
             <Nav.Item onClick={() => setUploadOpen(false)} eventKey={!uploadOpen ? "home" : "news"} icon={<DetailIcon/>}>
                 Order Details
             </Nav.Item>
+            {section === "com" && (
+                <Nav.Item onClick={() => setUploadOpen(false)} eventKey={!uploadOpen ? "home" : "news"} icon={<DetailIcon/>}>
+                    Download and Review
+                </Nav.Item>
+            )}
         </Nav>
     );
 };
@@ -583,6 +588,7 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                                 <Uploader
                                     listType="picture-text"
                                     autoUpload={true}
+                                    multiple
                                     onUpload={(file) => handleFileUpload(file)}
                                 >
                                     <div style={{width: "100%",background:"#EAEEF3", lineHeight: '220px'}}>Click or Drag files to this area to upload</div>
@@ -626,11 +632,11 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                     <Row>
                         <Col xs={24} sm={24} md={16}>
                             <Panel style={{marginTop: "-10px"}}>
-                                <div style={{background: "#fdaa8f", height:'40px', padding: "10px"}}><h5>Order #{orderId}</h5></div>
+                                <div style={{background: "#fdaa8f", height:'40px', padding: "10px"}}><h5>Order #{order_number}</h5></div>
                                 <table style={styles.table}>
                                     <tr style={{borderRadius:"10px"}}>
-                                        <td style={styles.table.td}><strong>Order ID</strong></td>
-                                        <td style={styles.table.tdx}>{orderId}</td>
+                                        <td style={styles.table.td}><strong>Order Number</strong></td>
+                                        <td style={styles.table.tdx}>{order_number}</td>
                                         <td style={styles.table.td}><strong>Client</strong></td>
                                         <td style={styles.table.tdx}>{user && user.username}</td>
                                     </tr>
@@ -689,7 +695,20 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                         </Col>
                         <Col xs={24} sm={24} md={8}>
                             <div style={{background: "#fdaa8f", height:'40px', marginTop:"10px", padding: "10px"}}><h5>Order Instructions</h5></div>
-                            <pre>{instructions}</pre>
+                            <pre style={{color:"black", fontWeight:600}}>{instructions
+                                .replace(/<style([\s\S]*?)<\/style>/gi, '')
+                                .replace(/<script([\s\S]*?)<\/script>/gi, '')
+                                .replace(/<\/div>/ig, '\n')
+                                .replace(/<\/h1>/ig, '-->')
+                                .replace(/<\/h2>/ig, '-->')
+                                .replace(/<\/h3>/ig, '-->')
+                                .replace(/<\/h4>/ig, '-->')
+                                .replace(/<\/h5>/ig, '-->')
+                                .replace(/<\/h6>/ig, '-->')
+                                .replace(/<li>/ig, '  *  ')
+                                .replace(/<\/p>/ig, '\n')
+                                .replace(/<br\s*[\/]?>/gi, "\n")
+                            }</pre>
                         </Col>
                     </Row>
                 </Grid>
@@ -707,12 +726,14 @@ const styles = {
             fontFamily: 'Quicksand, sans-serif',
             border: '1px solid #dddddd',
             textAlign: 'left',
+            fontSize:"18px",
             padding: '8px',
         },
         tdx: {
             fontFamily: 'Quicksand, sans-serif',
             border: '1px solid #dddddd',
             textAlign: 'left',
+            fontSize:"18px",
             padding: '8px',
             color: "#333333"
         },

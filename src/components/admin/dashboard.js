@@ -7,7 +7,6 @@ import PendingOrders from "../orders/components/pendingOrders";
 import OrderLayout from "../orders/layout/order-layout";
 import CreateOrder from "../orders/components/createOrder";
 import Finances from "../wallet/finances";
-import SettingEdit from "../settings/edit";
 import SettingView from "../settings/view";
 import OrderDetails from 'components/orders/components/order-details';
 import Transactions from "../wallet/transactions";

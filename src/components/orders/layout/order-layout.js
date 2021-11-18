@@ -151,97 +151,108 @@ const OrderLayout = ({ children }) => {
                         defaultOpenKeys={['3']}
                         appearance="default">
                         <Sidenav.Body>
-                            <Nav>
+                            <Nav style={{fontFamily:"Quicksand, sans, serif"}}>
                                 <Nav.Item
                                     eventKey="1"
                                     active icon={<DashboardIcon />}
+                                    style={{fontSize:"20px"}}
                                     onClick={() => router.push('/dashboard/all-orders', undefined, { shallow: true })}>
                                     Dashboard
                                     {all_orders_count > 0 && (
-                                        <Tag style={{ float: "right" }} color="green">{all_orders_count}</Tag>
+                                        <Tag style={{ float: "right" ,borderRadius:100}} color="green">{all_orders_count}</Tag>
                                     )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="2"
+                                    style={{fontSize:"20px"}}
                                     icon={<PeopleBranchIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/create_order', undefined, { shallow: true })}>
                                     Place Order
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="3"
+                                    style={{fontSize:"20px"}}
                                     icon={<LocationIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/pending', undefined, { shallow: true })}>
                                     Pending
                                     {pending_orders_count > 0 && (
-                                        <Tag style={{ float: "right" }} color="green">{pending_orders_count}</Tag>
+                                        <Tag style={{ float: "right",borderRadius:100 }} color="green">{pending_orders_count}</Tag>
                                     )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="4"
+                                    style={{fontSize:"20px"}}
                                     icon={<AlipayIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/waiting-assign', undefined, { shallow: true })}>
                                     To be Assigned
                                     {available_orders_count > 0 && (
-                                        <Tag style={{ float: "right" }} color="green">{available_orders_count}</Tag>
+                                        <Tag style={{ float: "right", borderRadius:100 }} color="green">{available_orders_count}</Tag>
                                     )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="5"
+                                    style={{fontSize:"20px"}}
                                     icon={<PeoplesIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/in-progress', undefined, { shallow: true })}>
                                     In  Progress
                                     {active_orders_count > 0 && (
-                                        <Tag style={{ float: "right" }} color="green">{active_orders_count}</Tag>
+                                        <Tag style={{ float: "right", borderRadius:100 }} color="green">{active_orders_count}</Tag>
                                     )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="6"
+                                    style={{fontSize:"20px"}}
                                     icon={<CheckOutlineIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/cancelled', undefined, { shallow: true })}>
                                     Cancelled
                                     {cancelled_orders_count > 0 && (
-                                        <Tag style={{ float: "right" }} color="green">{cancelled_orders_count}</Tag>
+                                        <Tag style={{ float: "right", borderRadius:100 }} color="green">{cancelled_orders_count}</Tag>
                                     )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="7"
+                                    style={{fontSize:"20px"}}
                                     icon={<PeopleBranchIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/revision', undefined, { shallow: true })}>
                                     Revision
                                     {revision_orders_count > 0 && (
-                                        <Tag style={{ float: "right" }} color="green">{revision_orders_count}</Tag>
+                                        <Tag style={{ float: "right", borderRadius:100 }} color="green">{revision_orders_count}</Tag>
                                     )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="8"
+                                    style={{fontSize:"20px"}}
                                     icon={<PeopleBranchIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/completed', undefined, { shallow: true })}>
                                     Completed
                                     { complete_orders_count > 0 && (
-                                        <Tag style={{ float: "right" }} color="green">{complete_orders_count}</Tag>
+                                        <Tag style={{ float: "right", borderRadius:100 }} color="green">{complete_orders_count}</Tag>
                                     )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="9"
+                                    style={{fontSize:"20px"}}
                                     icon={<ExploreIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/approved', undefined, { shallow: true })}>
                                     Approved
                                     {approved_orders_count > 0 && (
-                                        <Tag style={{ float: "right" }} color="green">{approved_orders_count}</Tag>
+                                        <Tag style={{ float: "right", borderRadius:100 }} color="green">{approved_orders_count}</Tag>
                                     )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="10"
+                                    style={{fontSize:"20px"}}
                                     icon={<ExploreIcon color="#3498FF" />}
                                     onClick={() => router.push('/dashboard/rejected', undefined, { shallow: true })}>
                                     Rejected
                                     {rejected_orders_count > 0 && (
-                                        <Tag style={{ float: "right" }} color="green">{rejected_orders_count}</Tag>
+                                        <Tag style={{ float: "right", borderRadius:100 }} color="green">{rejected_orders_count}</Tag>
                                     )}
                                 </Nav.Item>
                                 <Nav.Item
                                     eventKey="10"
-                                    icon={<ExploreIcon color="#3498FF" />}
+                                    style={{fontSize:"20px"}}
+                                    icon={<ExploreIcon color="#3498FF" style={{fontSize: "20px"}}/>}
                                     onClick={() => router.push('/settings/view', undefined, { shallow: true })}>
                                     Settings
                                 </Nav.Item>

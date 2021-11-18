@@ -40,8 +40,8 @@ const InProgress = () => {
                     <th style={styles.table.th}>Order Number</th>
                     <th style={styles.table.th}>Deadline</th>
                     <th style={styles.table.th}>Subject</th>
-                    <th style={styles.table.th}>Promo Code</th>
-                    <th style={styles.table.th}>Created At</th>
+                    <th style={styles.table.th}>Type of Paper</th>
+                    <th style={styles.table.th}>Pages</th>
                     <th style={styles.table.th}>Amount</th>
                 </tr>
                 {active_orders?.map((data) => (
@@ -53,15 +53,15 @@ const InProgress = () => {
                             </Link>
                         </td>
                         <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
-                        <td style={styles.table.td}>{data.subject & (data.subject.name)}</td>
+                        <td style={styles.table.td}>{data.subject && (data.subject.name)}</td>
                         <td style={styles.table.td}>
-                            <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>
+                            <center>{data.type && (data.type.name)}
                             </center>
                         </td>
                         <td style={styles.table.td}>
-                            {formatDate(data.created_at)}
+                            {data.page && (data.page.name)}
                         </td>
-                        <td style={styles.table.td}>{data.amount}</td>
+                        <td style={styles.table.td}>$ {data.amount}</td>
                     </tr>
                 ))}
             </table><br/>

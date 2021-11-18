@@ -38,8 +38,8 @@ const Completed = () => {
                     <th style={styles.table.th}>Order Number</th>
                     <th style={styles.table.th}>Deadline</th>
                     <th style={styles.table.th}>Type of Paper</th>
-                    <th style={styles.table.th}>Promo Code</th>
-                    <th style={styles.table.th}>Created At</th>
+                    <th style={styles.table.th}>Subject</th>
+                    <th style={styles.table.th}>Pages</th>
                     <th style={styles.table.th}>Amount</th>
                 </tr>
                 {completed_orders?.map((data) => (
@@ -53,13 +53,13 @@ const Completed = () => {
                         <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
                         <td style={styles.table.td}>{data.type && (data.type.name)}</td>
                         <td style={styles.table.td}>
-                            <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>
+                            <center><div style={{color:"green"}}>{data.subject && data.subject.name}</div>
                             </center>
                         </td>
                         <td style={styles.table.td}>
-                            {formatDate(data.created_at)}
+                            {data.page && (data.page.name)}
                         </td>
-                        <td style={styles.table.td}>{data.amount}</td>
+                        <td style={styles.table.td}>$ {data.amount}</td>
                     </tr>
                 ))}
             </table><br/>
