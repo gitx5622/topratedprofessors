@@ -74,25 +74,25 @@ const OrderDetails = ({section}) => {
         } } = orderSelector;
     const [updateOrderDetails, setUpdateOrderDetails] = useState({
         user_id: '',
-        service_id: 1,
-        type_id: 1,
-        style_id: 1,
-        level_id: 1,
-        pages_id: 1,
-        urgency_id: 1,
-        subject_id: 1,
-        sources_id: 1,
-        spacing_id: 1,
-        language_id: 1,
-        phone: "",
-        topic: "",
-        instructions: "",
-        pagesummary: '',
-        plagreport: '',
-        initialdraft: '',
-        qualitycheck: '',
-        topwriter: '',
-        promocode: ''
+        service_id: service?.id,
+        type_id: type?.id,
+        style_id: style?.id,
+        level_id: level?.id,
+        pages_id: page?.id,
+        urgency_id: urgency?.id,
+        subject_id: subject?.id,
+        sources_id: source?.id,
+        spacing_id: spacing?.id,
+        language_id: language?.id,
+        phone: phone,
+        topic: topic,
+        instructions: instructions,
+        pagesummary: false,
+        plagreport: false,
+        initialdraft: false,
+        qualitycheck: false,
+        topwriter: false,
+        promocode: false
     });
 
     const walletSelector = useSelector(state => state.walletState);
@@ -612,8 +612,8 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                                                     <Avatar
                                                         style={{background:"#17c671"}}
                                                         circle
-                                                        size="sm">TRP<
-                                                        /Avatar>
+                                                        size="sm">TRP
+                                                    </Avatar>
                                                     {"     "}
                                                     {order_file.attached}
                                                 </strong>

@@ -16,7 +16,6 @@ export default function Footer() {
                   <center>
                   <ul style={{fontSize:"16px", cursor:"pointer"}}>
                       <li onClick={() => { router.push('/footer/fags'); scroll(0, 0)}}>FAQ</li>
-                      <li  onClick={() => { router.push('/header/reviews'); scroll(0, 0)}}>Reviews</li>
                   </ul>
                   </center>
               </Box>
@@ -25,7 +24,7 @@ export default function Footer() {
                   <center>
                   <ul style={{fontSize:"16px", cursor:"pointer"}}>
                       <li  onClick={() => { router.push('/footer/privacy-policy'); scroll(0, 0)}}>Privacy Policy</li>
-                      <li  onClick={() => { router.push('/footer/terms-and-conditions'); scroll(0, 0)}}>Terms and Conditions</li>
+                      
                   </ul>
                   </center>
               </Box>
@@ -33,8 +32,7 @@ export default function Footer() {
                   <Heading as="h1" sx={styles.footer.heading}>SERVICES</Heading>
                   <center>
                   <ul style={{fontSize:"16px", cursor:"pointer"}}>
-                      <li  onClick={() => { router.push('/footer/online-tutors'); scroll(0, 0)}}>Online Tutors</li>
-                      <li  onClick={() => { router.push('/footer/best-online-tutors'); scroll(0, 0)}}>Best online tutors</li>
+                  <li  onClick={() => { router.push('/footer/terms-and-conditions'); scroll(0, 0)}}>Terms and Conditions</li>
                   </ul>
                   </center>
               </Box>
@@ -42,8 +40,7 @@ export default function Footer() {
                   <Heading as="h1" sx={styles.footer.heading}>TOPRATED</Heading>
                   <center>
                   <ul style={{fontSize:"16px", cursor:"pointer"}}>
-                      <li  onClick={() => { router.push('/header/about-us'); scroll(0, 0)}}>About Us</li>
-                      <li  onClick={() => { router.push('/footer/custom-writing'); scroll(0, 0)}}>Custom writing</li>
+                      <li  onClick={() => { router.push('/header/about-us'); scroll(0, 0)}}>Moneyback Guarantee</li>
                   </ul>
                   </center>
               </Box>

@@ -1,14 +1,15 @@
 /** @jsx jsx */
+import React, { useEffect } from 'react';
 import { jsx, Container, Heading, Text, Box, Image } from 'theme-ui';
-import SectionHeader from 'components/home/section-header';
 import Rating from 'components/home/rating';
 import ButtonGroup from 'components/home/button-group';
 import Carousel from 'react-multi-carousel';
-
+import { useDispatch, useSelector } from 'react-redux';
 import Avatar1 from 'assets/testimonial/avatar1.png';
 import Avatar2 from 'assets/testimonial/avatar2.png';
 import Avatar3 from 'assets/testimonial/avatar3.png';
 import Avatar4 from 'assets/testimonial/avatar4.png';
+import { filterUserRatings } from 'dataStore/actions/reviewAction';
 
 const data = [
   {
@@ -100,6 +101,13 @@ const carouselParams = {
 }
 
 export default function TestimonialCard() {
+  const dispatch = useDispatch();
+  const ratingSelector = useSelector(store => store.ratingState);
+  const { ratings } = ratingSelector;
+  console.log(ratings);
+  useEffect(() => {
+    filterUserRatings(dispatch)
+  },[])
   return (
       <section id="reviews" sx={{ variant: 'section.reviews'}}>
         <Container css={{ textAlign: 'center'}}>

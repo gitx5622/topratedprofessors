@@ -11,6 +11,8 @@ import {subjectsReducers} from "./subjectReducer";
 import {typesReducers} from "./typesReducer";
 import {urgenciesReducers} from "./urgencyReducer";
 import { walletReducer } from './walletReducer';
+import { ratingsReducers } from './ratingsReducer';
+import { messagesReducers } from './messagesReducer';
 
 
 const rootReducer = combineReducers({
@@ -25,6 +27,8 @@ const rootReducer = combineReducers({
     subjectState: subjectsReducers,
     typeState: typesReducers,
     urgencyState: urgenciesReducers,
+    messageState: messagesReducers,
+    ratingState: ratingsReducers,
     walletState: walletReducer,
 });
 

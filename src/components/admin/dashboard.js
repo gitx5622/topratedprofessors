@@ -11,6 +11,7 @@ import SettingView from "../settings/view";
 import OrderDetails from 'components/orders/components/order-details';
 import Transactions from "../wallet/transactions";
 import InProgress from 'components/orders/sections/in-progress';
+import OrderCompletedDetails from 'components/orders/components/completed-order-details';
 
 const Dashboard = ({ section }) => {
     const renderOrderPages = () => {
@@ -90,6 +91,12 @@ const Dashboard = ({ section }) => {
             case 'specific-order':
                 return (
                     <OrderDetails
+                        section={section}
+                    />
+                );
+            case 'completed-order':
+                return (
+                    <OrderCompletedDetails
                         section={section}
                     />
                 );
