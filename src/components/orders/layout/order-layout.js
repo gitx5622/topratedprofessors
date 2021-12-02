@@ -84,9 +84,10 @@ const OrderLayout = ({ children }) => {
             localStorage.clear();
             router.push('/');
         } else {
-            <Alert severity="error">You cannot logout user -
-                You still have an active Session
-            </Alert>
+            dispatch({
+                type:"ERROR",
+                errorMessage: "Unable to logout user"
+            })
         }
     }
 

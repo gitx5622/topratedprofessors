@@ -1,6 +1,6 @@
 import {LIST_MESSAGES, LIST_MESSAGES_ERROR, LIST_MESSAGES_SUCCESS} from "../dispatchTypes";
 
-export const initialLanguagesState = {
+export const initialMessageState = {
     isLoading: false,
     isError: false,
     isSuccess: false,
@@ -10,7 +10,7 @@ export const initialLanguagesState = {
 }
 
 export const messagesReducers = (
-    state = initialLanguagesState,
+    state = initialMessageState,
     action
 ) => {
     switch (action.type) {
@@ -26,7 +26,7 @@ export const messagesReducers = (
                 ...state,
                 isLoading: false,
                 isSuccess: true,
-                languages: action.languages,
+                messages: action.messages,
             };
         }
         case LIST_MESSAGES_ERROR: {

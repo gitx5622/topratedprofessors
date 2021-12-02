@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Panel, Divider, Uploader, Button, Input, Modal, Nav, Rate, Grid, Row, Col, Avatar } from 'rsuite';
@@ -8,6 +8,7 @@ import { BoxLoading } from 'react-loadingg';
 import DetailIcon from '@rsuite/icons/Detail';
 import AttachmentIcon from '@rsuite/icons/Attachment';
 import { createRatings } from 'dataStore/actions/reviewAction';
+import { filterMessages } from 'dataStore/actions/messagesAction';
 
 
 const OrderCompletedDetails = ({ section }) => {
@@ -34,12 +35,24 @@ const OrderCompletedDetails = ({ section }) => {
         value: "",
         description: ""
     })
+    const [message, setMessage] = useState({
+        sender_id: "",
+        message: "",
+        receiver_id: "",
+        order_number: ""
+    })
     const [active, setActive] = React.useState('2');
 
 
     const router = useRouter();
     const { completedOrderID } = router.query;
-    const dispatch = useDispatch();
+    const walletSelector = useSelector(state => state.walletState);
+    const ratingSelector = useSelector(state => state.ratingState);
+    const messageSelector = useSelector(state => state.messageState);
+    const { isLoading } = walletSelector;
+    const { ratings, rating } = ratingSelector;
+    const { messages } = messageSelector;
+    console.log(messages)
     const orderSelector = useSelector(state => state.orderState);
     const {
         order_files,
@@ -51,12 +64,7 @@ const OrderCompletedDetails = ({ section }) => {
         }
     } = orderSelector;
 
-    const walletSelector = useSelector(state => state.walletState);
-    const ratingSelector = useSelector(state => state.ratingState);
-    const { isLoading } = walletSelector;
-    const { ratings, rating } = ratingSelector;
-    console.log(rating)
-
+    const dispatch = useDispatch();
     const handleOpen = () => setReleaseFundsOpen(true);
     const handleClose = () => setReleaseFundsOpen(false);
     const handleRevisonOpen = () => setRequestRevisionOpen(true);
@@ -128,10 +136,16 @@ const OrderCompletedDetails = ({ section }) => {
                 });
         }
     };
-    React.useEffect(() => {
+    useEffect(() => {
         getOrder(dispatch, completedOrderID);
         getOrderfiles(dispatch, completedOrderID)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, completedOrderID, uploadFiles]);
+
+    useEffect(() => {
+        filterMessages(dispatch, order_number);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, order_number])
 
     return (
         <div style={{ marginTop: "20px" }}>
@@ -302,7 +316,10 @@ const OrderCompletedDetails = ({ section }) => {
             )}
             {messageOpen && (
                 <div style={{ margin: "20px" }}>
-                    <input name="message" type="text" style={{ border: '1px solid #becad6' }} placeholder="Textarea" /><br />
+                    {messages?.map((message) => (
+                        <Input style={{ color: "black" }} as="textarea" value={message.message} />
+                    ))}
+                    <br />
                     <Button color="blue" appearance="primary">Send</Button>
                 </div>
             )}
@@ -346,20 +363,25 @@ const OrderCompletedDetails = ({ section }) => {
                             <Modal.Header>
                                 <Modal.Title><h5>Review the Order</h5></Modal.Title>
                             </Modal.Header>
-                                <Modal.Body>
-                                    <Rate defaultValue={3} onChangeActive={setHoverValue} />{' '}
-                                    <span style={textStyle}>{texts[hoverValue]}</span>
-                                    <h6>Description</h6>
-                                    <input name="description" onChange={handleReleaseFundsChange} style={{ border: '1px solid #becad6' }} rows={4} placeholder="Textarea" /><br />
-                                </Modal.Body>
-                                <Modal.Footer>
-                                    <Button onClick={handleReleaseFundsSubmit} appearance="primary">
-                                        Send
-                                    </Button>
-                                    <Button onClick={handleClose} appearance="subtle">
-                                        Cancel
-                                    </Button>
-                                </Modal.Footer>
+                            <Modal.Body>
+                                <Rate defaultValue={3} onChangeActive={setHoverValue} />{' '}
+                                <span style={textStyle}>{texts[hoverValue]}</span>
+                                <h6>Description</h6>
+                                <textarea
+                                    name="description"
+                                    onChange={handleReleaseFundsChange}
+                                    style={{ border: '1px solid #becad6', width: "100%", padding:"10px", borderRadius: "5px", }}
+                                    rows={4}
+                                    placeholder="Textarea" /><br />
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button onClick={handleReleaseFundsSubmit} appearance="primary">
+                                    Send
+                                </Button>
+                                <Button onClick={handleClose} appearance="subtle">
+                                    Cancel
+                                </Button>
+                            </Modal.Footer>
                         </Modal>
                         <Button onClick={handleRejectOpen} color="red" appearance="primary">Reject Order</Button>
                         <Modal open={rejectOpen} onClose={handleRejectClose}>
