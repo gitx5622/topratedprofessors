@@ -6,7 +6,7 @@ import {
 
 
 
-export const filterUserRatings = async (dispatch) => {
+export const filterRatings = async (dispatch) => {
     dispatch({
         type: FILTER_USER_RATINGS,
     });

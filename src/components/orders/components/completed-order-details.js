@@ -132,7 +132,11 @@ const OrderCompletedDetails = ({ section }) => {
             })
             fileUpload(dispatch, uploadFiles)
                 .then(response => {
-                    console.log(response)
+                    if(response.status === 200){
+                        router.reload(true)
+                    }else if (response.status !== 200){
+                        fileUpload(dispatch, uploadFiles);
+                    }
                 });
         }
     };

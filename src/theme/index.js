@@ -86,11 +86,6 @@ export default  {
     main: {},
   },
   section: {
-    reviews: {
-      fontFamily: 'body',
-      pb: ['10px', null, 6, null, null, 7, null, '20px'],
-      overflow: 'hidden',
-    },
     writingService: {
       fontFamily: 'body',
       pt: ['20px', null,null, '80px'],

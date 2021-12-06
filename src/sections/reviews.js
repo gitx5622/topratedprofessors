@@ -1,270 +1,98 @@
-/** @jsx jsx */
-import React, { useEffect } from 'react';
-import { jsx, Container, Heading, Text, Box, Image } from 'theme-ui';
-import Rating from 'components/home/rating';
-import ButtonGroup from 'components/home/button-group';
-import Carousel from 'react-multi-carousel';
-import { useDispatch, useSelector } from 'react-redux';
-import Avatar1 from 'assets/testimonial/avatar1.png';
-import Avatar2 from 'assets/testimonial/avatar2.png';
-import Avatar3 from 'assets/testimonial/avatar3.png';
-import Avatar4 from 'assets/testimonial/avatar4.png';
-import { filterUserRatings } from 'dataStore/actions/reviewAction';
+import React, {useEffect} from 'react';
+import {Carousel, Grid, Row, Col, Panel, Rate, Avatar} from "rsuite";
+import {useDispatch, useSelector} from "react-redux";
+import {filterRatings} from "../dataStore/actions/reviewAction";
 
-const data = [
-  {
-    id: 1,
-    title: 'Modern look & trending design',
-    description:
-      'Excellent work, thank you very much!',
-    avatar: Avatar1,
-    name: 'Denny Hilguston',
-    designation: '@denny.hil',
-    review: 4,
-  },
-  {
-    id: 2,
-    title: 'Design Quality & performance',
-    description:
-      'Excellent work, thank you very much!',
-    avatar: Avatar2,
-    name: 'Denny Hilguston',
-    designation: '@denny.hil',
-    review: 5,
-  },
-  {
-    id: 3,
-    title: 'Layout and organized layers',
-    description:
-      'Excellent work, thank you very much!',
-    avatar: Avatar3,
-    name: 'Denny Hilguston',
-    designation: '@denny.hil',
-    review: 5,
-  },
-  {
-    id: 4,
-    title: 'Modern look & trending design',
-    description:
-      'Excellent work, thank you very much!',
-    avatar: Avatar4,
-    name: 'Denny Hilguston',
-    designation: '@denny.hil',
-    review: 4,
-  },
-];
+const Reviews = () => {
+    const reviewSelector = useSelector(state => state.ratingState);
+    const { ratings } = reviewSelector;
+    const dispatch = useDispatch();
+    console.log(ratings);
 
-const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 1619 },
-    items: 4,
-    slidesToSlide: 4, // optional, default to 1.
-  },
-  laptop: {
-    breakpoint: { max: 1619, min: 1024 },
-    items: 3,
-    slidesToSlide: 3, // optional, default to 1.
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 640 },
-    items: 2,
-    slidesToSlide: 2, // optional, default to 1.
-  },
-  mobile: {
-    breakpoint: { max: 639, min: 0 },
-    items: 1,
-    slidesToSlide: 1, // optional, default to 1.
-  },
+    useEffect(() => {
+        filterRatings(dispatch);
+    }, [dispatch])
+    return (
+        <div>
+            <center>
+            <h3>Customer Reviews</h3>
+            <p style={{fontSize:"20px"}}>Avg rating for all reviews: 4.8/5.0</p>
+            </center>
+            <Grid fluid>
+                <Carousel autoplay className="custom-slider" style={{height:"350px"}}>
+                <Row>
+                            {ratings.ratings && ratings.ratings.slice(0,3).map((rating) => (
+                                <div key={rating.id} style={{marginLeft:"20px"}}>
+                                <Col xs={8}>
+                                    <center>
+                                        <Panel style={{background:"whitesmoke", margin:"20px"}}>
+                                            <div style={{display:"flex", justifyContent:"center", gap:"2em"}}>
+                                                <span><Avatar circle>RS</Avatar></span>
+                                                <span style={{fontSize:"20px"}}>Username: {rating.user && rating.user.username}</span>
+                                            </div>
+                                            <h4>Order: {rating.order_number}</h4>
+                                                <br/>
+                                            <Rate value={rating.value} />
+                                        <div style={{padding:"20px"}}>
+                                            <p style={{fontSize:"20px"}}>{rating.description}</p>
+                                            <p style={{fontSize:"18px"}}>{rating.created_at}</p>
+                                        </div>
+                                        </Panel>
+                                    </center>
+                                </Col>
+                                </div>
+                            ))}
+                </Row>
+                    <Row>
+                        {ratings.ratings && ratings.ratings.slice(0,3).map((rating) => (
+                            <div key={rating.id} style={{marginLeft:"20px"}}>
+                                <Col xs={8}>
+                                    <center>
+                                        <Panel style={{background:"whitesmoke", margin:"20px"}}>
+                                            <div style={{display:"flex", justifyContent:"center", gap:"2em"}}>
+                                                <span><Avatar circle>RS</Avatar></span>
+                                                <span style={{fontSize:"20px"}}>Username: {rating.user && rating.user.username}</span>
+                                            </div>
+                                            <h4>Order: {rating.order_number}</h4>
+                                            <br/>
+                                            <Rate value={rating.value} />
+                                            <div style={{padding:"20px"}}>
+                                                <p style={{fontSize:"20px"}}>{rating.description}</p>
+                                                <p style={{fontSize:"18px"}}>{rating.created_at}</p>
+                                            </div>
+                                        </Panel>
+                                    </center>
+                                </Col>
+                            </div>
+                        ))}
+                    </Row>
+                    <Row>
+                        {ratings.ratings && ratings.ratings.slice(0,3).map((rating) => (
+                            <div key={rating.id} style={{marginLeft:"20px"}}>
+                                <Col xs={8}>
+                                    <center>
+                                        <Panel style={{background:"whitesmoke", margin:"20px"}}>
+                                            <div style={{display:"flex", justifyContent:"center", gap:"2em"}}>
+                                                <span><Avatar circle>RS</Avatar></span>
+                                                <span style={{fontSize:"20px"}}>Username: {rating.user && rating.user.username}</span>
+                                            </div>
+                                            <h4>Order: {rating.order_number}</h4>
+                                            <br/>
+                                            <Rate value={rating.value} />
+                                            <div style={{padding:"20px"}}>
+                                                <p style={{fontSize:"20px"}}>{rating.description}</p>
+                                                <p style={{fontSize:"18px"}}>{rating.created_at}</p>
+                                            </div>
+                                        </Panel>
+                                    </center>
+                                </Col>
+                            </div>
+                        ))}
+                    </Row>
+                </Carousel>
+            </Grid>
+        </div>
+    );
 };
 
-const carouselParams = {
-  additionalTransfrom:0,
-  arrows:false,
-  autoPlaySpeed:3000,
-  centerMode:false,
-  className:"",
-  containerClass:"carousel-container",
-  customButtonGroup:<ButtonGroup />,
-  dotListClass:"",
-  draggable: true,
-  focusOnSelect:false,
-  infinite:true,
-  itemClass:"",
-  keyBoardControl: true,
-  minimumTouchDrag:80,
-  renderButtonGroupOutside: true,
-  renderDotsOutside:false,
-  responsive:responsive,
-  showDots:false,
-  sliderClass:"",
-  slidesToSlide:1,
-}
-
-export default function TestimonialCard() {
-  const dispatch = useDispatch();
-  const ratingSelector = useSelector(store => store.ratingState);
-  const { ratings } = ratingSelector;
-  console.log(ratings);
-  useEffect(() => {
-    filterUserRatings(dispatch)
-  },[])
-  return (
-      <section id="reviews" sx={{ variant: 'section.reviews'}}>
-        <Container css={{ textAlign: 'center'}}>
-          <h3 style={{color:"#fdaa8f"}}>Customer Reviews</h3>
-          <h6>Avg rating for all reviews:</h6>
-        </Container>
-        <Box sx={styles.carouselWrapper}>
-          <Carousel {...carouselParams}>
-            {data.map((item) => (
-                <Box sx={styles.reviewCard} key={item.id}>
-                  <Rating rating={item.review}/>
-                  <Heading as="h3" sx={styles.title}>
-                    {item.title}
-                  </Heading>
-                  <Text sx={styles.description}>
-                    {item.description}
-                  </Text>
-                  <div className="card-footer">
-                    <div className="image">
-                      <Image src={item.avatar} alt="Clients Image"/>
-                    </div>
-                    <Heading as="h4" sx={styles.heading}>
-                      {item.name}
-                    </Heading>
-                    <Text sx={styles.designation}>
-                      {item.designation}
-                    </Text>
-                  </div>
-                </Box>
-            ))}
-          </Carousel>
-        </Box>
-      </section>
-  );
-}
-
-const styles = {
-  carouselWrapper: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    mt: '-30px',
-    px: '15px',
-    '.carousel-container': {
-      width: '100%',
-      maxWidth: [
-        '100%',
-        null,
-        null,
-        '750px',
-        '1000px',
-        '1180px',
-        null,
-        'calc(50% + 865px)',
-      ],
-      mr: ['auto', null, null, null, null, null, null, '-220px'],
-      ml: 'auto',
-      '.react-multi-carousel-item': {
-        transition: 'all 0.25s',
-      },
-      '.react-multi-carousel-item--active:nth-of-type(4n)': {
-        opacity: '0.5',
-        '@media screen and (max-width: 1620px)': {
-          opacity: 1,
-        },
-      },
-    },
-  },
-  reviewCard: {
-    boxShadow: '0px 0px 1px rgba(38, 78, 118, 0.35)',
-    transition: 'all 0.3s',
-    borderRadius: '6px',
-    p: [
-      '30px 20px 35px',
-      '30px 25px 35px',
-      '30px 20px 35px',
-      '35px 30px 40px 40px',
-      '30px 30px 35px',
-      '35px 30px 40px 40px',
-    ],
-    bg: 'white',
-    textAlign: 'left',
-    m: [
-      '28px 5px 30px 5px',
-      '28px 20px 30px 20px',
-      '28px 15px 30px 15px',
-      '28px 15px 30px 15px',
-      '30px 20px 40px',
-    ],
-    '&:hover': {
-      boxShadow: '0px 6px 30px rgba(38, 78, 118, 0.1)',
-    },
-    '.rating': {
-      mb: [1, null, null, 2],
-      ul: {
-        pl: 0,
-        listStyle: 'none',
-        mb: 0,
-        display: 'flex',
-      },
-      svg: {
-        marginRight: '2px',
-        '&:last-of-type': {
-          marginRight: 0,
-        },
-      },
-      '.star': {
-        color: 'primary',
-        mr: '1px',
-      },
-      '.star-o': {
-        color: '#ddd',
-        mr: '1px',
-      },
-    },
-    '.card-footer': {
-      display: 'flex',
-      alignItems: 'center',
-      marginTop: [5, null, null, '33px'],
-      '.image': {
-        flexShrink: 0,
-        mr: [3, null, null, 4],
-        display: 'flex',
-        img: {
-          width: '55px',
-          height: '55px',
-          borderRadius: '50%',
-          objectFit: 'cover',
-        },
-      },
-    },
-  },
-  title: {
-    fontSize: [1, 2],
-    fontWeight: 700,
-    mb: [3, null, null, '22px'],
-    color: 'text',
-    lineHeight: 1.6,
-  },
-  description: {
-    fontSize: [1, null, null, 2],
-    fontWeight: 'normal',
-    color: 'text',
-    lineHeight: [1.85, null, 2],
-  },
-  heading: {
-    fontSize: [1, null, null, 2],
-    fontWeight: 700,
-    mb: '3px',
-    color: 'text',
-    lineHeight: 1.3,
-  },
-  designation: {
-    color: 'primary',
-    fontWeight: '500',
-    fontSize: 1,
-    lineHeight: 1.4,
-  },
-};
+export default Reviews;
