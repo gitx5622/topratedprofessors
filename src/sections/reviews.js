@@ -17,7 +17,7 @@ const Reviews = () => {
         <div>
             <center>
             <h3 style={{color:"#fdaa8f"}}>Customer Reviews</h3>
-            <p style={{fontSize:"20px"}}>Avg rating for all reviews: 4.8/5.0</p>
+                <p style={{fontSize:"20px"}}>Avg rating for all reviews: <b>4.8/5.0</b></p>
             </center>
             <Grid fluid>
                 <Carousel autoplay className="custom-slider" style={{marginLeft: "-5px",marginRight: "-5px", minHeight:"250px"}}>
@@ -32,7 +32,7 @@ const Reviews = () => {
                                             <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
                                         <div style={{padding:"20px"}}>
                                             <p style={{fontSize:"20px"}}>{rating.description}</p>
-                                            <p style={{fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
+                                            <p style={{color: "#17c671",fontWeight: 700,  fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
                                         </div>
                                         </Panel>
                                     </center>
@@ -51,7 +51,7 @@ const Reviews = () => {
                                             <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
                                             <div style={{padding:"20px"}}>
                                                 <p style={{fontSize:"20px"}}>{rating.description}</p>
-                                                <p style={{fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
+                                                <p style={{color: "#17c671",fontWeight: 700,  fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
                                             </div>
                                         </Panel>
                                     </center>
@@ -70,7 +70,7 @@ const Reviews = () => {
                                             <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
                                             <div style={{padding:"20px"}}>
                                                 <p style={{fontSize:"20px"}}>{rating.description}</p>
-                                                <p style={{fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
+                                                <p style={{color: "#17c671",fontWeight: 700,  fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
                                             </div>
                                         </Panel>
                                     </center>
@@ -89,7 +89,7 @@ const Reviews = () => {
                                             <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
                                             <div style={{padding:"20px"}}>
                                                 <p style={{fontSize:"20px"}}>{rating.description}</p>
-                                                <p style={{fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
+                                                <p style={{color: "#17c671",fontWeight: 700,  fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
                                             </div>
                                         </Panel>
                                     </center>
@@ -108,7 +108,7 @@ const Reviews = () => {
                                             <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
                                             <div style={{padding:"20px"}}>
                                                 <p style={{fontSize:"20px"}}>{rating.description}</p>
-                                                <p style={{fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
+                                                <p style={{color: "#17c671", fontWeight: 700, fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
                                             </div>
                                         </Panel>
                                     </center>
