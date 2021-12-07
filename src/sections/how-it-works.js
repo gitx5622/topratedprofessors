@@ -206,7 +206,6 @@ const styles = {
     backgroundPosition: 'center center',
     backgroundSize: 'cover',
     position: 'relative',
-    mt: '10px',
     px: 8,
     py: [3, null, 4, null, null, 3],
   },

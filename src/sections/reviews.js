@@ -20,7 +20,7 @@ const Reviews = () => {
             <p style={{fontSize:"20px"}}>Avg rating for all reviews: 4.8/5.0</p>
             </center>
             <Grid fluid>
-                <Carousel autoplay className="custom-slider" style={{minHeight:"250px"}}>
+                <Carousel autoplay className="custom-slider" style={{marginLeft: "-5px",marginRight: "-5px", minHeight:"250px"}}>
                 <Row>
                             {ratings.ratings && ratings.ratings.slice(0,1).map((rating) => (
                                 <div key={rating.id} style={{marginLeft:"20px", marginTop:"50px"}}>
