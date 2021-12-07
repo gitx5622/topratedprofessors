@@ -7,11 +7,6 @@ const CompletedOrders = ({section}) => {
         const currentUser = JSON.parse(localStorage.currentUser);
         if(!currentUser){
             router.push('/user/login');
-        }else {
-            <Alert>
-                There was an error - You need to login first
-                <Close ml="auto" mr={-2} />
-            </Alert>
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

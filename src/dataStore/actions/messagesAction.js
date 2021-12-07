@@ -1,5 +1,11 @@
 import axiosConfig from '../../config/axios';
-import { LIST_MESSAGES, LIST_MESSAGES_ERROR, LIST_MESSAGES_SUCCESS } from "dataStore/dispatchTypes";
+import {
+    CREATE_MESSAGE, CREATE_MESSAGE_ERROR,
+    CREATE_MESSAGE_SUCCESS,
+    LIST_MESSAGES,
+    LIST_MESSAGES_ERROR,
+    LIST_MESSAGES_SUCCESS
+} from "dataStore/dispatchTypes";
 
 
 export const filterMessages = async (dispatch, order_number) => {
@@ -31,28 +37,28 @@ export const filterMessages = async (dispatch, order_number) => {
     }
 };
 
-export const createMessage = async (dispatch, rating) => {
+export const createMessage = async (dispatch, message) => {
     dispatch({
-        type: CREATE_USER_RATINGS,
+        type: CREATE_MESSAGE,
     });
     try {
         return await axiosConfig
-            .post('/ratings', rating, {
+            .post('/messages', message, {
                 headers: {
                     'x-toprated-token': localStorage.token,
                 },
             })
             .then(response => {
                 dispatch({
-                    type: CREATE_USER_RATINGS_SUCCESS,
-                    rating: response.data,
+                    type: CREATE_MESSAGE_SUCCESS,
+                    message: response.data,
                 })
                 console.log(response)
                 return response;
             });
     } catch (error) {
         dispatch({
-            type: CREATE_USER_RATINGS_ERROR,
+            type: CREATE_MESSAGE_ERROR,
             errorMessage: error.response,
         });
 

@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useRouter } from 'next/router';
-import { Panel, Divider, Uploader, Button, Input, Modal, Nav, Rate, Grid, Row, Col, Avatar } from 'rsuite';
-import { fileUpload, getOrder, getOrderfiles } from 'dataStore/actions/ordersAction';
-import { formatDate, formatDeadline } from '../../../../utils/dates';
-import { BoxLoading } from 'react-loadingg';
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useRouter} from 'next/router';
+import {Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Panel, Rate, Row, Uploader} from 'rsuite';
+import {fileUpload, getOrder, getOrderfiles} from 'dataStore/actions/ordersAction';
+import {formatDate, formatDeadline} from '../../../../utils/dates';
 import DetailIcon from '@rsuite/icons/Detail';
 import AttachmentIcon from '@rsuite/icons/Attachment';
-import { createRatings } from 'dataStore/actions/reviewAction';
-import { filterMessages } from 'dataStore/actions/messagesAction';
+import {createRatings} from 'dataStore/actions/reviewAction';
+import {createMessage, filterMessages} from 'dataStore/actions/messagesAction';
 
 
 const OrderCompletedDetails = ({ section }) => {
@@ -81,6 +80,29 @@ const OrderCompletedDetails = ({ section }) => {
         })
     }
 
+    const handleCreateMessageChange = (value) => {
+        setMessage({
+            ...message,
+            message: value
+        })
+    }
+    const  updateScroll = () => {
+        let element = document.getElementById("messages");
+        element.scroll(0, 0)
+    }
+    const handleCreateMessageSubmit = () => {
+        const { id: userID } = JSON.parse(localStorage.currentUser);
+        const bodyData = {
+            sender_id: userID,
+            message: message.message,
+            receiver_id: 7,
+            order_number: order_number
+        }
+        console.log(bodyData)
+        if(bodyData.message !== "")
+        createMessage(dispatch, bodyData)
+    }
+
     const handleReleaseFundsSubmit = () => {
         const bodyData = {
             order_number: order_number,
@@ -97,7 +119,6 @@ const OrderCompletedDetails = ({ section }) => {
             });
         }
     }
-
 
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -149,7 +170,7 @@ const OrderCompletedDetails = ({ section }) => {
     useEffect(() => {
         filterMessages(dispatch, order_number);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, order_number])
+    }, [dispatch, order_number, message])
 
     return (
         <div style={{ marginTop: "20px" }}>
@@ -319,12 +340,58 @@ const OrderCompletedDetails = ({ section }) => {
                 </Grid>
             )}
             {messageOpen && (
-                <div style={{ margin: "20px" }}>
-                    {messages?.map((message) => (
-                        <Input style={{ color: "black" }} as="textarea" value={message.message} />
+                <div>
+                    <Panel>
+                    <h5>Order Messages</h5>
+                <div id="messages" style={{ padding:"10px" ,borderRadius:"5px", border:"2px solid #98b9b6", maxHeight:"250px", overflowY: "scroll" }}>
+                    {messages?.reverse().map((message) => (
+                        <div style={{display:"flex", justifyContent:"space-between"}}>
+                            {message.receiver_id === 7 ?
+                                <div style={{marginBottom: "15px"}}>
+                                    <Tag style={{
+                                        width: "300px",
+                                        color: "black",
+                                        borderRadius: "15px",
+                                        background: "whitesmoke",
+                                        padding: "10px"
+                                    }}>
+                                        {updateScroll}
+                                        {message.message}<br/>
+                                        <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
+                                    </Tag>
+                                </div>
+                                : (<div/>)
+                            }
+                            {message.receiver_id !== 7 && (
+                                <Tag style={{
+                                    width:"300px",
+                                    margin:"10px",
+                                    color:"white",
+                                    borderRadius:"15px",
+                                    background:"#6da8a2",
+                                    padding:"10px"}}>
+                                    { message.message }<br/>
+                                    <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
+                                </Tag>
+                            )}
+                        </div>
                     ))}
+                </div>
+                    </Panel>
+                    <Panel>
+                    <Input
+                        onKeyPress={handleCreateMessageSubmit}
+                        onChange={handleCreateMessageChange}
+                        style={{ border:"2px solid #6da8a2", padding:"20px"}}
+                        placeholder="Enter message"/>
                     <br />
-                    <Button color="blue" appearance="primary">Send</Button>
+                    <Button
+                        onClick={handleCreateMessageSubmit}
+                        color="blue"
+                        appearance="primary">
+                        Send
+                    </Button>
+                    </Panel>
                 </div>
             )}
             {downloadOpen && (
