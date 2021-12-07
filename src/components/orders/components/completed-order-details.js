@@ -170,7 +170,7 @@ const OrderCompletedDetails = ({ section }) => {
     useEffect(() => {
         filterMessages(dispatch, order_number);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, order_number, message])
+    }, [dispatch, order_number])
 
     return (
         <div style={{ marginTop: "20px" }}>

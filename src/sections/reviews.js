@@ -20,23 +20,19 @@ const Reviews = () => {
             <p style={{fontSize:"20px"}}>Avg rating for all reviews: 4.8/5.0</p>
             </center>
             <Grid fluid>
-                <Carousel autoplay className="custom-slider" style={{minHeight:"350px"}}>
+                <Carousel autoplay className="custom-slider" style={{minHeight:"250px"}}>
                 <Row>
-                            {ratings.ratings && ratings.ratings.slice(0,3).map((rating) => (
-                                <div key={rating.id} style={{marginLeft:"20px"}}>
-                                <Col xs={8}>
+                            {ratings.ratings && ratings.ratings.slice(0,1).map((rating) => (
+                                <div key={rating.id} style={{marginLeft:"20px", marginTop:"50px"}}>
+                                <Col xs={24}>
                                     <center>
                                         <Panel style={{background:"whitesmoke", margin:"20px"}}>
-                                            <div style={{display:"flex", justifyContent:"center", gap:"2em"}}>
-                                                <span><Avatar circle style={{background:"#fdaa8f"}}>RS</Avatar></span>
-                                                <span style={{fontSize:"20px"}}>Username: @{rating.user && rating.user.username}</span>
-                                            </div>
-                                            <h4>Order: {rating.order_number}</h4>
+                                            <h4>Order#: {rating.order_number}</h4>
                                                 <br/>
-                                            <Rate value={rating.value} />
+                                            <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
                                         <div style={{padding:"20px"}}>
                                             <p style={{fontSize:"20px"}}>{rating.description}</p>
-                                            <p style={{fontSize:"18px"}}>{formatDate(rating.created_at)}</p>
+                                            <p style={{fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
                                         </div>
                                         </Panel>
                                     </center>
@@ -45,21 +41,17 @@ const Reviews = () => {
                             ))}
                 </Row>
                     <Row>
-                        {ratings.ratings && ratings.ratings.slice(3,6).map((rating) => (
-                            <div key={rating.id} style={{marginLeft:"20px"}}>
-                                <Col xs={8}>
+                        {ratings.ratings && ratings.ratings.slice(1,2).map((rating) => (
+                            <div key={rating.id} style={{marginLeft:"20px", marginTop:"50px"}}>
+                                <Col xs={24}>
                                     <center>
                                         <Panel style={{background:"whitesmoke", margin:"20px"}}>
-                                            <div style={{display:"flex", justifyContent:"center", gap:"2em"}}>
-                                                <span><Avatar circle style={{background:"#fdaa8f"}}>RS</Avatar></span>
-                                                <span style={{fontSize:"20px"}}>Username: @{rating.user && rating.user.username}</span>
-                                            </div>
-                                            <h4>Order: {rating.order_number}</h4>
+                                            <h4>Order#: {rating.order_number}</h4>
                                             <br/>
-                                            <Rate value={rating.value} />
+                                            <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
                                             <div style={{padding:"20px"}}>
                                                 <p style={{fontSize:"20px"}}>{rating.description}</p>
-                                                <p style={{fontSize:"18px"}}>{formatDate(rating.created_at)}</p>
+                                                <p style={{fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
                                             </div>
                                         </Panel>
                                     </center>
@@ -68,21 +60,55 @@ const Reviews = () => {
                         ))}
                     </Row>
                     <Row>
-                        {ratings.ratings && ratings.ratings.slice(6,9).map((rating) => (
-                            <div key={rating.id} style={{marginLeft:"20px"}}>
-                                <Col xs={8}>
+                        {ratings.ratings && ratings.ratings.slice(3,4).map((rating) => (
+                            <div key={rating.id} style={{marginLeft:"40px", marginTop:"50px"}}>
+                                <Col xs={24}>
                                     <center>
                                         <Panel style={{background:"whitesmoke", margin:"20px"}}>
-                                            <div style={{display:"flex", justifyContent:"center", gap:"2em"}}>
-                                                <span><Avatar circle style={{background:"#fdaa8f"}}>RS</Avatar></span>
-                                                <span style={{fontSize:"20px"}}>Username: @{rating.user && rating.user.username}</span>
-                                            </div>
-                                            <h4>Order: {rating.order_number}</h4>
+                                            <h4>Order#: {rating.order_number}</h4>
                                             <br/>
-                                            <Rate value={rating.value} />
+                                            <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
                                             <div style={{padding:"20px"}}>
                                                 <p style={{fontSize:"20px"}}>{rating.description}</p>
-                                                <p style={{fontSize:"18px"}}>{formatDate(rating.created_at)}</p>
+                                                <p style={{fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
+                                            </div>
+                                        </Panel>
+                                    </center>
+                                </Col>
+                            </div>
+                        ))}
+                    </Row>
+                    <Row>
+                        {ratings.ratings && ratings.ratings.slice(4,5).map((rating) => (
+                            <div key={rating.id} style={{marginLeft:"50px", marginTop:"50px"}}>
+                                <Col xs={24}>
+                                    <center>
+                                        <Panel style={{background:"whitesmoke", margin:"20px"}}>
+                                            <h4>Order#: {rating.order_number}</h4>
+                                            <br/>
+                                            <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
+                                            <div style={{padding:"20px"}}>
+                                                <p style={{fontSize:"20px"}}>{rating.description}</p>
+                                                <p style={{fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
+                                            </div>
+                                        </Panel>
+                                    </center>
+                                </Col>
+                            </div>
+                        ))}
+                    </Row>
+                    <Row>
+                        {ratings.ratings && ratings.ratings.slice(5,6).map((rating) => (
+                            <div key={rating.id} style={{marginLeft:"60px", marginTop:"50px"}}>
+                                <Col xs={24}>
+                                    <center>
+                                        <Panel style={{background:"whitesmoke", margin:"20px"}}>
+                                            <h4>Order#: {rating.order_number}</h4>
+                                            <br/>
+                                            <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
+                                            <div style={{padding:"20px"}}>
+                                                <p style={{fontSize:"20px"}}>{rating.description}</p>
+                                                <p style={{fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
                                             </div>
                                         </Panel>
                                     </center>
