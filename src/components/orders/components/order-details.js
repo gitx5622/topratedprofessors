@@ -346,11 +346,9 @@ const CustomNav = ({ active, onSelect, ...props }) => {
             <Nav.Item onClick={() => setUploadOpen(false)} eventKey={!uploadOpen ? "home" : "news"} icon={<DetailIcon/>}>
                 Order Details
             </Nav.Item>
-            {section === "com" && (
-                <Nav.Item onClick={() => setUploadOpen(false)} eventKey={!uploadOpen ? "home" : "news"} icon={<DetailIcon/>}>
-                    Download and Review
+                <Nav.Item onClick={() => setUploadOpen(false)} eventKey={!uploadOpen ? "message" : "news" || "home"} icon={<DetailIcon/>}>
+                    Messages
                 </Nav.Item>
-            )}
         </Nav>
     );
 };
@@ -593,12 +591,12 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                                 >
                                     <div style={{width: "100%",background:"#EAEEF3", lineHeight: '220px'}}>Click or Drag files to this area to upload</div>
                                 </Uploader><br/>
-                                <center><p style={{fontSize:"20px"}}>Already uploaded files</p></center><br/>
+                                <center><p style={{fontSize:"18px"}}>Already uploaded files</p></center><br/>
                                 <Button style={{width:"100%"}} color="green" appearance="primary">View Order Details</Button>
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={12}>
-                            <h3>Uploaded files</h3>
+                            <h6>Uploaded files</h6>
                             <Divider/>
                             <table style={styles.table}>
                                 <tr style={{background:"#fdaa8f"}}>
@@ -726,14 +724,14 @@ const styles = {
             fontFamily: 'Quicksand, sans-serif',
             border: '1px solid #dddddd',
             textAlign: 'left',
-            fontSize:"18px",
+            fontSize:"16px",
             padding: '8px',
         },
         tdx: {
             fontFamily: 'Quicksand, sans-serif',
             border: '1px solid #dddddd',
             textAlign: 'left',
-            fontSize:"18px",
+            fontSize:"16px",
             padding: '8px',
             color: "#333333"
         },

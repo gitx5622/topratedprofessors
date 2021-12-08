@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import axiosConfig from '../../config/axios';
 import jwtdecode from 'jwt-decode';
-import {ERROR, LOADING, SUCCESS} from "../dispatchTypes";
-import {Alert, Close, jsx} from "theme-ui";
+import { ERROR, LOADING, SUCCESS } from "../dispatchTypes";
+import { Alert, Close, jsx } from "theme-ui";
 
 export const loginUser = async (dispatch, bodyData) => {
     dispatch({
@@ -13,12 +13,12 @@ export const loginUser = async (dispatch, bodyData) => {
             let userData = response.data;
             let userToken = response.headers['x-toprated-token'];
             const tokenInfo = jwtdecode(userToken);
-            if (userToken && tokenInfo.user_id === userData.id){
+            if (userToken && tokenInfo.user_id === userData.id) {
                 localStorage.sessionID = tokenInfo.session_id;
                 localStorage.currentUser = JSON.stringify(response.data);
                 localStorage.admin = true;
                 localStorage.token = userToken;
-            }else {
+            } else {
                 <Alert>
                     User Id did mot match
                     <Close ml="auto" mr={-2} />
@@ -31,11 +31,6 @@ export const loginUser = async (dispatch, bodyData) => {
             return response;
         });
     } catch (error) {
-        let knownErrorStatusCodesResponses = {
-            400: "Username and password don't match",
-            404: 'Account not registered.',
-        };
-
         dispatch({
             type: ERROR,
             errorMessage:

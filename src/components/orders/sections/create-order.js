@@ -375,7 +375,7 @@ const CreateOrder = () => {
                                     <Label htmlFor="topic">Topic*</Label>
                                     <Input style={{border:"1px solid #C9BBB8 "}} onChange={handleSelectChange} name="topic" type='text' mb={3} /><br/>
                                     <Label htmlFor="instructions">Instructions*</ Label>
-                                    <textarea style={{border:"1px solid #C9BBB8 "}} maxLength={10000} value={instructions}
+                                    <textarea style={{border:"1px solid #C9BBB8", width:"100%"}} maxLength={1000000} value={instructions}
                                            rows={8} onChange={handleInstructionsChange}  placeholder="Fill in instructions" />
                                     {/* <Label htmlFor="upload">Upload files (optional)</Label>
                                     <Uploader action="//jsonplaceholder.typicode.com/posts/" draggable>

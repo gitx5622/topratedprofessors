@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useRouter} from 'next/router';
-import {Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Panel, Rate, Row, Uploader} from 'rsuite';
+import {Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Message, Panel, Rate, Row, Uploader} from 'rsuite';
 import {fileUpload, getOrder, getOrderfiles} from 'dataStore/actions/ordersAction';
 import {formatDate, formatDeadline} from '../../../../utils/dates';
 import DetailIcon from '@rsuite/icons/Detail';
@@ -41,8 +41,7 @@ const OrderCompletedDetails = ({ section }) => {
         order_number: ""
     })
     const [active, setActive] = React.useState('2');
-
-
+    const [ratingSuccess, setRatingSuccess] = useState("");
     const router = useRouter();
     const { completedOrderID } = router.query;
     const walletSelector = useSelector(state => state.walletState);
@@ -111,7 +110,10 @@ const OrderCompletedDetails = ({ section }) => {
         }
         console.log(bodyData);
         if (bodyData.order_number !== "" && bodyData.value !== "" && bodyData.description !== "") {
-            createRatings(dispatch, bodyData).then(response => console.log(response))
+            createRatings(dispatch, bodyData).then(response => {
+                setRatingSuccess("Thank you for reviewing your order.Your order has been approved")
+                setReleaseFundsOpen(false);
+            })
         } else {
             dispatch({
                 type: 'CREATE_USER_RATINGS_ERROR',
@@ -176,6 +178,9 @@ const OrderCompletedDetails = ({ section }) => {
         <div style={{ marginTop: "20px" }}>
             <div>
                 <h4>Order Details</h4>
+                { ratingSuccess  && (
+                    <Message type="success" closable>{ratingSuccess}</Message>
+                )}
             </div>
             <Divider />
             <Nav activeKey={active} style={{ marginLeft: "20px", marginTop: "-20px", fontSize: "20px" }}>
@@ -355,7 +360,6 @@ const OrderCompletedDetails = ({ section }) => {
                                         background: "whitesmoke",
                                         padding: "10px"
                                     }}>
-                                        {updateScroll}
                                         {message.message}<br/>
                                         <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
                                     </Tag>
