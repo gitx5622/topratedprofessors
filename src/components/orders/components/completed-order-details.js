@@ -11,8 +11,8 @@ import {createMessage, filterMessages} from 'dataStore/actions/messagesAction';
 
 
 const OrderCompletedDetails = ({ section }) => {
-    const [open, setOpen] = React.useState(false);
-    const [uploadOpen, setUploadOpen] = useState(true);
+    const [open, setOpen] = React.useState(true);
+    const [uploadOpen, setUploadOpen] = useState(false);
     const [messageOpen, setMessageOpen] = useState(false);
     const [downloadOpen, setDownloadOpen] = useState(false);
     const [releaseFundsOpen, setReleaseFundsOpen] = useState(false);
@@ -40,7 +40,7 @@ const OrderCompletedDetails = ({ section }) => {
         receiver_id: "",
         order_number: ""
     })
-    const [active, setActive] = React.useState('2');
+    const [active, setActive] = React.useState('1');
     const [ratingSuccess, setRatingSuccess] = useState("");
     const router = useRouter();
     const { completedOrderID } = router.query;
@@ -63,6 +63,7 @@ const OrderCompletedDetails = ({ section }) => {
     } = orderSelector;
 
     const dispatch = useDispatch();
+    const dispatchx = useDispatch();
     const handleOpen = () => setReleaseFundsOpen(true);
     const handleClose = () => setReleaseFundsOpen(false);
     const handleRevisonOpen = () => setRequestRevisionOpen(true);
@@ -79,16 +80,13 @@ const OrderCompletedDetails = ({ section }) => {
         })
     }
 
-    const handleCreateMessageChange = (value) => {
+    const handleCreateMessageChange = (value, event) => {
         setMessage({
             ...message,
-            message: value
+            message: event.target.value
         })
     }
-    const  updateScroll = () => {
-        let element = document.getElementById("messages");
-        element.scroll(0, 0)
-    }
+
     const handleCreateMessageSubmit = () => {
         const { id: userID } = JSON.parse(localStorage.currentUser);
         const bodyData = {
@@ -98,8 +96,12 @@ const OrderCompletedDetails = ({ section }) => {
             order_number: order_number
         }
         console.log(bodyData)
-        if(bodyData.message !== "")
-        createMessage(dispatch, bodyData)
+        if(bodyData.message !== ""){
+            createMessage(dispatchx, bodyData)
+                .then(response => {
+                    console.log(response)
+                });
+        }
     }
 
     const handleReleaseFundsSubmit = () => {
@@ -155,11 +157,7 @@ const OrderCompletedDetails = ({ section }) => {
             })
             fileUpload(dispatch, uploadFiles)
                 .then(response => {
-                    if(response.status === 200){
-                        router.reload(true)
-                    }else if (response.status !== 200){
-                        fileUpload(dispatch, uploadFiles);
-                    }
+                    console.log(response)
                 });
         }
     };
@@ -167,12 +165,12 @@ const OrderCompletedDetails = ({ section }) => {
         getOrder(dispatch, completedOrderID);
         getOrderfiles(dispatch, completedOrderID)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, completedOrderID, uploadFiles]);
+    }, [dispatch, completedOrderID, uploadFiles.uploaded_files]);
 
     useEffect(() => {
         filterMessages(dispatch, order_number);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, order_number])
+    }, [dispatch, order_number, message.message])
 
     return (
         <div style={{ marginTop: "20px" }}>
@@ -212,7 +210,7 @@ const OrderCompletedDetails = ({ section }) => {
                 <div>
                     <Grid fluid>
                         <Row>
-                            <Col xs={24} sm={24} md={12}>
+                            <Col xs={24} sm={24} md={24}>
                                 <div style={{ padding: "10px" }}>
                                     <Uploader
                                         listType="picture-text"
@@ -220,15 +218,11 @@ const OrderCompletedDetails = ({ section }) => {
                                         multiple
                                         onUpload={(file) => handleFileUpload(file)}
                                     >
-                                        <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '220px' }}>Click or Drag files to this area to upload</div>
-                                    </Uploader><br />
-                                    <center><p style={{ fontSize: "20px" }}>Already uploaded files</p></center><br />
-                                    <Button style={{ width: "100%" }} color="green" appearance="primary">View Order Details</Button>
+                                        <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag files to this area to upload</div>
+                                    </Uploader>
                                 </div>
-                            </Col>
-                            <Col xs={24} sm={24} md={12}>
-                                <h3>Uploaded files</h3>
-                                <Divider />
+                                <Panel>
+                                <h6>Uploaded files</h6>
                                 <table style={styles.table}>
                                     <tr style={{ background: "#fdaa8f" }}>
                                         <th style={{ padding: "10px", textAlign: "left" }}>File Name</th>
@@ -251,6 +245,7 @@ const OrderCompletedDetails = ({ section }) => {
                                         </tr>
                                     ))}
                                 </table>
+                                </Panel>
                             </Col>
                         </Row>
                     </Grid>
@@ -348,7 +343,7 @@ const OrderCompletedDetails = ({ section }) => {
                 <div>
                     <Panel>
                     <h5>Order Messages</h5>
-                <div id="messages" style={{ padding:"10px" ,borderRadius:"5px", border:"2px solid #98b9b6", maxHeight:"250px", overflowY: "scroll" }}>
+                <div id="messages" style={{ padding:"10px" ,borderRadius:"5px", border:"2px solid #98b9b6", minHeight:"50px", maxHeight:"250px", overflowY: "scroll" }}>
                     {messages?.reverse().map((message) => (
                         <div style={{display:"flex", justifyContent:"space-between"}}>
                             {message.receiver_id === 7 ?
@@ -384,8 +379,8 @@ const OrderCompletedDetails = ({ section }) => {
                     </Panel>
                     <Panel>
                     <Input
-                        onKeyPress={handleCreateMessageSubmit}
                         onChange={handleCreateMessageChange}
+                        value={message.message}
                         style={{ border:"2px solid #6da8a2", padding:"20px"}}
                         placeholder="Enter message"/>
                     <br />
@@ -400,21 +395,7 @@ const OrderCompletedDetails = ({ section }) => {
             )}
             {downloadOpen && (
                 <Panel>
-                    <table style={styles.table}>
-                        <tr style={{ borderRadius: "10px" }}>
-                            <th style={styles.table.th}>File Name</th>
-                            <th style={styles.table.th}>File Type</th>
-                            <th style={styles.table.th}>Time Uploaded</th>
-                            <th style={styles.table.th}>Download</th>
-                        </tr>
-                        <tr>
-                            <td style={styles.table.td}><strong>Order Number</strong></td>
-                            <td style={styles.table.td}><b>Service</b></td>
-                            <td style={styles.table.td}>hh</td>
-                            <td style={styles.table.td}><b>Type of Paper</b></td>
-                        </tr>
-                    </table>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginTop: "30px" }}>
+                    <div style={{ display: "flex", float:"right", gap:"2em", marginTop: "30px", marginBottom:"10px" }}>
                         <Button onClick={handleRevisonOpen} color="blue" appearance="primary">Request Revision</Button>
                         <Modal open={requestRevisionOpen} onClose={handleRevisionClose}>
                             <Modal.Header>
@@ -485,6 +466,20 @@ const OrderCompletedDetails = ({ section }) => {
                             </Modal.Footer>
                         </Modal>
                     </div>
+                    <table style={styles.table}>
+                        <tr style={{ borderRadius: "10px" }}>
+                            <th style={styles.table.th}>File Name</th>
+                            <th style={styles.table.th}>File Type</th>
+                            <th style={styles.table.th}>Time Uploaded</th>
+                            <th style={styles.table.th}>Download</th>
+                        </tr>
+                        <tr>
+                            <td style={styles.table.td}>Order Number</td>
+                            <td style={styles.table.td}>Service</td>
+                            <td style={styles.table.td}>hh</td>
+                            <td style={styles.table.td}>Type of Paper</td>
+                        </tr>
+                    </table>
                 </Panel>
             )}
         </div>

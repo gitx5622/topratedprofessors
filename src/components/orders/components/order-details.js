@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import {Panel, Divider, Uploader, Button, Input, Modal, Nav, Drawer, Grid, Row, Col, Avatar} from 'rsuite';
+import {Panel, Divider, Uploader, Button, Input, Modal, Nav, Drawer, Grid, Row, Col, Avatar, Tag} from 'rsuite';
 import {fileUpload, getOrder, getOrderfiles, updateOrder} from 'dataStore/actions/ordersAction';
 import { formatDate, formatDeadline } from '../../../../utils/dates';
 import {makePayment} from "../../../dataStore/actions/walletAction";
@@ -19,10 +19,13 @@ import {getUrgencies} from "../../../dataStore/actions/urgenciesAction";
 import {getServices} from "../../../dataStore/actions/servicesAction";
 import {getLanguages} from "../../../dataStore/actions/languagesAction";
 import {getSpacing} from "../../../dataStore/actions/spacingsAction";
+import {createMessage, filterMessages} from "../../../dataStore/actions/messagesAction";
 
 const OrderDetails = ({section}) => {
     const [open, setOpen] = React.useState(false);
-    const [uploadOpen, setUploadOpen] = useState(true);
+    const [uploadOpen, setUploadOpen] = useState(false);
+    const [openOrderDetails, setOpenOrderDetails] = useState(true)
+    const [messageOpen, setMessageOpen] = useState(false);
     const [uploadFiles, setUploadFiles] = useState({
         order_id:"",
         user_id: "",
@@ -33,7 +36,13 @@ const OrderDetails = ({section}) => {
             },
         ]
     });
-    const [active, setActive] = React.useState('home');
+    const [message, setMessage] = useState({
+        sender_id: "",
+        message: "",
+        receiver_id: "",
+        order_number: ""
+    })
+    const [active, setActive] = React.useState('2');
     const [selected, setSelected] = React.useState("");
     const [myservice, setmyservice] = React.useState(8);
     const [mytype, setmytype] = React.useState(1.2);
@@ -97,6 +106,8 @@ const OrderDetails = ({section}) => {
 
     const walletSelector = useSelector(state => state.walletState);
     const { isLoading } = walletSelector;
+    const messageSelector = useSelector(state => state.messageState);
+    const { messages } = messageSelector;
 
     const levelSelector = useSelector(state => state.levelState);
     const pageSelector = useSelector(state => state.pageState);
@@ -281,7 +292,28 @@ const OrderDetails = ({section}) => {
             }
         }
     };
-
+    const handleCreateMessageChange = (value, event) => {
+        setMessage({
+            ...message,
+            message: event.target.value
+        })
+    }
+    const handleCreateMessageSubmit = () => {
+        const { id: userID } = JSON.parse(localStorage.currentUser);
+        const bodyData = {
+            sender_id: userID,
+            message: message.message,
+            receiver_id: 7,
+            order_number: order_number
+        }
+        console.log(bodyData)
+        if(bodyData.message !== ""){
+            createMessage(dispatch, bodyData)
+                .then(response => {
+                    console.log(response)
+                });
+        }
+    }
 
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -323,7 +355,7 @@ const OrderDetails = ({section}) => {
     React.useEffect(() => {
         getOrder(dispatch, orderID);
         getOrderfiles(dispatch, orderID)
-    }, [dispatch, orderID, uploadFiles]);
+    }, [dispatch, orderID, uploadFiles.uploaded_files]);
 
     React.useEffect(() => {
         getLevels(dispatch);
@@ -339,14 +371,30 @@ const OrderDetails = ({section}) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 
+    useEffect(() => {
+        filterMessages(dispatch, order_number);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, order_number, message.message])
+
 const CustomNav = ({ active, onSelect, ...props }) => {
     return (
         <Nav {...props} activeKey={active} style={{marginLeft:"20px",marginTop:"-20px", fontSize:"20px"}}>
-            <Nav.Item onClick={() => setUploadOpen(true)} eventKey={uploadOpen ? "home" : "news"} icon={<AttachmentIcon/>}>Attach files</Nav.Item>
-            <Nav.Item onClick={() => setUploadOpen(false)} eventKey={!uploadOpen ? "home" : "news"} icon={<DetailIcon/>}>
+            <Nav.Item
+                      onClick={() => { setUploadOpen(true); setActive("1"); setOpenOrderDetails(false); setMessageOpen(false)}}
+                      eventKey="1"
+                      icon={<AttachmentIcon/>}>
+                Attach files
+            </Nav.Item>
+            <Nav.Item
+                      onClick={() => { setUploadOpen(false); setActive("2");setOpenOrderDetails(true); setMessageOpen(false)}}
+                      eventKey="2"
+                      icon={<DetailIcon/>}>
                 Order Details
             </Nav.Item>
-                <Nav.Item onClick={() => setUploadOpen(false)} eventKey={!uploadOpen ? "message" : "news" || "home"} icon={<DetailIcon/>}>
+                <Nav.Item
+                    onClick={() => { setUploadOpen(false); setActive("3"); setMessageOpen(true); setOpenOrderDetails(false)}}
+                    eventKey="3"
+                    icon={<DetailIcon/>}>
                     Messages
                 </Nav.Item>
         </Nav>
@@ -581,7 +629,7 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                 <div>
                 <Grid fluid>
                     <Row>
-                        <Col xs={24} sm={24} md={12}>
+                        <Col xs={24} sm={24} md={24}>
                             <div style={{padding:"10px"}}>
                                 <Uploader
                                     listType="picture-text"
@@ -589,43 +637,40 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                                     multiple
                                     onUpload={(file) => handleFileUpload(file)}
                                 >
-                                    <div style={{width: "100%",background:"#EAEEF3", lineHeight: '220px'}}>Click or Drag files to this area to upload</div>
-                                </Uploader><br/>
-                                <center><p style={{fontSize:"18px"}}>Already uploaded files</p></center><br/>
-                                <Button style={{width:"100%"}} color="green" appearance="primary">View Order Details</Button>
+                                    <div style={{width: "100%",background:"#EAEEF3", lineHeight: '100px'}}>Click or Drag files to this area to upload</div>
+                                </Uploader>
                             </div>
-                        </Col>
-                        <Col xs={24} sm={24} md={12}>
-                            <h6>Uploaded files</h6>
-                            <Divider/>
+                            <Panel>
+                                <h6>Uploaded files</h6>
                             <table style={styles.table}>
                                 <tr style={{background:"#fdaa8f"}}>
                                     <th style={{padding:"10px", textAlign:"left"}}>File Name</th>
                                     <th>Uploaded At</th>
                                 </tr>
-                            {order_files && order_files.map((order_file) => (
-                                        <tr style={{borderRadius:"10px"}}>
-                                            <td style={styles.table.td}>
-                                                <strong>
-                                                    <Avatar
-                                                        style={{background:"#17c671"}}
-                                                        circle
-                                                        size="sm">TRP
-                                                    </Avatar>
-                                                    {"     "}
-                                                    {order_file.attached}
-                                                </strong>
-                                            </td>
-                                            <td style={styles.table.tdx}><Button color="red" appearance="primary">Delete</Button></td>
-                                        </tr>
-                            ))}
+                                {order_files && order_files.map((order_file) => (
+                                    <tr style={{borderRadius:"10px"}}>
+                                        <td style={styles.table.td}>
+                                            <strong>
+                                                <Avatar
+                                                    style={{background:"#17c671"}}
+                                                    circle
+                                                    size="sm">TRP
+                                                </Avatar>
+                                                {"     "}
+                                                {order_file.attached}
+                                            </strong>
+                                        </td>
+                                        <td style={styles.table.tdx}><Button color="red" appearance="primary">Delete</Button></td>
+                                    </tr>
+                                ))}
                             </table>
+                            </Panel>
                         </Col>
                     </Row>
                 </Grid>
                 </div>
             )}
-            {!uploadOpen && (
+            {openOrderDetails && (
                 <Grid fluid>
                     <Row>
                         <Col xs={24} sm={24} md={16}>
@@ -710,6 +755,63 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                         </Col>
                     </Row>
                 </Grid>
+            )}
+            {messageOpen && (
+                <div>
+                    <Panel>
+                        <h5>Order Messages</h5>
+                        <div id="messages" style={{ padding:"10px" ,borderRadius:"5px", border:"2px solid #98b9b6", minHeight:"50px", maxHeight:"250px", overflowY: "scroll" }}>
+                            {messages.length === 0 && (
+                                <div>No Messages</div>
+                            )}
+                            {messages?.reverse().map((message) => (
+                                <div style={{display:"flex", justifyContent:"space-between"}}>
+                                    {message.receiver_id === 7 ?
+                                        <div style={{marginBottom: "15px"}}>
+                                            <Tag style={{
+                                                width: "300px",
+                                                color: "black",
+                                                borderRadius: "15px",
+                                                background: "whitesmoke",
+                                                padding: "10px"
+                                            }}>
+                                                {message.message}<br/>
+                                                <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
+                                            </Tag>
+                                        </div>
+                                        : (<div/>)
+                                    }
+                                    {message.receiver_id !== 7 && (
+                                        <Tag style={{
+                                            width:"300px",
+                                            margin:"10px",
+                                            color:"white",
+                                            borderRadius:"15px",
+                                            background:"#6da8a2",
+                                            padding:"10px"}}>
+                                            { message.message }<br/>
+                                            <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
+                                        </Tag>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </Panel>
+                    <Panel>
+                        <Input
+                            onChange={handleCreateMessageChange}
+                            value={message.message}
+                            style={{ border:"2px solid #6da8a2", padding:"20px"}}
+                            placeholder="Enter message"/>
+                        <br />
+                        <Button
+                            onClick={handleCreateMessageSubmit}
+                            color="blue"
+                            appearance="primary">
+                            Send
+                        </Button>
+                    </Panel>
+                </div>
             )}
         </div>
     );

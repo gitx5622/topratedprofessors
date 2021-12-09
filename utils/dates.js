@@ -20,8 +20,5 @@ export function formatDeadline(date) {
 
 export function formatDate(date) {
   const formatedDate = dayjs(date);
-  return formatedDate.calendar(null, {
-    lastWeek: 'ddd [at] LT',
-    sameElse: 'LT [on] ddd MMM DD YYYY',
-  });
+  return formatedDate.fromNow();
 }
