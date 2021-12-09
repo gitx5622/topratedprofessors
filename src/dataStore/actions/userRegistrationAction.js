@@ -21,11 +21,6 @@ export const RegisterUser = (dispatchRegisterUser, bodyData) => {
                     localStorage.sessionID = tokenInfo.session_id;
                     localStorage.currentUser = JSON.stringify(response.data);
                     localStorage.token = userToken;
-                }else {
-                    <Alert>
-                        User Id did mot match
-                        <Close ml="auto" mr={-2} />
-                    </Alert>
                 }
                 dispatchRegisterUser({
                     type: SUCCESS,

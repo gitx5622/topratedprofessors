@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useRouter} from 'next/router';
 import {Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Message, Panel, Rate, Row, Uploader} from 'rsuite';
-import {fileUpload, getOrder, getOrderfiles} from 'dataStore/actions/ordersAction';
+import {deleteOrderFile, fileUpload, getOrder, getOrderfiles} from 'dataStore/actions/ordersAction';
 import {formatDate, formatDeadline} from '../../../../utils/dates';
 import DetailIcon from '@rsuite/icons/Detail';
 import AttachmentIcon from '@rsuite/icons/Attachment';
@@ -50,7 +50,8 @@ const OrderCompletedDetails = ({ section }) => {
     const { isLoading } = walletSelector;
     const { ratings, rating } = ratingSelector;
     const { messages } = messageSelector;
-    console.log(messages)
+    const [messageInfo, setMessageInfo] = useState(messages);
+    console.log(messageInfo)
     const orderSelector = useSelector(state => state.orderState);
     const {
         order_files,
@@ -63,7 +64,6 @@ const OrderCompletedDetails = ({ section }) => {
     } = orderSelector;
 
     const dispatch = useDispatch();
-    const dispatchx = useDispatch();
     const handleOpen = () => setReleaseFundsOpen(true);
     const handleClose = () => setReleaseFundsOpen(false);
     const handleRevisonOpen = () => setRequestRevisionOpen(true);
@@ -97,9 +97,10 @@ const OrderCompletedDetails = ({ section }) => {
         }
         console.log(bodyData)
         if(bodyData.message !== ""){
-            createMessage(dispatchx, bodyData)
+            createMessage(dispatch, bodyData)
                 .then(response => {
                     console.log(response)
+                    // setMessageInfo((prevArr) => ([...prevArr, response.data]));
                 });
         }
     }
@@ -168,7 +169,9 @@ const OrderCompletedDetails = ({ section }) => {
     }, [dispatch, completedOrderID, uploadFiles.uploaded_files]);
 
     useEffect(() => {
-        filterMessages(dispatch, order_number);
+        if(message.message !== ""){
+            filterMessages(dispatch, order_number);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, order_number, message.message])
 
@@ -241,7 +244,14 @@ const OrderCompletedDetails = ({ section }) => {
                                                     {order_file.attached}
                                                 </strong>
                                             </td>
-                                            <td style={styles.table.tdx}><Button color="red" appearance="primary">Delete</Button></td>
+                                            <td style={styles.table.tdx}>
+                                                <Button
+                                                    color="red"
+                                                    onClick={() => {deleteOrderFile(dispatch, order_file.id); getOrderfiles(dispatch, completedOrderID)}}
+                                                    appearance="primary">
+                                                    Delete
+                                                </Button>
+                                            </td>
                                         </tr>
                                     ))}
                                 </table>
@@ -321,7 +331,7 @@ const OrderCompletedDetails = ({ section }) => {
                         </Col>
                         <Col xs={24} sm={24} md={8}>
                             <div style={{ background: "#fdaa8f", height: '40px', marginTop: "10px", padding: "10px" }}><h5>Order Instructions</h5></div>
-                            <pre style={{ color: "black", fontWeight: 600 }}>{instructions && instructions
+                            <pre style={{color:"black", fontWeight:600}}>{instructions && instructions
                                 .replace(/<style([\s\S]*?)<\/style>/gi, '')
                                 .replace(/<script([\s\S]*?)<\/script>/gi, '')
                                 .replace(/<\/div>/ig, '\n')
@@ -332,7 +342,7 @@ const OrderCompletedDetails = ({ section }) => {
                                 .replace(/<\/h5>/ig, '-->')
                                 .replace(/<\/h6>/ig, '-->')
                                 .replace(/<li>/ig, '  *  ')
-                                .replace(/<\/p>/ig, '')
+                                .replace(/<\/p>/ig, '\n')
                                 .replace(/<br\s*[\/]?>/gi, "\n")
                             }</pre>
                         </Col>

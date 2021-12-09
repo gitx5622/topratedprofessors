@@ -42,7 +42,7 @@ import {
     FILE_UPLOADING_SUCCESS,
     FILE_UPLOADING_ERROR,
     ORDER_FILES,
-    ORDER_FILES_SUCCESS, ORDER_FILES_ERROR
+    ORDER_FILES_SUCCESS, ORDER_FILES_ERROR, DELETE_ORDER_FILES, DELETE_ORDER_FILES_SUCCESS, DELETE_ORDER_FILES_ERROR
 
 } from "../dispatchTypes";
 
@@ -86,6 +86,7 @@ export const initialOrdersState = {
     order: {},
     uploaded_files: [],
     order_files: [],
+    order_file:{},
     user_order_count_summary: {}
 }
 
@@ -442,6 +443,30 @@ export const ordersReducers = (
             };
         }
         case ORDER_FILES_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case DELETE_ORDER_FILES: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case DELETE_ORDER_FILES_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                order_files: state.order_files.filter(item => item.id !== action.fileID),
+                order_file: action.order_file,
+            };
+        }
+        case DELETE_ORDER_FILES_ERROR: {
             return {
                 ...state,
                 isSuccess: false,

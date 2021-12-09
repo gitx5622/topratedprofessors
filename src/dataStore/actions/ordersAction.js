@@ -43,7 +43,7 @@ import {
     FILE_UPLOADING_SUCCESS,
     FILE_UPLOADING_ERROR,
     ORDER_FILES,
-    ORDER_FILES_SUCCESS, ORDER_FILES_ERROR
+    ORDER_FILES_SUCCESS, ORDER_FILES_ERROR, DELETE_ORDER_FILES, DELETE_ORDER_FILES_SUCCESS, DELETE_ORDER_FILES_ERROR
 } from '../dispatchTypes';
 
 
@@ -466,6 +466,35 @@ export const getOrderfiles = async (dispatch, orderID) => {
     } catch (error) {
         dispatch({
             type: ORDER_FILES_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+
+export const deleteOrderFile = async (dispatch, fileID) => {
+    dispatch({
+        type: DELETE_ORDER_FILES,
+    });
+    try {
+        return await axiosConfig
+            .delete(`/files/${fileID}`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: DELETE_ORDER_FILES_SUCCESS,
+                    order_file: response.data,
+                    fileID: fileID,
+                })
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: DELETE_ORDER_FILES_ERROR,
             errorMessage: error.response.data.message,
         });
 
