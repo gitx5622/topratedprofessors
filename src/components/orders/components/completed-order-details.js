@@ -1,13 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useRouter} from 'next/router';
 import {Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Message, Panel, Rate, Row, Uploader} from 'rsuite';
 import {deleteOrderFile, fileUpload, getOrder, getOrderfiles} from 'dataStore/actions/ordersAction';
 import {formatDate, formatDeadline} from '../../../../utils/dates';
 import DetailIcon from '@rsuite/icons/Detail';
+import { css, cx } from '@emotion/css';
+import ScrollToBottom from 'react-scroll-to-bottom';
 import AttachmentIcon from '@rsuite/icons/Attachment';
 import {createRatings} from 'dataStore/actions/reviewAction';
 import {createMessage, filterMessages} from 'dataStore/actions/messagesAction';
+import {set} from "react-ga";
 
 
 const OrderCompletedDetails = ({ section }) => {
@@ -42,16 +45,16 @@ const OrderCompletedDetails = ({ section }) => {
     })
     const [active, setActive] = React.useState('1');
     const [ratingSuccess, setRatingSuccess] = useState("");
-    const router = useRouter();
-    const { completedOrderID } = router.query;
+    const [messageInfo, setMessageInfo] = useState([]);
+    const [newOrderFilesState, setNewOrderFilesState] = useState([]);
+
     const walletSelector = useSelector(state => state.walletState);
     const ratingSelector = useSelector(state => state.ratingState);
     const messageSelector = useSelector(state => state.messageState);
     const { isLoading } = walletSelector;
     const { ratings, rating } = ratingSelector;
     const { messages } = messageSelector;
-    const [messageInfo, setMessageInfo] = useState(messages);
-    console.log(messageInfo)
+    const newMessages = [...messages];
     const orderSelector = useSelector(state => state.orderState);
     const {
         order_files,
@@ -63,7 +66,12 @@ const OrderCompletedDetails = ({ section }) => {
         }
     } = orderSelector;
 
+    const newOrderFiles = [...order_files];
+
+    const router = useRouter();
+    const { completedOrderID } = router.query;
     const dispatch = useDispatch();
+
     const handleOpen = () => setReleaseFundsOpen(true);
     const handleClose = () => setReleaseFundsOpen(false);
     const handleRevisonOpen = () => setRequestRevisionOpen(true);
@@ -79,7 +87,10 @@ const OrderCompletedDetails = ({ section }) => {
             [name]: value
         })
     }
-
+    const ROOT_CSS = css({
+        minHeight: 100,
+        height: 200
+    });
     const handleCreateMessageChange = (value, event) => {
         setMessage({
             ...message,
@@ -99,8 +110,8 @@ const OrderCompletedDetails = ({ section }) => {
         if(bodyData.message !== ""){
             createMessage(dispatch, bodyData)
                 .then(response => {
-                    console.log(response)
-                    // setMessageInfo((prevArr) => ([...prevArr, response.data]));
+                    newMessages.splice(0, 0, response.data);
+                    setMessageInfo(newMessages);
                 });
         }
     }
@@ -158,21 +169,40 @@ const OrderCompletedDetails = ({ section }) => {
             })
             fileUpload(dispatch, uploadFiles)
                 .then(response => {
-                    console.log(response)
+                    if(response.status === 200){
+                        newOrderFiles.splice(0, 0, response.data)
+                        setNewOrderFilesState([newOrderFiles]);
+                    }
                 });
         }
     };
+    const handleOrderFileDelete = (order_file) => {
+        deleteOrderFile(dispatch, order_file.id)
+            .then(response => {
+                if (response.status === 200) {
+                    getOrderfiles(dispatch, completedOrderID)
+                        .then( response => {
+                            console.log(response.data);
+                        })
+                }
+            })
+    }
     useEffect(() => {
         getOrder(dispatch, completedOrderID);
         getOrderfiles(dispatch, completedOrderID)
+            .then(response => {
+                if(response.status === 200) {
+                    setNewOrderFilesState(response.data);
+                }
+            });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, completedOrderID, uploadFiles.uploaded_files]);
+    }, [dispatch, completedOrderID, order_files, uploadFiles.uploaded_files]);
 
     useEffect(() => {
-        if(message.message !== ""){
-            filterMessages(dispatch, order_number);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        filterMessages(dispatch, order_number).then(response => {
+            if(response.status === 200)
+                setMessageInfo(response.data)
+        });
     }, [dispatch, order_number, message.message])
 
     return (
@@ -231,7 +261,7 @@ const OrderCompletedDetails = ({ section }) => {
                                         <th style={{ padding: "10px", textAlign: "left" }}>File Name</th>
                                         <th>Uploaded At</th>
                                     </tr>
-                                    {order_files && order_files.map((order_file) => (
+                                    {newOrderFilesState && newOrderFilesState.map((order_file) => (
                                         <tr style={{ borderRadius: "10px" }}>
                                             <td style={styles.table.td}>
                                                 <strong>
@@ -247,7 +277,7 @@ const OrderCompletedDetails = ({ section }) => {
                                             <td style={styles.table.tdx}>
                                                 <Button
                                                     color="red"
-                                                    onClick={() => {deleteOrderFile(dispatch, order_file.id); getOrderfiles(dispatch, completedOrderID)}}
+                                                    onClick={() => handleOrderFileDelete(order_file)}
                                                     appearance="primary">
                                                     Delete
                                                 </Button>
@@ -353,8 +383,14 @@ const OrderCompletedDetails = ({ section }) => {
                 <div>
                     <Panel>
                     <h5>Order Messages</h5>
-                <div id="messages" style={{ padding:"10px" ,borderRadius:"5px", border:"2px solid #98b9b6", minHeight:"50px", maxHeight:"250px", overflowY: "scroll" }}>
-                    {messages?.reverse().map((message) => (
+                <div
+                     id="messages"
+                     style={{ padding:"10px" ,borderRadius:"5px", border:"2px solid #98b9b6"}}>
+                        <ScrollToBottom className={ROOT_CSS}>
+                            {messageInfo.length === 0  && (
+                                <center><h5 style={{marginTop:"20px"}}>No order messages</h5></center>
+                            )}
+                    {messageInfo?.map((message) => (
                         <div style={{display:"flex", justifyContent:"space-between"}}>
                             {message.receiver_id === 7 ?
                                 <div style={{marginBottom: "15px"}}>
@@ -384,7 +420,8 @@ const OrderCompletedDetails = ({ section }) => {
                                 </Tag>
                             )}
                         </div>
-                    ))}
+                    )).reverse()}
+                        </ScrollToBottom>
                 </div>
                     </Panel>
                     <Panel>

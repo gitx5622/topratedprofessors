@@ -46,7 +46,7 @@ export default function Footer() {
               </Box>
           </Grid>
         <Grid>
-                <ul style={{display: 'flex', justifyContent: 'center','@media screen and (max-width: 768px)': {display: 'none'},}}>
+                <ul style={{display: 'flex', justifyContent: 'center','@media screen and (maxWidth: 768px)': {display: 'none'},}}>
                     <li><img src={Lets} alt="lets_encrypt" width="200px" height="70px"/></li>
                     <li><img src={Mcafee} alt="mcafee" width="100px"/></li>
                     <li><img src={Paypal} alt="paypal" width="100px"/></li>
