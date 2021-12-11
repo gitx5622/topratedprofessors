@@ -5,12 +5,11 @@ import {Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Message, Pan
 import {deleteOrderFile, fileUpload, getOrder, getOrderfiles} from 'dataStore/actions/ordersAction';
 import {formatDate, formatDeadline} from '../../../../utils/dates';
 import DetailIcon from '@rsuite/icons/Detail';
-import { css, cx } from '@emotion/css';
+import { css } from '@emotion/css';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import AttachmentIcon from '@rsuite/icons/Attachment';
 import {createRatings} from 'dataStore/actions/reviewAction';
 import {createMessage, filterMessages} from 'dataStore/actions/messagesAction';
-import {set} from "react-ga";
 
 
 const OrderCompletedDetails = ({ section }) => {
@@ -180,10 +179,7 @@ const OrderCompletedDetails = ({ section }) => {
         deleteOrderFile(dispatch, order_file.id)
             .then(response => {
                 if (response.status === 200) {
-                    getOrderfiles(dispatch, completedOrderID)
-                        .then( response => {
-                            console.log(response.data);
-                        })
+                    getOrderfiles(dispatch, completedOrderID);
                 }
             })
     }

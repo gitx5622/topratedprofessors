@@ -20,12 +20,16 @@ import {getServices} from "../../../dataStore/actions/servicesAction";
 import {getLanguages} from "../../../dataStore/actions/languagesAction";
 import {getSpacing} from "../../../dataStore/actions/spacingsAction";
 import {createMessage, filterMessages} from "../../../dataStore/actions/messagesAction";
+import ScrollToBottom from "react-scroll-to-bottom";
+import {css} from "@emotion/css";
 
 const OrderDetails = ({section}) => {
     const [open, setOpen] = React.useState(false);
     const [uploadOpen, setUploadOpen] = useState(false);
     const [openOrderDetails, setOpenOrderDetails] = useState(true)
     const [messageOpen, setMessageOpen] = useState(false);
+    const [messageInfo, setMessageInfo] = useState([]);
+    const [newOrderFilesState, setNewOrderFilesState] = useState([]);
     const [uploadFiles, setUploadFiles] = useState({
         order_id:"",
         user_id: "",
@@ -81,6 +85,7 @@ const OrderDetails = ({section}) => {
             amount,
             created_at,
         } } = orderSelector;
+    const newOrderFiles = [...order_files];
     const [updateOrderDetails, setUpdateOrderDetails] = useState({
         user_id: '',
         service_id: service?.id,
@@ -108,6 +113,7 @@ const OrderDetails = ({section}) => {
     const { isLoading } = walletSelector;
     const messageSelector = useSelector(state => state.messageState);
     const { messages } = messageSelector;
+    const newMessages = [...messages];
 
     const levelSelector = useSelector(state => state.levelState);
     const pageSelector = useSelector(state => state.pageState);
@@ -130,6 +136,11 @@ const OrderDetails = ({section}) => {
     const page_name = page ? page.name : "";
     const level_name = level ? level.name : "";
     const source_name = source ? source.name : "";
+
+    const ROOT_CSS = css({
+        minHeight: 100,
+        height: 200
+    });
 
     const handleChange = (vauex, event) => {
         let value = event.target.value;
@@ -310,7 +321,8 @@ const OrderDetails = ({section}) => {
         if(bodyData.message !== ""){
             createMessage(dispatch, bodyData)
                 .then(response => {
-                    console.log(response)
+                    newMessages.splice(0, 0, response.data);
+                    setMessageInfo(newMessages);
                 });
         }
     }
@@ -348,7 +360,10 @@ const OrderDetails = ({section}) => {
             })
             fileUpload(dispatch, uploadFiles)
                 .then(response => {
-                    console.log(response)
+                    if(response.status === 200){
+                        newOrderFiles.splice(0, 0, response.data)
+                        setNewOrderFilesState([newOrderFiles]);
+                    }
                 });
         }
     };
@@ -647,7 +662,7 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                                     <th style={{padding:"10px", textAlign:"left"}}>File Name</th>
                                     <th>Uploaded At</th>
                                 </tr>
-                                {order_files && order_files.map((order_file) => (
+                                {newOrderFilesState && newOrderFilesState.map((order_file) => (
                                     <tr style={{borderRadius:"10px"}}>
                                         <td style={styles.table.td}>
                                             <strong>
@@ -760,41 +775,45 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                 <div>
                     <Panel>
                         <h5>Order Messages</h5>
-                        <div id="messages" style={{ padding:"10px" ,borderRadius:"5px", border:"2px solid #98b9b6", minHeight:"50px", maxHeight:"250px", overflowY: "scroll" }}>
-                            {messages.length === 0 && (
-                                <div>No Messages</div>
-                            )}
-                            {messages?.reverse().map((message) => (
-                                <div style={{display:"flex", justifyContent:"space-between"}}>
-                                    {message.receiver_id === 7 ?
-                                        <div style={{marginBottom: "15px"}}>
+                        <div
+                            id="messages"
+                            style={{ padding:"10px" ,borderRadius:"5px", border:"2px solid #98b9b6"}}>
+                            <ScrollToBottom className={ROOT_CSS}>
+                                {messageInfo.length === 0  && (
+                                    <center><h5 style={{marginTop:"20px"}}>No order messages</h5></center>
+                                )}
+                                {messageInfo?.map((message) => (
+                                    <div style={{display:"flex", justifyContent:"space-between"}}>
+                                        {message.receiver_id === 7 ?
+                                            <div style={{marginBottom: "15px"}}>
+                                                <Tag style={{
+                                                    width: "300px",
+                                                    color: "black",
+                                                    borderRadius: "15px",
+                                                    background: "whitesmoke",
+                                                    padding: "10px"
+                                                }}>
+                                                    {message.message}<br/>
+                                                    <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
+                                                </Tag>
+                                            </div>
+                                            : (<div/>)
+                                        }
+                                        {message.receiver_id !== 7 && (
                                             <Tag style={{
-                                                width: "300px",
-                                                color: "black",
-                                                borderRadius: "15px",
-                                                background: "whitesmoke",
-                                                padding: "10px"
-                                            }}>
-                                                {message.message}<br/>
+                                                width:"300px",
+                                                margin:"10px",
+                                                color:"white",
+                                                borderRadius:"15px",
+                                                background:"#6da8a2",
+                                                padding:"10px"}}>
+                                                { message.message }<br/>
                                                 <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
                                             </Tag>
-                                        </div>
-                                        : (<div/>)
-                                    }
-                                    {message.receiver_id !== 7 && (
-                                        <Tag style={{
-                                            width:"300px",
-                                            margin:"10px",
-                                            color:"white",
-                                            borderRadius:"15px",
-                                            background:"#6da8a2",
-                                            padding:"10px"}}>
-                                            { message.message }<br/>
-                                            <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
-                                        </Tag>
-                                    )}
-                                </div>
-                            ))}
+                                        )}
+                                    </div>
+                                )).reverse()}
+                            </ScrollToBottom>
                         </div>
                     </Panel>
                     <Panel>
