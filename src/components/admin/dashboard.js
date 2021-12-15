@@ -70,6 +70,12 @@ const Dashboard = ({ section }) => {
                         section={section}
                     />
                 );
+            case 'revision':
+                return (
+                    <PendingOrders
+                        section={section}
+                    />
+                );
             case 'wallet':
                 return (
                     <Finances

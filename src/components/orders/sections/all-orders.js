@@ -70,7 +70,7 @@ const AllOrders = () => {
                                 </td>
                                 <td style={styles.table.td}>${(data.amount.toFixed(2))}</td>
                                 <td style={styles.table.td}>
-                                    <Tag color="cyan">Pending</Tag>
+                                    <Tag color="cyan">{data.status}</Tag>
                                 </td>
                             </tr>
                         ))}

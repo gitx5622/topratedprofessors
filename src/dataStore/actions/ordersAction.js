@@ -43,7 +43,32 @@ import {
     FILE_UPLOADING_SUCCESS,
     FILE_UPLOADING_ERROR,
     ORDER_FILES,
-    ORDER_FILES_SUCCESS, ORDER_FILES_ERROR, DELETE_ORDER_FILES, DELETE_ORDER_FILES_SUCCESS, DELETE_ORDER_FILES_ERROR
+    ORDER_FILES_SUCCESS,
+    ORDER_FILES_ERROR,
+    DELETE_ORDER_FILES,
+    DELETE_ORDER_FILES_SUCCESS,
+    DELETE_ORDER_FILES_ERROR,
+    GET_CANCELLED_REASONS,
+    GET_CANCELLED_REASONS_SUCCESS,
+    GET_CANCELLED_REASONS_ERROR,
+    GET_REJECT_REASONS,
+    GET_REJECT_REASONS_SUCCESS,
+    GET_REJECT_REASONS_ERROR,
+    CANCEL_ORDER,
+    CANCEL_ORDER_SUCCESS,
+    CANCEL_ORDER_ERROR,
+    ORDER_REVISION,
+    ORDER_REVISION_SUCCESS,
+    ORDER_REVISION_ERROR,
+    REJECT_ORDER,
+    REJECT_ORDER_SUCCESS,
+    REJECT_ORDER_ERROR,
+    CREATE_USER_RATINGS,
+    CREATE_USER_RATINGS_SUCCESS,
+    CREATE_USER_RATINGS_ERROR,
+    APPROVE_ORDER,
+    APPROVE_ORDER_SUCCESS,
+    APPROVE_ORDER_ERROR, PAY_FROM_WALLET, PAY_FROM_WALLET_SUCCESS, PAY_FROM_WALLET_ERROR
 } from '../dispatchTypes';
 
 
@@ -287,7 +312,7 @@ export const createOrders = async (dispatch, credentials) => {
             .then(response => {
                 dispatch({
                     type: CREATE_ORDER_SUCCESS,
-                    orders: response.data,
+                    order: response.data
                 });
                 return response;
             });
@@ -496,6 +521,204 @@ export const deleteOrderFile = async (dispatch, fileID) => {
         dispatch({
             type: DELETE_ORDER_FILES_ERROR,
             errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+
+export const getCancelReasons = async (dispatch) => {
+    dispatch({
+        type: GET_CANCELLED_REASONS,
+    });
+    try {
+        return await axiosConfig
+            .get(`/cancel_reasons`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: GET_CANCELLED_REASONS_SUCCESS,
+                    cancelled_reasons: response.data,
+                })
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: GET_CANCELLED_REASONS_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+
+export const getRejectReasons = async (dispatch) => {
+    dispatch({
+        type: GET_REJECT_REASONS,
+    });
+    try {
+        return await axiosConfig
+            .get(`/reject_reasons`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: GET_REJECT_REASONS_SUCCESS,
+                    reject_reasons: response.data,
+                })
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: GET_REJECT_REASONS_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+
+export const cancelOrder = async (dispatch, orderID, bodyData) => {
+    dispatch({
+        type: CANCEL_ORDER,
+    });
+    try {
+        return await axiosConfig
+            .put(`/orders/${orderID}/cancel`, bodyData,{
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: CANCEL_ORDER_SUCCESS,
+                    cancelled_order: response.data,
+                })
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: CANCEL_ORDER_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+
+export const orderRevision = async (dispatch, orderID, bodyData) => {
+    dispatch({
+        type: ORDER_REVISION,
+    });
+    try {
+        return await axiosConfig
+            .put(`/orders/${orderID}/revision`, bodyData, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: ORDER_REVISION_SUCCESS,
+                    revision_order: response.data,
+                })
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: ORDER_REVISION_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+
+export const rejectOrder = async (dispatch, orderID, bodyData) => {
+    dispatch({
+        type: REJECT_ORDER,
+    });
+    try {
+        return await axiosConfig
+            .put(`/orders/${orderID}/reject`,  bodyData,{
+                headers: {
+                    Authorization: `Bearer ${localStorage.token}`,
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: REJECT_ORDER_SUCCESS,
+                    rejected_order: response.data,
+                })
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: REJECT_ORDER_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+export const approveOrder = async (dispatch, orderID, bodyData) => {
+    dispatch({
+        type: APPROVE_ORDER,
+    });
+    try {
+        return await axiosConfig
+            .put(`/orders/${orderID}/approve`, bodyData, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: APPROVE_ORDER_SUCCESS,
+                    approved_order: response.data,
+                })
+                console.log(response)
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: APPROVE_ORDER_ERROR,
+            errorMessage: error.response,
+        });
+
+        return error.response;
+    }
+};
+
+export const payFromWallet = async (dispatch, orderID) => {
+    dispatch({
+        type: PAY_FROM_WALLET,
+    });
+    try {
+        return await axiosConfig
+            .put(`/orders/${orderID}/withdraw`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: PAY_FROM_WALLET_SUCCESS,
+                    paid_from_wallet_order: response.data,
+                })
+                console.log(response)
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: PAY_FROM_WALLET_ERROR,
+            errorMessage: error.response,
         });
 
         return error.response;

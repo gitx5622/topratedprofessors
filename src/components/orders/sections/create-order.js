@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, } from 'react';
+import React, { useState, useEffect, useReducer, } from 'react';
 import { Grid, Row, Col, Divider, Input, Steps, ButtonGroup, InputGroup, Panel, Message } from 'rsuite';
 import { useDispatch, useSelector } from "react-redux";
 import { Label, Select, Button } from 'theme-ui';
@@ -13,8 +13,11 @@ import { getServices } from "../../../dataStore/actions/servicesAction";
 import { getLanguages } from "../../../dataStore/actions/languagesAction";
 import { getSpacing } from "../../../dataStore/actions/spacingsAction";
 import { createOrders } from "../../../dataStore/actions/ordersAction";
+import ContentEditable from "react-contenteditable";
 import { Box, } from 'theme-ui';
 import { useRouter } from 'next/router';
+import sanitizeHtml from "sanitize-html";
+
 
 const CreateOrder = () => {
     const [step, setStep] = React.useState(0);
@@ -48,7 +51,6 @@ const CreateOrder = () => {
         topwriter: '',
         promocode: ''
     });
-
     const levelSelector = useSelector(state => state.levelState);
     const pageSelector = useSelector(state => state.pageState);
     const serviceSelector = useSelector(state => state.serviceState);
@@ -108,10 +110,6 @@ const CreateOrder = () => {
                 [name]: value
             }
         })
-    }
-
-    const handleInstructionsChange = (e) => {
-        setinstructions(e.target.value);
     }
 
     const parseServiceSelected = (event) => {
@@ -226,6 +224,15 @@ const CreateOrder = () => {
             });
         }
     };
+
+    const handleInstructionsChange = evt => {
+        setinstructions(evt.target.value);
+    };
+
+    if(instructions){
+        sanitizeHtml(instructions)
+    }
+    console.log(instructions);
 
     useEffect(() => {
         getLevels(dispatch);
@@ -374,13 +381,28 @@ const CreateOrder = () => {
                                     <Input style={{border:"1px solid #C9BBB8 "}} onChange={handleSelectChange} name="phone" type='text' mb={3} /><br/>
                                     <Label htmlFor="topic">Topic*</Label>
                                     <Input style={{border:"1px solid #C9BBB8 "}} onChange={handleSelectChange} name="topic" type='text' mb={3} /><br/>
+                                    {instructions.length > 10000 && (
+                                        <Message type="error">The number of Instructions Exceeded</Message>
+                                    ) }
                                     <Label htmlFor="instructions">Instructions*</ Label>
-                                    <textarea style={{border:"1px solid #C9BBB8", width:"100%", padding:"10px", borderRadius:"5px"}} maxLength={1000000} value={instructions}
-                                           rows={8} onChange={handleInstructionsChange}  placeholder="Fill in instructions" />
-                                    {/* <Label htmlFor="upload">Upload files (optional)</Label>
-                                    <Uploader action="//jsonplaceholder.typicode.com/posts/" draggable>
-                                        <div style={{ lineHeight: '80px', background: "whitesmoke" }}>Click or Drag files to this area to upload</div>
-                                    </Uploader> */}<br/><br/>
+                                    <textarea style={{border:"1px solid #C9BBB8", width:"100%", padding:"10px", borderRadius:"5px"}}
+                                              value={instructions}
+                                              rows={8} onChange={handleInstructionsChange} placeholder="Fill in instructions" />
+                                    <br/><br/>
+                                    {/*<ContentEditable*/}
+                                    {/*    className="editable"*/}
+                                    {/*    style={{*/}
+                                    {/*        fontFamily: 'sans-serif',*/}
+                                    {/*        width: '100%',*/}
+                                    {/*        minHeight: '150px',*/}
+                                    {/*        border: '1px dashed #aaa',*/}
+                                    {/*        padding: '5px',*/}
+                                    {/*    }}*/}
+                                    {/*    html={instructions} // innerHTML of the editable div*/}
+                                    {/*    onChange={handleInstructionsChange} // handle innerHTML change*/}
+                                    {/*    onBlur={sanitize}*/}
+                                    {/*/>*/}
+                                    <br/><br/>
                                 </Box>
                             )}
                             <Row>

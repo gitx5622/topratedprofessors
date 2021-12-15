@@ -2,7 +2,14 @@ import React, {useRef, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useRouter} from 'next/router';
 import {Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Message, Panel, Rate, Row, Uploader} from 'rsuite';
-import {deleteOrderFile, fileUpload, getOrder, getOrderfiles} from 'dataStore/actions/ordersAction';
+import {
+    approveOrder,
+    deleteOrderFile,
+    fileUpload,
+    getOrder,
+    getOrderfiles,
+    getRejectReasons, orderRevision, rejectOrder
+} from 'dataStore/actions/ordersAction';
 import {formatDate, formatDeadline} from '../../../../utils/dates';
 import DetailIcon from '@rsuite/icons/Detail';
 import { css } from '@emotion/css';
@@ -19,6 +26,7 @@ const OrderCompletedDetails = ({ section }) => {
     const [downloadOpen, setDownloadOpen] = useState(false);
     const [releaseFundsOpen, setReleaseFundsOpen] = useState(false);
     const [requestRevisionOpen, setRequestRevisionOpen] = useState(false);
+    const [reject_reason_value, setRejectReasonValue] = useState(1);
     const [rejectOpen, setRejectOpen] = useState(false);
     const [hoverValue, setHoverValue] = React.useState(3);
     const [uploadFiles, setUploadFiles] = useState({
@@ -42,6 +50,13 @@ const OrderCompletedDetails = ({ section }) => {
         receiver_id: "",
         order_number: ""
     })
+    const [rejectOrderValues, setRejectOrderValues] = useState({
+        description: ""
+    })
+    const [orderRevisionValues, setOrderRevisionValues] = useState({
+        order_number: "",
+        instructions: ""
+    })
     const [active, setActive] = React.useState('1');
     const [ratingSuccess, setRatingSuccess] = useState("");
     const [messageInfo, setMessageInfo] = useState([]);
@@ -62,7 +77,8 @@ const OrderCompletedDetails = ({ section }) => {
             instructions, deadline, service, user, type,
             style, source, subject, language, page, level,
             spacing, urgency, amount, created_at,
-        }
+        },
+        reject_reasons,
     } = orderSelector;
 
     const newOrderFiles = [...order_files];
@@ -123,13 +139,15 @@ const OrderCompletedDetails = ({ section }) => {
         }
         console.log(bodyData);
         if (bodyData.order_number !== "" && bodyData.value !== "" && bodyData.description !== "") {
-            createRatings(dispatch, bodyData).then(response => {
-                setRatingSuccess("Thank you for reviewing your order.Your order has been approved")
-                setReleaseFundsOpen(false);
+            approveOrder(dispatch, orderId, bodyData).then(response => {
+                if(response.status === 200){
+                    setRatingSuccess("Thank you for reviewing your order.Your order has been approved")
+                    setReleaseFundsOpen(false);
+                }
             })
         } else {
             dispatch({
-                type: 'CREATE_USER_RATINGS_ERROR',
+                type: 'APPROVE_ORDER_ERROR',
                 errorMessage: 'Make sure all the fields all filled',
             });
         }
@@ -183,6 +201,50 @@ const OrderCompletedDetails = ({ section }) => {
                 }
             })
     }
+     const handleRejectReasonsChange = (event) => {
+        setRejectReasonValue(event.target.value)
+     }
+     const handleRejectOrderChange = (event) => {
+         let name = event.target.name;
+         let value = event.target.value;
+         setRejectOrderValues({
+             ...rejectOrderValues,
+             [name]: value
+         })
+     }
+    const handleOrderRevisonChange = (event) => {
+        let name = event.target.name;
+        let value = event.target.value;
+        setOrderRevisionValues({
+            ...orderRevisionValues,
+            [name]: value
+        })
+    }
+     const handleRejectOrderSubmit = () => {
+        const bodyData = {
+            order_number:order_number,
+            reason_id: parseInt(reject_reason_value),
+            description: rejectOrderValues.description,
+        }
+        if (bodyData.description !== ""){
+            rejectOrder(dispatch, orderId, bodyData)
+                .then(response => {
+                   console.log(response);
+                })
+        }
+     }
+     const handleOrderRevisionSubmit =() => {
+         const bodyData = {
+             order_number:order_number,
+             instructions: orderRevisionValues.instructions,
+         }
+         if (bodyData.description !== ""){
+             orderRevision(dispatch, orderId, bodyData)
+                 .then(response => {
+                     setRequestRevisionOpen(false);
+                 })
+         }
+     }
     useEffect(() => {
         getOrder(dispatch, completedOrderID);
         getOrderfiles(dispatch, completedOrderID)
@@ -192,14 +254,18 @@ const OrderCompletedDetails = ({ section }) => {
                 }
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, completedOrderID, order_files, uploadFiles.uploaded_files]);
+    }, [dispatch, completedOrderID, uploadFiles.uploaded_files]);
 
     useEffect(() => {
         filterMessages(dispatch, order_number).then(response => {
             if(response.status === 200)
                 setMessageInfo(response.data)
         });
-    }, [dispatch, order_number, message.message])
+    }, [dispatch, order_number, message.message]);
+
+    useEffect(() => {
+        getRejectReasons(dispatch);
+    },[dispatch])
 
     return (
         <div style={{ marginTop: "20px" }}>
@@ -446,10 +512,15 @@ const OrderCompletedDetails = ({ section }) => {
                             </Modal.Header>
                             <Modal.Body>
                                 <h6>Revision Instructions</h6>
-                                <Input style={{ border: '1px solid #becad6' }} as="textarea" rows={4} placeholder="Textarea" /><br />
+                                <textarea
+                                    name="instructions"
+                                    onChange={handleOrderRevisonChange}
+                                    style={{ border: '1px solid #becad6', width: "100%", padding:"10px", borderRadius: "5px", }}
+                                    rows={4}
+                                    placeholder="Textarea" /><br />
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button onClick={handleRevisionClose} appearance="primary">
+                                <Button onClick={handleOrderRevisionSubmit} appearance="primary">
                                     Request Revision
                                 </Button>
                                 <Button onClick={handleRevisionClose} appearance="subtle">
@@ -493,14 +564,21 @@ const OrderCompletedDetails = ({ section }) => {
                                     there is anything you need changed, we recommend that you ask for revision.
                                 </p><br />
                                 <h5>Reason:</h5>
-                                <select>
-                                    <option>1</option>
+                                <select onChange={handleRejectReasonsChange} style={{background:"white", borderRadius:"5px", width:"250px", height:"30px"}}>
+                                    {reject_reasons?.map((reject_reason) => (
+                                        <option key={reject_reason.id} value={reject_reason.id}>{reject_reason.name}</option>
+                                    ))}
                                 </select><br />
                                 <h6>Description</h6>
-                                <Input style={{ border: '1px solid #becad6' }} as="textarea" rows={4} placeholder="Textarea" /><br />
+                                <textarea
+                                    name="description"
+                                    onChange={handleRejectOrderChange}
+                                    style={{ border: '1px solid #becad6', width: "100%", padding:"10px", borderRadius: "5px", }}
+                                    rows={4}
+                                    placeholder="Textarea" /><br />
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button onClick={handleRejectClose} appearance="primary">
+                                <Button onClick={handleRejectOrderSubmit} appearance="primary">
                                     Send
                                 </Button>
                                 <Button onClick={handleRejectClose} appearance="subtle">

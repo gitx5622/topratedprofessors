@@ -42,7 +42,31 @@ import {
     FILE_UPLOADING_SUCCESS,
     FILE_UPLOADING_ERROR,
     ORDER_FILES,
-    ORDER_FILES_SUCCESS, ORDER_FILES_ERROR, DELETE_ORDER_FILES, DELETE_ORDER_FILES_SUCCESS, DELETE_ORDER_FILES_ERROR
+    ORDER_FILES_SUCCESS,
+    ORDER_FILES_ERROR,
+    DELETE_ORDER_FILES,
+    DELETE_ORDER_FILES_SUCCESS,
+    DELETE_ORDER_FILES_ERROR,
+    GET_CANCELLED_REASONS,
+    GET_CANCELLED_REASONS_SUCCESS,
+    GET_CANCELLED_REASONS_ERROR,
+    GET_REJECT_REASONS,
+    GET_REJECT_REASONS_SUCCESS,
+    GET_REJECT_REASONS_ERROR,
+    CANCEL_ORDER,
+    CANCEL_ORDER_SUCCESS,
+    CANCEL_ORDER_ERROR,
+    ORDER_REVISION,
+    ORDER_REVISION_SUCCESS,
+    ORDER_REVISION_ERROR,
+    REJECT_ORDER,
+    REJECT_ORDER_SUCCESS,
+    REJECT_ORDER_ERROR,
+    APPROVE_ORDER,
+    APPROVE_ORDER_SUCCESS,
+    APPROVE_ORDER_ERROR,
+    PAY_FROM_WALLET,
+    PAY_FROM_WALLET_SUCCESS, PAY_FROM_WALLET_ERROR
 
 } from "../dispatchTypes";
 
@@ -87,7 +111,14 @@ export const initialOrdersState = {
     uploaded_files: [],
     order_files: [],
     order_file:{},
-    user_order_count_summary: {}
+    user_order_count_summary: {},
+    cancelled_reasons: [],
+    reject_reasons: [],
+    rejected_order: {},
+    revision_order: {},
+    cancelled_order: {},
+    approved_order:{},
+    paid_from_wallet_order:{},
 }
 
 export const ordersReducers = (
@@ -323,7 +354,7 @@ export const ordersReducers = (
                 ...state,
                 isSuccess: true,
                 isLoading: false,
-                orders: action.orders,
+                order: action.order,
             };
         }
         case CREATE_ORDER_ERROR: {
@@ -467,6 +498,167 @@ export const ordersReducers = (
             };
         }
         case DELETE_ORDER_FILES_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case GET_CANCELLED_REASONS: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case GET_CANCELLED_REASONS_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                cancelled_reasons: action.cancelled_reasons,
+            };
+        }
+        case GET_CANCELLED_REASONS_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case GET_REJECT_REASONS: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case GET_REJECT_REASONS_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                reject_reasons: action.reject_reasons,
+            };
+        }
+        case GET_REJECT_REASONS_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case CANCEL_ORDER: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case CANCEL_ORDER_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                cancelled_order: action.cancelled_order,
+            };
+        }
+        case CANCEL_ORDER_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case ORDER_REVISION: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case ORDER_REVISION_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                revision_order: action.revision_order,
+            };
+        }
+        case ORDER_REVISION_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case APPROVE_ORDER: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case APPROVE_ORDER_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                approved_order: action.approved_order,
+            };
+        }
+        case APPROVE_ORDER_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case REJECT_ORDER: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case REJECT_ORDER_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                rejected_order: action.rejected_order,
+            };
+        }
+        case REJECT_ORDER_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case PAY_FROM_WALLET: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case PAY_FROM_WALLET_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                paid_from_wallet_order: action.paid_from_wallet_order,
+            };
+        }
+        case PAY_FROM_WALLET_ERROR: {
             return {
                 ...state,
                 isSuccess: false,

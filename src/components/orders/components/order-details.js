@@ -2,11 +2,19 @@ import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import {Panel, Divider, Uploader, Button, Input, Modal, Nav, Drawer, Grid, Row, Col, Avatar, Tag} from 'rsuite';
-import {fileUpload, getOrder, getOrderfiles, updateOrder} from 'dataStore/actions/ordersAction';
+import {
+    cancelOrder,
+    fileUpload,
+    getCancelReasons,
+    getOrder,
+    getOrderfiles, payFromWallet,
+    updateOrder
+} from 'dataStore/actions/ordersAction';
 import { formatDate, formatDeadline } from '../../../../utils/dates';
 import {makePayment} from "../../../dataStore/actions/walletAction";
 import { BoxLoading } from 'react-loadingg';
 import {Label, Box} from "theme-ui";
+import ContentEditable from "react-contenteditable";
 import DetailIcon from '@rsuite/icons/Detail';
 import AttachmentIcon from '@rsuite/icons/Attachment';
 import {getLevels} from "../../../dataStore/actions/levelsAction";
@@ -22,6 +30,7 @@ import {getSpacing} from "../../../dataStore/actions/spacingsAction";
 import {createMessage, filterMessages} from "../../../dataStore/actions/messagesAction";
 import ScrollToBottom from "react-scroll-to-bottom";
 import {css} from "@emotion/css";
+import sanitizeHtml from "sanitize-html";
 
 const OrderDetails = ({section}) => {
     const [open, setOpen] = React.useState(false);
@@ -30,6 +39,7 @@ const OrderDetails = ({section}) => {
     const [messageOpen, setMessageOpen] = useState(false);
     const [messageInfo, setMessageInfo] = useState([]);
     const [newOrderFilesState, setNewOrderFilesState] = useState([]);
+    const [cancelReasonValue, setCancelReasonValue] = useState(1);
     const [uploadFiles, setUploadFiles] = useState({
         order_id:"",
         user_id: "",
@@ -46,6 +56,11 @@ const OrderDetails = ({section}) => {
         receiver_id: "",
         order_number: ""
     })
+    const [orderCancelValues, setOrderCancelValues] = useState({
+        order_number: "",
+        title: "",
+        description: ""
+    })
     const [active, setActive] = React.useState('2');
     const [selected, setSelected] = React.useState("");
     const [myservice, setmyservice] = React.useState(8);
@@ -56,14 +71,15 @@ const OrderDetails = ({section}) => {
     const [myspacing, setmyspacing] = React.useState(1);
     const [instructionsx, setinstructions] = React.useState("");
     const [openWithHeader, setOpenWithHeader] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [cancelOpen, setCancelOpen] = React.useState(false);
+
     const router = useRouter();
     const { orderID } = router.query;
     const dispatch = useDispatch();
     const orderSelector = useSelector(state => state.orderState);
     const {
         order_files,
+        cancelled_reasons,
         order: {
             id: orderId,
             order_number,
@@ -141,6 +157,24 @@ const OrderDetails = ({section}) => {
         minHeight: 100,
         height: 200
     });
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const handleCancelOpen = () => setCancelOpen(true)
+    const handleCancelClose = () => setCancelOpen(false);
+
+    const handleOrderCancelChange = (event) => {
+        let name = event.target.name;
+        let value = event.target.value;
+        setOrderCancelValues({
+            ...orderCancelValues,
+            [name]: value
+        })
+    }
+
+    const handleCancelReasonsChange = (event) => {
+        setCancelReasonValue(event.target.value)
+    }
 
     const handleChange = (vauex, event) => {
         let value = event.target.value;
@@ -367,6 +401,39 @@ const OrderDetails = ({section}) => {
                 });
         }
     };
+
+    const handleCancelOrderSubmit = () => {
+        const bodyData = {
+            order_number:order_number,
+            title: parseInt(cancelReasonValue),
+            description: orderCancelValues.description,
+        }
+        if (bodyData.description !== ""){
+            cancelOrder(dispatch, orderId, bodyData)
+                .then(response => {
+                    if(response.status === 200){
+                        setCancelOpen(false);
+                    }
+                })
+        }
+    }
+    const handleReserveFromWallet = () => {
+        payFromWallet(dispatch, orderId)
+            .then(response => {
+                if(response.status === 200){
+                    setOpen(false);
+                }
+            })
+    }
+
+    const sanitizeConf = {
+        allowedTags: ["h3", "h2", "b", "i", "em", "strong", "a", "p", "h1"],
+        allowedAttributes: { a: ["href"] }
+    };
+
+    if(instructions){
+        sanitizeHtml(instructions, sanitizeConf)
+    }
     React.useEffect(() => {
         getOrder(dispatch, orderID);
         getOrderfiles(dispatch, orderID)
@@ -383,6 +450,7 @@ const OrderDetails = ({section}) => {
         getServices(dispatch);
         getLanguages(dispatch);
         getSpacing(dispatch);
+        getCancelReasons(dispatch)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 
@@ -612,7 +680,36 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                             </Box>
                         </Drawer.Body>
                     </Drawer>
-                <Button color="yellow" appearance="primary">Cancel</Button>
+                    <Modal open={cancelOpen} onClose={handleCancelClose}>
+                        <Modal.Header>
+                            <Modal.Title>Cancel Order #{order_number}</Modal.Title>
+                        </Modal.Header>
+                        <Divider/>
+                        <Modal.Body>
+                            <h6>Cancel Reasons</h6>
+                            <select onChange={handleCancelReasonsChange} style={{background:"white", borderRadius:"5px", width:"250px", height:"30px"}}>
+                                {cancelled_reasons?.map((cancelled_reason) => (
+                                    <option key={cancelled_reason.id} value={cancelled_reason.id}>{cancelled_reason.name}</option>
+                                ))}
+                            </select><br /><br/>
+                            <h6>Description</h6>
+                            <textarea
+                                name="description"
+                                onChange={handleOrderCancelChange}
+                                style={{ border: '1px solid #becad6', width: "100%", padding:"10px", borderRadius: "5px", }}
+                                rows={4}
+                                placeholder="Description" /><br />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button onClick={handleCancelOrderSubmit} appearance="primary">
+                                Ok
+                            </Button>
+                            <Button onClick={handleCancelClose} appearance="subtle">
+                                Cancel
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                <Button onClick={handleCancelOpen} color="yellow" appearance="primary">Cancel</Button>
                 <Button color="green" onClick={handleOpen} appearance="primary">Reserve Payment</Button>
                     <Modal open={open} onClose={handleClose}>
                         {isLoading && (
@@ -625,7 +722,7 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                         <Modal.Body>
                             <p style={{fontSize:"18px"}}>Choose one of the options to reserve the payment for the order.</p>
                             <div style={{display: "flex", justifyContent: "space-between", marginTop:"40px", marginLeft:"20px", marginRight:"20px"}}>
-                                <Button color="green" appearance="primary">Reserve from your Wallet</Button>
+                                <Button color="green" appearance="primary" onClick={handleReserveFromWallet}>Reserve from your Wallet</Button>
                                 <Button color="cyan" appearance="primary" onClick={handleReserveOrder}>Reserve with Paypal</Button>
                             </div>
                         </Modal.Body>
@@ -753,20 +850,19 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                         </Col>
                         <Col xs={24} sm={24} md={8}>
                             <div style={{background: "#fdaa8f", height:'40px', marginTop:"10px", padding: "10px"}}><h5>Order Instructions</h5></div>
-                            <pre style={{color:"black", fontWeight:600}}>{instructions && instructions
-                                .replace(/<style([\s\S]*?)<\/style>/gi, '')
-                                .replace(/<script([\s\S]*?)<\/script>/gi, '')
-                                .replace(/<\/div>/ig, '\n')
-                                .replace(/<\/h1>/ig, '-->')
-                                .replace(/<\/h2>/ig, '-->')
-                                .replace(/<\/h3>/ig, '-->')
-                                .replace(/<\/h4>/ig, '-->')
-                                .replace(/<\/h5>/ig, '-->')
-                                .replace(/<\/h6>/ig, '-->')
-                                .replace(/<li>/ig, '  *  ')
-                                .replace(/<\/p>/ig, '\n')
-                                .replace(/<br\s*[\/]?>/gi, "\n")
-                            }</pre>
+                            <ContentEditable
+                                className="editable"
+                                style={{
+                                    fontFamily: 'sans-serif',
+                                    width: '100%',
+                                    minHeight: '150px',
+                                    border: '1px dashed #aaa',
+                                    padding: '5px',
+                                    resize: 'none'
+                                }}
+                                tagName="pre"
+                                html={instructions} // innerHTML of the editable div
+                            />
                         </Col>
                     </Row>
                 </Grid>
