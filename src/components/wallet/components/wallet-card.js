@@ -5,7 +5,7 @@ import {  Box, } from 'theme-ui';
 import Payment from '../../../assets/payment.png';
 import {filterWalletTransactions, makePayment, userWalletSummary} from '../../../dataStore/actions/walletAction';
 import { useDispatch, useSelector } from "react-redux";
-import { formatDate } from "../../../../utils/dates";
+import { formatDate } from "../../../utils/dates";
 import { BoxLoading } from 'react-loadingg';
 import { useRouter } from 'next/router';
 
@@ -144,6 +144,7 @@ const styles = {
         fontFamily: 'Quicksand, sans-serif',
         borderCollapse: 'collapse',
         width: '100%',
+        fontSize: "15px",
         td: {
             border: '1px solid #dddddd',
             textAlign: 'left',

@@ -3,7 +3,7 @@ import {Tag, Panel, Divider, Pagination, Button} from 'rsuite';
 import Link from 'next/link';
 import NoData from 'assets/no-open.svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { formatDate, formatDeadline } from '../../../../utils/dates';
+import { formatDate, formatDeadline } from '../../../utils/dates';
 import { getPendingOrders } from 'dataStore/actions/ordersAction';
 import {Box} from "theme-ui";
 import {makePayment} from "../../../dataStore/actions/walletAction";
@@ -63,8 +63,9 @@ const Pending = () => {
                     <th style={styles.table.th}>Order Number</th>
                     <th style={styles.table.th}>Deadline</th>
                     <th style={styles.table.th}>Subject</th>
+                    <th style={styles.table.th}>Type of Paper</th>
                     <th style={styles.table.th}>Promo Code</th>
-                    <th style={styles.table.th}>Created At</th>
+                    <th style={styles.table.th}>Pages</th>
                     <th style={styles.table.th}>Amount</th>
                     <th style={styles.table.th}>Reserve Now</th>
                 </tr>
@@ -78,13 +79,12 @@ const Pending = () => {
                         </td>
                         <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
                         <td style={styles.table.td}>{data.subject && (data.subject.name)}</td>
+                        <td style={styles.table.td}>{data.type && (data.type.name)}</td>
                         <td style={styles.table.td}>
                             <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>
                             </center>
                         </td>
-                        <td style={styles.table.td}>
-                            {formatDate(data.created_at)}
-                        </td>
+                        <td style={styles.table.td}>{data.page && (data.page.name)}</td>
                         <td style={styles.table.td}>{data.amount.toFixed(2)}</td>
                         <td style={styles.table.td}>
                             <Box>
@@ -120,6 +120,7 @@ const styles = {
         fontFamily: 'Quicksand, sans-serif',
         borderCollapse: 'collapse',
         width: '100%',
+        fontSize:"16px",
         td: {
             border: '1px solid #dddddd',
             textAlign: 'left',

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import NoData from 'assets/no-open.svg';
 import { BoxLoading } from 'react-loadingg';
 import { useDispatch, useSelector } from 'react-redux';
-import { formatDate, formatDeadline } from '../../../../utils/dates';
+import { formatDate, formatDeadline } from '../../../utils/dates';
 import { getWaitingAssignOrders } from 'dataStore/actions/ordersAction';
 
 const WaitingAssign = () => {
@@ -45,8 +45,9 @@ const WaitingAssign = () => {
                             <th style={styles.table.th}>Order Number</th>
                             <th style={styles.table.th}>Deadline</th>
                             <th style={styles.table.th}>Subject</th>
+                            <th style={styles.table.th}>Type of Paper</th>
                             <th style={styles.table.th}>Promo Code</th>
-                            <th style={styles.table.th}>Created At</th>
+                            <th style={styles.table.th}>Pages</th>
                             <th style={styles.table.th}>Amount</th>
                         </tr>
                         {waiting_assign?.map((data) => (
@@ -59,13 +60,12 @@ const WaitingAssign = () => {
                                 </td>
                                 <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
                                 <td style={styles.table.td}>{data.subject && (data.subject.name)}</td>
+                                <td style={styles.table.td}>{data.type && (data.type.name)}</td>
                                 <td style={styles.table.td}>
                                     <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>
                                     </center>
                                 </td>
-                                <td style={styles.table.td}>
-                                    {formatDate(data.created_at)}
-                                </td>
+                                <td style={styles.table.td}>{data.page && (data.page.name)}</td>
                                 <td style={styles.table.td}>{data.amount}</td>
                             </tr>
                         ))}
@@ -97,6 +97,7 @@ const styles = {
         fontFamily: 'Quicksand, sans-serif',
         borderCollapse: 'collapse',
         width: '100%',
+        fontSize:"16px",
         td: {
             border: '1px solid #dddddd',
             textAlign: 'left',

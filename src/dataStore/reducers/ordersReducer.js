@@ -66,7 +66,11 @@ import {
     APPROVE_ORDER_SUCCESS,
     APPROVE_ORDER_ERROR,
     PAY_FROM_WALLET,
-    PAY_FROM_WALLET_SUCCESS, PAY_FROM_WALLET_ERROR
+    PAY_FROM_WALLET_SUCCESS,
+    PAY_FROM_WALLET_ERROR,
+    GET_REVISION_ORDERS,
+    GET_REVISION_ORDERS_SUCCESS,
+    GET_REVISION_ORDERS_ERROR
 
 } from "../dispatchTypes";
 
@@ -100,6 +104,10 @@ export const initialOrdersState = {
         pagination: {}
     },
     active_orders: {
+        orders: [],
+        pagination: {}
+    },
+    revision_orders: {
         orders: [],
         pagination: {}
     },
@@ -286,6 +294,30 @@ export const ordersReducers = (
             };
         }
         case GET_ACTIVE_ORDERS_ERROR: {
+            return {
+                ...state,
+                isError: true,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case GET_REVISION_ORDERS: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case GET_REVISION_ORDERS_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                isSuccess: true,
+                revision_orders: action.revision_orders,
+            };
+        }
+        case GET_REVISION_ORDERS_ERROR: {
             return {
                 ...state,
                 isError: true,

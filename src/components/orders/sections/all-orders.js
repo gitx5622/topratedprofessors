@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import NoData from 'assets/no-open.svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { formatDate, formatDeadline } from '../../../../utils/dates';
+import { formatDate, formatDeadline } from '../../../utils/dates';
 import { getOrders } from 'dataStore/actions/ordersAction';
 
 const AllOrders = () => {
@@ -29,7 +29,7 @@ const AllOrders = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, activePage, per]);
 
-
+    console.log(all_orders);
     return (
         <div style={{ marginLeft: "10px", marginRight: "10px" }}>
             {isLoading && (
@@ -70,7 +70,7 @@ const AllOrders = () => {
                                 </td>
                                 <td style={styles.table.td}>${(data.amount.toFixed(2))}</td>
                                 <td style={styles.table.td}>
-                                    <Tag color="cyan">{data.status}</Tag>
+                                    <Tag color={data.status === "approved" ? "green": data.status === "pending" ? "red" : "blue"}>{data.status}</Tag>
                                 </td>
                             </tr>
                         ))}
@@ -103,6 +103,7 @@ const styles = {
         fontFamily: 'Quicksand, sans-serif',
         borderCollapse: 'collapse',
         width: '100%',
+        fontSize:"16px",
         td: {
             border: '1px solid #dddddd',
             textAlign: 'left',

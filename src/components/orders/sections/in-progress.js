@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import NoData from 'assets/no-open.svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { formatDate, formatDeadline } from '../../../../utils/dates';
+import { formatDate, formatDeadline } from '../../../utils/dates';
 import { getActiveOrders } from 'dataStore/actions/ordersAction';
 
 
@@ -91,6 +91,7 @@ const styles = {
         fontFamily: 'Quicksand, sans-serif',
         borderCollapse: 'collapse',
         width: '100%',
+        fontSize:"16px",
         td: {
             border: '1px solid #dddddd',
             textAlign: 'left',

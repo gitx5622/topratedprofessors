@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { Panel, Row, Col, Grid, Avatar, Table, Divider, Tag } from 'rsuite';
 import { Box } from 'theme-ui';
 import Link from "next/link";
-import {formatDate, formatDeadline} from "../../../utils/dates";
+import {formatDate, formatDeadline} from "../../utils/dates";
 import {useDispatch, useSelector} from "react-redux";
 import {getOrders, userCountOrderSummary} from "../../dataStore/actions/ordersAction";
 
@@ -121,6 +121,7 @@ const styles = {
         fontFamily: 'Quicksand, sans-serif',
         borderCollapse: 'collapse',
         width: '100%',
+        fontSize:"16px",
         td: {
             border: '1px solid #dddddd',
             textAlign: 'left',

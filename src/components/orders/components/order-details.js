@@ -10,7 +10,7 @@ import {
     getOrderfiles, payFromWallet,
     updateOrder
 } from 'dataStore/actions/ordersAction';
-import { formatDate, formatDeadline } from '../../../../utils/dates';
+import { formatDate, formatDeadline } from '../../../utils/dates';
 import {makePayment} from "../../../dataStore/actions/walletAction";
 import { BoxLoading } from 'react-loadingg';
 import {Label, Box} from "theme-ui";

@@ -68,7 +68,12 @@ import {
     CREATE_USER_RATINGS_ERROR,
     APPROVE_ORDER,
     APPROVE_ORDER_SUCCESS,
-    APPROVE_ORDER_ERROR, PAY_FROM_WALLET, PAY_FROM_WALLET_SUCCESS, PAY_FROM_WALLET_ERROR
+    APPROVE_ORDER_ERROR,
+    PAY_FROM_WALLET,
+    PAY_FROM_WALLET_SUCCESS,
+    PAY_FROM_WALLET_ERROR,
+    GET_REVISION_ORDERS,
+    GET_REVISION_ORDERS_SUCCESS, GET_REVISION_ORDERS_ERROR
 } from '../dispatchTypes';
 
 
@@ -290,6 +295,34 @@ export const getActiveOrders = async (dispatch, userId, page, per) => {
     } catch (error) {
         dispatch({
             type: GET_ACTIVE_ORDERS_ERROR,
+            errorMessage: error.response.data.message,
+        });
+
+        return error.response;
+    }
+};
+
+export const getRevisionOrders = async (dispatch, userId, page, per) => {
+    dispatch({
+        type: GET_REVISION_ORDERS,
+    });
+    try {
+        return await axiosConfig
+            .get(`/users/${userId}/orders?page=${page}&per=${per}&revision_status=true`, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: GET_REVISION_ORDERS_SUCCESS,
+                    revision_orders: response.data,
+                });
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: GET_REVISION_ORDERS_ERROR,
             errorMessage: error.response.data.message,
         });
 

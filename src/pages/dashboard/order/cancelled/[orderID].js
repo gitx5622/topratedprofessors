@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import Dashboard from "../../../../components/admin/dashboard";
 
-const CompletedApprovedOrder = () => {
+const CancelledRejectedOrder = () => {
     useEffect(() => {
         try {
             JSON.parse(localStorage.currentUser);
@@ -15,4 +15,4 @@ const CompletedApprovedOrder = () => {
     );
 };
 
-export default CompletedApprovedOrder;
+export default CancelledRejectedOrder;

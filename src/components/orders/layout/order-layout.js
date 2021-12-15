@@ -147,12 +147,12 @@ const OrderLayout = ({ children }) => {
                         </center>
                     </Sidenav.Header>
                     <Sidenav
-                        style={{ color: "black", fontFamily: "Montserrat,Helvetica,Arial,serif" }}
+                        style={{ color: "black" }}
                         expanded={expand}
                         defaultOpenKeys={['3']}
                         appearance="default">
                         <Sidenav.Body>
-                            <Nav style={{fontFamily:"Quicksand, sans, serif"}}>
+                            <Nav>
                                 <Nav.Item
                                     eventKey="1"
                                     active icon={<DashboardIcon />}
@@ -267,15 +267,14 @@ const OrderLayout = ({ children }) => {
 
                 <Container>
                     <Header>
-                        <Navbar
-                            style={{ color: "black", fontSize: "16px", fontFamily: "Montserrat,Helvetica,Arial,serif" }}>
-                            <Nav>
+                        <Navbar>
+                            <Nav  style={{ color: "black", fontSize: "16px" }}>
                                 <Nav.Item onClick={() => router.push('/dashboard/all-orders', undefined, { shallow: true })}>My Orders</Nav.Item>
                                 <Nav.Item onClick={() => router.push('/dashboard/create_order', undefined, { shallow: true })}>Create Order</Nav.Item>
                                 <Nav.Item onClick={() => router.push('/settings/view', undefined, { shallow: true })}>Profile</Nav.Item>
                                 <Nav.Item onClick={() => router.push('/dashboard/wallet', undefined, { shallow: true })}>Wallet</Nav.Item>
                             </Nav>
-                            <Nav pullRight style={{ marginRight: "70px" }}>
+                            <Nav pullRight style={{ marginRight: "50px" }}>
                                 <Nav.Item
                                     onClick={() => router.push('/dashboard/wallet', undefined, { shallow: true })}
                                 >

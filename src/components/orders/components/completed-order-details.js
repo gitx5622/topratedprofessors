@@ -10,7 +10,7 @@ import {
     getOrderfiles,
     getRejectReasons, orderRevision, rejectOrder
 } from 'dataStore/actions/ordersAction';
-import {formatDate, formatDeadline} from '../../../../utils/dates';
+import {formatDate, formatDeadline} from '../../../utils/dates';
 import DetailIcon from '@rsuite/icons/Detail';
 import { css } from '@emotion/css';
 import ScrollToBottom from 'react-scroll-to-bottom';

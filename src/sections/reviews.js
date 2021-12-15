@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Carousel, Grid, Row, Col, Panel, Rate, Avatar} from "rsuite";
 import {useDispatch, useSelector} from "react-redux";
 import {filterRatings} from "../dataStore/actions/reviewAction";
-import { formatDate } from "../../utils/dates";
+import { formatDate } from "../utils/dates";
 
 const Reviews = () => {
     const reviewSelector = useSelector(state => state.ratingState);
