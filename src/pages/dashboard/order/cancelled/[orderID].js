@@ -11,7 +11,7 @@ const CancelledRejectedOrder = () => {
         }
     }, []);
     return (
-        <Dashboard page='order' section='completed-order'/>
+        <Dashboard page='order' section='cancelled-order'/>
     );
 };
 

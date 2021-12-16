@@ -55,7 +55,12 @@ const AllOrders = () => {
                             <tr key={index}>
                                 <td style={styles.table.td}>{data.id}</td>
                                 <td style={styles.table.td}>
-                                    <Link href={`/dashboard/order/${data.id}`}>
+                                    <Link
+                                        href={
+                                                data.status === "cancelled" ? `/dashboard/order/cancelled/${data.id}`:
+                                                data.status === "approved" ? `/dashboard/order/completed/${data.id}`:
+                                                data.status === "revision" ? `/dashboard/order/revision/${data.id}`:
+                                                `/dashboard/order/${data.id}`}>
                                         <a>{data.order_number}</a>
                                     </Link>
                                 </td>

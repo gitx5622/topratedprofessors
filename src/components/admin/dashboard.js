@@ -12,6 +12,8 @@ import OrderDetails from 'components/orders/components/order-details';
 import Transactions from "../wallet/transactions";
 import InProgress from 'components/orders/sections/in-progress';
 import OrderCompletedDetails from 'components/orders/components/completed-order-details';
+import CancelledRejectedDetails from "../orders/components/cancelledRejected";
+import RevisionDetails from "../orders/components/revisionDetails";
 
 const Dashboard = ({ section }) => {
     const renderOrderPages = () => {
@@ -73,6 +75,18 @@ const Dashboard = ({ section }) => {
             case 'revision':
                 return (
                     <PendingOrders
+                        section={section}
+                    />
+                );
+            case 'cancelled-order':
+                return (
+                    <CancelledRejectedDetails
+                        section={section}
+                    />
+                );
+            case 'revision-order':
+                return (
+                    <RevisionDetails
                         section={section}
                     />
                 );

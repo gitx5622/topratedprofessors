@@ -274,7 +274,7 @@ const OrderLayout = ({ children }) => {
                                 <Nav.Item onClick={() => router.push('/settings/view', undefined, { shallow: true })}>Profile</Nav.Item>
                                 <Nav.Item onClick={() => router.push('/dashboard/wallet', undefined, { shallow: true })}>Wallet</Nav.Item>
                             </Nav>
-                            <Nav pullRight style={{ marginRight: "50px" }}>
+                            <Nav pullRight style={{ marginRight: "70px" }}>
                                 <Nav.Item
                                     onClick={() => router.push('/dashboard/wallet', undefined, { shallow: true })}
                                 >

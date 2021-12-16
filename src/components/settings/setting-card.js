@@ -86,7 +86,7 @@ const SettingCard = ({ section }) => {
                             <th style={styles.table.th}>Order Number</th>
                             <th style={styles.table.th}>Type of Paper</th>
                             <th style={styles.table.th}>Deadline</th>
-                            <th style={styles.table.th}>Promo Code</th>
+                            <th style={styles.table.th}>Status</th>
                             <th style={styles.table.th}>Amount</th>
                         </tr>
                         {all_orders?.slice(0, 5).map((data) => (
@@ -100,10 +100,13 @@ const SettingCard = ({ section }) => {
                                 <td style={styles.table.td}>{data.type && (data.type.name)}</td>
                                 <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
                                 <td style={styles.table.td}>
-                                    <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>
+                                    <center>
+                                        <Tag  color={data.status === "approved" ? "green": data.status === "pending" ? "red" : "blue"}>
+                                        {data.status}
+                                        </Tag>
                                     </center>
                                 </td>
-                                <td style={styles.table.td}>{data.amount}</td>
+                                <td style={styles.table.td}>$ {data.amount.toFixed(2)}</td>
                             </tr>
                         ))}
                     </table><br/>
