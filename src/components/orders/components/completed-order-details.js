@@ -1,6 +1,8 @@
-import React, {useRef, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useRouter} from 'next/router';
+import { BoxLoading } from 'react-loadingg';
+import { ToastContainer, toast } from 'react-toastify';
 import {Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Message, Panel, Rate, Row, Uploader} from 'rsuite';
 import {
     approveOrder,
@@ -15,7 +17,6 @@ import DetailIcon from '@rsuite/icons/Detail';
 import { css } from '@emotion/css';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import AttachmentIcon from '@rsuite/icons/Attachment';
-import {createRatings} from 'dataStore/actions/reviewAction';
 import {createMessage, filterMessages} from 'dataStore/actions/messagesAction';
 
 
@@ -60,18 +61,13 @@ const OrderCompletedDetails = ({ section }) => {
     const [active, setActive] = React.useState('1');
     const [ratingSuccess, setRatingSuccess] = useState("");
     const [messageInfo, setMessageInfo] = useState([]);
-    const [newOrderFilesState, setNewOrderFilesState] = useState([]);
-
-    const walletSelector = useSelector(state => state.walletState);
-    const ratingSelector = useSelector(state => state.ratingState);
     const messageSelector = useSelector(state => state.messageState);
-    const { isLoading } = walletSelector;
-    const { ratings, rating } = ratingSelector;
     const { messages } = messageSelector;
     const newMessages = [...messages];
     const orderSelector = useSelector(state => state.orderState);
     const {
         order_files,
+        isLoading,
         order: {
             id: orderId, order_number, topic, phone,
             instructions, deadline, service, user, type,
@@ -81,11 +77,10 @@ const OrderCompletedDetails = ({ section }) => {
         reject_reasons,
     } = orderSelector;
 
-    const newOrderFiles = [...order_files];
-
     const router = useRouter();
     const { completedOrderID } = router.query;
     const dispatch = useDispatch();
+    const uploaderRef = React.useRef();
 
     const handleOpen = () => setReleaseFundsOpen(true);
     const handleClose = () => setReleaseFundsOpen(false);
@@ -155,8 +150,9 @@ const OrderCompletedDetails = ({ section }) => {
 
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
+            console.log(file)
             const fileReader = new FileReader();
-            fileReader.readAsDataURL(file.blobFile);
+            fileReader?.readAsDataURL(file.blobFile);
             fileReader.onload = () => {
                 resolve(fileReader.result);
             };
@@ -166,9 +162,9 @@ const OrderCompletedDetails = ({ section }) => {
         });
     };
 
-    const handleFileUpload = async (file) => {
-        const extension = file.name.slice(file.name.lastIndexOf('.') + 1)
-        const fileBase64 = await convertToBase64(file);
+    const handleFileUploadChange = async (file) => {
+        const extension = file[0]?.name.slice(file[0].name.lastIndexOf('.') + 1)
+        const fileBase64 = await convertToBase64(file[0]);
         const Base64 = fileBase64.slice(fileBase64.indexOf(',') + 1).trim();
         console.log(Base64)
         if (extension && fileBase64 && orderId) {
@@ -184,22 +180,24 @@ const OrderCompletedDetails = ({ section }) => {
                     },
                 ]
             })
-            fileUpload(dispatch, uploadFiles)
-                .then(response => {
-                    if(response.status === 200){
-                        newOrderFiles.splice(0, 0, response.data)
-                        setNewOrderFilesState([newOrderFiles]);
-                    }
-                });
         }
     };
-    const handleOrderFileDelete = (order_file) => {
-        deleteOrderFile(dispatch, order_file.id)
+
+    const handleFileUploadSubmit = () => {
+        uploaderRef.current.start();
+        fileUpload(dispatch, uploadFiles)
             .then(response => {
-                if (response.status === 200) {
+                console.log(response)
+                if(response.status === 201){
                     getOrderfiles(dispatch, completedOrderID);
+                    toast.success("File uploaded Successfully!", {
+                        position: toast.POSITION.TOP_RIGHT
+                    });
                 }
-            })
+            });
+    }
+    const handleOrderFileDelete = (order_file) => {
+        deleteOrderFile(dispatch, order_file.id);
     }
      const handleRejectReasonsChange = (event) => {
         setRejectReasonValue(event.target.value)
@@ -245,14 +243,10 @@ const OrderCompletedDetails = ({ section }) => {
                  })
          }
      }
+
     useEffect(() => {
         getOrder(dispatch, completedOrderID);
-        getOrderfiles(dispatch, completedOrderID)
-            .then(response => {
-                if(response.status === 200) {
-                    setNewOrderFilesState(response.data);
-                }
-            });
+        getOrderfiles(dispatch, completedOrderID);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, completedOrderID, uploadFiles.uploaded_files]);
 
@@ -303,18 +297,28 @@ const OrderCompletedDetails = ({ section }) => {
             </Nav>
             {uploadOpen && (
                 <div>
+                    {isLoading && (
+                        <BoxLoading />
+                    )}
+                    <ToastContainer />
                     <Grid fluid>
                         <Row>
                             <Col xs={24} sm={24} md={24}>
                                 <div style={{ padding: "10px" }}>
                                     <Uploader
                                         listType="picture-text"
-                                        autoUpload={true}
-                                        multiple
-                                        onUpload={(file) => handleFileUpload(file)}
+                                        ref={uploaderRef}
+                                        value={uploadFiles}
+                                        autoUpload={false}
+                                        removable={uploadFiles.length >= 2 && true}
+                                        onChange={(file) => handleFileUploadChange(file)}
                                     >
-                                        <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag files to this area to upload</div>
+                                        <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag a file to this area to upload</div>
                                     </Uploader>
+                                    <Divider />
+                                    <Button style={{width:"100%"}} color="green" appearance="primary"  onClick={handleFileUploadSubmit}>
+                                        Start Upload
+                                    </Button>
                                 </div>
                                 <Panel>
                                 <h6>Uploaded files</h6>
@@ -323,7 +327,7 @@ const OrderCompletedDetails = ({ section }) => {
                                         <th style={{ padding: "10px", textAlign: "left" }}>File Name</th>
                                         <th>Uploaded At</th>
                                     </tr>
-                                    {newOrderFilesState && newOrderFilesState.map((order_file) => (
+                                    {order_files && order_files.map((order_file) => (
                                         <tr style={{ borderRadius: "10px" }}>
                                             <td style={styles.table.td}>
                                                 <strong>

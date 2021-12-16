@@ -117,6 +117,7 @@ export const initialOrdersState = {
     },
     order: {},
     uploaded_files: [],
+    uploaded_file: [],
     order_files: [],
     order_file:{},
     user_order_count_summary: {},
@@ -479,7 +480,7 @@ export const ordersReducers = (
                 ...state,
                 isSuccess: false,
                 isLoading: false,
-                uploaded_files: action.uploaded_files,
+                uploaded_file:action.uploaded_file,
             };
         }
         case FILE_UPLOADING_ERROR: {

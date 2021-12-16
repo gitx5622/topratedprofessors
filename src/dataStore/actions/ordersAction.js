@@ -489,7 +489,7 @@ export const fileUpload = async (dispatch, uploadedFiles) => {
             .then(response => {
                 dispatch({
                     type: FILE_UPLOADING_SUCCESS,
-                    uploaded_files: response.data,
+                    uploaded_file: response.data,
                 })
                 return response;
             });

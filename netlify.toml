@@ -1,4 +1,7 @@
 # netlify.toml
+[[plugins]]
+package = "@netlify/plugin-nextjs"
+
 [[redirects]]
 from = "/*"
 to ="/"
