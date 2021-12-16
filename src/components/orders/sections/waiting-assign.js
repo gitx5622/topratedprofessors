@@ -66,7 +66,7 @@ const WaitingAssign = () => {
                                     </center>
                                 </td>
                                 <td style={styles.table.td}>{data.page && (data.page.name)}</td>
-                                <td style={styles.table.td}>{data.amount}</td>
+                                <td style={styles.table.td}>$ {data.amount.toFixed(2)}</td>
                             </tr>
                         ))}
                     </table><br/>

@@ -59,7 +59,7 @@ const Rejected = () => {
                         <td style={styles.table.td}>
                             {formatDate(data.created_at)}
                         </td>
-                        <td style={styles.table.td}>{data.amount}</td>
+                        <td style={styles.table.td}>$ {data.amount.toFixed(2)}</td>
                     </tr>
                 ))}
             </table><br/>

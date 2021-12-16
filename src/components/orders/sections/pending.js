@@ -85,7 +85,7 @@ const Pending = () => {
                             </center>
                         </td>
                         <td style={styles.table.td}>{data.page && (data.page.name)}</td>
-                        <td style={styles.table.td}>{data.amount.toFixed(2)}</td>
+                        <td style={styles.table.td}>$ {data.amount.toFixed(2)}</td>
                         <td style={styles.table.td}>
                             <Box>
                             <Button size="sm" onClick={() => handleMakePaymentSubmit} color="green" appearance="primary">Reserve Now</Button>

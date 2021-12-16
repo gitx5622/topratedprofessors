@@ -68,7 +68,7 @@ const AllOrders = () => {
                                 <td style={styles.table.td}>
                                     {data && data.page.name}
                                 </td>
-                                <td style={styles.table.td}>${(data.amount.toFixed(2))}</td>
+                                <td style={styles.table.td}>$ {(data.amount.toFixed(2))}</td>
                                 <td style={styles.table.td}>
                                     <Tag color={data.status === "approved" ? "green": data.status === "pending" ? "red" : "blue"}>{data.status}</Tag>
                                 </td>
