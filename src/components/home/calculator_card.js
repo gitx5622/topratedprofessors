@@ -100,7 +100,7 @@ const CalculatorCard = ({
                     <Text><center><strong>Minimum Price
                         : $ {(myService * myType * myUrgency * myPages * myLevel).toFixed(2)}</strong></center></Text>
                 </Box>
-                <Button onClick={() => { router.push('dashboard/all-orders'); localStorage.minimumPrice = (myService * myType * myUrgency * myPages * myLevel).toFixed(2) }} className="continue__button" variant="secondary">Continue</Button>
+                <Button onClick={() => { router.push('dashboard/create_order'); localStorage.minimumPrice = (myService * myType * myUrgency * myPages * myLevel).toFixed(2) }} className="continue__button" variant="secondary">Continue</Button>
             </Box>
         </div>
     );

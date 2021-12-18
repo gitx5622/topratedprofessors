@@ -15,7 +15,7 @@ import { getSpacing } from "../../../dataStore/actions/spacingsAction";
 import { createOrders, getOrders } from "../../../dataStore/actions/ordersAction";
 import { Box, } from 'theme-ui';
 import { useRouter } from 'next/router';
-
+import { BoxLoading } from 'react-loadingg';
 
 const CreateOrder = () => {
     const [step, setStep] = React.useState(0);
@@ -60,7 +60,7 @@ const CreateOrder = () => {
     const urgencySelector = useSelector(state => state.urgencyState);
     const languageSelector = useSelector(state => state.languageState);
     const orderSelector = useSelector(state => state.orderState);
-    const { errorMessage } = orderSelector;
+    const { errorMessage, isLoading } = orderSelector;
     const editorRef = useRef()
     const [editorLoaded, setEditorLoaded] = useState(false)
     const { CKEditor, ClassicEditor } = editorRef.current || {}
@@ -206,7 +206,7 @@ const CreateOrder = () => {
             language_id: parseInt(localStorage.language_id, 10),
             phone: order.phone,
             topic: order.topic,
-            instructions:  instructions,
+            instructions: instructions,
             pagesummary: false,
             plagreport: true,
             initialdraft: false,
@@ -217,7 +217,7 @@ const CreateOrder = () => {
         console.log(bodyData)
         if (order.topic !== "" && bodyData.instructions !== "") {
             addOrder(bodyData).then(response => {
-                if(response.status === 201){
+                if (response.status === 201) {
                     getOrders(dispatch);
                     router.push("/dashboard/all-orders")
                 }
@@ -229,7 +229,7 @@ const CreateOrder = () => {
             });
         }
     };
-    if (instructions){
+    if (instructions) {
         instructions.replaceAll('"', '')
         console.log(instructions);
     }
@@ -264,6 +264,9 @@ const CreateOrder = () => {
                 <h3>Create Order:</h3>
             </Box>
             <Divider />
+            {orderLoading && (
+                <BoxLoading />
+            )}
             <Box as="form" onSubmit={handleCreateOrderSubmit}>
                 <Grid fluid>
                     <Row>
@@ -434,7 +437,7 @@ const CreateOrder = () => {
                                                 const data = editor.getData();
                                                 setinstructions(data);
                                             }}
-                                    
+
                                         /> :
                                         (
                                             <div>Editor loading</div>

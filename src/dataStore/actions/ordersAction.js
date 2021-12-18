@@ -729,7 +729,7 @@ export const approveOrder = async (dispatch, orderID, bodyData) => {
     }
 };
 
-export const payFromWallet = async (dispatch, orderID) => {
+export const payFromWallet = async(dispatch, orderID) => {
     dispatch({
         type: PAY_FROM_WALLET,
     });
