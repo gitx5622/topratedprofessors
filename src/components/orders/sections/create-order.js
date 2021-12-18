@@ -60,7 +60,7 @@ const CreateOrder = () => {
     const urgencySelector = useSelector(state => state.urgencyState);
     const languageSelector = useSelector(state => state.languageState);
     const orderSelector = useSelector(state => state.orderState);
-    const { errorMessage, isLoading } = orderSelector;
+    const { errorMessage, isLoading: orderLoading } = orderSelector;
     const editorRef = useRef()
     const [editorLoaded, setEditorLoaded] = useState(false)
     const { CKEditor, ClassicEditor } = editorRef.current || {}
