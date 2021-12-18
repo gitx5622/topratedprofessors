@@ -1,21 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {useRouter} from 'next/router';
-import {Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Message, Panel, Rate, Row, Uploader} from 'rsuite';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import { BoxLoading } from 'react-loadingg';
+import { ToastContainer, toast } from 'react-toastify';
+import { Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Message, Panel, Rate, Row, Uploader } from 'rsuite';
 import {
     approveOrder,
     deleteOrderFile,
     fileUpload,
     getOrder,
-    getOrderfiles,
+    getOrderfiles, getRejectedOrders,
     getRejectReasons, orderRevision, rejectOrder
 } from 'dataStore/actions/ordersAction';
-import {formatDate, formatDeadline} from '../../../utils/dates';
+import { formatDate, formatDeadline } from '../../../utils/dates';
 import DetailIcon from '@rsuite/icons/Detail';
 import { css } from '@emotion/css';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import AttachmentIcon from '@rsuite/icons/Attachment';
-import {createMessage, filterMessages} from 'dataStore/actions/messagesAction';
+import { createMessage, filterMessages } from 'dataStore/actions/messagesAction';
 
 
 const CancelledRejectedDetails = ({ section }) => {
@@ -64,47 +66,31 @@ const CancelledRejectedDetails = ({ section }) => {
     const walletSelector = useSelector(state => state.walletState);
     const ratingSelector = useSelector(state => state.ratingState);
     const messageSelector = useSelector(state => state.messageState);
-    const { isLoading } = walletSelector;
-    const { ratings, rating } = ratingSelector;
     const { messages } = messageSelector;
     const newMessages = [...messages];
     const orderSelector = useSelector(state => state.orderState);
     const {
+        isLoading: orderLoading,
         order_files,
         order: {
             id: orderId, order_number, topic, phone,
-            instructions, deadline, service, user, type,
-            style, source, subject, language, page, level,
-            spacing, urgency, amount, created_at,
+            deadline, service, user, type,style, source, 
+            subject, language, page, level,spacing, urgency, 
+            amount, created_at, reject_details
         },
-        reject_reasons,
     } = orderSelector;
 
-    const newOrderFiles = [...order_files];
 
     const router = useRouter();
     const { orderID } = router.query;
     const dispatch = useDispatch();
+    const uploaderRef = React.useRef();
 
-    const handleOpen = () => setReleaseFundsOpen(true);
-    const handleClose = () => setReleaseFundsOpen(false);
-    const handleRevisonOpen = () => setRequestRevisionOpen(true);
-    const handleRevisionClose = () => setRequestRevisionOpen(false);
-    const handleRejectOpen = () => setRejectOpen(true);
-    const handleRejectClose = () => setRejectOpen(false);
-
-    const handleReleaseFundsChange = (event) => {
-        let name = event.target.name;
-        let value = event.target.value;
-        setUserRatings({
-            ...userRatings,
-            [name]: value
-        })
-    }
     const ROOT_CSS = css({
         minHeight: 100,
         height: 200
     });
+
     const handleCreateMessageChange = (value, event) => {
         setMessage({
             ...message,
@@ -121,7 +107,7 @@ const CancelledRejectedDetails = ({ section }) => {
             order_number: order_number
         }
         console.log(bodyData)
-        if(bodyData.message !== ""){
+        if (bodyData.message !== "") {
             createMessage(dispatch, bodyData)
                 .then(response => {
                     newMessages.splice(0, 0, response.data);
@@ -130,32 +116,11 @@ const CancelledRejectedDetails = ({ section }) => {
         }
     }
 
-    const handleReleaseFundsSubmit = () => {
-        const bodyData = {
-            order_number: order_number,
-            value: hoverValue,
-            description: userRatings.description,
-        }
-        console.log(bodyData);
-        if (bodyData.order_number !== "" && bodyData.value !== "" && bodyData.description !== "") {
-            approveOrder(dispatch, orderId, bodyData).then(response => {
-                if(response.status === 200){
-                    setRatingSuccess("Thank you for reviewing your order.Your order has been approved")
-                    setReleaseFundsOpen(false);
-                }
-            })
-        } else {
-            dispatch({
-                type: 'APPROVE_ORDER_ERROR',
-                errorMessage: 'Make sure all the fields all filled',
-            });
-        }
-    }
-
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
+            console.log(file)
             const fileReader = new FileReader();
-            fileReader.readAsDataURL(file.blobFile);
+            fileReader?.readAsDataURL(file.blobFile);
             fileReader.onload = () => {
                 resolve(fileReader.result);
             };
@@ -165,9 +130,9 @@ const CancelledRejectedDetails = ({ section }) => {
         });
     };
 
-    const handleFileUpload = async (file) => {
-        const extension = file.name.slice(file.name.lastIndexOf('.') + 1)
-        const fileBase64 = await convertToBase64(file);
+    const handleFileUploadChange = async (file) => {
+        const extension = file[0]?.name.slice(file[0].name.lastIndexOf('.') + 1)
+        const fileBase64 = await convertToBase64(file[0]);
         const Base64 = fileBase64.slice(fileBase64.indexOf(',') + 1).trim();
         console.log(Base64)
         if (extension && fileBase64 && orderId) {
@@ -183,72 +148,34 @@ const CancelledRejectedDetails = ({ section }) => {
                     },
                 ]
             })
-            fileUpload(dispatch, uploadFiles)
-                .then(response => {
-                    if(response.status === 200){
-                        newOrderFiles.splice(0, 0, response.data)
-                        setNewOrderFilesState([newOrderFiles]);
-                    }
-                });
         }
     };
+
+    const handleFileUploadSubmit = () => {
+        uploaderRef.current.start();
+        fileUpload(dispatch, uploadFiles)
+            .then(response => {
+                console.log(response)
+                if (response.status === 201) {
+                    getOrderfiles(dispatch, completedOrderID);
+                    toast.success("File uploaded Successfully!", {
+                        position: toast.POSITION.TOP_RIGHT
+                    });
+                }
+            });
+    }
+    
     const handleOrderFileDelete = (order_file) => {
         deleteOrderFile(dispatch, order_file.id)
-            .then(response => {
-                if (response.status === 200) {
-                    getOrderfiles(dispatch, orderID);
-                }
-            })
     }
-    const handleRejectReasonsChange = (event) => {
-        setRejectReasonValue(event.target.value)
-    }
-    const handleRejectOrderChange = (event) => {
-        let name = event.target.name;
-        let value = event.target.value;
-        setRejectOrderValues({
-            ...rejectOrderValues,
-            [name]: value
-        })
-    }
-    const handleOrderRevisonChange = (event) => {
-        let name = event.target.name;
-        let value = event.target.value;
-        setOrderRevisionValues({
-            ...orderRevisionValues,
-            [name]: value
-        })
-    }
-    const handleRejectOrderSubmit = () => {
-        const bodyData = {
-            order_number:order_number,
-            reason_id: parseInt(reject_reason_value),
-            description: rejectOrderValues.description,
-        }
-        if (bodyData.description !== ""){
-            rejectOrder(dispatch, orderId, bodyData)
-                .then(response => {
-                    console.log(response);
-                })
-        }
-    }
-    const handleOrderRevisionSubmit =() => {
-        const bodyData = {
-            order_number:order_number,
-            instructions: orderRevisionValues.instructions,
-        }
-        if (bodyData.description !== ""){
-            orderRevision(dispatch, orderId, bodyData)
-                .then(response => {
-                    setRequestRevisionOpen(false);
-                })
-        }
-    }
+
+
+
     useEffect(() => {
         getOrder(dispatch, orderID);
         getOrderfiles(dispatch, orderID)
             .then(response => {
-                if(response.status === 200) {
+                if (response.status === 200) {
                     setNewOrderFilesState(response.data);
                 }
             });
@@ -256,21 +183,26 @@ const CancelledRejectedDetails = ({ section }) => {
     }, [dispatch, orderID, uploadFiles.uploaded_files]);
 
     useEffect(() => {
+        const { id: userId } = JSON.parse(localStorage.currentUser);
+        getRejectedOrders(dispatch, userId, 1, 10)
+    }, [dispatch]);
+
+    useEffect(() => {
         filterMessages(dispatch, order_number).then(response => {
-            if(response.status === 200)
+            if (response.status === 200)
                 setMessageInfo(response.data)
         });
     }, [dispatch, order_number, message.message]);
 
     useEffect(() => {
         getRejectReasons(dispatch);
-    },[dispatch])
+    }, [dispatch])
 
     return (
         <div style={{ marginTop: "20px" }}>
             <div>
                 <h5>Order Details</h5>
-                { ratingSuccess  && (
+                {ratingSuccess && (
                     <Message type="success" closable>{ratingSuccess}</Message>
                 )}
             </div>
@@ -302,18 +234,28 @@ const CancelledRejectedDetails = ({ section }) => {
             </Nav>
             {uploadOpen && (
                 <div>
+                    {orderLoading && (
+                        <BoxLoading />
+                    )}
+                    <ToastContainer />
                     <Grid fluid>
                         <Row>
                             <Col xs={24} sm={24} md={24}>
                                 <div style={{ padding: "10px" }}>
                                     <Uploader
                                         listType="picture-text"
-                                        autoUpload={true}
-                                        multiple
-                                        onUpload={(file) => handleFileUpload(file)}
+                                        ref={uploaderRef}
+                                        value={uploadFiles}
+                                        autoUpload={false}
+                                        removable={uploadFiles.length >= 2 && true}
+                                        onChange={(file) => handleFileUploadChange(file)}
                                     >
-                                        <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag files to this area to upload</div>
+                                        <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag a file to this area to upload</div>
                                     </Uploader>
+                                    <Divider />
+                                    <Button style={{ width: "100%" }} color="green" appearance="primary" onClick={handleFileUploadSubmit}>
+                                        Start Upload
+                                    </Button>
                                 </div>
                                 <Panel>
                                     <h6>Uploaded files</h6>
@@ -322,7 +264,7 @@ const CancelledRejectedDetails = ({ section }) => {
                                             <th style={{ padding: "10px", textAlign: "left" }}>File Name</th>
                                             <th>Uploaded At</th>
                                         </tr>
-                                        {newOrderFilesState && newOrderFilesState.map((order_file) => (
+                                        {order_files && order_files.map((order_file) => (
                                             <tr style={{ borderRadius: "10px" }}>
                                                 <td style={styles.table.td}>
                                                     <strong>
@@ -355,106 +297,93 @@ const CancelledRejectedDetails = ({ section }) => {
             {open && (
                 <Grid fluid>
                     <Row>
-                        <Col xs={24} sm={24} md={16}>
+                        <Col xs={24} sm={24} md={24}>
                             <Panel style={{ marginTop: "-10px" }}>
                                 <div style={{ background: "#fdaa8f", height: '40px', padding: "10px" }}><h5>Order #{order_number}</h5></div>
                                 <table style={styles.table}>
                                     <tbody>
-                                    <tr style={{ borderRadius: "10px" }}>
-                                        <td style={styles.table.td}><strong>Order Number</strong></td>
-                                        <td style={styles.table.tdx}>{order_number}</td>
-                                        <td style={styles.table.td}><strong>Client</strong></td>
-                                        <td style={styles.table.tdx}>{user && user.username}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Service</b></td>
-                                        <td style={styles.table.td}>{service && service.name}</td>
-                                        <td style={styles.table.td}><b>Type of Paper</b></td>
-                                        <td style={styles.table.td}>{type && type.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Spacing</b></td>
-                                        <td style={styles.table.td}>{spacing && spacing.name}</td>
-                                        <td style={styles.table.td}><b>Urgency</b></td>
-                                        <td style={styles.table.td}>{urgency && urgency.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Pages</b></td>
-                                        <td style={styles.table.td}>{page && page.name}</td>
-                                        <td style={styles.table.td}><b>Level</b></td>
-                                        <td style={styles.table.td}>{level && level.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Subject</b></td>
-                                        <td style={styles.table.td}>{subject && subject.name}</td>
-                                        <td style={styles.table.td}><b>Style</b></td>
-                                        <td style={styles.table.td}>{style && style.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Sources</b></td>
-                                        <td style={styles.table.td}>{source && source.name}</td>
-                                        <td style={styles.table.td}><b>Language</b></td>
-                                        <td style={styles.table.td}>{language && language.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Phone</b></td>
-                                        <td style={styles.table.td} colSpan="3">{phone}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Topic</b></td>
-                                        <td style={styles.table.td} colSpan="3">{topic}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Deadline</b></td>
-                                        <td style={styles.table.td} colSpan="3">{formatDeadline(deadline)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Created At</b></td>
-                                        <td style={styles.table.td} colSpan="3">{formatDate(created_at)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Amount</b></td>
-                                        <td style={styles.table.td} colSpan="3">{amount}</td>
-                                    </tr>
+                                        <tr style={{ borderRadius: "10px" }}>
+                                            <td style={styles.table.td}><strong>Order Number</strong></td>
+                                            <td style={styles.table.tdx}>{order_number}</td>
+                                            <td style={styles.table.td}><strong>Client</strong></td>
+                                            <td style={styles.table.tdx}>{user && user.username}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={styles.table.td}><b>Service</b></td>
+                                            <td style={styles.table.td}>{service && service.name}</td>
+                                            <td style={styles.table.td}><b>Type of Paper</b></td>
+                                            <td style={styles.table.td}>{type && type.name}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={styles.table.td}><b>Spacing</b></td>
+                                            <td style={styles.table.td}>{spacing && spacing.name}</td>
+                                            <td style={styles.table.td}><b>Urgency</b></td>
+                                            <td style={styles.table.td}>{urgency && urgency.name}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={styles.table.td}><b>Pages</b></td>
+                                            <td style={styles.table.td}>{page && page.name}</td>
+                                            <td style={styles.table.td}><b>Level</b></td>
+                                            <td style={styles.table.td}>{level && level.name}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={styles.table.td}><b>Subject</b></td>
+                                            <td style={styles.table.td}>{subject && subject.name}</td>
+                                            <td style={styles.table.td}><b>Style</b></td>
+                                            <td style={styles.table.td}>{style && style.name}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={styles.table.td}><b>Sources</b></td>
+                                            <td style={styles.table.td}>{source && source.name}</td>
+                                            <td style={styles.table.td}><b>Language</b></td>
+                                            <td style={styles.table.td}>{language && language.name}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={styles.table.td}><b>Phone</b></td>
+                                            <td style={styles.table.td} colSpan="3">{phone}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={styles.table.td}><b>Topic</b></td>
+                                            <td style={styles.table.td} colSpan="3">{topic}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={styles.table.td}><b>Deadline</b></td>
+                                            <td style={styles.table.td} colSpan="3">{formatDeadline(deadline)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={styles.table.td}><b>Created At</b></td>
+                                            <td style={styles.table.td} colSpan="3">{formatDate(created_at)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={styles.table.td}><b>Amount</b></td>
+                                            <td style={styles.table.td} colSpan="3">{amount}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={styles.table.td}><b>Rejected</b></td>
+                                            <td style={styles.table.td} colSpan="3"><span style={{color:"red"}}>{reject_details?.description}</span></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </Panel>
                         </Col>
-                        <Col xs={24} sm={24} md={8}>
-                            <div style={{ background: "#fdaa8f", height: '40px', marginTop: "10px", padding: "10px" }}><h5>Order Instructions</h5></div>
-                            <pre style={{color:"black", fontWeight:600}}>{instructions && instructions
-                                .replace(/<style([\s\S]*?)<\/style>/gi, '')
-                                .replace(/<script([\s\S]*?)<\/script>/gi, '')
-                                .replace(/<\/div>/ig, '\n')
-                                .replace(/<\/h1>/ig, '-->')
-                                .replace(/<\/h2>/ig, '-->')
-                                .replace(/<\/h3>/ig, '-->')
-                                .replace(/<\/h4>/ig, '-->')
-                                .replace(/<\/h5>/ig, '-->')
-                                .replace(/<\/h6>/ig, '-->')
-                                .replace(/<li>/ig, '  *  ')
-                                .replace(/<\/p>/ig, '\n')
-                                .replace(/<br\s*[\/]?>/gi, "\n")
-                            }</pre>
-                        </Col>
                     </Row>
                 </Grid>
             )}
-            {messageOpen && (
+             {messageOpen && (
                 <div>
                     <Panel>
                         <h5>Order Messages</h5>
                         <div
                             id="messages"
-                            style={{ padding:"10px" ,borderRadius:"5px", border:"2px solid #98b9b6"}}>
+                            style={{ padding: "10px", borderRadius: "5px", border: "2px solid #98b9b6" }}>
                             <ScrollToBottom className={ROOT_CSS}>
-                                {messageInfo.length === 0  && (
-                                    <center><h5 style={{marginTop:"20px"}}>No order messages</h5></center>
+                                {messageInfo.length === 0 && (
+                                    <center><h5 style={{ marginTop: "20px" }}>No order messages</h5></center>
                                 )}
                                 {messageInfo?.map((message) => (
-                                    <div style={{display:"flex", justifyContent:"space-between"}}>
+                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
                                         {message.receiver_id === 7 ?
-                                            <div style={{marginBottom: "15px"}}>
+                                            <div style={{ marginBottom: "15px" }}>
                                                 <Tag style={{
                                                     width: "300px",
                                                     color: "black",
@@ -462,22 +391,23 @@ const CancelledRejectedDetails = ({ section }) => {
                                                     background: "whitesmoke",
                                                     padding: "10px"
                                                 }}>
-                                                    {message.message}<br/>
-                                                    <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
+                                                    {message.message}<br />
+                                                    <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
                                                 </Tag>
                                             </div>
-                                            : (<div/>)
+                                            : (<div />)
                                         }
                                         {message.receiver_id !== 7 && (
                                             <Tag style={{
-                                                width:"300px",
-                                                margin:"10px",
-                                                color:"white",
-                                                borderRadius:"15px",
-                                                background:"#6da8a2",
-                                                padding:"10px"}}>
-                                                { message.message }<br/>
-                                                <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
+                                                width: "300px",
+                                                margin: "10px",
+                                                color: "white",
+                                                borderRadius: "15px",
+                                                background: "#6da8a2",
+                                                padding: "10px"
+                                            }}>
+                                                {message.message}<br />
+                                                <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
                                             </Tag>
                                         )}
                                     </div>
@@ -489,8 +419,8 @@ const CancelledRejectedDetails = ({ section }) => {
                         <Input
                             onChange={handleCreateMessageChange}
                             value={message.message}
-                            style={{ border:"2px solid #6da8a2", padding:"20px"}}
-                            placeholder="Enter message"/>
+                            style={{ border: "2px solid #6da8a2", padding: "20px" }}
+                            placeholder="Enter message" />
                         <br />
                         <Button
                             onClick={handleCreateMessageSubmit}
@@ -505,14 +435,14 @@ const CancelledRejectedDetails = ({ section }) => {
                 <Panel>
                     <table style={styles.table}>
                         <tr style={{ borderRadius: "10px" }}>
-                            <th style={styles.table.th}>#</th>
+                            <th style={styles.table.th}>Order Number</th>
                             <th style={styles.table.th}>Instructions</th>
                             <th style={styles.table.th}>Date</th>
                         </tr>
                         <tr>
-                            <td style={styles.table.td}>Order Number</td>
-                            <td style={styles.table.td}>Instructions</td>
-                            <td style={styles.table.td}>date</td>
+                            <td style={styles.table.td}>{reject_details.order_number}</td>
+                            <td style={styles.table.td}>{reject_details.description}</td>
+                            <td style={styles.table.td}>{formatDate(reject_details.created_at)}</td>
                         </tr>
                     </table>
                 </Panel>

@@ -9,11 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^31.1.0",
+    "@ckeditor/ckeditor5-react": "^3.0.3",
     "@emotion/core": "^10.1.1",
     "@emotion/css": "^11.5.0",
     "@rsuite/icons": "^1.0.2",
     "axios": "^0.21.1",
     "bootstrap": "^5.1.1",
+    "ckeditor4-react": "^2.1.0",
     "counterup2": "^2.0.2",
     "dayjs": "^1.10.7",
     "dotenv": "^8.2.0",

@@ -71,7 +71,7 @@ const Revision = () => {
                         <div style={{ marginTop: "100px" }}>
                             <center>
                                 <img src={NoData} alt="" />
-                                <h6>No Pending Orders</h6>
+                                <h6>No Revison Orders</h6>
                             </center>
                         </div>
                     </Panel>

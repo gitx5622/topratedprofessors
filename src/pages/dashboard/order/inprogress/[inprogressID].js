@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import Dashboard from "../../../../components/admin/dashboard";
 
-const RevisionOrder = () => {
+const InProgressOrder = () => {
     useEffect(() => {
         try {
             JSON.parse(localStorage.currentUser);
@@ -11,8 +11,8 @@ const RevisionOrder = () => {
         }
     }, []);
     return (
-        <Dashboard page='order' section='revision-order'/>
+        <Dashboard page='order' section='inprogress-order'/>
     );
 };
 
-export default RevisionOrder;
+export default InProgressOrder;

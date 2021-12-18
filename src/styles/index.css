@@ -15,3 +15,6 @@ pre {
   font-family: Quicksand, sans-serif;
   line-height: 2.0;
 }
+.ck-editor__editable {
+  min-height: 150px;
+}

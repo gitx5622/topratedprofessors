@@ -1,38 +1,34 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import {Panel, Divider, Uploader, Button, Input, Modal, Nav, Drawer, Grid, Row, Col, Avatar, Tag} from 'rsuite';
-import {
-    cancelOrder,
-    fileUpload,
-    getCancelReasons,
-    getOrder,
-    getOrderfiles, payFromWallet,
-    updateOrder
+import { ToastContainer, toast } from 'react-toastify';
+import { Panel, Divider, Uploader, Button, Input, Modal, 
+Nav, Drawer, Grid, Row, Col, Avatar, Tag } from 'rsuite';
+import {cancelOrder,fileUpload,getCancelReasons,getOrder,
+    getOrderfiles, payFromWallet,updateOrder, deleteOrderFile
 } from 'dataStore/actions/ordersAction';
 import { formatDate, formatDeadline } from '../../../utils/dates';
-import {makePayment} from "../../../dataStore/actions/walletAction";
+import { makePayment } from "../../../dataStore/actions/walletAction";
 import { BoxLoading } from 'react-loadingg';
-import {Label, Box} from "theme-ui";
+import { Label, Box } from "theme-ui";
 import ContentEditable from "react-contenteditable";
 import DetailIcon from '@rsuite/icons/Detail';
 import AttachmentIcon from '@rsuite/icons/Attachment';
-import {getLevels} from "../../../dataStore/actions/levelsAction";
-import {getPages} from "../../../dataStore/actions/pagesAction";
-import {getSources} from "../../../dataStore/actions/sourcesAction";
-import {getStyles} from "../../../dataStore/actions/stylesAction";
-import {getSubjects} from "../../../dataStore/actions/subjectsAction";
-import {getTypes} from "../../../dataStore/actions/typesAction";
-import {getUrgencies} from "../../../dataStore/actions/urgenciesAction";
-import {getServices} from "../../../dataStore/actions/servicesAction";
-import {getLanguages} from "../../../dataStore/actions/languagesAction";
-import {getSpacing} from "../../../dataStore/actions/spacingsAction";
-import {createMessage, filterMessages} from "../../../dataStore/actions/messagesAction";
+import { getLevels } from "../../../dataStore/actions/levelsAction";
+import { getPages } from "../../../dataStore/actions/pagesAction";
+import { getSources } from "../../../dataStore/actions/sourcesAction";
+import { getStyles } from "../../../dataStore/actions/stylesAction";
+import { getSubjects } from "../../../dataStore/actions/subjectsAction";
+import { getTypes } from "../../../dataStore/actions/typesAction";
+import { getUrgencies } from "../../../dataStore/actions/urgenciesAction";
+import { getServices } from "../../../dataStore/actions/servicesAction";
+import { getLanguages } from "../../../dataStore/actions/languagesAction";
+import { getSpacing } from "../../../dataStore/actions/spacingsAction";
+import { createMessage, filterMessages } from "../../../dataStore/actions/messagesAction";
 import ScrollToBottom from "react-scroll-to-bottom";
-import {css} from "@emotion/css";
-import sanitizeHtml from "sanitize-html";
+import { css } from "@emotion/css";
 
-const OrderDetails = ({section}) => {
+const OrderDetails = ({ section }) => {
     const [open, setOpen] = React.useState(false);
     const [uploadOpen, setUploadOpen] = useState(false);
     const [openOrderDetails, setOpenOrderDetails] = useState(true)
@@ -41,9 +37,9 @@ const OrderDetails = ({section}) => {
     const [newOrderFilesState, setNewOrderFilesState] = useState([]);
     const [cancelReasonValue, setCancelReasonValue] = useState(1);
     const [uploadFiles, setUploadFiles] = useState({
-        order_id:"",
+        order_id: "",
         user_id: "",
-        uploaded_files:[
+        uploaded_files: [
             {
                 content_type: "",
                 data: ""
@@ -76,8 +72,11 @@ const OrderDetails = ({section}) => {
     const router = useRouter();
     const { orderID } = router.query;
     const dispatch = useDispatch();
+    const uploaderRef = React.useRef();
+
     const orderSelector = useSelector(state => state.orderState);
     const {
+        isLoading: orderLoading,
         order_files,
         cancelled_reasons,
         order: {
@@ -101,7 +100,7 @@ const OrderDetails = ({section}) => {
             amount,
             created_at,
         } } = orderSelector;
-    const newOrderFiles = [...order_files];
+
     const [updateOrderDetails, setUpdateOrderDetails] = useState({
         user_id: '',
         service_id: service?.id,
@@ -299,8 +298,8 @@ const OrderDetails = ({section}) => {
         const bodyData = {
             user_id: parseInt(userID),
             service_id: parseInt(updateOrderDetails.service_id),
-            type_id:  parseInt(updateOrderDetails.type_id),
-            style_id:  parseInt(updateOrderDetails.style_id),
+            type_id: parseInt(updateOrderDetails.type_id),
+            style_id: parseInt(updateOrderDetails.style_id),
             level_id: parseInt(updateOrderDetails.level_id),
             pages_id: parseInt(updateOrderDetails.pages_id),
             urgency_id: parseInt(updateOrderDetails.urgency_id),
@@ -308,9 +307,9 @@ const OrderDetails = ({section}) => {
             sources_id: parseInt(updateOrderDetails.sources_id),
             spacing_id: parseInt(updateOrderDetails.spacing_id),
             language_id: parseInt(updateOrderDetails.language_id),
-            phone: phone || updateOrderDetails.phone ,
+            phone: phone || updateOrderDetails.phone,
             topic: topic || updateOrderDetails.topic,
-            instructions:  instructions || instructionsx,
+            instructions: instructions || instructionsx,
             pagesummary: false,
             plagreport: true,
             initialdraft: false,
@@ -322,7 +321,7 @@ const OrderDetails = ({section}) => {
         if (bodyData) {
             updateOrder(dispatch, orderID, bodyData).then(
                 response => {
-                    if (response.status === 200){
+                    if (response.status === 200) {
                         setOpenWithHeader(false);
                     }
                 }
@@ -343,6 +342,7 @@ const OrderDetails = ({section}) => {
             message: event.target.value
         })
     }
+
     const handleCreateMessageSubmit = () => {
         const { id: userID } = JSON.parse(localStorage.currentUser);
         const bodyData = {
@@ -352,7 +352,7 @@ const OrderDetails = ({section}) => {
             order_number: order_number
         }
         console.log(bodyData)
-        if(bodyData.message !== ""){
+        if (bodyData.message !== "") {
             createMessage(dispatch, bodyData)
                 .then(response => {
                     newMessages.splice(0, 0, response.data);
@@ -363,8 +363,9 @@ const OrderDetails = ({section}) => {
 
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
+            console.log(file)
             const fileReader = new FileReader();
-            fileReader.readAsDataURL(file.blobFile);
+            fileReader?.readAsDataURL(file.blobFile);
             fileReader.onload = () => {
                 resolve(fileReader.result);
             };
@@ -374,44 +375,55 @@ const OrderDetails = ({section}) => {
         });
     };
 
-    const handleFileUpload = async (file) => {
-        const extension = file.name.slice(file.name.lastIndexOf('.') + 1)
-        const fileBase64 = await convertToBase64(file);
-        const Base64 = fileBase64.slice(fileBase64.indexOf(',')+1).trim();
+    const handleFileUploadChange = async (file) => {
+        const extension = file[0]?.name.slice(file[0].name.lastIndexOf('.') + 1)
+        const fileBase64 = await convertToBase64(file[0]);
+        const Base64 = fileBase64.slice(fileBase64.indexOf(',') + 1).trim();
         console.log(Base64)
-        if (extension && fileBase64 &&orderId) {
+        if (extension && fileBase64 && orderId) {
             const { id: userID } = JSON.parse(localStorage.currentUser);
             setUploadFiles({
                 ...uploadFiles,
                 order_id: orderId,
                 user_id: userID,
-                uploaded_files:[
+                uploaded_files: [
                     {
                         content_type: extension,
                         data: Base64
                     },
                 ]
             })
-            fileUpload(dispatch, uploadFiles)
-                .then(response => {
-                    if(response.status === 200){
-                        newOrderFiles.splice(0, 0, response.data)
-                        setNewOrderFilesState([newOrderFiles]);
-                    }
-                });
         }
     };
 
+    const handleFileUploadSubmit = () => {
+        uploaderRef.current.start();
+        fileUpload(dispatch, uploadFiles)
+            .then(response => {
+                console.log(response)
+                if (response.status === 201) {
+                    getOrderfiles(dispatch, completedOrderID);
+                    toast.success("File uploaded Successfully!", {
+                        position: toast.POSITION.TOP_RIGHT
+                    });
+                }
+            });
+    }
+    
+    const handleOrderFileDelete = (order_file) => {
+        deleteOrderFile(dispatch, order_file.id)
+    }
+
     const handleCancelOrderSubmit = () => {
         const bodyData = {
-            order_number:order_number,
+            order_number: order_number,
             title: parseInt(cancelReasonValue),
             description: orderCancelValues.description,
         }
-        if (bodyData.description !== ""){
+        if (bodyData.description !== "") {
             cancelOrder(dispatch, orderId, bodyData)
                 .then(response => {
-                    if(response.status === 200){
+                    if (response.status === 200) {
                         setCancelOpen(false);
                     }
                 })
@@ -420,20 +432,12 @@ const OrderDetails = ({section}) => {
     const handleReserveFromWallet = () => {
         payFromWallet(dispatch, orderId)
             .then(response => {
-                if(response.status === 200){
+                if (response.status === 200) {
                     setOpen(false);
                 }
             })
     }
 
-    const sanitizeConf = {
-        allowedTags: ["h3", "h2", "b", "i", "em", "strong", "a", "p", "h1"],
-        allowedAttributes: { a: ["href"] }
-    };
-
-    if(instructions){
-        sanitizeHtml(instructions, sanitizeConf)
-    }
     React.useEffect(() => {
         getOrder(dispatch, orderID);
         getOrderfiles(dispatch, orderID)
@@ -455,228 +459,230 @@ const OrderDetails = ({section}) => {
     }, [dispatch]);
 
     useEffect(() => {
-        filterMessages(dispatch, order_number);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, order_number, message.message])
+        filterMessages(dispatch, order_number).then(response => {
+            if (response.status === 200)
+                setMessageInfo(response.data)
+        });
+    }, [dispatch, order_number, message.message]);
 
-const CustomNav = ({ active, onSelect, ...props }) => {
-    return (
-        <Nav {...props} activeKey={active} style={{marginLeft:"20px",marginTop:"-20px", fontSize:"20px"}}>
-            <Nav.Item
-                      onClick={() => { setUploadOpen(true); setActive("1"); setOpenOrderDetails(false); setMessageOpen(false)}}
-                      eventKey="1"
-                      icon={<AttachmentIcon/>}>
-                Attach files
-            </Nav.Item>
-            <Nav.Item
-                      onClick={() => { setUploadOpen(false); setActive("2");setOpenOrderDetails(true); setMessageOpen(false)}}
-                      eventKey="2"
-                      icon={<DetailIcon/>}>
-                Order Details
-            </Nav.Item>
+    const CustomNav = ({ active, onSelect, ...props }) => {
+        return (
+            <Nav {...props} activeKey={active} style={{ marginLeft: "20px", marginTop: "-20px", fontSize: "20px" }}>
                 <Nav.Item
-                    onClick={() => { setUploadOpen(false); setActive("3"); setMessageOpen(true); setOpenOrderDetails(false)}}
+                    onClick={() => { setUploadOpen(true); setActive("1"); setOpenOrderDetails(false); setMessageOpen(false) }}
+                    eventKey="1"
+                    icon={<AttachmentIcon />}>
+                    Attach files
+                </Nav.Item>
+                <Nav.Item
+                    onClick={() => { setUploadOpen(false); setActive("2"); setOpenOrderDetails(true); setMessageOpen(false) }}
+                    eventKey="2"
+                    icon={<DetailIcon />}>
+                    Order Details
+                </Nav.Item>
+                <Nav.Item
+                    onClick={() => { setUploadOpen(false); setActive("3"); setMessageOpen(true); setOpenOrderDetails(false) }}
                     eventKey="3"
-                    icon={<DetailIcon/>}>
+                    icon={<DetailIcon />}>
                     Messages
                 </Nav.Item>
-        </Nav>
-    );
-};
+            </Nav>
+        );
+    };
 
     return (
         <div style={{ marginTop: "20px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
                 <h4>Order Details</h4>
-                <div style={{display: "flex", gap: '1em'}}>
-                <Button onClick={() => setOpenWithHeader(true)} color="blue" appearance="primary">Update</Button>
+                <div style={{ display: "flex", gap: '1em' }}>
+                    <Button onClick={() => setOpenWithHeader(true)} color="blue" appearance="primary">Update</Button>
                     <Drawer open={openWithHeader} onClose={() => setOpenWithHeader(false)}>
                         <Drawer.Header>
                             <Drawer.Title>Update Order</Drawer.Title>
                         </Drawer.Header>
                         <Drawer.Body>
                             <Box as="form" onSubmit={handleUpdateOrderSubmit}>
-                            <Grid fluid>
-                                <Row>
-                                    <Col xs={12}>
-                                        <div>
-                                            <Label htmlFor="sound">Service</Label>
-                                            <select
-                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
-                                                onChange={parseServiceSelected}
-                                                name="service_id">
-                                                {serviceSelector.services.map(servicex => {
-                                                    return (
-                                                        <option
-                                                            key={servicex.id}
-                                                            selected={servicex.name === service_name}
-                                                            value={JSON.stringify(servicex)}>{servicex.name}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <Label htmlFor="sound">Type of Paper</Label>
-                                            <select
-                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
-                                                onChange={parseTypeSelected}
-                                                name="type_id"
-                                            >
-                                                {typeSelector.types.map(typex => {
-                                                    return (
-                                                        <option
-                                                            key={typex.id}
-                                                            selected={typex.name === type_name}
-                                                            value={JSON.stringify(typex)}>{typex.name}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <Label htmlFor="sound">Subject</Label>
-                                            <select
-                                                value={subject && subject.name}
-                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
-                                                onChange={handleInputChange}
-                                                name="subject_id">
-                                                {subjectSelector.subjects.map(subjectx => {
-                                                    return (
-                                                        <option
-                                                            key={subjectx.id}
-                                                            selected={subjectx.name === subject_name}
-                                                            value={JSON.stringify(subjectx)}>{subjectx.name}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <Label htmlFor="sound">Urgency</Label>
-                                            <select
-                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
-                                                onChange={parseUrgencySelected}
-                                                name="urgency_id">
-                                                {urgencySelector.urgencies.map(urgencyx => {
-                                                    return (
-                                                        <option
-                                                            key={urgencyx.id}
-                                                            selected={urgencyx.name === urgency_name}
-                                                            value={JSON.stringify(urgencyx)}>{urgencyx.name}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <Label htmlFor="sound">Style</Label>
-                                            <select
-                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
-                                                onChange={handleInputChange}
-                                                name="style_id">
-                                                {styleSelector.styles.map(stylex => {
-                                                    return (
-                                                        <option
-                                                            key={stylex.id}
-                                                            selected={stylex.name === style_name}
-                                                            value={stylex.name}>{stylex.name}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </div>
-                                    </Col>
-                                    <Col xs={12}>
-                                        <div>
-                                            <Label htmlFor="sound">Sources</Label>
-                                            <select
-                                                onChange={handleInputChange}
-                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
-                                                name="sources_id">
-                                                {sourcesSelector.sources.map(sourcex => {
-                                                    return (
-                                                        <option
-                                                            key={sourcex.id}
-                                                            selected={sourcex.name === source_name}
-                                                            value={sourcex.id}>{sourcex.name}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <Label htmlFor="sound">Spacing</Label>
-                                            <select
-                                                onChange={parseSpacingSelected}
-                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
-                                                name="spacing_id">
-                                                {spacingSelector.spacings.map(spacingx => {
-                                                    return (
-                                                        <option
-                                                            key={spacingx.id}
-                                                            selected={spacingx.name === spacing_name}
-                                                            value={JSON.stringify(spacingx)}>{spacingx.name}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <Label htmlFor="sound">Language</Label>
-                                            <select
-                                                onChange={handleInputChange}
-                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
-                                                name="language_id">
-                                                {languageSelector.languages.map(languagex => {
-                                                    return (
-                                                        <option
-                                                            key={languagex.id}
-                                                            selected={languagex.name === language_name}
-                                                            value={languagex.id}>{languagex.name}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <Label htmlFor="sound">Pages</Label>
-                                            <select
-                                                onChange={parsePageSelected}
-                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
-                                                name="pages_id"
-                                                id="pages_id">
-                                                {pageSelector.pages.map(pagex => {
-                                                    return (
-                                                        <option
-                                                            key={pagex.id}
-                                                            selected={pagex.name === page_name}
-                                                            value={JSON.stringify(pagex)}>{[pagex.name]}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <Label htmlFor="sound">Level</Label>
-                                            <select
-                                                style={{width: '100%', height:"40px", border: '1px solid #becad6',background:"white", borderRadius:"5px"}}
-                                                onChange={parseLevelSelected}
-                                                name="level_id" >
-                                                {levelSelector.levels.map(levelx => {
-                                                    return (
-                                                        <option
-                                                            key={levelx.id}
-                                                            selected={levelx.name === level_name}
-                                                            value={JSON.stringify(levelx)}>{levelx.name}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Grid>
-                            <div>
-                                <Label htmlFor="phone">Phone</Label>
-                                <Input onChange={handleChange} placeholder={phone} name="phone" type='text' mb={3} />
-                            </div>
-                            <Label htmlFor="topic">Topic*</Label>
-                            <Input onChange={handleChange} placeholder={topic} name="topic"  type='text' mb={3} />
-                            <Label htmlFor="instructions">Instructions*</ Label>
-                            <Input style={{border:"1px solid #C9BBB8 "}} as="textarea" placeholder={instructions}
-                                   rows={8} onChange={handleInstructionsChange}/><br/>
-                            <Button type="submit" color="cyan" appearance="primary">Edit Order</Button>
+                                <Grid fluid>
+                                    <Row>
+                                        <Col xs={12}>
+                                            <div>
+                                                <Label htmlFor="sound">Service</Label>
+                                                <select
+                                                    style={{ width: '100%', height: "40px", border: '1px solid #becad6', background: "white", borderRadius: "5px" }}
+                                                    onChange={parseServiceSelected}
+                                                    name="service_id">
+                                                    {serviceSelector.services.map(servicex => {
+                                                        return (
+                                                            <option
+                                                                key={servicex.id}
+                                                                selected={servicex.name === service_name}
+                                                                value={JSON.stringify(servicex)}>{servicex.name}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <Label htmlFor="sound">Type of Paper</Label>
+                                                <select
+                                                    style={{ width: '100%', height: "40px", border: '1px solid #becad6', background: "white", borderRadius: "5px" }}
+                                                    onChange={parseTypeSelected}
+                                                    name="type_id"
+                                                >
+                                                    {typeSelector.types.map(typex => {
+                                                        return (
+                                                            <option
+                                                                key={typex.id}
+                                                                selected={typex.name === type_name}
+                                                                value={JSON.stringify(typex)}>{typex.name}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <Label htmlFor="sound">Subject</Label>
+                                                <select
+                                                    value={subject && subject.name}
+                                                    style={{ width: '100%', height: "40px", border: '1px solid #becad6', background: "white", borderRadius: "5px" }}
+                                                    onChange={handleInputChange}
+                                                    name="subject_id">
+                                                    {subjectSelector.subjects.map(subjectx => {
+                                                        return (
+                                                            <option
+                                                                key={subjectx.id}
+                                                                selected={subjectx.name === subject_name}
+                                                                value={JSON.stringify(subjectx)}>{subjectx.name}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <Label htmlFor="sound">Urgency</Label>
+                                                <select
+                                                    style={{ width: '100%', height: "40px", border: '1px solid #becad6', background: "white", borderRadius: "5px" }}
+                                                    onChange={parseUrgencySelected}
+                                                    name="urgency_id">
+                                                    {urgencySelector.urgencies.map(urgencyx => {
+                                                        return (
+                                                            <option
+                                                                key={urgencyx.id}
+                                                                selected={urgencyx.name === urgency_name}
+                                                                value={JSON.stringify(urgencyx)}>{urgencyx.name}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <Label htmlFor="sound">Style</Label>
+                                                <select
+                                                    style={{ width: '100%', height: "40px", border: '1px solid #becad6', background: "white", borderRadius: "5px" }}
+                                                    onChange={handleInputChange}
+                                                    name="style_id">
+                                                    {styleSelector.styles.map(stylex => {
+                                                        return (
+                                                            <option
+                                                                key={stylex.id}
+                                                                selected={stylex.name === style_name}
+                                                                value={stylex.name}>{stylex.name}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                            </div>
+                                        </Col>
+                                        <Col xs={12}>
+                                            <div>
+                                                <Label htmlFor="sound">Sources</Label>
+                                                <select
+                                                    onChange={handleInputChange}
+                                                    style={{ width: '100%', height: "40px", border: '1px solid #becad6', background: "white", borderRadius: "5px" }}
+                                                    name="sources_id">
+                                                    {sourcesSelector.sources.map(sourcex => {
+                                                        return (
+                                                            <option
+                                                                key={sourcex.id}
+                                                                selected={sourcex.name === source_name}
+                                                                value={sourcex.id}>{sourcex.name}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <Label htmlFor="sound">Spacing</Label>
+                                                <select
+                                                    onChange={parseSpacingSelected}
+                                                    style={{ width: '100%', height: "40px", border: '1px solid #becad6', background: "white", borderRadius: "5px" }}
+                                                    name="spacing_id">
+                                                    {spacingSelector.spacings.map(spacingx => {
+                                                        return (
+                                                            <option
+                                                                key={spacingx.id}
+                                                                selected={spacingx.name === spacing_name}
+                                                                value={JSON.stringify(spacingx)}>{spacingx.name}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <Label htmlFor="sound">Language</Label>
+                                                <select
+                                                    onChange={handleInputChange}
+                                                    style={{ width: '100%', height: "40px", border: '1px solid #becad6', background: "white", borderRadius: "5px" }}
+                                                    name="language_id">
+                                                    {languageSelector.languages.map(languagex => {
+                                                        return (
+                                                            <option
+                                                                key={languagex.id}
+                                                                selected={languagex.name === language_name}
+                                                                value={languagex.id}>{languagex.name}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <Label htmlFor="sound">Pages</Label>
+                                                <select
+                                                    onChange={parsePageSelected}
+                                                    style={{ width: '100%', height: "40px", border: '1px solid #becad6', background: "white", borderRadius: "5px" }}
+                                                    name="pages_id"
+                                                    id="pages_id">
+                                                    {pageSelector.pages.map(pagex => {
+                                                        return (
+                                                            <option
+                                                                key={pagex.id}
+                                                                selected={pagex.name === page_name}
+                                                                value={JSON.stringify(pagex)}>{[pagex.name]}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <Label htmlFor="sound">Level</Label>
+                                                <select
+                                                    style={{ width: '100%', height: "40px", border: '1px solid #becad6', background: "white", borderRadius: "5px" }}
+                                                    onChange={parseLevelSelected}
+                                                    name="level_id" >
+                                                    {levelSelector.levels.map(levelx => {
+                                                        return (
+                                                            <option
+                                                                key={levelx.id}
+                                                                selected={levelx.name === level_name}
+                                                                value={JSON.stringify(levelx)}>{levelx.name}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Grid>
+                                <div>
+                                    <Label htmlFor="phone">Phone</Label>
+                                    <Input onChange={handleChange} placeholder={phone} name="phone" type='text' mb={3} />
+                                </div>
+                                <Label htmlFor="topic">Topic*</Label>
+                                <Input onChange={handleChange} placeholder={topic} name="topic" type='text' mb={3} />
+                                <Label htmlFor="instructions">Instructions*</ Label>
+                                <Input style={{ border: "1px solid #C9BBB8 " }} as="textarea" placeholder={instructions}
+                                    rows={8} onChange={handleInstructionsChange} /><br />
+                                <Button type="submit" color="cyan" appearance="primary">Edit Order</Button>
                             </Box>
                         </Drawer.Body>
                     </Drawer>
@@ -684,19 +690,19 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                         <Modal.Header>
                             <Modal.Title>Cancel Order #{order_number}</Modal.Title>
                         </Modal.Header>
-                        <Divider/>
+                        <Divider />
                         <Modal.Body>
                             <h6>Cancel Reasons</h6>
-                            <select onChange={handleCancelReasonsChange} style={{background:"white", borderRadius:"5px", width:"250px", height:"30px"}}>
+                            <select onChange={handleCancelReasonsChange} style={{ background: "white", borderRadius: "5px", width: "250px", height: "30px" }}>
                                 {cancelled_reasons?.map((cancelled_reason) => (
                                     <option key={cancelled_reason.id} value={cancelled_reason.id}>{cancelled_reason.name}</option>
                                 ))}
-                            </select><br /><br/>
+                            </select><br /><br />
                             <h6>Description</h6>
                             <textarea
                                 name="description"
                                 onChange={handleOrderCancelChange}
-                                style={{ border: '1px solid #becad6', width: "100%", padding:"10px", borderRadius: "5px", }}
+                                style={{ border: '1px solid #becad6', width: "100%", padding: "10px", borderRadius: "5px", }}
                                 rows={4}
                                 placeholder="Description" /><br />
                         </Modal.Body>
@@ -709,24 +715,24 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                             </Button>
                         </Modal.Footer>
                     </Modal>
-                <Button onClick={handleCancelOpen} color="yellow" appearance="primary">Cancel</Button>
-                <Button color="green" onClick={handleOpen} appearance="primary">Reserve Payment</Button>
+                    <Button onClick={handleCancelOpen} color="yellow" appearance="primary">Cancel</Button>
+                    <Button color="green" onClick={handleOpen} appearance="primary">Reserve Payment</Button>
                     <Modal open={open} onClose={handleClose}>
                         {isLoading && (
                             <BoxLoading />
                         )}
                         <Modal.Header>
                             <Modal.Title><h5>Reserve Payment</h5></Modal.Title>
-                            <Divider/>
+                            <Divider />
                         </Modal.Header>
                         <Modal.Body>
-                            <p style={{fontSize:"18px"}}>Choose one of the options to reserve the payment for the order.</p>
-                            <div style={{display: "flex", justifyContent: "space-between", marginTop:"40px", marginLeft:"20px", marginRight:"20px"}}>
+                            <p style={{ fontSize: "18px" }}>Choose one of the options to reserve the payment for the order.</p>
+                            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "40px", marginLeft: "20px", marginRight: "20px" }}>
                                 <Button color="green" appearance="primary" onClick={handleReserveFromWallet}>Reserve from your Wallet</Button>
                                 <Button color="cyan" appearance="primary" onClick={handleReserveOrder}>Reserve with Paypal</Button>
                             </div>
                         </Modal.Body>
-                        <Divider/>
+                        <Divider />
                         <Modal.Footer>
                             <Button onClick={handleClose} appearance="ghost">
                                 Close
@@ -737,59 +743,76 @@ const CustomNav = ({ active, onSelect, ...props }) => {
             </div>
             <Divider />
             <CustomNav appearance="tabs" active={active} onSelect={setActive} />
-            {uploadOpen && (
+           {uploadOpen && (
                 <div>
-                <Grid fluid>
-                    <Row>
-                        <Col xs={24} sm={24} md={24}>
-                            <div style={{padding:"10px"}}>
-                                <Uploader
-                                    listType="picture-text"
-                                    autoUpload={true}
-                                    multiple
-                                    onUpload={(file) => handleFileUpload(file)}
-                                >
-                                    <div style={{width: "100%",background:"#EAEEF3", lineHeight: '100px'}}>Click or Drag files to this area to upload</div>
-                                </Uploader>
-                            </div>
-                            <Panel>
-                                <h6>Uploaded files</h6>
-                            <table style={styles.table}>
-                                <tr style={{background:"#fdaa8f"}}>
-                                    <th style={{padding:"10px", textAlign:"left"}}>File Name</th>
-                                    <th>Uploaded At</th>
-                                </tr>
-                                {newOrderFilesState && newOrderFilesState.map((order_file) => (
-                                    <tr style={{borderRadius:"10px"}}>
-                                        <td style={styles.table.td}>
-                                            <strong>
-                                                <Avatar
-                                                    style={{background:"#17c671"}}
-                                                    circle
-                                                    size="sm">TRP
-                                                </Avatar>
-                                                {"     "}
-                                                {order_file.attached}
-                                            </strong>
-                                        </td>
-                                        <td style={styles.table.tdx}><Button color="red" appearance="primary">Delete</Button></td>
-                                    </tr>
-                                ))}
-                            </table>
-                            </Panel>
-                        </Col>
-                    </Row>
-                </Grid>
+                    {orderLoading && (
+                        <BoxLoading />
+                    )}
+                    <ToastContainer />
+                    <Grid fluid>
+                        <Row>
+                            <Col xs={24} sm={24} md={24}>
+                                <div style={{ padding: "10px" }}>
+                                    <Uploader
+                                        listType="picture-text"
+                                        ref={uploaderRef}
+                                        value={uploadFiles}
+                                        autoUpload={false}
+                                        removable={uploadFiles.length >= 2 && true}
+                                        onChange={(file) => handleFileUploadChange(file)}
+                                    >
+                                        <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag a file to this area to upload</div>
+                                    </Uploader>
+                                    <Divider />
+                                    <Button style={{ width: "100%" }} color="green" appearance="primary" onClick={handleFileUploadSubmit}>
+                                        Start Upload
+                                    </Button>
+                                </div>
+                                <Panel>
+                                    <h6>Uploaded files</h6>
+                                    <table style={styles.table}>
+                                        <tr style={{ background: "#fdaa8f" }}>
+                                            <th style={{ padding: "10px", textAlign: "left" }}>File Name</th>
+                                            <th>Uploaded At</th>
+                                        </tr>
+                                        {order_files && order_files.map((order_file) => (
+                                            <tr style={{ borderRadius: "10px" }}>
+                                                <td style={styles.table.td}>
+                                                    <strong>
+                                                        <Avatar
+                                                            style={{ background: "#17c671" }}
+                                                            circle
+                                                            size="sm">TRP
+                                                        </Avatar>
+                                                        {"     "}
+                                                        {order_file.attached}
+                                                    </strong>
+                                                </td>
+                                                <td style={styles.table.tdx}>
+                                                    <Button
+                                                        color="red"
+                                                        onClick={() => handleOrderFileDelete(order_file)}
+                                                        appearance="primary">
+                                                        Delete
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </table>
+                                </Panel>
+                            </Col>
+                        </Row>
+                    </Grid>
                 </div>
             )}
             {openOrderDetails && (
                 <Grid fluid>
                     <Row>
                         <Col xs={24} sm={24} md={16}>
-                            <Panel style={{marginTop: "-10px"}}>
-                                <div style={{background: "#fdaa8f", height:'40px', padding: "10px"}}><h5>Order #{order_number}</h5></div>
+                            <Panel style={{ marginTop: "-10px" }}>
+                                <div style={{ background: "#fdaa8f", height: '40px', padding: "10px" }}><h5>Order #{order_number}</h5></div>
                                 <table style={styles.table}>
-                                    <tr style={{borderRadius:"10px"}}>
+                                    <tr style={{ borderRadius: "10px" }}>
                                         <td style={styles.table.td}><strong>Order Number</strong></td>
                                         <td style={styles.table.tdx}>{order_number}</td>
                                         <td style={styles.table.td}><strong>Client</strong></td>
@@ -849,7 +872,7 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                             </Panel>
                         </Col>
                         <Col xs={24} sm={24} md={8}>
-                            <div style={{background: "#fdaa8f", height:'40px', marginTop:"10px", padding: "10px"}}><h5>Order Instructions</h5></div>
+                            <div style={{ background: "#fdaa8f", height: '40px', marginTop: "10px", padding: "10px" }}><h5>Order Instructions</h5></div>
                             <ContentEditable
                                 className="editable"
                                 style={{
@@ -867,21 +890,21 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                     </Row>
                 </Grid>
             )}
-            {messageOpen && (
+           {messageOpen && (
                 <div>
                     <Panel>
                         <h5>Order Messages</h5>
                         <div
                             id="messages"
-                            style={{ padding:"10px" ,borderRadius:"5px", border:"2px solid #98b9b6"}}>
+                            style={{ padding: "10px", borderRadius: "5px", border: "2px solid #98b9b6" }}>
                             <ScrollToBottom className={ROOT_CSS}>
-                                {messageInfo.length === 0  && (
-                                    <center><h5 style={{marginTop:"20px"}}>No order messages</h5></center>
+                                {messageInfo.length === 0 && (
+                                    <center><h5 style={{ marginTop: "20px" }}>No order messages</h5></center>
                                 )}
                                 {messageInfo?.map((message) => (
-                                    <div style={{display:"flex", justifyContent:"space-between"}}>
+                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
                                         {message.receiver_id === 7 ?
-                                            <div style={{marginBottom: "15px"}}>
+                                            <div style={{ marginBottom: "15px" }}>
                                                 <Tag style={{
                                                     width: "300px",
                                                     color: "black",
@@ -889,22 +912,23 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                                                     background: "whitesmoke",
                                                     padding: "10px"
                                                 }}>
-                                                    {message.message}<br/>
-                                                    <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
+                                                    {message.message}<br />
+                                                    <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
                                                 </Tag>
                                             </div>
-                                            : (<div/>)
+                                            : (<div />)
                                         }
                                         {message.receiver_id !== 7 && (
                                             <Tag style={{
-                                                width:"300px",
-                                                margin:"10px",
-                                                color:"white",
-                                                borderRadius:"15px",
-                                                background:"#6da8a2",
-                                                padding:"10px"}}>
-                                                { message.message }<br/>
-                                                <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
+                                                width: "300px",
+                                                margin: "10px",
+                                                color: "white",
+                                                borderRadius: "15px",
+                                                background: "#6da8a2",
+                                                padding: "10px"
+                                            }}>
+                                                {message.message}<br />
+                                                <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
                                             </Tag>
                                         )}
                                     </div>
@@ -916,8 +940,8 @@ const CustomNav = ({ active, onSelect, ...props }) => {
                         <Input
                             onChange={handleCreateMessageChange}
                             value={message.message}
-                            style={{ border:"2px solid #6da8a2", padding:"20px"}}
-                            placeholder="Enter message"/>
+                            style={{ border: "2px solid #6da8a2", padding: "20px" }}
+                            placeholder="Enter message" />
                         <br />
                         <Button
                             onClick={handleCreateMessageSubmit}
@@ -941,14 +965,14 @@ const styles = {
             fontFamily: 'Quicksand, sans-serif',
             border: '1px solid #dddddd',
             textAlign: 'left',
-            fontSize:"16px",
+            fontSize: "16px",
             padding: '8px',
         },
         tdx: {
             fontFamily: 'Quicksand, sans-serif',
             border: '1px solid #dddddd',
             textAlign: 'left',
-            fontSize:"16px",
+            fontSize: "16px",
             padding: '8px',
             color: "#333333"
         },

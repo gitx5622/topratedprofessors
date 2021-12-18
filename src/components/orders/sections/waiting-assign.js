@@ -20,6 +20,7 @@ const WaitingAssign = () => {
         }
     } = orderSelector;
 
+
     const walletSelector = useSelector(state => state.walletState);
     const { isLoading: walletLoading } = walletSelector;
 
@@ -54,7 +55,13 @@ const WaitingAssign = () => {
                             <tr>
                                 <td style={styles.table.td}>{data.id}</td>
                                 <td style={styles.table.td}>
-                                    <Link href={`/dashboard/order/${data.id}`}>
+                                    <Link href={
+                                        data.status === "approved" ? `/dashboard/order/completed/${data.id}`:
+                                        data.status === "completed" ? `/dashboard/order/completed/${data.id}`:
+                                        data.status === "revision" ? `/dashboard/order/revision/${data.id}`:
+                                        data.status === "rejected" ? `/dashboard/order/cancelled/${data.id}`:
+                                        `/dashboard/order/inprogress/${data.id}`
+                                        }>
                                         <a>{data.order_number}</a>
                                     </Link>
                                 </td>

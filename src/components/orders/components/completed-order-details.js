@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {useRouter} from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import { BoxLoading } from 'react-loadingg';
 import { ToastContainer, toast } from 'react-toastify';
-import {Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Message, Panel, Rate, Row, Uploader} from 'rsuite';
+import { Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Message, Panel, Rate, Row, Uploader } from 'rsuite';
 import {
     approveOrder,
     deleteOrderFile,
@@ -12,12 +12,12 @@ import {
     getOrderfiles,
     getRejectReasons, orderRevision, rejectOrder
 } from 'dataStore/actions/ordersAction';
-import {formatDate, formatDeadline} from '../../../utils/dates';
+import { formatDate, formatDeadline } from '../../../utils/dates';
 import DetailIcon from '@rsuite/icons/Detail';
 import { css } from '@emotion/css';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import AttachmentIcon from '@rsuite/icons/Attachment';
-import {createMessage, filterMessages} from 'dataStore/actions/messagesAction';
+import { createMessage, filterMessages } from 'dataStore/actions/messagesAction';
 
 
 const OrderCompletedDetails = ({ section }) => {
@@ -77,6 +77,7 @@ const OrderCompletedDetails = ({ section }) => {
         reject_reasons,
     } = orderSelector;
 
+
     const router = useRouter();
     const { completedOrderID } = router.query;
     const dispatch = useDispatch();
@@ -117,7 +118,7 @@ const OrderCompletedDetails = ({ section }) => {
             order_number: order_number
         }
         console.log(bodyData)
-        if(bodyData.message !== ""){
+        if (bodyData.message !== "") {
             createMessage(dispatch, bodyData)
                 .then(response => {
                     newMessages.splice(0, 0, response.data);
@@ -135,7 +136,7 @@ const OrderCompletedDetails = ({ section }) => {
         console.log(bodyData);
         if (bodyData.order_number !== "" && bodyData.value !== "" && bodyData.description !== "") {
             approveOrder(dispatch, orderId, bodyData).then(response => {
-                if(response.status === 200){
+                if (response.status === 200) {
                     setRatingSuccess("Thank you for reviewing your order.Your order has been approved")
                     setReleaseFundsOpen(false);
                 }
@@ -188,7 +189,7 @@ const OrderCompletedDetails = ({ section }) => {
         fileUpload(dispatch, uploadFiles)
             .then(response => {
                 console.log(response)
-                if(response.status === 201){
+                if (response.status === 201) {
                     getOrderfiles(dispatch, completedOrderID);
                     toast.success("File uploaded Successfully!", {
                         position: toast.POSITION.TOP_RIGHT
@@ -196,20 +197,24 @@ const OrderCompletedDetails = ({ section }) => {
                 }
             });
     }
+
     const handleOrderFileDelete = (order_file) => {
-        deleteOrderFile(dispatch, order_file.id);
+        deleteOrderFile(dispatch, order_file.id)
     }
-     const handleRejectReasonsChange = (event) => {
+
+    const handleRejectReasonsChange = (event) => {
         setRejectReasonValue(event.target.value)
-     }
-     const handleRejectOrderChange = (event) => {
-         let name = event.target.name;
-         let value = event.target.value;
-         setRejectOrderValues({
-             ...rejectOrderValues,
-             [name]: value
-         })
-     }
+    }
+
+    const handleRejectOrderChange = (event) => {
+        let name = event.target.name;
+        let value = event.target.value;
+        setRejectOrderValues({
+            ...rejectOrderValues,
+            [name]: value
+        })
+    }
+
     const handleOrderRevisonChange = (event) => {
         let name = event.target.name;
         let value = event.target.value;
@@ -218,31 +223,32 @@ const OrderCompletedDetails = ({ section }) => {
             [name]: value
         })
     }
-     const handleRejectOrderSubmit = () => {
+    
+    const handleRejectOrderSubmit = () => {
         const bodyData = {
-            order_number:order_number,
+            order_number: order_number,
             reason_id: parseInt(reject_reason_value),
             description: rejectOrderValues.description,
         }
-        if (bodyData.description !== ""){
+        if (bodyData.description !== "") {
             rejectOrder(dispatch, orderId, bodyData)
                 .then(response => {
-                   console.log(response);
+                    console.log(response);
                 })
         }
-     }
-     const handleOrderRevisionSubmit =() => {
-         const bodyData = {
-             order_number:order_number,
-             instructions: orderRevisionValues.instructions,
-         }
-         if (bodyData.description !== ""){
-             orderRevision(dispatch, orderId, bodyData)
-                 .then(response => {
-                     setRequestRevisionOpen(false);
-                 })
-         }
-     }
+    }
+    const handleOrderRevisionSubmit = () => {
+        const bodyData = {
+            order_number: order_number,
+            instructions: orderRevisionValues.instructions,
+        }
+        if (bodyData.description !== "") {
+            orderRevision(dispatch, orderId, bodyData)
+                .then(response => {
+                    setRequestRevisionOpen(false);
+                })
+        }
+    }
 
     useEffect(() => {
         getOrder(dispatch, completedOrderID);
@@ -252,20 +258,20 @@ const OrderCompletedDetails = ({ section }) => {
 
     useEffect(() => {
         filterMessages(dispatch, order_number).then(response => {
-            if(response.status === 200)
+            if (response.status === 200)
                 setMessageInfo(response.data)
         });
     }, [dispatch, order_number, message.message]);
 
     useEffect(() => {
         getRejectReasons(dispatch);
-    },[dispatch])
+    }, [dispatch])
 
     return (
         <div style={{ marginTop: "20px" }}>
             <div>
                 <h4>Order Details</h4>
-                { ratingSuccess  && (
+                {ratingSuccess && (
                     <Message type="success" closable>{ratingSuccess}</Message>
                 )}
             </div>
@@ -316,41 +322,41 @@ const OrderCompletedDetails = ({ section }) => {
                                         <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag a file to this area to upload</div>
                                     </Uploader>
                                     <Divider />
-                                    <Button style={{width:"100%"}} color="green" appearance="primary"  onClick={handleFileUploadSubmit}>
+                                    <Button style={{ width: "100%" }} color="green" appearance="primary" onClick={handleFileUploadSubmit}>
                                         Start Upload
                                     </Button>
                                 </div>
                                 <Panel>
-                                <h6>Uploaded files</h6>
-                                <table style={styles.table}>
-                                    <tr style={{ background: "#fdaa8f" }}>
-                                        <th style={{ padding: "10px", textAlign: "left" }}>File Name</th>
-                                        <th>Uploaded At</th>
-                                    </tr>
-                                    {order_files && order_files.map((order_file) => (
-                                        <tr style={{ borderRadius: "10px" }}>
-                                            <td style={styles.table.td}>
-                                                <strong>
-                                                    <Avatar
-                                                        style={{ background: "#17c671" }}
-                                                        circle
-                                                        size="sm">TRP
-                                                    </Avatar>
-                                                    {"     "}
-                                                    {order_file.attached}
-                                                </strong>
-                                            </td>
-                                            <td style={styles.table.tdx}>
-                                                <Button
-                                                    color="red"
-                                                    onClick={() => handleOrderFileDelete(order_file)}
-                                                    appearance="primary">
-                                                    Delete
-                                                </Button>
-                                            </td>
+                                    <h6>Uploaded files</h6>
+                                    <table style={styles.table}>
+                                        <tr style={{ background: "#fdaa8f" }}>
+                                            <th style={{ padding: "10px", textAlign: "left" }}>File Name</th>
+                                            <th>Uploaded At</th>
                                         </tr>
-                                    ))}
-                                </table>
+                                        {order_files && order_files.map((order_file) => (
+                                            <tr style={{ borderRadius: "10px" }}>
+                                                <td style={styles.table.td}>
+                                                    <strong>
+                                                        <Avatar
+                                                            style={{ background: "#17c671" }}
+                                                            circle
+                                                            size="sm">TRP
+                                                        </Avatar>
+                                                        {"     "}
+                                                        {order_file.attached}
+                                                    </strong>
+                                                </td>
+                                                <td style={styles.table.tdx}>
+                                                    <Button
+                                                        color="red"
+                                                        onClick={() => handleOrderFileDelete(order_file)}
+                                                        appearance="primary">
+                                                        Delete
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </table>
                                 </Panel>
                             </Col>
                         </Row>
@@ -427,7 +433,7 @@ const OrderCompletedDetails = ({ section }) => {
                         </Col>
                         <Col xs={24} sm={24} md={8}>
                             <div style={{ background: "#fdaa8f", height: '40px', marginTop: "10px", padding: "10px" }}><h5>Order Instructions</h5></div>
-                            <pre style={{color:"black", fontWeight:600}}>{instructions && instructions
+                            <pre style={{ color: "black", fontWeight: 600 }}>{instructions && instructions
                                 .replace(/<style([\s\S]*?)<\/style>/gi, '')
                                 .replace(/<script([\s\S]*?)<\/script>/gi, '')
                                 .replace(/<\/div>/ig, '\n')
@@ -448,67 +454,68 @@ const OrderCompletedDetails = ({ section }) => {
             {messageOpen && (
                 <div>
                     <Panel>
-                    <h5>Order Messages</h5>
-                <div
-                     id="messages"
-                     style={{ padding:"10px" ,borderRadius:"5px", border:"2px solid #98b9b6"}}>
-                        <ScrollToBottom className={ROOT_CSS}>
-                            {messageInfo.length === 0  && (
-                                <center><h5 style={{marginTop:"20px"}}>No order messages</h5></center>
-                            )}
-                    {messageInfo?.map((message) => (
-                        <div style={{display:"flex", justifyContent:"space-between"}}>
-                            {message.receiver_id === 7 ?
-                                <div style={{marginBottom: "15px"}}>
-                                    <Tag style={{
-                                        width: "300px",
-                                        color: "black",
-                                        borderRadius: "15px",
-                                        background: "whitesmoke",
-                                        padding: "10px"
-                                    }}>
-                                        {message.message}<br/>
-                                        <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
-                                    </Tag>
-                                </div>
-                                : (<div/>)
-                            }
-                            {message.receiver_id !== 7 && (
-                                <Tag style={{
-                                    width:"300px",
-                                    margin:"10px",
-                                    color:"white",
-                                    borderRadius:"15px",
-                                    background:"#6da8a2",
-                                    padding:"10px"}}>
-                                    { message.message }<br/>
-                                    <p style={{float:"right"}}>{formatDate(message.created_at)}</p>
-                                </Tag>
-                            )}
+                        <h5>Order Messages</h5>
+                        <div
+                            id="messages"
+                            style={{ padding: "10px", borderRadius: "5px", border: "2px solid #98b9b6" }}>
+                            <ScrollToBottom className={ROOT_CSS}>
+                                {messageInfo.length === 0 && (
+                                    <center><h5 style={{ marginTop: "20px" }}>No order messages</h5></center>
+                                )}
+                                {messageInfo?.map((message) => (
+                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                        {message.receiver_id === 7 ?
+                                            <div style={{ marginBottom: "15px" }}>
+                                                <Tag style={{
+                                                    width: "300px",
+                                                    color: "black",
+                                                    borderRadius: "15px",
+                                                    background: "whitesmoke",
+                                                    padding: "10px"
+                                                }}>
+                                                    {message.message}<br />
+                                                    <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
+                                                </Tag>
+                                            </div>
+                                            : (<div />)
+                                        }
+                                        {message.receiver_id !== 7 && (
+                                            <Tag style={{
+                                                width: "300px",
+                                                margin: "10px",
+                                                color: "white",
+                                                borderRadius: "15px",
+                                                background: "#6da8a2",
+                                                padding: "10px"
+                                            }}>
+                                                {message.message}<br />
+                                                <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
+                                            </Tag>
+                                        )}
+                                    </div>
+                                )).reverse()}
+                            </ScrollToBottom>
                         </div>
-                    )).reverse()}
-                        </ScrollToBottom>
-                </div>
                     </Panel>
                     <Panel>
-                    <Input
-                        onChange={handleCreateMessageChange}
-                        value={message.message}
-                        style={{ border:"2px solid #6da8a2", padding:"20px"}}
-                        placeholder="Enter message"/>
-                    <br />
-                    <Button
-                        onClick={handleCreateMessageSubmit}
-                        color="blue"
-                        appearance="primary">
-                        Send
-                    </Button>
+                        <Input
+                            onChange={handleCreateMessageChange}
+                            value={message.message}
+                            style={{ border: "2px solid #6da8a2", padding: "20px" }}
+                            placeholder="Enter message" />
+                        <br />
+                        <Button
+                            onClick={handleCreateMessageSubmit}
+                            color="blue"
+                            appearance="primary">
+                            Send
+                        </Button>
                     </Panel>
                 </div>
             )}
             {downloadOpen && (
                 <Panel>
-                    <div style={{ display: "flex", float:"right", gap:"2em", marginTop: "30px", marginBottom:"10px" }}>
+                    <div style={{ display: "flex", float: "right", gap: "2em", marginTop: "30px", marginBottom: "10px" }}>
                         <Button onClick={handleRevisonOpen} color="blue" appearance="primary">Request Revision</Button>
                         <Modal open={requestRevisionOpen} onClose={handleRevisionClose}>
                             <Modal.Header>
@@ -519,7 +526,7 @@ const OrderCompletedDetails = ({ section }) => {
                                 <textarea
                                     name="instructions"
                                     onChange={handleOrderRevisonChange}
-                                    style={{ border: '1px solid #becad6', width: "100%", padding:"10px", borderRadius: "5px", }}
+                                    style={{ border: '1px solid #becad6', width: "100%", padding: "10px", borderRadius: "5px", }}
                                     rows={4}
                                     placeholder="Textarea" /><br />
                             </Modal.Body>
@@ -544,7 +551,7 @@ const OrderCompletedDetails = ({ section }) => {
                                 <textarea
                                     name="description"
                                     onChange={handleReleaseFundsChange}
-                                    style={{ border: '1px solid #becad6', width: "100%", padding:"10px", borderRadius: "5px", }}
+                                    style={{ border: '1px solid #becad6', width: "100%", padding: "10px", borderRadius: "5px", }}
                                     rows={4}
                                     placeholder="Textarea" /><br />
                             </Modal.Body>
@@ -568,7 +575,7 @@ const OrderCompletedDetails = ({ section }) => {
                                     there is anything you need changed, we recommend that you ask for revision.
                                 </p><br />
                                 <h5>Reason:</h5>
-                                <select onChange={handleRejectReasonsChange} style={{background:"white", borderRadius:"5px", width:"250px", height:"30px"}}>
+                                <select onChange={handleRejectReasonsChange} style={{ background: "white", borderRadius: "5px", width: "250px", height: "30px" }}>
                                     {reject_reasons?.map((reject_reason) => (
                                         <option key={reject_reason.id} value={reject_reason.id}>{reject_reason.name}</option>
                                     ))}
@@ -577,7 +584,7 @@ const OrderCompletedDetails = ({ section }) => {
                                 <textarea
                                     name="description"
                                     onChange={handleRejectOrderChange}
-                                    style={{ border: '1px solid #becad6', width: "100%", padding:"10px", borderRadius: "5px", }}
+                                    style={{ border: '1px solid #becad6', width: "100%", padding: "10px", borderRadius: "5px", }}
                                     rows={4}
                                     placeholder="Textarea" /><br />
                             </Modal.Body>

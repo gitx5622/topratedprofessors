@@ -20,6 +20,8 @@ const Cancelled = () => {
         }
     } = orderSelector;
 
+    console.log(cancelled_orders)
+
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
         getCancelledOrders(dispatch, userId, activePage, per)

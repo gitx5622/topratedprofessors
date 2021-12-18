@@ -43,9 +43,10 @@ const AllOrders = () => {
                     <table style={styles.table}>
                         <tr>
                             <th style={styles.table.th}>#</th>
-                            <th style={styles.table.th}>Order ID</th>
+                            <th style={styles.table.th}>Order Number</th>
                             <th style={styles.table.th}>Deadline</th>
-                            <th style={styles.table.th}>Type</th>
+                            <th style={styles.table.th}>Subject</th>
+                            <th style={styles.table.th}>Type of Paper</th>
                             <th style={styles.table.th}>Promo Code</th>
                             <th style={styles.table.th}>Pages</th>
                             <th style={styles.table.th}>Amount</th>
@@ -61,10 +62,11 @@ const AllOrders = () => {
                                                 data.status === "approved" ? `/dashboard/order/completed/${data.id}`:
                                                 data.status === "revision" ? `/dashboard/order/revision/${data.id}`:
                                                 `/dashboard/order/${data.id}`}>
-                                        <a>{data.order_number}</a>
+                                        <a><center>{data.order_number}</center></a>
                                     </Link>
                                 </td>
                                 <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
+                                <td style={styles.table.td}>{data && data.subject.name}</td>
                                 <td style={styles.table.td}>{data && data.type.name}</td>
                                 <td style={styles.table.td}>
                                     <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>

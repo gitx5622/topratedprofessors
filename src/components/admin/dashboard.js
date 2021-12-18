@@ -14,6 +14,7 @@ import InProgress from 'components/orders/sections/in-progress';
 import OrderCompletedDetails from 'components/orders/components/completed-order-details';
 import CancelledRejectedDetails from "../orders/components/cancelledRejected";
 import RevisionDetails from "../orders/components/revisionDetails";
+import InProgressDetails from 'components/orders/components/inProgressDetails';
 
 const Dashboard = ({ section }) => {
     const renderOrderPages = () => {
@@ -87,6 +88,12 @@ const Dashboard = ({ section }) => {
             case 'revision-order':
                 return (
                     <RevisionDetails
+                        section={section}
+                    />
+                );
+            case 'inprogress-order':
+                return (
+                    <InProgressDetails
                         section={section}
                     />
                 );

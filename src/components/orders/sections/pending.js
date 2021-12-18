@@ -73,9 +73,11 @@ const Pending = () => {
                     <tr>
                         <td style={styles.table.td}>{data.id}</td>
                         <td style={styles.table.td}>
+                            <center>
                             <Link href={`/dashboard/order/${data.id}`}>
                                 <a>{data.order_number}</a>
                             </Link>
+                            </center>
                         </td>
                         <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
                         <td style={styles.table.td}>{data.subject && (data.subject.name)}</td>

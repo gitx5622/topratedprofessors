@@ -37,10 +37,11 @@ const Completed = () => {
                     <th style={styles.table.th}>ID</th>
                     <th style={styles.table.th}>Order Number</th>
                     <th style={styles.table.th}>Deadline</th>
-                    <th style={styles.table.th}>Type of Paper</th>
                     <th style={styles.table.th}>Subject</th>
+                    <th style={styles.table.th}>Type of Paper</th>
                     <th style={styles.table.th}>Pages</th>
                     <th style={styles.table.th}>Amount</th>
+                    <th style={styles.table.th}>Status</th>
                 </tr>
                 {completed_orders?.map((data) => (
                     <tr>
@@ -51,15 +52,25 @@ const Completed = () => {
                             </Link>
                         </td>
                         <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
-                        <td style={styles.table.td}>{data.type && (data.type.name)}</td>
                         <td style={styles.table.td}>
                             <center><div style={{color:"green"}}>{data.subject && data.subject.name}</div>
                             </center>
                         </td>
+                        <td style={styles.table.td}>{data.type && (data.type.name)}</td>
                         <td style={styles.table.td}>
                             {data.page && (data.page.name)}
                         </td>
                         <td style={styles.table.td}>$ {data.amount.toFixed(2)}</td>
+                        <td style={styles.table.td}>
+                            <Tag color={
+                                    data.status === "approved" ? "green" :
+                                    data.status === "completed" ? "blue" :
+                                    data.status === "rejected" ? "orange":
+                                    data.status === "cancelled" ? "red": ""
+                                }
+                            >
+                                {data.status}</Tag>
+                        </td>
                     </tr>
                 ))}
             </table><br/>

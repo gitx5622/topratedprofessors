@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Grid, Row, Col, Divider, Input, Steps, ButtonGroup, InputGroup, Panel, Message } from 'rsuite';
 import { useDispatch, useSelector } from "react-redux";
 import { Label, Select, Button } from 'theme-ui';
@@ -12,11 +12,9 @@ import { getUrgencies } from "../../../dataStore/actions/urgenciesAction";
 import { getServices } from "../../../dataStore/actions/servicesAction";
 import { getLanguages } from "../../../dataStore/actions/languagesAction";
 import { getSpacing } from "../../../dataStore/actions/spacingsAction";
-import { createOrders } from "../../../dataStore/actions/ordersAction";
-import ContentEditable from "react-contenteditable";
+import { createOrders, getOrders } from "../../../dataStore/actions/ordersAction";
 import { Box, } from 'theme-ui';
 import { useRouter } from 'next/router';
-import sanitizeHtml from "sanitize-html";
 
 
 const CreateOrder = () => {
@@ -63,6 +61,9 @@ const CreateOrder = () => {
     const languageSelector = useSelector(state => state.languageState);
     const orderSelector = useSelector(state => state.orderState);
     const { errorMessage } = orderSelector;
+    const editorRef = useRef()
+    const [editorLoaded, setEditorLoaded] = useState(false)
+    const { CKEditor, ClassicEditor } = editorRef.current || {}
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -205,7 +206,7 @@ const CreateOrder = () => {
             language_id: parseInt(localStorage.language_id, 10),
             phone: order.phone,
             topic: order.topic,
-            instructions: instructions,
+            instructions:  instructions,
             pagesummary: false,
             plagreport: true,
             initialdraft: false,
@@ -215,8 +216,12 @@ const CreateOrder = () => {
         }
         console.log(bodyData)
         if (order.topic !== "" && bodyData.instructions !== "") {
-            addOrder(bodyData);
-            router.push("/dashboard/all-orders")
+            addOrder(bodyData).then(response => {
+                if(response.status === 201){
+                    getOrders(dispatch);
+                    router.push("/dashboard/all-orders")
+                }
+            })
         } else {
             dispatch({
                 type: 'CREATE_ORDER_ERROR',
@@ -224,15 +229,10 @@ const CreateOrder = () => {
             });
         }
     };
-
-    const handleInstructionsChange = evt => {
-        setinstructions(evt.target.value);
-    };
-
-    if(instructions){
-        sanitizeHtml(instructions)
+    if (instructions){
+        instructions.replaceAll('"', '')
+        console.log(instructions);
     }
-    console.log(instructions);
 
     useEffect(() => {
         getLevels(dispatch);
@@ -247,6 +247,16 @@ const CreateOrder = () => {
         getSpacing(dispatch);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
+
+    useEffect(() => {
+        editorRef.current = {
+            // CKEditor: require('@ckeditor/ckeditor5-react'), // depricated in v3
+            CKEditor: require('@ckeditor/ckeditor5-react').CKEditor,
+            ClassicEditor: require('@ckeditor/ckeditor5-build-classic')
+        }
+        setEditorLoaded(true)
+    }, [])
+
 
     return (
         <Box sx={{ marginLeft: "10px", marginRight: "10px" }}>
@@ -267,7 +277,7 @@ const CreateOrder = () => {
                         </Col>
                         <Col xs={18}>
                             {errorMessage && (
-                                <Message closable type="error">{ errorMessage}</Message>
+                                <Message closable type="error">{errorMessage}</Message>
                             )}
                             {step === 0 && (
                                 <Box>
@@ -276,7 +286,7 @@ const CreateOrder = () => {
                                         <h3>
                                             Price:
                                             <span style={{ color: "blue" }}>
-                                            ${(myservice * mytype * myurgency * mypages * mylevel * myspacing).toFixed(2)}
+                                                ${(myservice * mytype * myurgency * mypages * mylevel * myspacing).toFixed(2)}
                                             </span>
                                         </h3>
                                         <Box>
@@ -378,17 +388,17 @@ const CreateOrder = () => {
                             {step === 1 && (
                                 <Box>
                                     <Label htmlFor="phone">Phone</Label>
-                                    <Input style={{border:"1px solid #C9BBB8 "}} onChange={handleSelectChange} name="phone" type='text' mb={3} /><br/>
+                                    <Input style={{ border: "1px solid #C9BBB8 " }} onChange={handleSelectChange} name="phone" type='text' mb={3} /><br />
                                     <Label htmlFor="topic">Topic*</Label>
-                                    <Input style={{border:"1px solid #C9BBB8 "}} onChange={handleSelectChange} name="topic" type='text' mb={3} /><br/>
+                                    <Input style={{ border: "1px solid #C9BBB8 " }} onChange={handleSelectChange} name="topic" type='text' mb={3} /><br />
                                     {instructions.length > 10000 && (
                                         <Message type="error">The number of Instructions Exceeded</Message>
-                                    ) }
+                                    )}
                                     <Label htmlFor="instructions">Instructions*</ Label>
-                                    <textarea style={{border:"1px solid #C9BBB8", width:"100%", padding:"10px", borderRadius:"5px"}}
-                                              value={instructions}
-                                              rows={8} onChange={handleInstructionsChange} placeholder="Fill in instructions" />
-                                    <br/><br/>
+                                    {/*<textarea style={{border:"1px solid #C9BBB8", width:"100%", padding:"10px", borderRadius:"5px"}}*/}
+                                    {/*          value={instructions}*/}
+                                    {/*          rows={8} onChange={handleInstructionsChange} placeholder="Fill in instructions" />*/}
+                                    {/*<br/><br/>*/}
                                     {/*<ContentEditable*/}
                                     {/*    className="editable"*/}
                                     {/*    style={{*/}
@@ -402,7 +412,35 @@ const CreateOrder = () => {
                                     {/*    onChange={handleInstructionsChange} // handle innerHTML change*/}
                                     {/*    onBlur={sanitize}*/}
                                     {/*/>*/}
-                                    <br/><br/>
+                                    {editorLoaded ?
+                                        <CKEditor
+                                            editor={ClassicEditor}
+                                            data={instructions}
+                                            config={{
+                                                toolbar: [
+                                                    "undo", "redo", '|', "bold", "italic", "blockQuote", "ckfinder", "imageTextAlternative",
+                                                    "imageUpload", "heading", "imageStyle:full", "imageStyle:side", "link", "numberedList",
+                                                    "bulletedList", "mediaEmbed", "insertTable", "tableColumn", "tableRow", "mergeTableCells"
+                                                ],
+                                                heading: {
+                                                    options: [
+                                                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                                                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                                                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                                                    ]
+                                                }
+                                            }}
+                                            onChange={(event, editor) => {
+                                                const data = editor.getData();
+                                                setinstructions(data);
+                                            }}
+                                    
+                                        /> :
+                                        (
+                                            <div>Editor loading</div>
+                                        )
+                                    }
+                                    <br />
                                 </Box>
                             )}
                             <Row>

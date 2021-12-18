@@ -22,6 +22,7 @@ const InProgress = () => {
         }
     } = orderSelector;
 
+
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
         getActiveOrders(dispatch, userId, activePage, per)
@@ -31,7 +32,7 @@ const InProgress = () => {
     return (
         <div style={{ marginLeft: "10px", marginRight: "10px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
-                <h3>Active Orders:</h3>
+                <h3>In-Progress/Active Orders:</h3>
             </div>
             <Divider />
             <table style={styles.table}>
@@ -48,7 +49,7 @@ const InProgress = () => {
                     <tr>
                         <td style={styles.table.td}>{data.id}</td>
                         <td style={styles.table.td}>
-                            <Link href={`/dashboard/order/${data.id}`}>
+                            <Link href={`/dashboard/order/inprogress/${data.id}`}>
                                 <a>{data.order_number}</a>
                             </Link>
                         </td>
