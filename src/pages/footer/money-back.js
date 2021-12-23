@@ -2,17 +2,17 @@ import React from 'react';
 import { ThemeProvider } from 'theme-ui';
 import theme from '../../theme';
 import Layout from 'components/home/layout';
-import TermsSection from '../../sections/terms_and_conditions';
+import MoneyBackSection from '../../sections/money-back-guarantee';
 
-const TermsAndConditions = () => {
+const PrivacyPolicy = () => {
     return (
         <div>
             <ThemeProvider theme={theme}>
                 <Layout>
-                    <TermsSection/>
+                    <MoneyBackSection/>
                 </Layout>
             </ThemeProvider>
         </div>
     )
 }
-export default TermsAndConditions;
+export default PrivacyPolicy;

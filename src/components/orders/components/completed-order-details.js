@@ -123,6 +123,10 @@ const OrderCompletedDetails = ({ section }) => {
                 .then(response => {
                     newMessages.splice(0, 0, response.data);
                     setMessageInfo(newMessages);
+                    setMessage({
+                        ...message,
+                        message: ""
+                    })
                 });
         }
     }
@@ -233,7 +237,9 @@ const OrderCompletedDetails = ({ section }) => {
         if (bodyData.description !== "") {
             rejectOrder(dispatch, orderId, bodyData)
                 .then(response => {
-                    console.log(response);
+                    if (response.status === 200) {
+                        setRejectOpen(false);
+                    }
                 })
         }
     }
@@ -245,7 +251,9 @@ const OrderCompletedDetails = ({ section }) => {
         if (bodyData.description !== "") {
             orderRevision(dispatch, orderId, bodyData)
                 .then(response => {
-                    setRequestRevisionOpen(false);
+                    if (response.status === 200) {
+                        setRequestRevisionOpen(false);
+                    }
                 })
         }
     }
@@ -528,7 +536,7 @@ const OrderCompletedDetails = ({ section }) => {
                                     onChange={handleOrderRevisonChange}
                                     style={{ border: '1px solid #becad6', width: "100%", padding: "10px", borderRadius: "5px", }}
                                     rows={4}
-                                    placeholder="Textarea" /><br />
+                                    placeholder="Revision instructions" /><br />
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button onClick={handleOrderRevisionSubmit} appearance="primary">
@@ -553,7 +561,7 @@ const OrderCompletedDetails = ({ section }) => {
                                     onChange={handleReleaseFundsChange}
                                     style={{ border: '1px solid #becad6', width: "100%", padding: "10px", borderRadius: "5px", }}
                                     rows={4}
-                                    placeholder="Textarea" /><br />
+                                    placeholder="Order review description" /><br />
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button onClick={handleReleaseFundsSubmit} appearance="primary">
@@ -586,7 +594,7 @@ const OrderCompletedDetails = ({ section }) => {
                                     onChange={handleRejectOrderChange}
                                     style={{ border: '1px solid #becad6', width: "100%", padding: "10px", borderRadius: "5px", }}
                                     rows={4}
-                                    placeholder="Textarea" /><br />
+                                    placeholder="Reject order description" /><br />
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button onClick={handleRejectOrderSubmit} appearance="primary">

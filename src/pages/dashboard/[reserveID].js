@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import Dashboard from "../../components/admin/dashboard";
 
-const Test = () => {
+const ReserveID = () => {
     useEffect(() => {
         try {
             JSON.parse(localStorage.currentUser);
@@ -11,8 +11,8 @@ const Test = () => {
         }
     }, []);
     return (
-        <Dashboard page='dashboard' section='test'/>
+        <Dashboard page='dashboard' section='reserve-order'/>
     );
 };
 
-export default Test;
+export default ReserveID;

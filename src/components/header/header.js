@@ -13,7 +13,9 @@ const Header = ({ className }) => {
   const router = useRouter();
   return (
     <header sx={styles.header} className={className}>
-      <Logo src={LogoDark} href='/'/>
+      <Link href="/">
+        <a><Logo src={LogoDark} href='/'/></a>
+      </Link>
       <Flex as="nav" sx={styles.nav}>
           <Link href="/header/about-us">
             <a>About Us</a>

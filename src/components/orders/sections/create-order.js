@@ -218,8 +218,8 @@ const CreateOrder = () => {
         if (order.topic !== "" && bodyData.instructions !== "") {
             addOrder(bodyData).then(response => {
                 if (response.status === 201) {
-                    getOrders(dispatch);
-                    router.push("/dashboard/all-orders")
+                    const orderID = response.data.id;
+                    router.push(`/dashboard/${orderID}`)
                 }
             })
         } else {
@@ -394,9 +394,6 @@ const CreateOrder = () => {
                                     <Input style={{ border: "1px solid #C9BBB8 " }} onChange={handleSelectChange} name="phone" type='text' mb={3} /><br />
                                     <Label htmlFor="topic">Topic*</Label>
                                     <Input style={{ border: "1px solid #C9BBB8 " }} onChange={handleSelectChange} name="topic" type='text' mb={3} /><br />
-                                    {instructions.length > 10000 && (
-                                        <Message type="error">The number of Instructions Exceeded</Message>
-                                    )}
                                     <Label htmlFor="instructions">Instructions*</ Label>
                                     {/*<textarea style={{border:"1px solid #C9BBB8", width:"100%", padding:"10px", borderRadius:"5px"}}*/}
                                     {/*          value={instructions}*/}

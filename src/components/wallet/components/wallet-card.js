@@ -34,8 +34,6 @@ const WalletCard = ({ section }) => {
         })
     };
 
-    const makePaypalPayment = (credentials) => makePayment(dispatch, credentials);
-
     const handleMakePaymentSubmit = (event) => {
         event.preventDefault();
         const { id: userID } = JSON.parse(localStorage.currentUser);
@@ -44,7 +42,7 @@ const WalletCard = ({ section }) => {
             order_amount: parseInt(payment.order_amount, 10)
         }
         if (payment.order_amount !== "") {
-            makePaypalPayment(bodyData).then(response => {
+            makePayment(dispatch, bodyData).then(response => {
                 const links = response.data.links[1].href;
                 if (response.status === 200) router.push(links)
             })

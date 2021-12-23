@@ -5,7 +5,8 @@ import { ImFileText2, ImFilePdf } from 'react-icons/im'
 import { BiRevision } from 'react-icons/bi'
 import { GoMail } from 'react-icons/go'
 import { Panel, Grid, Row, Col, List, Button } from 'rsuite'
-import Calculator from './calculator'
+import Calculator from './calculator';
+import Link from 'next/link';
 import router from 'next/router'
 
 const PrivacyPolicy = () => {
@@ -15,54 +16,60 @@ const PrivacyPolicy = () => {
                 <Row>
                     <Col xs={24} sm={16} md={16}>
                         <Panel>
-                            <center><h3>About Us</h3></center>
-                            <p style={{ lineHeight: 2.5 }}>Many times you are not able to complete your assignment, due to various reasons.
-                                Sometimes, you might not have the time to do the assignment due to other commitments
-                                that you have to attend to. Other times you could just be too tired to work on your paper.
-                                Do not be worried. We, doctorateessays.com, will help you get that grade that you’ve always wanted.
+                            <center><h3>Privacy Policy</h3></center>
+                            <p style={{ fontSize:"15px", lineHeight: 2.5 }}>At Topratedprofessors.com , accessible from Topratedprofessors.com ,
+                                one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types
+                                of information that is collected and recorded by Topratedprofessors.com and how we use it.
 
-                                We are a professional company that offers professional essay writing services to customers
-                                from across the globe. Our essay writers are from native English speaking countries such as
-                                the USA, Ireland, Canada, UK and Australia. They write the best essays to our customers at
-                                a very affordable price. With over ten years in the industry, doctorateessays.com promises
-                                to give the best paper writing service to you. Our support representatives are available 24
-                                hours a day to always make sure that they help you whenever you want to order an essay.
-                                Our writers are trained to write your custom essay following the exact instruction you
-                                give them and therefore guaranteeing the best quality essays.
+                               <h5>Log Files</h5>
+                                Topratedprofessors.com follows a standard procedure of using log files. These files log visitors
+                                when they visit websites. All hosting companies do this and a part of hosting services' analytics.
+                                The information collected by log files include internet protocol (IP) addresses, browser type,
+                                Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks.
+                                These are not linked to any information that is personally identifiable. The purpose of the information is for
+                                analyzing trends, administering the site, tracking users' movement on the website, and gathering demographic information.
 
-                                When you urgently need someone to help you complete your essay, and you visit our site, you
-                                can keep all your worries aside and wait for the essay. With over 200 qualified writers, we
-                                can guarantee you that we will deliver top quality work on time. We also make sure to check
-                                the work for plagiarism since our work I always 100% unique. The team of professional essay
-                                writers is always on standby to work on all orders that you place with us regardless of the deadlines.
-                                Since its start in 2003, doctorateessays.com has completed over 800,000 essays with an average
-                                completion rate of 93.4%. We strive to maintain high-quality services to our customers who
-                                entrust us with their assignments. Our customer reviews are a proof that we indeed meet their
-                                expectations and that they are always ready to use our service whenever need be. Most of the
-                                customers have also referred their friends to doctorateessays.com for our quality work.
-                                Just place an order with us today, sit back and relax. We will deliver 100% UNIQUE and QUALITY
-                                work ON TIME. Worry no more, doctorateessays.com got you covered.
+                                <h5>Cookies and Web Beacons</h5>
+                                Like any other website, Topratedprofessors.com uses 'cookies'. These cookies are used to store information including
+                                visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to
+                                optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.
 
-                                <h5>Vision</h5>
+                                <h5>Privacy Policies</h5>
+                                You may consult this list to find the Privacy Policy for each of the advertising partners of Topratedprofessors.com .
+                                <br/>
+                                Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in
+                                their respective advertisements and links that appear on Topratedprofessors.com , which are sent directly to users' browser.
+                                They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness
+                                of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.
+                                <br/>
+                                Note that Topratedprofessors.com has no access to or control over these cookies that are used by third-party advertisers.
 
-                                To be the one site that gives clients 100% value for money by offering the best
-                                essay writing services across the globe.
+                                <h5>Third Party Privacy Policies</h5>
+                                Topratedprofessors.com 's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to
+                                consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their
+                                practices and instructions about how to opt-out of certain options. You may find a complete list of these Privacy Policies
+                                and their links here: Privacy Policy Links.
 
-                                <h5>Mission</h5>
+                                You can choose to disable cookies through your individual browser options. To know more detailed information about cookie
+                                management with specific web browsers, it can be found at the browsers' respective websites. What Are Cookies?
 
-                                Our mission is to make sure that students have enough time to participate in other school activities
-                                by offering to help them complete their tasks on time while at the same time maintaining high-quality
-                                work that will improve their grades.
+                                <h5>Children's Information</h5>
+                                Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians
+                                to observe, participate in, and/or monitor and guide their online activity.
 
-                                <h5>Our Core Values</h5>
+                                Topratedprofessors.com does not knowingly collect any Personal Identifiable Information from children under the age of 13.
+                                If you think that your child provided this kind of information on our website, we strongly encourage you to contact us
+                                immediately and we will do our best efforts to promptly remove such information from our records.
 
-                                We are a team that is devoted and guided by the following five core values.
+                                <h5>Online Privacy Policy Only</h5>
+                                This Privacy Policy applies only to our online activities and is valid for visitors to our website with regards to the information
+                                that they shared and/or collect in Topratedprofessors.com . This policy is not applicable to any information collected offline
+                                or via channels other than this website.
 
-                                Quality Work
-                                100% Uniqueness
-                                Timely Delivery
-                                Zero Grammar Errors
-                                Professional Customer Support
+                                <h5>Consent</h5>
+                                By using our website, you hereby consent to our Privacy Policy and agree to its Terms and Conditions.
+
+                                Try us today, and we promise quality work. Get the maximum value for your money with <Link href="/"><a>TopRatedProfessors.com</a></Link>
                             </p>
                         </Panel>
                     </Col>

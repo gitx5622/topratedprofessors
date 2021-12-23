@@ -16,15 +16,15 @@ const AboutUs = () => {
                     <Col xs={24} sm={16} md={16}>
                         <Panel>
                             <center><h3>About Us</h3></center>
-                            <p style={{ lineHeight: 2.5 }}>Many times you are not able to complete your assignment, due to various reasons.
+                            <p style={{ fontSize:"15px", lineHeight: 2.5 }}>Many times you are not able to complete your assignment, due to various reasons.
                                 Sometimes, you might not have the time to do the assignment due to other commitments
                                 that you have to attend to. Other times you could just be too tired to work on your paper.
-                                Do not be worried. We, doctorateessays.com, will help you get that grade that you’ve always wanted.
+                                Do not be worried. We, topratedprofessors.com, will help you get that grade that you’ve always wanted.
 
                                 We are a professional company that offers professional essay writing services to customers
                                 from across the globe. Our essay writers are from native English speaking countries such as
                                 the USA, Ireland, Canada, UK and Australia. They write the best essays to our customers at
-                                a very affordable price. With over ten years in the industry, doctorateessays.com promises
+                                a very affordable price. With over ten years in the industry, topratedprofessors.com promises
                                 to give the best paper writing service to you. Our support representatives are available 24
                                 hours a day to always make sure that they help you whenever you want to order an essay.
                                 Our writers are trained to write your custom essay following the exact instruction you
@@ -35,13 +35,13 @@ const AboutUs = () => {
                                 can guarantee you that we will deliver top quality work on time. We also make sure to check
                                 the work for plagiarism since our work I always 100% unique. The team of professional essay
                                 writers is always on standby to work on all orders that you place with us regardless of the deadlines.
-                                Since its start in 2003, doctorateessays.com has completed over 800,000 essays with an average
+                                Since its start in 2003, topratedprofessors.com has completed over 800,000 essays with an average
                                 completion rate of 93.4%. We strive to maintain high-quality services to our customers who
                                 entrust us with their assignments. Our customer reviews are a proof that we indeed meet their
                                 expectations and that they are always ready to use our service whenever need be. Most of the
-                                customers have also referred their friends to doctorateessays.com for our quality work.
+                                customers have also referred their friends to topratedprofessors.com for our quality work.
                                 Just place an order with us today, sit back and relax. We will deliver 100% UNIQUE and QUALITY
-                                work ON TIME. Worry no more, doctorateessays.com got you covered.
+                                work ON TIME. Worry no more, topratedprofessors.com got you covered.
 
                                 <h5>Vision</h5>
 

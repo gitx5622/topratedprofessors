@@ -24,7 +24,6 @@ export default function Footer() {
                   <center>
                   <ul style={{fontSize:"16px", cursor:"pointer"}}>
                       <li  onClick={() => { router.push('/footer/privacy-policy'); scroll(0, 0)}}>Privacy Policy</li>
-                      
                   </ul>
                   </center>
               </Box>
@@ -40,7 +39,7 @@ export default function Footer() {
                   <Heading as="h1" sx={styles.footer.heading}>TOPRATED</Heading>
                   <center>
                   <ul style={{fontSize:"16px", cursor:"pointer"}}>
-                      <li  onClick={() => { router.push('/header/about-us'); scroll(0, 0)}}>Moneyback Guarantee</li>
+                      <li  onClick={() => { router.push('/footer/money-back'); scroll(0, 0)}}>Moneyback Guarantee</li>
                   </ul>
                   </center>
               </Box>

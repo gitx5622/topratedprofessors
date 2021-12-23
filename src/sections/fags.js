@@ -16,53 +16,42 @@ const Fags = () => {
                     <Col xs={24} sm={16} md={16}>
                         <Panel>
                             <center><h3>FAQs</h3></center>
-                            <p style={{ lineHeight: 2.5 }}>Many times you are not able to complete your assignment, due to various reasons.
-                                Sometimes, you might not have the time to do the assignment due to other commitments
-                                that you have to attend to. Other times you could just be too tired to work on your paper.
-                                Do not be worried. We, topratedprofessors.com, will help you get that grade that you’ve always wanted.
+                            <p style={{ fontSize:"15px", lineHeight: 2.5 }}>
+                                <h5>How long does it take to complete my assignment?</h5>
+                                We work with the deadline you provide. However, we make sure that we deliver the
+                                work on time so that you have enough time to review it.
 
-                                We are a professional company that offers professional essay writing services to customers
-                                from across the globe. Our essay writers are from native English speaking countries such as
-                                the USA, Ireland, Canada, UK and Australia. They write the best essays to our customers at
-                                a very affordable price. With over ten years in the industry, topratedprofessors.com promises
-                                to give the best paper writing service to you. Our support representatives are available 24
-                                hours a day to always make sure that they help you whenever you want to order an essay.
-                                Our writers are trained to write your custom essay following the exact instruction you
-                                give them and therefore guaranteeing the best quality essays.
+                                <h5>How do I place an order?</h5>
+                                It's simple. Just log in, and you will be automatically directed to the place order page. Read HOW IT WORKS page
 
-                                When you urgently need someone to help you complete your essay, and you visit our site, you
-                                can keep all your worries aside and wait for the essay. With over 200 qualified writers, we
-                                can guarantee you that we will deliver top quality work on time. We also make sure to check
-                                the work for plagiarism since our work I always 100% unique. The team of professional essay
-                                writers is always on standby to work on all orders that you place with us regardless of the deadlines.
-                                Since its start in 2003, topratedprofessors.com has completed over 800,000 essays with an average
-                                completion rate of 93.4%. We strive to maintain high-quality services to our customers who
-                                entrust us with their assignments. Our customer reviews are a proof that we indeed meet their
-                                expectations and that they are always ready to use our service whenever need be. Most of the
-                                customers have also referred their friends to topratedprofessors.com for our quality work.
-                                Just place an order with us today, sit back and relax. We will deliver 100% UNIQUE and QUALITY
-                                work ON TIME. Worry no more, topratedprofessors.com got you covered.
+                                <h5>Can I get updates on my order?</h5>
+                                Yes. Our writers send drafts as often as the client needs them. This helps the client to be assured that
+                                we are working on their paper and that the writer is doing the right thing. In case the writer doesn't
+                                provide you with a draft after asking for it, you can contact the customer support team.
 
-                                <h5>Vision</h5>
+                                <h5>What if the writer did not follow instructions?</h5>
+                                We strive to deliver the best quality work to our clients. In the case where a writer delivers bad
+                                quality work, the client has the right to reject the order and request for a refund for the money.
+                                However, you can only do this before 72 hours after the deadline or after downloading the paper.
 
-                                To be the one site that gives clients 100% value for money by offering the best
-                                essay writing services across the globe.
+                                <h5>When can I contact you?</h5>
+                                We are available 24/7. Therefore you can always contact us at any time of the day, and we will promptly respond.
 
-                                <h5>Mission</h5>
+                                <h5>Can I withdraw my money back to my PayPal account?</h5>
+                                Yes you can. You just need to send a withdraw request, and we will process it within 2 days.
 
-                                Our mission is to make sure that students have enough time to participate in other school activities
-                                by offering to help them complete their tasks on time while at the same time maintaining high-quality
-                                work that will improve their grades.
+                                <h5>Do you provide a plagiarism reports for your papers?</h5>
+                                We provide FREE plagiarism reports to our customers. However, you must ask for it in the order instructions
+                                before we provide since we handle so many papers.
 
-                                <h5>Our Core Values</h5>
+                                <h5>What if a writer did my paper and I failed the paper?</h5>
+                                We handle such incidences on a case by case basis. You can report to us, and we will consider whether to
+                                refund or not, depending on how genuine your claim is. However, we recommend that you check your paper
+                                before releasing the funds to the writer to avoid such instances.
 
-                                We are a team that is devoted and guided by the following five core values.
-
-                                Quality Work
-                                100% Uniqueness
-                                Timely Delivery
-                                Zero Grammar Errors
-                                Professional Customer Support
+                                <h5>What if my university discovers me?</h5>
+                                We protect your identity from everyone. In fact, not even your writer is aware of your name or where
+                                you are from. You can always be sure no one will ever know that you had someone help you with your homework.
                             </p>
                         </Panel>
                     </Col>

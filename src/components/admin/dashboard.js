@@ -15,6 +15,7 @@ import OrderCompletedDetails from 'components/orders/components/completed-order-
 import CancelledRejectedDetails from "../orders/components/cancelledRejected";
 import RevisionDetails from "../orders/components/revisionDetails";
 import InProgressDetails from 'components/orders/components/inProgressDetails';
+import ReserveOrder from "../orders/components/reserve-order";
 
 const Dashboard = ({ section }) => {
     const renderOrderPages = () => {
@@ -82,6 +83,12 @@ const Dashboard = ({ section }) => {
             case 'cancelled-order':
                 return (
                     <CancelledRejectedDetails
+                        section={section}
+                    />
+                );
+            case 'reserve-order':
+                return (
+                    <ReserveOrder
                         section={section}
                     />
                 );
