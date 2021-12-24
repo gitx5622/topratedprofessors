@@ -18,6 +18,7 @@ import { css } from '@emotion/css';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import AttachmentIcon from '@rsuite/icons/Attachment';
 import { createMessage, filterMessages } from 'dataStore/actions/messagesAction';
+import dayjs from "dayjs";
 
 
 const RevisionDetails = ({ section }) => {
@@ -155,6 +156,10 @@ const RevisionDetails = ({ section }) => {
                 .then(response => {
                     newMessages.splice(0, 0, response.data);
                     setMessageInfo(newMessages);
+                    setMessage({
+                        ...message,
+                        message: ""
+                    })
                 });
         }
     }
@@ -491,7 +496,7 @@ const RevisionDetails = ({ section }) => {
                                                     padding: "10px"
                                                 }}>
                                                     {message.message}<br />
-                                                    <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
+                                                    <p style={{ float: "right" }}>{dayjs(message.created_at).format('L LT')}</p>
                                                 </Tag>
                                             </div>
                                             : (<div />)
@@ -506,7 +511,7 @@ const RevisionDetails = ({ section }) => {
                                                 padding: "10px"
                                             }}>
                                                 {message.message}<br />
-                                                <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
+                                                <p style={{ float: "right" }}>{dayjs(message.created_at).format('L LT')}</p>
                                             </Tag>
                                         )}
                                     </div>

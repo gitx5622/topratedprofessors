@@ -18,6 +18,7 @@ import { css } from '@emotion/css';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import AttachmentIcon from '@rsuite/icons/Attachment';
 import { createMessage, filterMessages } from 'dataStore/actions/messagesAction';
+import dayjs from "dayjs";
 
 
 const CancelledRejectedDetails = ({ section }) => {
@@ -25,11 +26,7 @@ const CancelledRejectedDetails = ({ section }) => {
     const [uploadOpen, setUploadOpen] = useState(false);
     const [messageOpen, setMessageOpen] = useState(false);
     const [downloadOpen, setDownloadOpen] = useState(false);
-    const [releaseFundsOpen, setReleaseFundsOpen] = useState(false);
-    const [requestRevisionOpen, setRequestRevisionOpen] = useState(false);
-    const [reject_reason_value, setRejectReasonValue] = useState(1);
-    const [rejectOpen, setRejectOpen] = useState(false);
-    const [hoverValue, setHoverValue] = React.useState(3);
+    const [uploadedFileName, setUploadedFileName] = useState("");
     const [uploadFiles, setUploadFiles] = useState({
         order_id: "",
         user_id: "",
@@ -40,31 +37,14 @@ const CancelledRejectedDetails = ({ section }) => {
             },
         ]
     });
-    const [userRatings, setUserRatings] = useState({
-        order_number: "",
-        value: "",
-        description: ""
-    })
     const [message, setMessage] = useState({
         sender_id: "",
         message: "",
         receiver_id: "",
         order_number: ""
     })
-    const [rejectOrderValues, setRejectOrderValues] = useState({
-        description: ""
-    })
-    const [orderRevisionValues, setOrderRevisionValues] = useState({
-        order_number: "",
-        instructions: ""
-    })
     const [active, setActive] = React.useState('1');
-    const [ratingSuccess, setRatingSuccess] = useState("");
     const [messageInfo, setMessageInfo] = useState([]);
-    const [newOrderFilesState, setNewOrderFilesState] = useState([]);
-
-    const walletSelector = useSelector(state => state.walletState);
-    const ratingSelector = useSelector(state => state.ratingState);
     const messageSelector = useSelector(state => state.messageState);
     const { messages } = messageSelector;
     const newMessages = [...messages];
@@ -112,6 +92,10 @@ const CancelledRejectedDetails = ({ section }) => {
                 .then(response => {
                     newMessages.splice(0, 0, response.data);
                     setMessageInfo(newMessages);
+                    setMessage({
+                        ...message,
+                        message: ""
+                    })
                 });
         }
     }
@@ -131,6 +115,8 @@ const CancelledRejectedDetails = ({ section }) => {
     };
 
     const handleFileUploadChange = async (file) => {
+        console.log(file)
+        localStorage.file = file[0]?.name
         const extension = file[0]?.name.slice(file[0].name.lastIndexOf('.') + 1)
         const fileBase64 = await convertToBase64(file[0]);
         const Base64 = fileBase64.slice(fileBase64.indexOf(',') + 1).trim();
@@ -157,7 +143,7 @@ const CancelledRejectedDetails = ({ section }) => {
             .then(response => {
                 console.log(response)
                 if (response.status === 201) {
-                    getOrderfiles(dispatch, completedOrderID);
+                    getOrderfiles(dispatch, orderID);
                     toast.success("File uploaded Successfully!", {
                         position: toast.POSITION.TOP_RIGHT
                     });
@@ -173,12 +159,7 @@ const CancelledRejectedDetails = ({ section }) => {
 
     useEffect(() => {
         getOrder(dispatch, orderID);
-        getOrderfiles(dispatch, orderID)
-            .then(response => {
-                if (response.status === 200) {
-                    setNewOrderFilesState(response.data);
-                }
-            });
+        getOrderfiles(dispatch, orderID);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, orderID, uploadFiles.uploaded_files]);
 
@@ -198,13 +179,14 @@ const CancelledRejectedDetails = ({ section }) => {
         getRejectReasons(dispatch);
     }, [dispatch])
 
+    useEffect(() => {
+        setUploadedFileName(localStorage.file)
+    },[uploadFiles.uploaded_files])
+
     return (
         <div style={{ marginTop: "20px" }}>
             <div>
                 <h5>Order Details</h5>
-                {ratingSuccess && (
-                    <Message type="success" closable>{ratingSuccess}</Message>
-                )}
             </div>
             <Divider />
             <Nav activeKey={active} style={{ marginLeft: "20px", marginTop: "-20px", fontSize: "20px" }}>
@@ -249,9 +231,11 @@ const CancelledRejectedDetails = ({ section }) => {
                                         autoUpload={false}
                                         removable={uploadFiles.length >= 2 && true}
                                         onChange={(file) => handleFileUploadChange(file)}
+                                        fileListVisible={false}
                                     >
                                         <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag a file to this area to upload</div>
                                     </Uploader>
+                                    <h3>{uploadedFileName}</h3>
                                     <Divider />
                                     <Button style={{ width: "100%" }} color="green" appearance="primary" onClick={handleFileUploadSubmit}>
                                         Start Upload
@@ -392,7 +376,7 @@ const CancelledRejectedDetails = ({ section }) => {
                                                     padding: "10px"
                                                 }}>
                                                     {message.message}<br />
-                                                    <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
+                                                    <p style={{ float: "right" }}>{dayjs(message.created_at).format('L LT')}</p>
                                                 </Tag>
                                             </div>
                                             : (<div />)
@@ -407,7 +391,7 @@ const CancelledRejectedDetails = ({ section }) => {
                                                 padding: "10px"
                                             }}>
                                                 {message.message}<br />
-                                                <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
+                                                <p style={{ float: "right" }}>{dayjs(message.created_at).format('L LT')}</p>
                                             </Tag>
                                         )}
                                     </div>

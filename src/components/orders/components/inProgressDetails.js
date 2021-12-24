@@ -98,8 +98,6 @@ const InProgressDetails = ({ section }) => {
             created_at,
         } } = orderSelector;
 
-    const newOrderFiles = [...order_files];
-
     const walletSelector = useSelector(state => state.walletState);
     const { isLoading } = walletSelector;
     const messageSelector = useSelector(state => state.messageState);
@@ -133,6 +131,10 @@ const InProgressDetails = ({ section }) => {
                 .then(response => {
                     newMessages.splice(0, 0, response.data);
                     setMessageInfo(newMessages);
+                    setMessage({
+                        ...message,
+                        message: ""
+                    })
                 });
         }
     }

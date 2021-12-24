@@ -27,6 +27,7 @@ import { getSpacing } from "../../../dataStore/actions/spacingsAction";
 import { createMessage, filterMessages } from "../../../dataStore/actions/messagesAction";
 import ScrollToBottom from "react-scroll-to-bottom";
 import { css } from "@emotion/css";
+import dayjs from "dayjs";
 
 const OrderDetails = ({ section }) => {
     const [open, setOpen] = React.useState(false);
@@ -357,6 +358,10 @@ const OrderDetails = ({ section }) => {
                 .then(response => {
                     newMessages.splice(0, 0, response.data);
                     setMessageInfo(newMessages);
+                    setMessage({
+                        ...message,
+                        message: ""
+                    })
                 });
         }
     }
@@ -913,7 +918,7 @@ const OrderDetails = ({ section }) => {
                                                     padding: "10px"
                                                 }}>
                                                     {message.message}<br />
-                                                    <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
+                                                    <p style={{ float: "right" }}>{dayjs(message.created_at).format('L LT')}</p>
                                                 </Tag>
                                             </div>
                                             : (<div />)
@@ -928,7 +933,7 @@ const OrderDetails = ({ section }) => {
                                                 padding: "10px"
                                             }}>
                                                 {message.message}<br />
-                                                <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
+                                                <p style={{ float: "right" }}>{dayjs(message.created_at).format('L LT')}</p>
                                             </Tag>
                                         )}
                                     </div>

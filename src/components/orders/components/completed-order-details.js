@@ -18,6 +18,7 @@ import { css } from '@emotion/css';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import AttachmentIcon from '@rsuite/icons/Attachment';
 import { createMessage, filterMessages } from 'dataStore/actions/messagesAction';
+import dayjs from "dayjs";
 
 
 const OrderCompletedDetails = ({ section }) => {
@@ -312,7 +313,7 @@ const OrderCompletedDetails = ({ section }) => {
             {uploadOpen && (
                 <div>
                     {isLoading && (
-                        <BoxLoading />
+                        <div>Uploading ...</div>
                     )}
                     <ToastContainer />
                     <Grid fluid>
@@ -482,7 +483,7 @@ const OrderCompletedDetails = ({ section }) => {
                                                     padding: "10px"
                                                 }}>
                                                     {message.message}<br />
-                                                    <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
+                                                    <p style={{ float: "right" }}>{dayjs(message.created_at).format('L LT')}</p>
                                                 </Tag>
                                             </div>
                                             : (<div />)
@@ -497,7 +498,7 @@ const OrderCompletedDetails = ({ section }) => {
                                                 padding: "10px"
                                             }}>
                                                 {message.message}<br />
-                                                <p style={{ float: "right" }}>{formatDate(message.created_at)}</p>
+                                                <p style={{ float: "right" }}>{dayjs(message.created_at).format('L LT')}</p>
                                             </Tag>
                                         )}
                                     </div>
