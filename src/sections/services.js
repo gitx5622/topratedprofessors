@@ -36,7 +36,7 @@ const Services = () => {
                                 are at a low price as compared to other websites that try to offer the same services.
                                 <br/>
                                 <h5>Our services include but not limited to the following:</h5>
-                                <ol>
+                                <ol style={{marginLeft:"50px"}}>
                                     <li>Term Paper Writing</li>
                                     <li>Essay Writing Service</li>
                                     <li>Research Paper writing</li>

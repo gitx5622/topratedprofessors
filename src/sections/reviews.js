@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Carousel, Grid, Row, Col, Panel, Rate, Avatar} from "rsuite";
 import {useDispatch, useSelector} from "react-redux";
 import {filterRatings} from "../dataStore/actions/reviewAction";
-import { formatDate } from "../utils/dates";
+import {formatDate, formatTime} from "../utils/dates";
 
 const Reviews = () => {
     const reviewSelector = useSelector(state => state.ratingState);
@@ -32,7 +32,7 @@ const Reviews = () => {
                                             <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
                                         <div style={{padding:"20px"}}>
                                             <p style={{fontSize:"20px"}}>{rating.description}</p>
-                                            <p style={{color: "#17c671",fontWeight: 700,  fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
+                                            <p style={{color: "#17c671",fontWeight: 700,  fontSize:"18px"}}>Completed: {formatTime(rating.created_at)}</p>
                                         </div>
                                         </Panel>
                                     </center>
@@ -51,7 +51,7 @@ const Reviews = () => {
                                             <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
                                             <div style={{padding:"20px"}}>
                                                 <p style={{fontSize:"20px"}}>{rating.description}</p>
-                                                <p style={{color: "#17c671",fontWeight: 700,  fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
+                                                <p style={{color: "#17c671",fontWeight: 700,  fontSize:"18px"}}>Completed: {formatTime(rating.created_at)}</p>
                                             </div>
                                         </Panel>
                                     </center>
@@ -70,7 +70,7 @@ const Reviews = () => {
                                             <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
                                             <div style={{padding:"20px"}}>
                                                 <p style={{fontSize:"20px"}}>{rating.description}</p>
-                                                <p style={{color: "#17c671",fontWeight: 700,  fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
+                                                <p style={{color: "#17c671",fontWeight: 700,  fontSize:"18px"}}>Completed: {formatTime(rating.created_at)}</p>
                                             </div>
                                         </Panel>
                                     </center>
@@ -89,7 +89,7 @@ const Reviews = () => {
                                             <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
                                             <div style={{padding:"20px"}}>
                                                 <p style={{fontSize:"20px"}}>{rating.description}</p>
-                                                <p style={{color: "#17c671",fontWeight: 700,  fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
+                                                <p style={{color: "#17c671",fontWeight: 700,  fontSize:"18px"}}>Completed: {formatTime(rating.created_at)}</p>
                                             </div>
                                         </Panel>
                                     </center>
@@ -108,7 +108,7 @@ const Reviews = () => {
                                             <span style={{fontSize:"20px"}}>Customer Feedback:  <Rate value={rating.value} /></span>{"     "}
                                             <div style={{padding:"20px"}}>
                                                 <p style={{fontSize:"20px"}}>{rating.description}</p>
-                                                <p style={{color: "#17c671", fontWeight: 700, fontSize:"18px"}}>Completed: {formatDate(rating.created_at)}</p>
+                                                <p style={{color: "#17c671", fontWeight: 700, fontSize:"18px"}}>Completed: {formatTime(rating.created_at)}</p>
                                             </div>
                                         </Panel>
                                     </center>

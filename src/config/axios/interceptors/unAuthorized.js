@@ -3,10 +3,10 @@ export default function unAuthorizedInterceptor(axiosConfig) {
     response => response,
     error => {
       if (error.response && error.response.status === 401) {
-        let activeMerchant = localStorage.activeMerchant;
+        let currentUser = localStorage.currentUser;
         localStorage.clear();
-        if (activeMerchant) {
-          localStorage.activeMerchant = activeMerchant;
+        if (currentUser) {
+          localStorage.currentUser = currentUser;
         }
         window.location.replace('/user/login');
       }
