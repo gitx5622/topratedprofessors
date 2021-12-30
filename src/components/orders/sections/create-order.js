@@ -206,7 +206,7 @@ const CreateOrder = () => {
             language_id: parseInt(localStorage.language_id, 10),
             phone: order.phone,
             topic: order.topic,
-            instructions: instructions,
+            instructions: instructions.replace(/"/g, '&quot;').replace(/'/g, '&quot;'),
             pagesummary: false,
             plagreport: true,
             initialdraft: false,

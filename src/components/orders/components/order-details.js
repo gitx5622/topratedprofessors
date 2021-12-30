@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
@@ -7,6 +7,7 @@ Nav, Drawer, Grid, Row, Col, Avatar, Tag } from 'rsuite';
 import {cancelOrder,fileUpload,getCancelReasons,getOrder,
     getOrderfiles, payFromWallet,updateOrder, deleteOrderFile
 } from 'dataStore/actions/ordersAction';
+import ReactHtmlParser from 'react-html-parser';
 import { formatDate, formatDeadline } from '../../../utils/dates';
 import { makePayment } from "../../../dataStore/actions/walletAction";
 import { BoxLoading } from 'react-loadingg';
@@ -141,6 +142,9 @@ const OrderDetails = ({ section }) => {
     const typeSelector = useSelector(state => state.typeState);
     const urgencySelector = useSelector(state => state.urgencyState);
     const languageSelector = useSelector(state => state.languageState);
+    const editorRef = useRef()
+    const [editorLoaded, setEditorLoaded] = useState(false);
+    const { CKEditor, ClassicEditor } = editorRef.current || {}
 
     const service_name = service ? service.name : "";
     const subject_name = subject ? subject.name : "";
@@ -308,9 +312,9 @@ const OrderDetails = ({ section }) => {
             sources_id: parseInt(updateOrderDetails.sources_id),
             spacing_id: parseInt(updateOrderDetails.spacing_id),
             language_id: parseInt(updateOrderDetails.language_id),
-            phone: phone || updateOrderDetails.phone,
-            topic: topic || updateOrderDetails.topic,
-            instructions: instructions || instructionsx,
+            phone: updateOrderDetails.phone ? updateOrderDetails.phone : phone ,
+            topic:  updateOrderDetails.topic ? updateOrderDetails.topic : topic,
+            instructions: instructionsx ? instructionsx : instructions,
             pagesummary: false,
             plagreport: true,
             initialdraft: false,
@@ -470,6 +474,14 @@ const OrderDetails = ({ section }) => {
         });
     }, [dispatch, order_number, message.message]);
 
+    useEffect(() => {
+        editorRef.current = {
+            // CKEditor: require('@ckeditor/ckeditor5-react'), // depricated in v3
+            CKEditor: require('@ckeditor/ckeditor5-react').CKEditor,
+            ClassicEditor: require('@ckeditor/ckeditor5-build-classic')
+        }
+        setEditorLoaded(true)
+    }, [])
     const CustomNav = ({ active, onSelect, ...props }) => {
         return (
             <Nav {...props} activeKey={active} style={{ marginLeft: "20px", marginTop: "-20px", fontSize: "20px" }}>
@@ -494,7 +506,6 @@ const OrderDetails = ({ section }) => {
             </Nav>
         );
     };
-
     return (
         <div style={{ marginTop: "20px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
@@ -503,7 +514,13 @@ const OrderDetails = ({ section }) => {
                     <Button onClick={() => setOpenWithHeader(true)} color="blue" appearance="primary">Update</Button>
                     <Drawer open={openWithHeader} onClose={() => setOpenWithHeader(false)}>
                         <Drawer.Header>
-                            <Drawer.Title>Update Order</Drawer.Title>
+                            <Drawer.Title><h4>Update Order</h4></Drawer.Title>
+                            <h4>
+                                Price:
+                                <span style={{ color: "blue" }}>
+                                                ${(myservice * mytype * myurgency * mypages * mylevel * myspacing).toFixed(2)}
+                                            </span>
+                            </h4>
                         </Drawer.Header>
                         <Drawer.Body>
                             <Box as="form" onSubmit={handleUpdateOrderSubmit}>
@@ -685,8 +702,34 @@ const OrderDetails = ({ section }) => {
                                 <Label htmlFor="topic">Topic*</Label>
                                 <Input onChange={handleChange} placeholder={topic} name="topic" type='text' mb={3} />
                                 <Label htmlFor="instructions">Instructions*</ Label>
-                                <Input style={{ border: "1px solid #C9BBB8 " }} as="textarea" placeholder={instructions}
-                                    rows={8} onChange={handleInstructionsChange} /><br />
+                                {editorLoaded ?
+                                    <CKEditor
+                                        editor={ClassicEditor}
+                                        data={instructions.slice(2).slice(0, -2)}
+                                        config={{
+                                            toolbar: [
+                                                "undo", "redo","bold", "italic", "blockQuote", "ckfinder", "imageTextAlternative",
+                                                "imageUpload", "heading", "imageStyle:full", "imageStyle:side", "link", "numberedList",
+                                                "bulletedList", "mediaEmbed", "insertTable", "tableColumn", "tableRow", "mergeTableCells"
+                                            ],
+                                            heading: {
+                                                options: [
+                                                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                                                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                                                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                                                ]
+                                            }
+                                        }}
+                                        onChange={(event, editor) => {
+                                            const data = editor.getData();
+                                            setinstructions(data);
+                                        }}
+
+                                    /> :
+                                    (
+                                        <div>Editor loading</div>
+                                    )
+                                }<br />
                                 <Button type="submit" color="cyan" appearance="primary">Edit Order</Button>
                             </Box>
                         </Drawer.Body>
@@ -889,7 +932,7 @@ const OrderDetails = ({ section }) => {
                                     resize: 'none'
                                 }}
                                 tagName="pre"
-                                html={instructions} // innerHTML of the editable div
+                                html={instructions.slice(2).slice(0, -2)} // innerHTML of the editable div
                             />
                         </Col>
                     </Row>
