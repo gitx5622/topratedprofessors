@@ -346,6 +346,7 @@ const RevisionDetails = ({ section }) => {
                                         autoUpload={false}
                                         removable={uploadFiles.length >= 2 && true}
                                         onChange={(file) => handleFileUploadChange(file)}
+                                        fileListVisible={false}
                                     >
                                         <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag a file to this area to upload</div>
                                     </Uploader>
