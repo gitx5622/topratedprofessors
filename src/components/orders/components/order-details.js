@@ -70,6 +70,7 @@ const OrderDetails = ({ section }) => {
     const [instructionsx, setinstructions] = React.useState("");
     const [openWithHeader, setOpenWithHeader] = React.useState(false);
     const [cancelOpen, setCancelOpen] = React.useState(false);
+    const [uploadedFileName, setUploadedFileName] = useState("");
 
     const router = useRouter();
     const { orderID } = router.query;
@@ -161,7 +162,7 @@ const OrderDetails = ({ section }) => {
         minHeight: 100,
         height: 200
     });
-
+    const formattedInstructruction = instructions?.slice(2).slice(0, -2);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleCancelOpen = () => setCancelOpen(true)
@@ -385,6 +386,7 @@ const OrderDetails = ({ section }) => {
     };
 
     const handleFileUploadChange = async (file) => {
+        localStorage.file = file[file.length - 1].name
         const extension = file[0]?.name.slice(file[0].name.lastIndexOf('.') + 1)
         const fileBase64 = await convertToBase64(file[0]);
         const Base64 = fileBase64.slice(fileBase64.indexOf(',') + 1).trim();
@@ -411,7 +413,7 @@ const OrderDetails = ({ section }) => {
             .then(response => {
                 console.log(response)
                 if (response.status === 201) {
-                    getOrderfiles(dispatch, completedOrderID);
+                    getOrderfiles(dispatch, orderID);
                     toast.success("File uploaded Successfully!", {
                         position: toast.POSITION.TOP_RIGHT
                     });
@@ -482,6 +484,11 @@ const OrderDetails = ({ section }) => {
         }
         setEditorLoaded(true)
     }, [])
+
+    useEffect(() => {
+        setUploadedFileName(localStorage.file)
+    },[uploadFiles.uploaded_files, uploaderRef ])
+
     const CustomNav = ({ active, onSelect, ...props }) => {
         return (
             <Nav {...props} activeKey={active} style={{ marginLeft: "20px", marginTop: "-20px", fontSize: "20px" }}>
@@ -705,7 +712,7 @@ const OrderDetails = ({ section }) => {
                                 {editorLoaded ?
                                     <CKEditor
                                         editor={ClassicEditor}
-                                        data={instructions.slice(2).slice(0, -2)}
+                                        data={formattedInstructruction}
                                         config={{
                                             toolbar: [
                                                 "undo", "redo","bold", "italic", "blockQuote", "ckfinder", "imageTextAlternative",
@@ -811,6 +818,9 @@ const OrderDetails = ({ section }) => {
                                     >
                                         <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag a file to this area to upload</div>
                                     </Uploader>
+                                    {uploadedFileName && (
+                                        <h4>Recently Uploaded File: {uploadedFileName}</h4>
+                                    )}
                                     <Divider />
                                     <Button style={{ width: "100%" }} color="green" appearance="primary" onClick={handleFileUploadSubmit}>
                                         Start Upload
@@ -932,7 +942,7 @@ const OrderDetails = ({ section }) => {
                                     resize: 'none'
                                 }}
                                 tagName="pre"
-                                html={instructions.slice(2).slice(0, -2)} // innerHTML of the editable div
+                                html={formattedInstructruction} // innerHTML of the editable div
                             />
                         </Col>
                     </Row>

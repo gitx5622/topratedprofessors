@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import { BoxLoading } from 'react-loadingg';
-import { ToastContainer, toast } from 'react-toastify';
-import { Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Message, Panel, Rate, Row, Uploader } from 'rsuite';
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useRouter} from 'next/router';
+import {BoxLoading} from 'react-loadingg';
+import {toast, ToastContainer} from 'react-toastify';
+import {Avatar, Button, Col, Divider, Grid, Input, Nav, Panel, Row, Tag, Uploader} from 'rsuite';
 import {
-    approveOrder,
     deleteOrderFile,
     fileUpload,
     getOrder,
-    getOrderfiles, getRejectedOrders,
-    getRejectReasons, orderRevision, rejectOrder
+    getOrderfiles,
+    getRejectedOrders,
+    getRejectReasons
 } from 'dataStore/actions/ordersAction';
-import { formatDate, formatDeadline } from '../../../utils/dates';
+import {formatDate, formatDeadline} from '../../../utils/dates';
 import DetailIcon from '@rsuite/icons/Detail';
-import { css } from '@emotion/css';
+import {css} from '@emotion/css';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import AttachmentIcon from '@rsuite/icons/Attachment';
-import { createMessage, filterMessages } from 'dataStore/actions/messagesAction';
+import {createMessage, filterMessages} from 'dataStore/actions/messagesAction';
 import dayjs from "dayjs";
 
 
@@ -102,7 +102,6 @@ const CancelledRejectedDetails = ({ section }) => {
 
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
-            console.log(file)
             const fileReader = new FileReader();
             fileReader?.readAsDataURL(file.blobFile);
             fileReader.onload = () => {
@@ -115,8 +114,7 @@ const CancelledRejectedDetails = ({ section }) => {
     };
 
     const handleFileUploadChange = async (file) => {
-        console.log(file)
-        localStorage.file = file[0]?.name
+        localStorage.file = file[file.length - 1].name
         const extension = file[0]?.name.slice(file[0].name.lastIndexOf('.') + 1)
         const fileBase64 = await convertToBase64(file[0]);
         const Base64 = fileBase64.slice(fileBase64.indexOf(',') + 1).trim();
@@ -181,7 +179,7 @@ const CancelledRejectedDetails = ({ section }) => {
 
     useEffect(() => {
         setUploadedFileName(localStorage.file)
-    },[uploadFiles.uploaded_files])
+    },[uploadFiles.uploaded_files, uploaderRef ])
 
     return (
         <div style={{ marginTop: "20px" }}>
@@ -224,6 +222,7 @@ const CancelledRejectedDetails = ({ section }) => {
                         <Row>
                             <Col xs={24} sm={24} md={24}>
                                 <div style={{ padding: "10px" }}>
+                                    <h4>*Uploads one file at a time</h4>
                                     <Uploader
                                         listType="picture-text"
                                         ref={uploaderRef}
@@ -235,7 +234,9 @@ const CancelledRejectedDetails = ({ section }) => {
                                     >
                                         <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag a file to this area to upload</div>
                                     </Uploader>
-                                    <h3>{uploadedFileName}</h3>
+                                    {uploadedFileName && (
+                                        <h4>Recently Uploaded File: {uploadedFileName}</h4>
+                                    )}
                                     <Divider />
                                     <Button style={{ width: "100%" }} color="green" appearance="primary" onClick={handleFileUploadSubmit}>
                                         Start Upload

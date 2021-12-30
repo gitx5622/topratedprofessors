@@ -32,6 +32,7 @@ const RevisionDetails = ({ section }) => {
     const [reject_reason_value, setRejectReasonValue] = useState(1);
     const [rejectOpen, setRejectOpen] = useState(false);
     const [hoverValue, setHoverValue] = React.useState(3);
+    const [uploadedFileName, setUploadedFileName] = useState("");
     const [uploadFiles, setUploadFiles] = useState({
         order_id: "",
         user_id: "",
@@ -179,6 +180,7 @@ const RevisionDetails = ({ section }) => {
     };
 
     const handleFileUploadChange = async (file) => {
+        localStorage.file = file[file.length - 1].name
         const extension = file[0]?.name.slice(file[0].name.lastIndexOf('.') + 1)
         const fileBase64 = await convertToBase64(file[0]);
         const Base64 = fileBase64.slice(fileBase64.indexOf(',') + 1).trim();
@@ -283,6 +285,10 @@ const RevisionDetails = ({ section }) => {
         getRejectReasons(dispatch);
     }, [dispatch])
 
+    useEffect(() => {
+        setUploadedFileName(localStorage.file)
+    },[uploadFiles.uploaded_files, uploaderRef ])
+
     return (
         <div style={{ marginTop: "20px" }}>
             <div>
@@ -343,6 +349,9 @@ const RevisionDetails = ({ section }) => {
                                     >
                                         <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag a file to this area to upload</div>
                                     </Uploader>
+                                    {uploadedFileName && (
+                                        <h4>Recently Uploaded File: {uploadedFileName}</h4>
+                                    )}
                                     <Divider />
                                     <Button style={{ width: "100%" }} color="green" appearance="primary" onClick={handleFileUploadSubmit}>
                                         Start Upload

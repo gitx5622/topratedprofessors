@@ -34,12 +34,11 @@ import ScrollToBottom from "react-scroll-to-bottom";
 import { css } from "@emotion/css";
 
 const InProgressDetails = ({ section }) => {
-    const [open, setOpen] = React.useState(false);
     const [uploadOpen, setUploadOpen] = useState(false);
     const [openOrderDetails, setOpenOrderDetails] = useState(true)
     const [messageOpen, setMessageOpen] = useState(false);
     const [messageInfo, setMessageInfo] = useState([]);
-    const [newOrderFilesState, setNewOrderFilesState] = useState([]);
+    const [uploadedFileName, setUploadedFileName] = useState("");
     const [cancelReasonValue, setCancelReasonValue] = useState(1);
     const [uploadFiles, setUploadFiles] = useState({
         order_id: "",
@@ -154,6 +153,7 @@ const InProgressDetails = ({ section }) => {
     };
 
     const handleFileUploadChange = async (file) => {
+        localStorage.file = file[file.length - 1].name
         const extension = file[0]?.name.slice(file[0].name.lastIndexOf('.') + 1)
         const fileBase64 = await convertToBase64(file[0]);
         const Base64 = fileBase64.slice(fileBase64.indexOf(',') + 1).trim();
@@ -249,6 +249,10 @@ const InProgressDetails = ({ section }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, order_number, message.message])
 
+    useEffect(() => {
+        setUploadedFileName(localStorage.file)
+    },[uploadFiles.uploaded_files, uploaderRef ])
+
     const CustomNav = ({ active, onSelect, ...props }) => {
         return (
             <Nav {...props} activeKey={active} style={{ marginLeft: "20px", marginTop: "-20px", fontSize: "20px" }}>
@@ -331,6 +335,9 @@ const InProgressDetails = ({ section }) => {
                                     >
                                         <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag a file to this area to upload</div>
                                     </Uploader>
+                                    {uploadedFileName && (
+                                        <h4>Recently Uploaded File: {uploadedFileName}</h4>
+                                    )}
                                     <Divider />
                                     <Button style={{ width: "100%" }} color="green" appearance="primary" onClick={handleFileUploadSubmit}>
                                         Start Upload
