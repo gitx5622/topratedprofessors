@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { formatDate, formatDeadline } from '../../../utils/dates';
 import {getPendingOrders, payFromWallet} from 'dataStore/actions/ordersAction';
 import {Box} from "theme-ui";
-import {makePayment} from "../../../dataStore/actions/walletAction";
+import {makePayment, userWalletSummary} from "../../../dataStore/actions/walletAction";
 
 const Pending = () => {
     const [activePage, setActivePage] = useState(1);
@@ -51,6 +51,11 @@ const Pending = () => {
         getPendingOrders(dispatch, userId, activePage, per)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, activePage, per]);
+
+    useEffect(() => {
+        const { id: userID } = JSON.parse(localStorage.currentUser);
+        userWalletSummary(dispatch, userID);
+    }, [dispatch])
     return (
         <div style={{ marginLeft: "10px", marginRight: "10px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>

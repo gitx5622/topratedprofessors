@@ -9,7 +9,7 @@ import {cancelOrder,fileUpload,getCancelReasons,getOrder,
 } from 'dataStore/actions/ordersAction';
 import ReactHtmlParser from 'react-html-parser';
 import { formatDate, formatDeadline } from '../../../utils/dates';
-import { makePayment } from "../../../dataStore/actions/walletAction";
+import {makePayment, userWalletSummary} from "../../../dataStore/actions/walletAction";
 import { BoxLoading } from 'react-loadingg';
 import { Label, Box } from "theme-ui";
 import ContentEditable from "react-contenteditable";
@@ -36,7 +36,6 @@ const OrderDetails = ({ section }) => {
     const [openOrderDetails, setOpenOrderDetails] = useState(true)
     const [messageOpen, setMessageOpen] = useState(false);
     const [messageInfo, setMessageInfo] = useState([]);
-    const [newOrderFilesState, setNewOrderFilesState] = useState([]);
     const [cancelReasonValue, setCancelReasonValue] = useState(1);
     const [uploadFiles, setUploadFiles] = useState({
         order_id: "",
@@ -488,6 +487,11 @@ const OrderDetails = ({ section }) => {
     useEffect(() => {
         setUploadedFileName(localStorage.file)
     },[uploadFiles.uploaded_files, uploaderRef ])
+
+    useEffect(() => {
+        const { id: userID } = JSON.parse(localStorage.currentUser);
+        userWalletSummary(dispatch, userID);
+    }, [dispatch, router])
 
     const CustomNav = ({ active, onSelect, ...props }) => {
         return (
