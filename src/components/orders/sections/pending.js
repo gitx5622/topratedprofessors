@@ -4,7 +4,7 @@ import Link from 'next/link';
 import NoData from 'assets/no-open.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatDate, formatDeadline } from '../../../utils/dates';
-import { getPendingOrders } from 'dataStore/actions/ordersAction';
+import {getPendingOrders, payFromWallet} from 'dataStore/actions/ordersAction';
 import {Box} from "theme-ui";
 import {makePayment} from "../../../dataStore/actions/walletAction";
 
@@ -90,7 +90,7 @@ const Pending = () => {
                         <td style={styles.table.td}>$ {data.amount.toFixed(2)}</td>
                         <td style={styles.table.td}>
                             <Box>
-                            <Button size="sm" onClick={() => handleMakePaymentSubmit} color="green" appearance="primary">Reserve Now</Button>
+                            <Button size="sm" onClick={() => payFromWallet(dispatch, data.id)} color="green" appearance="primary">Reserve Now</Button>
                         </Box>
                         </td>
                     </tr>

@@ -735,7 +735,7 @@ export const payFromWallet = async(dispatch, orderID) => {
     });
     try {
         return await axiosConfig
-            .put(`/orders/${orderID}/withdraw`, {
+            .put(`/orders/${orderID}/withdraw`, {}, {
                 headers: {
                     'x-toprated-token': localStorage.token,
                 },
