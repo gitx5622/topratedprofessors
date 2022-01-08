@@ -125,6 +125,7 @@ const RevisionDetails = ({ section }) => {
                 if (response.status === 200) {
                     setRatingSuccess("Thank you for reviewing your order.Your order has been approved")
                     setReleaseFundsOpen(false);
+                    router.push('/dashboard/approved');
                 }
             })
         } else {
@@ -247,7 +248,10 @@ const RevisionDetails = ({ section }) => {
         if (bodyData.description !== "") {
             rejectOrder(dispatch, orderId, bodyData)
                 .then(response => {
-                    console.log(response);
+                    if (response.status === 200) {
+                        setRejectOpen(false);
+                        router.push('/dashboard/rejected')
+                    }
                 })
         }
     }
@@ -259,7 +263,10 @@ const RevisionDetails = ({ section }) => {
         if (bodyData.description !== "") {
             orderRevision(dispatch, orderId, bodyData)
                 .then(response => {
-                    setRequestRevisionOpen(false);
+                    if (response.status === 200) {
+                        setRequestRevisionOpen(false);
+                        router.push('/dashboard/revision')
+                    }
                 })
         }
     }

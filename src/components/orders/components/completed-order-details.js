@@ -145,6 +145,7 @@ const OrderCompletedDetails = ({ section }) => {
                 if (response.status === 200) {
                     setRatingSuccess("Thank you for reviewing your order.Your order has been approved")
                     setReleaseFundsOpen(false);
+                    router.push('/dashboard/approved')
                 }
             })
         } else {
@@ -242,6 +243,7 @@ const OrderCompletedDetails = ({ section }) => {
                 .then(response => {
                     if (response.status === 200) {
                         setRejectOpen(false);
+                        router.push('/dashboard/rejected')
                     }
                 })
         }
@@ -256,6 +258,7 @@ const OrderCompletedDetails = ({ section }) => {
                 .then(response => {
                     if (response.status === 200) {
                         setRequestRevisionOpen(false);
+                        router.push('/dashboard/revision')
                     }
                 })
         }

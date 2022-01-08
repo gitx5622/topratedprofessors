@@ -219,6 +219,7 @@ const InProgressDetails = ({ section }) => {
                 .then(response => {
                     if (response.status === 200) {
                         setCancelOpen(false);
+                        router.push("/dashboard/cancelled");
                     }
                 })
         }
