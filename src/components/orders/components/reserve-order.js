@@ -70,6 +70,18 @@ const ReserveOrder = () => {
             });
         }
     };
+
+    const handleReserveFromWallet = () => {
+        payFromWallet(dispatch, orderId)
+            .then(response => {
+                if (response.status === 200) {
+                    toast.success("Paid from wallet successfully!", {
+                        position: toast.POSITION.TOP_CENTER});
+                    router.push("/dashboard/waiting-assign");
+                }
+            })
+    }
+
     React.useEffect(() => {
         getOrder(dispatch, reserveID);
     }, [dispatch, reserveID]);
@@ -160,8 +172,7 @@ const ReserveOrder = () => {
                         <center>
                             <div style={{border: "1px solid whitesmoke", paddingBottom:"10px", borderRadius: '20px', boxShadow:"0px 0px 10px 10px #A0C1B3 "}}>
                                 <h3>Pay using your Wallet</h3><br />
-                                <Button onClick={() => { payFromWallet(dispatch, orderId);  toast.success("Paid from wallet successfully!", {
-                                    position: toast.POSITION.TOP_CENTER});router.push("/dashboard/waiting-assign")}} style={{width:"80%"}} color="blue" appearance="primary">Pay from Wallet</Button>
+                                <Button onClick={handleReserveFromWallet} style={{width:"80%"}} color="blue" appearance="primary">Pay from Wallet</Button>
                             </div>
                             <h3>OR</h3>
                         </center>

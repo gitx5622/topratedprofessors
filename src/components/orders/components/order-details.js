@@ -447,7 +447,6 @@ const OrderDetails = ({ section }) => {
             .then(response => {
                 if (response.status === 200) {
                     setOpen(false);
-                    setSuccessMessage(`Order ${orderId} was reserved successfully.`);
                     toast.success("Paid from wallet successfully!", {
                         position: toast.POSITION.TOP_CENTER});
                     router.push("/dashboard/waiting-assign");
