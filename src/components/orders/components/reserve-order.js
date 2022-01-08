@@ -3,9 +3,11 @@ import {useRouter} from "next/router";
 import {useDispatch, useSelector} from "react-redux";
 import Payment from "../../../assets/payment.png";
 import {makePayment} from "../../../dataStore/actions/walletAction";
-import { Grid, Row, Col, Button, Panel } from 'rsuite';
+import {Grid, Row, Col, Button, Panel, Message} from 'rsuite';
 import {getOrder, payFromWallet} from "../../../dataStore/actions/ordersAction";
-import {formatDate, formatDeadline} from "../../../utils/dates";
+import {BoxLoading } from 'react-loadingg';
+import {formatDeadline} from "../../../utils/dates";
+import { ToastContainer, toast } from 'react-toastify';
 
 const ReserveOrder = () => {
     const [payment, setPayment] = useState({
@@ -16,14 +18,12 @@ const ReserveOrder = () => {
     const orderSelector = useSelector(state => state.orderState);
     const {
         isLoading: orderLoading,
-        order_files,
-        cancelled_reasons,
+        errorMessage,
         order: {
             id: orderId,
             order_number,
             topic,
             phone,
-            instructions,
             deadline,
             service,
             user,
@@ -37,7 +37,6 @@ const ReserveOrder = () => {
             spacing,
             urgency,
             amount,
-            created_at,
         } } = orderSelector;
     const router = useRouter();
     const { reserveID } = router.query;
@@ -77,6 +76,14 @@ const ReserveOrder = () => {
     return (
         <div>
             <Panel>
+                {errorMessage && (
+                    <Message style={{background:"#F12D3C"}}><div style={{color:"white"}}>{errorMessage.data.error_message}</div></Message>
+                )}
+                {orderLoading && (
+                    <BoxLoading/>
+                )}
+                <br/>
+                <ToastContainer />
                 <h3>Reserve Order/Pay for the order</h3>
             <Grid fluid>
                 <Row>
@@ -153,7 +160,8 @@ const ReserveOrder = () => {
                         <center>
                             <div style={{border: "1px solid whitesmoke", paddingBottom:"10px", borderRadius: '20px', boxShadow:"0px 0px 10px 10px #A0C1B3 "}}>
                                 <h3>Pay using your Wallet</h3><br />
-                                <Button onClick={() => { payFromWallet(dispatch, orderId); router.reload()}} style={{width:"80%"}} color="blue" appearance="primary">Pay from Wallet</Button>
+                                <Button onClick={() => { payFromWallet(dispatch, orderId);  toast.success("Paid from wallet successfully!", {
+                                    position: toast.POSITION.TOP_CENTER});router.push("/dashboard/waiting-assign")}} style={{width:"80%"}} color="blue" appearance="primary">Pay from Wallet</Button>
                             </div>
                             <h3>OR</h3>
                         </center>

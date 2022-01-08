@@ -75,7 +75,7 @@ const Pending = () => {
                         <td style={styles.table.td}>$ {data.amount.toFixed(2)}</td>
                         <td style={styles.table.td}>
                             <Box>
-                            <Button size="sm" onClick={() => { payFromWallet(dispatch, data.id); router.reload(); } } color="green" appearance="primary">Reserve Now</Button>
+                            <Button size="sm" onClick={() => { payFromWallet(dispatch, data.id); router.push("/dashboard/waiting-assign"); } } color="green" appearance="primary">Reserve Now</Button>
                         </Box>
                         </td>
                     </tr>
