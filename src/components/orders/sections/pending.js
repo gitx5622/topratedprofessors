@@ -3,10 +3,11 @@ import {Tag, Panel, Divider, Pagination, Button} from 'rsuite';
 import Link from 'next/link';
 import NoData from 'assets/no-open.svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { formatDate, formatDeadline } from '../../../utils/dates';
+import { formatDeadline } from '../../../utils/dates';
 import {getPendingOrders, payFromWallet} from 'dataStore/actions/ordersAction';
 import {Box} from "theme-ui";
-import {makePayment, userWalletSummary} from "../../../dataStore/actions/walletAction";
+import {userWalletSummary} from "../../../dataStore/actions/walletAction";
+import {useRouter} from "next/router";
 
 const Pending = () => {
     const [activePage, setActivePage] = useState(1);
@@ -16,6 +17,7 @@ const Pending = () => {
         user_id: "",
     });
     const dispatch = useDispatch();
+    const router = useRouter();
     const orderSelector = useSelector(state => state.orderState);
     const {
         pending_orders: {
@@ -23,28 +25,6 @@ const Pending = () => {
             pagination,
         }
     } = orderSelector;
-
-    const makePaypalPayment = (credentials) => makePayment(dispatch, credentials);
-
-    const handleMakePaymentSubmit = (event) => {
-        event.preventDefault();
-        const { id: userID } = JSON.parse(localStorage.currentUser);
-        const bodyData = {
-            user_id: parseInt(userID),
-            order_amount: parseInt(payment.order_amount, 10)
-        }
-        if (payment.order_amount !== "") {
-            makePaypalPayment(bodyData).then(response => {
-                const links = response.data.links[1].href;
-                if (response.status === 200) router.push(links)
-            })
-        } else {
-            dispatch({
-                type: 'MAKE_PAYMENT_ERROR',
-                errorMessage: 'Make sure all the fields all filled',
-            });
-        }
-    };
 
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
@@ -95,7 +75,7 @@ const Pending = () => {
                         <td style={styles.table.td}>$ {data.amount.toFixed(2)}</td>
                         <td style={styles.table.td}>
                             <Box>
-                            <Button size="sm" onClick={() => payFromWallet(dispatch, data.id)} color="green" appearance="primary">Reserve Now</Button>
+                            <Button size="sm" onClick={() => { payFromWallet(dispatch, data.id); router.reload(); } } color="green" appearance="primary">Reserve Now</Button>
                         </Box>
                         </td>
                     </tr>

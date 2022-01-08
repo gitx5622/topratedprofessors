@@ -2,12 +2,12 @@ import React, {useEffect, useRef, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
-import { Panel, Divider, Uploader, Button, Input, Modal, 
+import { Panel, Divider, Uploader, Button, Input, Modal, Message,
 Nav, Drawer, Grid, Row, Col, Avatar, Tag } from 'rsuite';
 import {cancelOrder,fileUpload,getCancelReasons,getOrder,
     getOrderfiles, payFromWallet,updateOrder, deleteOrderFile
 } from 'dataStore/actions/ordersAction';
-import ReactHtmlParser from 'react-html-parser';
+import {IoIosAttach} from 'react-icons/io';
 import { formatDate, formatDeadline } from '../../../utils/dates';
 import {makePayment, userWalletSummary} from "../../../dataStore/actions/walletAction";
 import { BoxLoading } from 'react-loadingg';
@@ -37,6 +37,7 @@ const OrderDetails = ({ section }) => {
     const [messageOpen, setMessageOpen] = useState(false);
     const [messageInfo, setMessageInfo] = useState([]);
     const [cancelReasonValue, setCancelReasonValue] = useState(1);
+    const [successMessage, setSuccessMessage] = useState("");
     const [uploadFiles, setUploadFiles] = useState({
         order_id: "",
         user_id: "",
@@ -78,6 +79,7 @@ const OrderDetails = ({ section }) => {
 
     const orderSelector = useSelector(state => state.orderState);
     const {
+        errorMessage,
         isLoading: orderLoading,
         order_files,
         cancelled_reasons,
@@ -386,8 +388,8 @@ const OrderDetails = ({ section }) => {
 
     const handleFileUploadChange = async (file) => {
         localStorage.file = file[file.length - 1].name
-        const extension = file[0]?.name.slice(file[0].name.lastIndexOf('.') + 1)
-        const fileBase64 = await convertToBase64(file[0]);
+        const extension = file[file.length - 1]?.name.slice(file[file.length - 1].name.lastIndexOf('.') + 1)
+        const fileBase64 = await convertToBase64(file[file.length - 1]);
         const Base64 = fileBase64.slice(fileBase64.indexOf(',') + 1).trim();
         console.log(Base64)
         if (extension && fileBase64 && orderId) {
@@ -444,6 +446,10 @@ const OrderDetails = ({ section }) => {
             .then(response => {
                 if (response.status === 200) {
                     setOpen(false);
+                    setSuccessMessage(`Order ${orderId} was reserved successfully.`);
+                    router.reload()
+                }else {
+                    setOpen(false);
                 }
             })
     }
@@ -495,7 +501,7 @@ const OrderDetails = ({ section }) => {
 
     const CustomNav = ({ active, onSelect, ...props }) => {
         return (
-            <Nav {...props} activeKey={active} style={{ marginLeft: "20px", marginTop: "-20px", fontSize: "20px" }}>
+            <Nav {...props} activeKey={active} style={{marginTop: "-20px", fontSize: "20px" }}>
                 <Nav.Item
                     onClick={() => { setUploadOpen(true); setActive("1"); setOpenOrderDetails(false); setMessageOpen(false) }}
                     eventKey="1"
@@ -518,8 +524,14 @@ const OrderDetails = ({ section }) => {
         );
     };
     return (
-        <div style={{ marginTop: "20px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
+            <Panel>
+            {errorMessage && (
+                <Message style={{background:"#F12D3C"}}><div style={{color:"white"}}>{errorMessage.data.error_message}</div></Message>
+            )}
+            {successMessage && (
+                <Message type="success">{successMessage}</Message>
+            )}<br/>
+            <div style={{ display: "flex", justifyContent: "space-between"}}>
                 <h4>Order Details</h4>
                 <div style={{ display: "flex", gap: '1em' }}>
                     <Button onClick={() => setOpenWithHeader(true)} color="blue" appearance="primary">Update</Button>
@@ -786,7 +798,7 @@ const OrderDetails = ({ section }) => {
                         </Modal.Header>
                         <Modal.Body>
                             <p style={{ fontSize: "18px" }}>Choose one of the options to reserve the payment for the order.</p>
-                            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "40px", marginLeft: "20px", marginRight: "20px" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "40px"}}>
                                 <Button color="green" appearance="primary" onClick={handleReserveFromWallet}>Reserve from your Wallet</Button>
                                 <Button color="cyan" appearance="primary" onClick={handleReserveOrder}>Reserve with Paypal</Button>
                             </div>
@@ -822,9 +834,11 @@ const OrderDetails = ({ section }) => {
                                         fileListVisible={false}
                                     >
                                         <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag a file to this area to upload</div>
-                                    </Uploader>
+                                    </Uploader><br/>
                                     {uploadedFileName && (
-                                        <h4>Recently Uploaded File: {uploadedFileName}</h4>
+                                        <div style={{height: '50px', border:"1px solid gray", borderRadius:"10px"}}>
+                                            <h4><IoIosAttach style={{fontSize:"34px"}}/>  Uploaded File: {uploadedFileName}</h4>
+                                        </div>
                                     )}
                                     <Divider />
                                     <Button style={{ width: "100%" }} color="green" appearance="primary" onClick={handleFileUploadSubmit}>
@@ -872,7 +886,6 @@ const OrderDetails = ({ section }) => {
                 <Grid fluid>
                     <Row>
                         <Col xs={24} sm={24} md={16}>
-                            <Panel style={{ marginTop: "-10px" }}>
                                 <div style={{ background: "#fdaa8f", height: '40px', padding: "10px" }}><h5>Order #{order_number}</h5></div>
                                 <table style={styles.table}>
                                     <tr style={{ borderRadius: "10px" }}>
@@ -932,7 +945,6 @@ const OrderDetails = ({ section }) => {
                                         <td style={styles.table.td} colSpan="3">{amount}</td>
                                     </tr>
                                 </table>
-                            </Panel>
                         </Col>
                         <Col xs={24} sm={24} md={8}>
                             <div style={{ background: "#fdaa8f", height: '40px', marginTop: "10px", padding: "10px" }}><h5>Order Instructions</h5></div>
@@ -1015,7 +1027,7 @@ const OrderDetails = ({ section }) => {
                     </Panel>
                 </div>
             )}
-        </div>
+            </Panel>
     );
 };
 

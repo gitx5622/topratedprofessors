@@ -418,7 +418,7 @@ const CreateOrder = () => {
                                             data={instructions}
                                             config={{
                                                 toolbar: [
-                                                    "undo", "redo", '|', "bold", "italic", "blockQuote", "ckfinder", "imageTextAlternative",
+                                                    'source', '-', "undo", "redo", '|', "bold", "italic", "blockQuote", "ckfinder", "imageTextAlternative",
                                                     "imageUpload", "heading", "imageStyle:full", "imageStyle:side", "link", "numberedList",
                                                     "bulletedList", "mediaEmbed", "insertTable", "tableColumn", "tableRow", "mergeTableCells"
                                                 ],

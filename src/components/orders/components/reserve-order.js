@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Payment from "../../../assets/payment.png";
 import {makePayment} from "../../../dataStore/actions/walletAction";
 import { Grid, Row, Col, Button, Panel } from 'rsuite';
-import {getOrder} from "../../../dataStore/actions/ordersAction";
+import {getOrder, payFromWallet} from "../../../dataStore/actions/ordersAction";
 import {formatDate, formatDeadline} from "../../../utils/dates";
 
 const ReserveOrder = () => {
@@ -153,7 +153,7 @@ const ReserveOrder = () => {
                         <center>
                             <div style={{border: "1px solid whitesmoke", paddingBottom:"10px", borderRadius: '20px', boxShadow:"0px 0px 10px 10px #A0C1B3 "}}>
                                 <h3>Pay using your Wallet</h3><br />
-                                <Button style={{width:"80%"}} color="blue" appearance="primary">Pay from Wallet</Button>
+                                <Button onClick={() => { payFromWallet(dispatch, orderId); router.reload()}} style={{width:"80%"}} color="blue" appearance="primary">Pay from Wallet</Button>
                             </div>
                             <h3>OR</h3>
                         </center>

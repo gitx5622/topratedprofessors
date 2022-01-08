@@ -15,7 +15,7 @@ const Transactions = ({ section }) => {
         if (payerID && paymentId) {
             executePayment(dispatch, userID, paymentId, payerID).then(response => {
                 window.history.replaceState(null, '', '/dashboard/transactions');
-                window.location.reload();
+                router.reload();
             })
         }
 
