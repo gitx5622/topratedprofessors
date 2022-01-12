@@ -1,12 +1,21 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useReducer} from 'react';
 import Dashboard from "../../components/admin/dashboard";
+import checkDetailsReducer, {initialCheckDetailsState} from "../../dataStore/reducers/checkDetailsReducer";
 
 const AllOrders = () => {
+    const [checkDetailsData, dispatchCheckDetails] = useReducer(
+        checkDetailsReducer,
+        initialCheckDetailsState
+    );
     useEffect(() => {
         try {
-            JSON.parse(localStorage.currentUser);
+            checkDetailsData.token
         } catch (error) {
             localStorage.clear();
+            dispatchCheckDetails({
+                type: "ERROR",
+                errorMessage: "No token Provided"
+            })
             window.location.replace('/user/login');
         }
     }, []);

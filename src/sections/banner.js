@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { jsx } from 'theme-ui';
 import { Image, Box, Heading,Button } from 'theme-ui';
 import { Grid, Row, Col } from "rsuite";
+import Typical from 'react-typical'
 import { useDispatch, useSelector } from "react-redux";
 import Original from 'assets/original-stamp.png';
 import Check from 'assets/check.png';
@@ -89,7 +90,12 @@ export default function Banner() {
                 <Row>
                     <Col xs={24} sm={24} md={10} mdOffset={2}>
                         <Box sx={styles.banner.bannerCard}>
-                            <center><h3>Hire Experts to Do Your Assignment</h3></center>
+                            <center>
+                                <Typical
+                                    steps={['Hire Experts to Do Your Assignment', 2000]}
+                                    loop={Infinity}
+                                    wrapper="h3"
+                                /></center>
                             <Box sx={styles.banner.buttonGroup}>
                                 <Box sx={{ lineHeight: 2.5 }}>
                                     <p style={{ fontSize: "15px" }}><Image src={Check} alt="checks" sx={styles.banner.checks} /> A+ Quality Paper</p>
