@@ -177,7 +177,10 @@ const styles = {
     loginImage: {
         display: 'grid',
         height: '100vh',
-        borderRight: '1px solid whitesmoke'
+        borderRight: '1px solid whitesmoke',
+        '@media screen and (max-width:768px)': {
+            display: 'none',
+        },
     },
     patternImage: {
         maxWidth: '100%',
