@@ -11,11 +11,6 @@ import {useRouter} from "next/router";
 
 const Pending = () => {
     const [activePage, setActivePage] = useState(1);
-    const [per, setPer] = useState(10);
-    const [payment, setPayment] = useState({
-        order_amount: "",
-        user_id: "",
-    });
     const dispatch = useDispatch();
     const router = useRouter();
     const orderSelector = useSelector(state => state.orderState);
@@ -25,6 +20,8 @@ const Pending = () => {
             pagination,
         }
     } = orderSelector;
+
+    const per = 10;
 
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);

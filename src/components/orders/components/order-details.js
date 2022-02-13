@@ -1,15 +1,18 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
-import { Panel, Divider, Uploader, Button, Input, Modal, Message,
-Nav, Drawer, Grid, Row, Col, Avatar, Tag } from 'rsuite';
-import {cancelOrder,fileUpload,getCancelReasons,getOrder,
-    getOrderfiles, payFromWallet,updateOrder, deleteOrderFile
+import {
+    Panel, Divider, Uploader, Button, Input, Modal, Message,
+    Nav, Drawer, Grid, Row, Col, Avatar, Tag
+} from 'rsuite';
+import {
+    cancelOrder, fileUpload, getCancelReasons, getOrder,
+    getOrderfiles, payFromWallet, updateOrder, deleteOrderFile
 } from 'dataStore/actions/ordersAction';
-import {IoIosAttach} from 'react-icons/io';
+import { IoIosAttach } from 'react-icons/io';
 import { formatDate, formatDeadline } from '../../../utils/dates';
-import {makePayment, userWalletSummary} from "../../../dataStore/actions/walletAction";
+import { makePayment, userWalletSummary } from "../../../dataStore/actions/walletAction";
 import { BoxLoading } from 'react-loadingg';
 import { Label, Box } from "theme-ui";
 import ContentEditable from "react-contenteditable";
@@ -26,6 +29,7 @@ import { getServices } from "../../../dataStore/actions/servicesAction";
 import { getLanguages } from "../../../dataStore/actions/languagesAction";
 import { getSpacing } from "../../../dataStore/actions/spacingsAction";
 import { createMessage, filterMessages } from "../../../dataStore/actions/messagesAction";
+import { Editor } from '@tinymce/tinymce-react';
 import ScrollToBottom from "react-scroll-to-bottom";
 import { css } from "@emotion/css";
 import dayjs from "dayjs";
@@ -163,7 +167,7 @@ const OrderDetails = ({ section }) => {
         minHeight: 100,
         height: 200
     });
-    const formattedInstructruction = instructions?.slice(2).slice(0, -2);
+    const formattedInstructruction = instructions?.slice(4).slice(0, -5);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleCancelOpen = () => setCancelOpen(true)
@@ -314,8 +318,8 @@ const OrderDetails = ({ section }) => {
             sources_id: parseInt(updateOrderDetails.sources_id),
             spacing_id: parseInt(updateOrderDetails.spacing_id),
             language_id: parseInt(updateOrderDetails.language_id),
-            phone: updateOrderDetails.phone ? updateOrderDetails.phone : phone ,
-            topic:  updateOrderDetails.topic ? updateOrderDetails.topic : topic,
+            phone: updateOrderDetails.phone ? updateOrderDetails.phone : phone,
+            topic: updateOrderDetails.topic ? updateOrderDetails.topic : topic,
             instructions: instructionsx ? instructionsx : instructions,
             pagesummary: false,
             plagreport: true,
@@ -421,7 +425,7 @@ const OrderDetails = ({ section }) => {
                 }
             });
     }
-    
+
     const handleOrderFileDelete = (order_file) => {
         deleteOrderFile(dispatch, order_file.id)
     }
@@ -448,9 +452,10 @@ const OrderDetails = ({ section }) => {
                 if (response.status === 200) {
                     setOpen(false);
                     toast.success("Paid from wallet successfully!", {
-                        position: toast.POSITION.TOP_CENTER});
+                        position: toast.POSITION.TOP_CENTER
+                    });
                     router.push("/dashboard/waiting-assign");
-                }else {
+                } else {
                     setOpen(false);
                 }
             })
@@ -494,7 +499,7 @@ const OrderDetails = ({ section }) => {
 
     useEffect(() => {
         setUploadedFileName(localStorage.file)
-    },[uploadFiles.uploaded_files, uploaderRef ])
+    }, [uploadFiles.uploaded_files, uploaderRef])
 
     useEffect(() => {
         const { id: userID } = JSON.parse(localStorage.currentUser);
@@ -503,7 +508,7 @@ const OrderDetails = ({ section }) => {
 
     const CustomNav = ({ active, onSelect, ...props }) => {
         return (
-            <Nav {...props} activeKey={active} style={{marginTop: "-20px", fontSize: "20px" }}>
+            <Nav {...props} activeKey={active} style={{ marginTop: "-20px", fontSize: "20px" }}>
                 <Nav.Item
                     onClick={() => { setUploadOpen(true); setActive("1"); setOpenOrderDetails(false); setMessageOpen(false) }}
                     eventKey="1"
@@ -526,14 +531,14 @@ const OrderDetails = ({ section }) => {
         );
     };
     return (
-            <Panel>
+        <Panel>
             {errorMessage && (
-                <Message style={{background:"#F12D3C"}}><div style={{color:"white"}}>{errorMessage.data.error_message}</div></Message>
+                <Message style={{ background: "#F12D3C" }}><div style={{ color: "white" }}>{errorMessage.data.error_message}</div></Message>
             )}
             {successMessage && (
                 <Message type="success">{successMessage}</Message>
-            )}<br/>
-            <div style={{ display: "flex", justifyContent: "space-between"}}>
+            )}<br />
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <h4>Order Details</h4>
                 <div style={{ display: "flex", gap: '1em' }}>
                     <Button onClick={() => setOpenWithHeader(true)} color="blue" appearance="primary">Update</Button>
@@ -543,8 +548,8 @@ const OrderDetails = ({ section }) => {
                             <h4>
                                 Price:
                                 <span style={{ color: "blue" }}>
-                                                ${(myservice * mytype * myurgency * mypages * mylevel * myspacing).toFixed(2)}
-                                            </span>
+                                    ${(myservice * mytype * myurgency * mypages * mylevel * myspacing).toFixed(2)}
+                                </span>
                             </h4>
                         </Drawer.Header>
                         <Drawer.Body>
@@ -733,7 +738,7 @@ const OrderDetails = ({ section }) => {
                                         data={formattedInstructruction}
                                         config={{
                                             toolbar: [
-                                                "undo", "redo","bold", "italic", "blockQuote", "ckfinder", "imageTextAlternative",
+                                                "undo", "redo", "bold", "italic", "blockQuote", "ckfinder", "imageTextAlternative",
                                                 "imageUpload", "heading", "imageStyle:full", "imageStyle:side", "link", "numberedList",
                                                 "bulletedList", "mediaEmbed", "insertTable", "tableColumn", "tableRow", "mergeTableCells"
                                             ],
@@ -800,7 +805,7 @@ const OrderDetails = ({ section }) => {
                         </Modal.Header>
                         <Modal.Body>
                             <p style={{ fontSize: "18px" }}>Choose one of the options to reserve the payment for the order.</p>
-                            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "40px"}}>
+                            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "40px" }}>
                                 <Button color="green" appearance="primary" onClick={handleReserveFromWallet}>Reserve from your Wallet</Button>
                                 <Button color="cyan" appearance="primary" onClick={handleReserveOrder}>Reserve with Paypal</Button>
                             </div>
@@ -816,7 +821,7 @@ const OrderDetails = ({ section }) => {
             </div>
             <Divider />
             <CustomNav appearance="tabs" active={active} onSelect={setActive} />
-           {uploadOpen && (
+            {uploadOpen && (
                 <div>
                     {orderLoading && (
                         <BoxLoading />
@@ -836,10 +841,10 @@ const OrderDetails = ({ section }) => {
                                         fileListVisible={false}
                                     >
                                         <div style={{ width: "100%", background: "#EAEEF3", lineHeight: '100px' }}>Click or Drag a file to this area to upload</div>
-                                    </Uploader><br/>
+                                    </Uploader><br />
                                     {uploadedFileName && (
-                                        <div style={{height: '50px', border:"1px solid gray", borderRadius:"10px"}}>
-                                            <h4><IoIosAttach style={{fontSize:"34px"}}/>  Uploaded File: {uploadedFileName}</h4>
+                                        <div style={{ height: '50px', border: "1px solid gray", borderRadius: "10px" }}>
+                                            <h4><IoIosAttach style={{ fontSize: "34px" }} />  Uploaded File: {uploadedFileName}</h4>
                                         </div>
                                     )}
                                     <Divider />
@@ -888,86 +893,93 @@ const OrderDetails = ({ section }) => {
                 <Grid fluid>
                     <Row>
                         <Col xs={24} sm={24} md={16}>
-                                <div style={{ background: "#fdaa8f", height: '40px', padding: "10px" }}><h5>Order #{order_number}</h5></div>
-                                <table style={styles.table}>
-                                    <tr style={{ borderRadius: "10px" }}>
-                                        <td style={styles.table.td}><strong>Order Number</strong></td>
-                                        <td style={styles.table.tdx}>{order_number}</td>
-                                        <td style={styles.table.td}><strong>Client</strong></td>
-                                        <td style={styles.table.tdx}>{user && user.username}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Service</b></td>
-                                        <td style={styles.table.td}>{service && service.name}</td>
-                                        <td style={styles.table.td}><b>Type of Paper</b></td>
-                                        <td style={styles.table.td}>{type && type.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Spacing</b></td>
-                                        <td style={styles.table.td}>{spacing && spacing.name}</td>
-                                        <td style={styles.table.td}><b>Urgency</b></td>
-                                        <td style={styles.table.td}>{urgency && urgency.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Pages</b></td>
-                                        <td style={styles.table.td}>{page && page.name}</td>
-                                        <td style={styles.table.td}><b>Level</b></td>
-                                        <td style={styles.table.td}>{level && level.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Subject</b></td>
-                                        <td style={styles.table.td}>{subject && subject.name}</td>
-                                        <td style={styles.table.td}><b>Style</b></td>
-                                        <td style={styles.table.td}>{style && style.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Sources</b></td>
-                                        <td style={styles.table.td}>{source && source.name}</td>
-                                        <td style={styles.table.td}><b>Language</b></td>
-                                        <td style={styles.table.td}>{language && language.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Phone</b></td>
-                                        <td style={styles.table.td} colSpan="3">{phone}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Topic</b></td>
-                                        <td style={styles.table.td} colSpan="3">{topic}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Deadline</b></td>
-                                        <td style={styles.table.td} colSpan="3">{formatDeadline(deadline)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Created At</b></td>
-                                        <td style={styles.table.td} colSpan="3">{formatDate(created_at)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={styles.table.td}><b>Amount</b></td>
-                                        <td style={styles.table.td} colSpan="3">{amount}</td>
-                                    </tr>
-                                </table>
+                            <div style={{ background: "#fdaa8f", height: '40px', padding: "10px" }}><h5>Order #{order_number}</h5></div>
+                            <table style={styles.table}>
+                                <tr style={{ borderRadius: "10px" }}>
+                                    <td style={styles.table.td}><strong>Order Number</strong></td>
+                                    <td style={styles.table.tdx}>{order_number}</td>
+                                    <td style={styles.table.td}><strong>Client</strong></td>
+                                    <td style={styles.table.tdx}>{user && user.username}</td>
+                                </tr>
+                                <tr>
+                                    <td style={styles.table.td}><b>Service</b></td>
+                                    <td style={styles.table.td}>{service && service.name}</td>
+                                    <td style={styles.table.td}><b>Type of Paper</b></td>
+                                    <td style={styles.table.td}>{type && type.name}</td>
+                                </tr>
+                                <tr>
+                                    <td style={styles.table.td}><b>Spacing</b></td>
+                                    <td style={styles.table.td}>{spacing && spacing.name}</td>
+                                    <td style={styles.table.td}><b>Urgency</b></td>
+                                    <td style={styles.table.td}>{urgency && urgency.name}</td>
+                                </tr>
+                                <tr>
+                                    <td style={styles.table.td}><b>Pages</b></td>
+                                    <td style={styles.table.td}>{page && page.name}</td>
+                                    <td style={styles.table.td}><b>Level</b></td>
+                                    <td style={styles.table.td}>{level && level.name}</td>
+                                </tr>
+                                <tr>
+                                    <td style={styles.table.td}><b>Subject</b></td>
+                                    <td style={styles.table.td}>{subject && subject.name}</td>
+                                    <td style={styles.table.td}><b>Style</b></td>
+                                    <td style={styles.table.td}>{style && style.name}</td>
+                                </tr>
+                                <tr>
+                                    <td style={styles.table.td}><b>Sources</b></td>
+                                    <td style={styles.table.td}>{source && source.name}</td>
+                                    <td style={styles.table.td}><b>Language</b></td>
+                                    <td style={styles.table.td}>{language && language.name}</td>
+                                </tr>
+                                <tr>
+                                    <td style={styles.table.td}><b>Phone</b></td>
+                                    <td style={styles.table.td} colSpan="3">{phone}</td>
+                                </tr>
+                                <tr>
+                                    <td style={styles.table.td}><b>Topic</b></td>
+                                    <td style={styles.table.td} colSpan="3">{topic}</td>
+                                </tr>
+                                <tr>
+                                    <td style={styles.table.td}><b>Deadline</b></td>
+                                    <td style={styles.table.td} colSpan="3">{formatDeadline(deadline)}</td>
+                                </tr>
+                                <tr>
+                                    <td style={styles.table.td}><b>Created At</b></td>
+                                    <td style={styles.table.td} colSpan="3">{formatDate(created_at)}</td>
+                                </tr>
+                                <tr>
+                                    <td style={styles.table.td}><b>Amount</b></td>
+                                    <td style={styles.table.td} colSpan="3">{amount}</td>
+                                </tr>
+                            </table>
                         </Col>
                         <Col xs={24} sm={24} md={8}>
-                            <div style={{ background: "#fdaa8f", height: '40px', marginTop: "10px", padding: "10px" }}><h5>Order Instructions</h5></div>
-                            <ContentEditable
-                                className="editable"
-                                style={{
-                                    fontFamily: 'sans-serif',
-                                    width: '100%',
-                                    minHeight: '150px',
-                                    border: '1px dashed #aaa',
-                                    padding: '5px',
-                                    resize: 'none'
+                            <div style={{ background: "#fdaa8f", height: '40px', padding: "10px" }}><h5>Order Instructions</h5></div>
+                            <Editor
+                                apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
+                                value={formattedInstructruction}
+                                init={{
+                                    height: 450,
+                                    language: 'en_US',
+                                    menubar: false,
+                                
+                                    plugins: [
+                                        'advlist autolink lists link image',
+                                        'charmap print preview anchor help',
+                                        'searchreplace visualblocks code',
+                                        'insertdatetime media table paste wordcount'
+                                    ],
+                                    toolbar:
+                                        'undo redo | formatselect | bold italic | \
+                                                    alignleft aligncenter alignright | \
+                                                    bullist numlist outdent indent | help'
                                 }}
-                                tagName="pre"
-                                html={formattedInstructruction} // innerHTML of the editable div
                             />
                         </Col>
                     </Row>
                 </Grid>
             )}
-           {messageOpen && (
+            {messageOpen && (
                 <div>
                     <Panel>
                         <h5>Order Messages</h5>
@@ -1029,7 +1041,7 @@ const OrderDetails = ({ section }) => {
                     </Panel>
                 </div>
             )}
-            </Panel>
+        </Panel>
     );
 };
 

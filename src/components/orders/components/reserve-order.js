@@ -89,7 +89,9 @@ const ReserveOrder = () => {
         <div>
             <Panel>
                 {errorMessage && (
-                    <Message style={{background:"#F12D3C"}}><div style={{color:"white"}}>{errorMessage.data.error_message}</div></Message>
+                    <Message style={{background:"#F12D3C"}}><div style={{color:"white"}}>
+                        {errorMessage.error_message}</div>
+                        </Message>
                 )}
                 {orderLoading && (
                     <BoxLoading/>

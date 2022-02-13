@@ -16,6 +16,8 @@ import { createOrders, getOrders } from "../../../dataStore/actions/ordersAction
 import { Box, } from 'theme-ui';
 import { useRouter } from 'next/router';
 import { BoxLoading } from 'react-loadingg';
+import { Editor } from '@tinymce/tinymce-react';
+
 
 const CreateOrder = () => {
     const [step, setStep] = React.useState(0);
@@ -206,7 +208,7 @@ const CreateOrder = () => {
             language_id: parseInt(localStorage.language_id, 10),
             phone: order.phone,
             topic: order.topic,
-            instructions: instructions.replace(/"/g, '&quot;').replace(/'/g, '&quot;'),
+            instructions: instructions.trim().replace(/['"(&#160;)(&nbsp;)]/g, ''),
             pagesummary: false,
             plagreport: true,
             initialdraft: false,
@@ -229,9 +231,9 @@ const CreateOrder = () => {
             });
         }
     };
-    if (instructions) {
-        instructions.replaceAll('"', '')
-        console.log(instructions);
+
+    const handleEditorChange = (content, editor) => {
+        setinstructions(content);
     }
 
     useEffect(() => {
@@ -247,15 +249,6 @@ const CreateOrder = () => {
         getSpacing(dispatch);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
-
-    useEffect(() => {
-        editorRef.current = {
-            // CKEditor: require('@ckeditor/ckeditor5-react'), // depricated in v3
-            CKEditor: require('@ckeditor/ckeditor5-react').CKEditor,
-            ClassicEditor: require('@ckeditor/ckeditor5-build-classic')
-        }
-        setEditorLoaded(true)
-    }, [])
 
 
     return (
@@ -395,51 +388,25 @@ const CreateOrder = () => {
                                     <Label htmlFor="topic">Topic*</Label>
                                     <Input style={{ border: "1px solid #C9BBB8 " }} onChange={handleSelectChange} name="topic" type='text' mb={3} /><br />
                                     <Label htmlFor="instructions">Instructions*</ Label>
-                                    {/*<textarea style={{border:"1px solid #C9BBB8", width:"100%", padding:"10px", borderRadius:"5px"}}*/}
-                                    {/*          value={instructions}*/}
-                                    {/*          rows={8} onChange={handleInstructionsChange} placeholder="Fill in instructions" />*/}
-                                    {/*<br/><br/>*/}
-                                    {/*<ContentEditable*/}
-                                    {/*    className="editable"*/}
-                                    {/*    style={{*/}
-                                    {/*        fontFamily: 'sans-serif',*/}
-                                    {/*        width: '100%',*/}
-                                    {/*        minHeight: '150px',*/}
-                                    {/*        border: '1px dashed #aaa',*/}
-                                    {/*        padding: '5px',*/}
-                                    {/*    }}*/}
-                                    {/*    html={instructions} // innerHTML of the editable div*/}
-                                    {/*    onChange={handleInstructionsChange} // handle innerHTML change*/}
-                                    {/*    onBlur={sanitize}*/}
-                                    {/*/>*/}
-                                    {editorLoaded ?
-                                        <CKEditor
-                                            editor={ClassicEditor}
-                                            data={instructions}
-                                            config={{
-                                                toolbar: [
-                                                    'source', '-', "undo", "redo", '|', "bold", "italic", "blockQuote", "ckfinder", "imageTextAlternative",
-                                                    "imageUpload", "heading", "imageStyle:full", "imageStyle:side", "link", "numberedList",
-                                                    "bulletedList", "mediaEmbed", "insertTable", "tableColumn", "tableRow", "mergeTableCells"
-                                                ],
-                                                heading: {
-                                                    options: [
-                                                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                                                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                                                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
-                                                    ]
-                                                }
-                                            }}
-                                            onChange={(event, editor) => {
-                                                const data = editor.getData();
-                                                setinstructions(data);
-                                            }}
-
-                                        /> :
-                                        (
-                                            <div>Editor loading</div>
-                                        )
-                                    }
+                                    <Editor
+                                        apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
+                                        init={{
+                                            height: 300,
+                                            language: 'en_US',
+                                            menubar: false,
+                                            plugins: [
+                                                'advlist autolink lists link image',
+                                                'charmap print preview anchor help',
+                                                'searchreplace visualblocks code',
+                                                'insertdatetime media table paste wordcount'
+                                            ],
+                                            toolbar:
+                                                'undo redo | formatselect | bold italic | \
+                                                    alignleft aligncenter alignright | \
+                                                    bullist numlist outdent indent | help'
+                                        }}
+                                        onEditorChange={handleEditorChange}
+                                    />
                                     <br />
                                 </Box>
                             )}

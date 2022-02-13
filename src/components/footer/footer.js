@@ -1,4 +1,5 @@
 /** @jsx jsx */
+import {useEffect} from "react";
 import { jsx, Box, Grid, Heading, Text} from 'theme-ui';
 import Lets from 'assets/footer/lets.png';
 import Mcafee from 'assets/footer/mcafee.png';
@@ -8,6 +9,21 @@ import { useRouter } from "next/router";
 
 export default function Footer() {
     const router = useRouter();
+
+    useEffect(() => {
+            const elementVerified = document.querySelector('.verified');
+            function myFunction(x) {
+                if (x.matches) { // If media query matches
+                    elementVerified.style.display = 'none';
+                } else {
+                    elementVerified.style.display = "flex";
+                    elementVerified.style.justifyContent = "center";
+                }
+            }
+            let x = window.matchMedia("(max-width: 700px)")
+            myFunction(x);
+            x.addListener(myFunction);
+    }, [])
   return (
     <footer sx={styles.footer}>
           <Grid sx={styles.footer.grid}>
@@ -45,7 +61,7 @@ export default function Footer() {
               </Box>
           </Grid>
         <Grid>
-                <ul style={{display: 'flex', justifyContent: 'center','@media screen and (maxWidth: 768px)': {display: 'none'},}}>
+                <ul className='verified'>
                     <li><img src={Lets} alt="lets_encrypt" width="200px" height="70px"/></li>
                     <li><img src={Mcafee} alt="mcafee" width="100px"/></li>
                     <li><img src={Paypal} alt="paypal" width="100px"/></li>
@@ -117,6 +133,6 @@ const styles = {
                   textAlign: 'center',
               },
           }
-      }
+      },
   }
 };
