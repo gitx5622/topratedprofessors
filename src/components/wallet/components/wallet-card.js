@@ -81,7 +81,7 @@ const WalletCard = ({ section }) => {
                         <Grid fluid>
                             <Row className="show-grid">
                                 <Col xs={24} sm={24} md={10}>
-                                    <div style={{border: "1px solid whitesmoke",borderRadius: '20px', boxShadow:"0px 0px 10px 10px #A0C1B3 "}}>
+                                    <div style={{border: "1px solid whitesmoke",borderRadius: '20px',marginBottom:"10px", boxShadow:"0px 0px 10px 10px #A0C1B3 "}}>
                                     <form onSubmit={handleMakePaymentSubmit} style={{padding: "20px" }}>
                                         <center>
                                             <h3>Add funds to your account</h3><br />
@@ -98,7 +98,7 @@ const WalletCard = ({ section }) => {
                                     </form>
                                     </div>
                                 </Col>
-                                <Col xsHidden md={1}/>
+                                <Col xsHidden md={1}><br/></Col>
                                 <Col xs={24} sm={24} md={13} >
                                     <Panel shaded style={{background:"whitesmoke"}}>
                                         <h5 style={{color:"#17c671"}}>Trasanctions</h5><br />

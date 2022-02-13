@@ -7,7 +7,6 @@ import { keyframes } from '@emotion/core';
 import Link from 'next/link';
 import Logo from 'components/home/logo';
 import LogoDark from 'assets/logo.png';
-import MobileDrawer from './mobile-drawer';
 import USflag from '../../assets/usa.png';
 
 const Header = ({ className }) => {
@@ -36,7 +35,7 @@ const Header = ({ className }) => {
           </a>
         </Link>
       </Flex>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={styles.authButton}>
         <Button
           className="login__btn"
           size="sm"
@@ -109,7 +108,6 @@ const styles = {
       },
       '@media screen and (max-width:768px)': {
         ml: ['-120px', '-100px', '-60px', '-30px', '20px'],
-        mr: ['-90px', '-40px', '-30px', '-30px', '50px']
       },
       '&:hover': {
         backgroundColor: 'white',
@@ -137,8 +135,7 @@ const styles = {
         outline: 0,
       },
       '@media screen and (max-width:768px)': {
-        ml: ['-80px', '-40px', '-30px', '-30px', '20px'],
-        mr: ['-80px', '-40px', '-30px', '-30px', '50px']
+        display: 'none',
       },
       '&:hover': {
         backgroundColor: 'white',
@@ -206,6 +203,7 @@ const styles = {
         },
       }
     },
+    
   },
   nav: {
     mx: 'auto',

@@ -250,6 +250,18 @@ const CreateOrder = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 
+    useEffect(() => {
+        const elementVerified = document.querySelector('.steps');
+        function myFunction(x) {
+            if (x.matches) { // If media query matches
+                elementVerified.style.display = 'none';
+            }
+        }
+        let x = window.matchMedia("(max-width: 700px)")
+        myFunction(x);
+        x.addListener(myFunction);
+    }, [])
+
 
     return (
         <Box sx={{ marginLeft: "10px", marginRight: "10px" }}>
@@ -263,15 +275,15 @@ const CreateOrder = () => {
             <Box as="form" onSubmit={handleCreateOrderSubmit}>
                 <Grid fluid>
                     <Row>
-                        <Col xs={6}>
-                            <Panel shaded style={{ minHeight: "400px", background: "whitesmoke" }}>
+                        <Col sm={6} md={6} >
+                            <Panel className='steps' shaded style={{ minHeight: "400px", background: "whitesmoke" }}>
                                 <Steps current={step} vertical style={styles}>
                                     <Steps.Item title="Order requirements" description="Fill in your order requirements." />
                                     <Steps.Item title="Complete Order details" description="Make sure all the order requirements are filled" />
                                 </Steps>
                             </Panel>
                         </Col>
-                        <Col xs={18}>
+                        <Col sm={18} md={18}>
                             {errorMessage && (
                                 <Message closable type="error">{errorMessage}</Message>
                             )}
@@ -286,7 +298,7 @@ const CreateOrder = () => {
                                             </span>
                                         </h3>
                                     </Box><br />
-                                    <Col xs={8}>
+                                    <Col xs={12} sm={12} md={8}>
                                         <Label htmlFor="sound">Service</Label>
                                         <Select onChange={parseServiceSelected} name="service_id" mb={3}>
                                             {serviceSelector.services.map(service => {
@@ -320,7 +332,7 @@ const CreateOrder = () => {
                                             })}
                                         </Select>
                                     </Col>
-                                    <Col xs={8}>
+                                    <Col xs={12} sm={12} md={8}>
                                         <Label htmlFor="sound">Urgency</Label>
                                         <Select onChange={parseUrgencySelected} name="urgency_id" mb={3}>
                                             {urgencySelector.urgencies.map(urgency => {
@@ -346,7 +358,7 @@ const CreateOrder = () => {
                                             })}
                                         </Select>
                                     </Col>
-                                    <Col xs={8}>
+                                    <Col xs={12} sm={12} md={8}>
                                         <Label htmlFor="sound">Spacing</Label>
                                         <Select onChange={parseSpacingSelected} name="spacing_id" mb={3}>
                                             {spacingSelector.spacings.map(spacing => {

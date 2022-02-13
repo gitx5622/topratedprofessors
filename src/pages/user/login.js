@@ -77,7 +77,7 @@ export default function Login() {
                     </Box>
                     <Box sx={styles.form}>
                     <Box sx={styles.formLogin} as="form" onSubmit={handleUserLogin}>
-                        <center><h3 sx={{fontFamily: 'Quicksand, sans-serif'}}>Welcome to TopRatedProfessors</h3><br/>
+                        <center><h3 sx={{fontFamily: 'Quicksand, sans-serif'}}>Welcome to TopRated Professors</h3><br/>
                             <Button sx={{background: "#17a2b8", display: 'block',width: '100%', borderColor: '#17a2b8'}} onClick={() => router.push('/')} block theme="info"><BiArrowBack/> Go Home</Button><br/>
                             {checkDetailsData.errorMessage && (
                                 <Message style={{marginTop:"10px"}} closable type="error">
@@ -134,7 +134,10 @@ const styles = {
     loginImage: {
         display: 'grid',
         maxHeight: '100vh',
-        borderRight: '1px solid whitesmoke'
+        borderRight: '1px solid whitesmoke',
+        '@media screen and (max-width:768px)': {
+            display: 'none',
+        },
     },
     patternImage: {
         maxWidth: '100%',
