@@ -1,4 +1,5 @@
 /** @jsx jsx */
+import { useEffect } from 'react';
 import { jsx, Box, Flex } from 'theme-ui';
 import { Button, Dropdown } from 'rsuite';
 import { useRouter } from 'next/router';
@@ -14,32 +15,45 @@ const Header = ({ className }) => {
   return (
     <header sx={styles.header} className={className}>
       <Link href="/">
-        <a><Logo src={LogoDark} href='/'/></a>
+        <a><Logo className="logo" src={LogoDark} href='/' /></a>
       </Link>
       <Flex as="nav" sx={styles.nav}>
-          <Link href="/header/about-us">
-            <a>About Us</a>
-          </Link>
-          <Link href="/header/reviews">
-            <a>Reviews</a>
-          </Link>
-          <Link href="/header/why-us">
-            <a>Why Us</a>
-          </Link>
-          <Link href="/header/services">
-            <a>Services</a>
-          </Link>
-          <Link href="/">
-            <a>
-              <img src={USflag} alt="usflag" width="30" /> +1-814-250-1019
-            </a>
-          </Link>
+        <Link href="/header/about-us">
+          <a>About Us</a>
+        </Link>
+        <Link href="/header/reviews">
+          <a>Reviews</a>
+        </Link>
+        <Link href="/header/why-us">
+          <a>Why Us</a>
+        </Link>
+        <Link href="/header/services">
+          <a>Services</a>
+        </Link>
+        <Link href="/">
+          <a>
+            <img src={USflag} alt="usflag" width="30" /> +1-814-250-1019
+          </a>
+        </Link>
       </Flex>
-      <Box sx={{ display: 'flex', gap: '10px' }}>
-        <Button className="login__btn" size="sm" onClick={() => router.push('/user/login')} variant="secondary" aria-label="Get Started">Login</Button>
-        <Button className="register__btn" size="sm" onClick={() => router.push('/user/register')} variant="secondary" aria-label="Get Started">Get Started</Button>
+      <Box sx={{ display: 'flex' }}>
+        <Button
+          className="login__btn"
+          size="sm"
+          onClick={() => router.push('/user/login')}
+          variant="secondary"
+          aria-label="Get Started">
+          Login
+        </Button>
+        <Button
+          className="register__btn"
+          size="sm"
+          onClick={() => router.push('/user/register')}
+          variant="secondary"
+          aria-label="Get Started">
+          Get Started
+        </Button>
       </Box>
-      <MobileDrawer />
     </header>
   );
 }
@@ -63,13 +77,12 @@ const styles = {
   header: {
     fontFamily: 'body',
     display: 'flex',
-    pl: '20px',
-    pr: '20px',
+    pl: ['0px', '10px', '20px'],
+    pr: ['0px', '10px', '20px'],
     alignItems: 'center',
     justifyContent: 'space-between',
     color: 'text',
     fontWeight: 'body',
-    py: 2,
     width: '100%',
     position: 'absolute',
     top: 0,
@@ -80,8 +93,8 @@ const styles = {
     '.login__btn': {
       borderRadius: '50px',
       fontSize: ['14px', null, null, 2],
-      paddingLeft:"20px",
-      paddingRight:"20px",
+      paddingLeft: "20px",
+      paddingRight: "20px",
       paddingTop: "10px",
       paddingBottom: "10px",
       letterSpacings: '-0.15px',
@@ -95,8 +108,8 @@ const styles = {
         outline: 0,
       },
       '@media screen and (max-width:768px)': {
-        ml: ['-80px', '-40px', '-30px', '-30px', '20px'],
-        mr: ['-80px', '-40px', '-30px', '-30px', '50px']
+        ml: ['-120px', '-100px', '-60px', '-30px', '20px'],
+        mr: ['-90px', '-40px', '-30px', '-30px', '50px']
       },
       '&:hover': {
         backgroundColor: 'white',
@@ -105,8 +118,8 @@ const styles = {
     },
     '.register__btn': {
       borderRadius: '50px',
-      paddingLeft:"20px",
-      paddingRight:"20px",
+      paddingLeft: "20px",
+      paddingRight: "20px",
       paddingTop: "10px",
       paddingBottom: "10px",
       fontSize: ['14px', null, null, 1],
@@ -145,8 +158,8 @@ const styles = {
         borderRadius: '45px',
         fontSize: ['14px', null, null, 2],
         letterSpacings: '-0.15px',
-        paddingLeft:"20px",
-        paddingRight:"20px",
+        paddingLeft: "20px",
+        paddingRight: "20px",
         paddingTop: "10px",
         paddingBottom: "10px",
         fontFamily: 'body',
@@ -168,8 +181,8 @@ const styles = {
         borderRadius: '45px',
         fontSize: ['14px', null, null, 2],
         letterSpacings: '-0.15px',
-        paddingLeft:"20px",
-        paddingRight:"20px",
+        paddingLeft: "20px",
+        paddingRight: "20px",
         paddingTop: "10px",
         paddingBottom: "10px",
         fontFamily: 'body',

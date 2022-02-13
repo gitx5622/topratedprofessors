@@ -285,13 +285,6 @@ const CreateOrder = () => {
                                                 ${(myservice * mytype * myurgency * mypages * mylevel * myspacing).toFixed(2)}
                                             </span>
                                         </h3>
-                                        <Box>
-                                            <h5>Have a promo Code ?</h5>
-                                            <InputGroup>
-                                                <Input width={100} />
-                                                <InputGroup.Addon style={{ background: "blue", color: "white" }}>Apply</InputGroup.Addon>
-                                            </InputGroup>
-                                        </Box>
                                     </Box><br />
                                     <Col xs={8}>
                                         <Label htmlFor="sound">Service</Label>
