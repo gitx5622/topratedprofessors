@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { BoxLoading } from 'react-loadingg';
+import { Editor } from '@tinymce/tinymce-react';
 import { ToastContainer, toast } from 'react-toastify';
 import { Avatar, Button, Col, Tag, Divider, Grid, Input, Modal, Nav, Message, Panel, Rate, Row, Uploader } from 'rsuite';
 import {
@@ -79,11 +79,11 @@ const OrderCompletedDetails = ({ section }) => {
         reject_reasons,
     } = orderSelector;
 
-
     const router = useRouter();
     const { completedOrderID } = router.query;
     const dispatch = useDispatch();
     const uploaderRef = React.useRef();
+    const formattedInstructruction = instructions?.trim().slice(3).slice(0, -4);
 
     const handleOpen = () => setReleaseFundsOpen(true);
     const handleClose = () => setReleaseFundsOpen(false);
@@ -455,20 +455,25 @@ const OrderCompletedDetails = ({ section }) => {
                         </Col>
                         <Col xs={24} sm={24} md={8}>
                             <div style={{ background: "#fdaa8f", height: '40px', marginTop: "10px", padding: "10px" }}><h5>Order Instructions</h5></div>
-                            <pre style={{ color: "black", fontWeight: 600 }}>{instructions && instructions
-                                .replace(/<style([\s\S]*?)<\/style>/gi, '')
-                                .replace(/<script([\s\S]*?)<\/script>/gi, '')
-                                .replace(/<\/div>/ig, '\n')
-                                .replace(/<\/h1>/ig, '-->')
-                                .replace(/<\/h2>/ig, '-->')
-                                .replace(/<\/h3>/ig, '-->')
-                                .replace(/<\/h4>/ig, '-->')
-                                .replace(/<\/h5>/ig, '-->')
-                                .replace(/<\/h6>/ig, '-->')
-                                .replace(/<li>/ig, '  *  ')
-                                .replace(/<\/p>/ig, '\n')
-                                .replace(/<br\s*[\/]?>/gi, "\n")
-                            }</pre>
+                            <Editor
+                                apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
+                                value={formattedInstructruction}
+                                init={{
+                                    height: 450,
+                                    language: 'en_US',
+                                    menubar: false,
+                                    plugins: [
+                                        'advlist autolink lists link image',
+                                        'charmap print preview anchor help',
+                                        'searchreplace visualblocks code',
+                                        'insertdatetime media table paste wordcount'
+                                    ],
+                                    toolbar:
+                                        'undo redo | formatselect | bold italic | \
+                                                    alignleft aligncenter alignright | \
+                                                    bullist numlist outdent indent | help'
+                                }}
+                            />
                         </Col>
                     </Row>
                 </Grid>

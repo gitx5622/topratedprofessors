@@ -12,7 +12,7 @@ import {
     getOrderfiles, deleteOrderFile
 } from 'dataStore/actions/ordersAction';
 import { formatDate, formatDeadline } from '../../../utils/dates';
-import { Label, Box } from "theme-ui";
+import { Editor } from '@tinymce/tinymce-react';
 import ContentEditable from "react-contenteditable";
 import DetailIcon from '@rsuite/icons/Detail';
 import AttachmentIcon from '@rsuite/icons/Attachment';
@@ -97,6 +97,7 @@ const InProgressDetails = ({ section }) => {
             created_at,
         } } = orderSelector;
 
+    const formattedInstructruction = instructions?.trim().slice(3).slice(0, -4);
     const walletSelector = useSelector(state => state.walletState);
     const { isLoading } = walletSelector;
     const messageSelector = useSelector(state => state.messageState);
@@ -450,19 +451,24 @@ const InProgressDetails = ({ section }) => {
                         </Col>
                         <Col xs={24} sm={24} md={8}>
                             <div style={{ background: "#fdaa8f", height: '40px', marginTop: "10px", padding: "10px" }}><h5>Order Instructions</h5></div>
-                            <ContentEditable
-                                className="editable"
-                                style={{
-                                    fontFamily: 'sans-serif',
-                                    width: '100%',
-                                    minHeight: '150px',
-                                    border: '1px dashed #aaa',
-                                    padding: '5px',
-                                    resize: 'none'
-                                }}
-                                tagName="pre"
-                                html={instructions} // innerHTML of the editable div
-                            />
+                            <Editor
+                                apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
+                                value={formattedInstructruction}
+                                init={{
+                                    height: 450,
+                                    language: 'en_US',
+                                    menubar: false,
+                                    plugins: [
+                                        'advlist autolink lists link image',
+                                        'charmap print preview anchor help',
+                                        'searchreplace visualblocks code',
+                                        'insertdatetime media table paste wordcount'
+                                    ],
+                                    toolbar:
+                                        'undo redo | formatselect | bold italic | \
+                                                    alignleft aligncenter alignright | \
+                                                    bullist numlist outdent indent | help'
+                                }}/>
                         </Col>
                     </Row>
                 </Grid>

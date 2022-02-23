@@ -17,6 +17,7 @@ import DetailIcon from '@rsuite/icons/Detail';
 import { css } from '@emotion/css';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import AttachmentIcon from '@rsuite/icons/Attachment';
+import { Editor } from '@tinymce/tinymce-react';
 import { createMessage, filterMessages } from 'dataStore/actions/messagesAction';
 import dayjs from "dayjs";
 
@@ -69,8 +70,6 @@ const RevisionDetails = ({ section }) => {
     const walletSelector = useSelector(state => state.walletState);
     const ratingSelector = useSelector(state => state.ratingState);
     const messageSelector = useSelector(state => state.messageState);
-    const { isLoading } = walletSelector;
-    const { ratings, rating } = ratingSelector;
     const { messages } = messageSelector;
     const newMessages = [...messages];
     const orderSelector = useSelector(state => state.orderState);
@@ -86,12 +85,11 @@ const RevisionDetails = ({ section }) => {
         reject_reasons,
     } = orderSelector;
 
-    const newOrderFiles = [...order_files];
-
     const router = useRouter();
     const { revisionID } = router.query;
     const dispatch = useDispatch();
     const uploaderRef = React.useRef();
+    const formattedInstructruction = instructions?.trim().slice(3).slice(0, -4);
 
     const handleOpen = () => setReleaseFundsOpen(true);
     const handleClose = () => setReleaseFundsOpen(false);
@@ -472,20 +470,24 @@ const RevisionDetails = ({ section }) => {
                         </Col>
                         <Col xs={24} sm={24} md={8}>
                             <div style={{ background: "#fdaa8f", height: '40px', marginTop: "10px", padding: "10px" }}><h5>Order Instructions</h5></div>
-                            <pre style={{ color: "black", fontWeight: 600 }}>{instructions && instructions
-                                .replace(/<style([\s\S]*?)<\/style>/gi, '')
-                                .replace(/<script([\s\S]*?)<\/script>/gi, '')
-                                .replace(/<\/div>/ig, '\n')
-                                .replace(/<\/h1>/ig, '-->')
-                                .replace(/<\/h2>/ig, '-->')
-                                .replace(/<\/h3>/ig, '-->')
-                                .replace(/<\/h4>/ig, '-->')
-                                .replace(/<\/h5>/ig, '-->')
-                                .replace(/<\/h6>/ig, '-->')
-                                .replace(/<li>/ig, '  *  ')
-                                .replace(/<\/p>/ig, '\n')
-                                .replace(/<br\s*[\/]?>/gi, "\n")
-                            }</pre>
+                            <Editor
+                                apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
+                                value={formattedInstructruction}
+                                init={{
+                                    height: 450,
+                                    language: 'en_US',
+                                    menubar: false,
+                                    plugins: [
+                                        'advlist autolink lists link image',
+                                        'charmap print preview anchor help',
+                                        'searchreplace visualblocks code',
+                                        'insertdatetime media table paste wordcount'
+                                    ],
+                                    toolbar:
+                                        'undo redo | formatselect | bold italic | \
+                                                    alignleft aligncenter alignright | \
+                                                    bullist numlist outdent indent | help'
+                                }}/>
                         </Col>
                     </Row>
                 </Grid>

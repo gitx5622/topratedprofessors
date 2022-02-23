@@ -125,7 +125,7 @@ const OrderLayout = ({ children }) => {
     }, [])
 
     return (
-        <div className="show-fake-browser sidebar-page" style={{ color: "black" }}>
+        <div className="show-fake-browser sidebar-page" style={{color: "black" }}>
             <Container>
                 <Sidebar
                     style={{ display: 'flex', height: '100vh', color: "black", flexDirection: 'column' }}
