@@ -17,18 +17,6 @@ import { Box, } from 'theme-ui';
 import { useRouter } from 'next/router';
 import { BoxLoading } from 'react-loadingg';
 import { Editor } from '@tinymce/tinymce-react';
-if (typeof window !== 'undefined') {
-require ('tinymce/tinymce');
-require ('tinymce/icons/default');
-require ('tinymce/themes/silver');
-require ('tinymce/plugins/paste');
-require ('tinymce/plugins/link');
-require ('tinymce/plugins/image');
-require ('tinymce/plugins/table');
-require ('tinymce/skins/ui/oxide/skin.min.css');
-require ('tinymce/skins/ui/oxide/content.min.css');
-require ('tinymce/skins/content/default/content.min.css');
-}
 
 const CreateOrder = () => {
     const [step, setStep] = React.useState(0);
