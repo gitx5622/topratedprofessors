@@ -15,7 +15,6 @@ import { formatDate, formatDeadline } from '../../../utils/dates';
 import { makePayment, userWalletSummary } from "../../../dataStore/actions/walletAction";
 import { BoxLoading } from 'react-loadingg';
 import { Label, Box } from "theme-ui";
-import ContentEditable from "react-contenteditable";
 import DetailIcon from '@rsuite/icons/Detail';
 import AttachmentIcon from '@rsuite/icons/Attachment';
 import { getLevels } from "../../../dataStore/actions/levelsAction";
@@ -167,7 +166,7 @@ const OrderDetails = ({ section }) => {
         minHeight: 100,
         height: 200
     });
-    const formattedInstructruction = instructions?.slice(4).slice(0, -5);
+    const formattedInstructruction = instructions?.slice(2).slice(0, -2);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleCancelOpen = () => setCancelOpen(true)
@@ -308,16 +307,16 @@ const OrderDetails = ({ section }) => {
         const { id: userID } = JSON.parse(localStorage.currentUser);
         const bodyData = {
             user_id: parseInt(userID),
-            service_id: parseInt(updateOrderDetails.service_id),
-            type_id: parseInt(updateOrderDetails.type_id),
-            style_id: parseInt(updateOrderDetails.style_id),
-            level_id: parseInt(updateOrderDetails.level_id),
-            pages_id: parseInt(updateOrderDetails.pages_id),
-            urgency_id: parseInt(updateOrderDetails.urgency_id),
-            subject_id: parseInt(updateOrderDetails.subject_id),
-            sources_id: parseInt(updateOrderDetails.sources_id),
-            spacing_id: parseInt(updateOrderDetails.spacing_id),
-            language_id: parseInt(updateOrderDetails.language_id),
+            service_id: parseInt(updateOrderDetails.service_id) || service.id,
+            type_id: parseInt(updateOrderDetails.type_id) || type.id,
+            style_id: parseInt(updateOrderDetails.style_id) || style.id,
+            level_id: parseInt(updateOrderDetails.level_id) || level.id,
+            pages_id: parseInt(updateOrderDetails.pages_id) || page.id,
+            urgency_id: parseInt(updateOrderDetails.urgency_id) || urgency.id,
+            subject_id: parseInt(updateOrderDetails.subject_id) || subject.id,
+            sources_id: parseInt(updateOrderDetails.sources_id) || source.id,
+            spacing_id: parseInt(updateOrderDetails.spacing_id) || spacing.id,
+            language_id: parseInt(updateOrderDetails.language_id) || language.id,
             phone: updateOrderDetails.phone ? updateOrderDetails.phone : phone,
             topic: updateOrderDetails.topic ? updateOrderDetails.topic : topic,
             instructions: instructionsx ? instructionsx : instructions,
@@ -487,15 +486,6 @@ const OrderDetails = ({ section }) => {
                 setMessageInfo(response.data)
         });
     }, [dispatch, order_number, message.message]);
-
-    useEffect(() => {
-        editorRef.current = {
-            // CKEditor: require('@ckeditor/ckeditor5-react'), // depricated in v3
-            CKEditor: require('@ckeditor/ckeditor5-react').CKEditor,
-            ClassicEditor: require('@ckeditor/ckeditor5-build-classic')
-        }
-        setEditorLoaded(true)
-    }, [])
 
     useEffect(() => {
         setUploadedFileName(localStorage.file)
@@ -732,34 +722,7 @@ const OrderDetails = ({ section }) => {
                                 <Label htmlFor="topic">Topic*</Label>
                                 <Input onChange={handleChange} placeholder={topic} name="topic" type='text' mb={3} />
                                 <Label htmlFor="instructions">Instructions*</ Label>
-                                {editorLoaded ?
-                                    <CKEditor
-                                        editor={ClassicEditor}
-                                        data={formattedInstructruction}
-                                        config={{
-                                            toolbar: [
-                                                "undo", "redo", "bold", "italic", "blockQuote", "ckfinder", "imageTextAlternative",
-                                                "imageUpload", "heading", "imageStyle:full", "imageStyle:side", "link", "numberedList",
-                                                "bulletedList", "mediaEmbed", "insertTable", "tableColumn", "tableRow", "mergeTableCells"
-                                            ],
-                                            heading: {
-                                                options: [
-                                                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                                                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                                                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
-                                                ]
-                                            }
-                                        }}
-                                        onChange={(event, editor) => {
-                                            const data = editor.getData();
-                                            setinstructions(data);
-                                        }}
-
-                                    /> :
-                                    (
-                                        <div>Editor loading</div>
-                                    )
-                                }<br />
+                                <div>Instructions</div>
                                 <Button type="submit" color="cyan" appearance="primary">Edit Order</Button>
                             </Box>
                         </Drawer.Body>
@@ -949,7 +912,7 @@ const OrderDetails = ({ section }) => {
                                 </tr>
                                 <tr>
                                     <td style={styles.table.td}><b>Amount</b></td>
-                                    <td style={styles.table.td} colSpan="3">{amount}</td>
+                                    <td style={styles.table.td} colSpan="3">$ {amount && amount.toFixed(2)}</td>
                                 </tr>
                             </table>
                         </Col>
@@ -962,7 +925,6 @@ const OrderDetails = ({ section }) => {
                                     height: 450,
                                     language: 'en_US',
                                     menubar: false,
-                                
                                     plugins: [
                                         'advlist autolink lists link image',
                                         'charmap print preview anchor help',

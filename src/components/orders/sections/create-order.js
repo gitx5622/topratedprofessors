@@ -17,7 +17,18 @@ import { Box, } from 'theme-ui';
 import { useRouter } from 'next/router';
 import { BoxLoading } from 'react-loadingg';
 import { Editor } from '@tinymce/tinymce-react';
-
+if (typeof window !== 'undefined') {
+require ('tinymce/tinymce');
+require ('tinymce/icons/default');
+require ('tinymce/themes/silver');
+require ('tinymce/plugins/paste');
+require ('tinymce/plugins/link');
+require ('tinymce/plugins/image');
+require ('tinymce/plugins/table');
+require ('tinymce/skins/ui/oxide/skin.min.css');
+require ('tinymce/skins/ui/oxide/content.min.css');
+require ('tinymce/skins/content/default/content.min.css');
+}
 
 const CreateOrder = () => {
     const [step, setStep] = React.useState(0);
@@ -63,9 +74,6 @@ const CreateOrder = () => {
     const languageSelector = useSelector(state => state.languageState);
     const orderSelector = useSelector(state => state.orderState);
     const { errorMessage, isLoading: orderLoading } = orderSelector;
-    const editorRef = useRef()
-    const [editorLoaded, setEditorLoaded] = useState(false)
-    const { CKEditor, ClassicEditor } = editorRef.current || {}
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -208,7 +216,7 @@ const CreateOrder = () => {
             language_id: parseInt(localStorage.language_id, 10),
             phone: order.phone,
             topic: order.topic,
-            instructions: instructions.trim().replace(/['"(&#160;)(&nbsp;)]/g, ''),
+            instructions: instructions.trim(),
             pagesummary: false,
             plagreport: true,
             initialdraft: false,
@@ -233,7 +241,10 @@ const CreateOrder = () => {
     };
 
     const handleEditorChange = (content, editor) => {
+        // document.getElementsByTagName('p')
         setinstructions(content);
+        console.log(content);
+        console.log(editor)
     }
 
     useEffect(() => {
@@ -397,6 +408,7 @@ const CreateOrder = () => {
                                         apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
                                         init={{
                                             height: 300,
+                                            directionality : 'ltr',
                                             language: 'en_US',
                                             menubar: false,
                                             plugins: [
