@@ -65,14 +65,18 @@ const Pending = () => {
                         <td style={styles.table.td}>{data.subject && (data.subject.name)}</td>
                         <td style={styles.table.td}>{data.type && (data.type.name)}</td>
                         <td style={styles.table.td}>
-                            <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>
+                            <center><Tag color="orange">{data.promocode === "" ? "none" : data.promocode}</Tag>
                             </center>
                         </td>
                         <td style={styles.table.td}>{data.page && (data.page.name)}</td>
                         <td style={styles.table.td}>$ {data.amount.toFixed(2)}</td>
                         <td style={styles.table.td}>
                             <Box>
-                            <Button size="sm" onClick={() => { payFromWallet(dispatch, data.id); router.push("/dashboard/waiting-assign"); } } color="green" appearance="primary">Reserve Now</Button>
+                            <Button size="sm" onClick={() => { payFromWallet(dispatch, data.id).then(response => {
+                                if (response.status === 200) { router.push("/dashboard/waiting-assign");}}) } }
+                                    color="green" appearance="primary">
+                                Reserve Now
+                            </Button>
                         </Box>
                         </td>
                     </tr>

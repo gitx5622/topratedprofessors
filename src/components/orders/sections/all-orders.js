@@ -60,6 +60,8 @@ const AllOrders = () => {
                                         href={
                                                 data.status === "cancelled" ? `/dashboard/order/cancelled/${data.id}`:
                                                 data.status === "approved" ? `/dashboard/order/completed/${data.id}`:
+                                                data.status === "completed" ? `/dashboard/order/completed/${data.id}`:
+                                                data.status === "active" ? `/dashboard/order/inprogress/${data.id}`:
                                                 data.status === "revision" ? `/dashboard/order/revision/${data.id}`:
                                                 `/dashboard/order/${data.id}`}>
                                         <a><center>{data.order_number}</center></a>
@@ -69,7 +71,7 @@ const AllOrders = () => {
                                 <td style={styles.table.td}>{data && data.subject.name}</td>
                                 <td style={styles.table.td}>{data && data.type.name}</td>
                                 <td style={styles.table.td}>
-                                    <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>
+                                    <center><Tag color="orange">{data.promocode === "" ? "none" : data.promocode}</Tag>
                                     </center>
                                 </td>
                                 <td style={styles.table.td}>
