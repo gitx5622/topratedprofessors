@@ -35,7 +35,7 @@ const Header = ({ className }) => {
           </a>
         </Link>
       </Flex>
-      <Box sx={styles.authButton}>
+      <div style={{display:"flex", gap:"1em"}}>
         <Button
           className="login__btn"
           size="sm"
@@ -52,7 +52,7 @@ const Header = ({ className }) => {
           aria-label="Get Started">
           Get Started
         </Button>
-      </Box>
+      </div>
     </header>
   );
 }
