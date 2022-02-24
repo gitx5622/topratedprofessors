@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import {Tag, Panel,  Divider, Pagination} from 'rsuite';
 import Link from 'next/link';
+import { useRouter} from "next/router";
 import NoData from 'assets/no-open.svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { formatDate, formatDeadline } from '../../../utils/dates';
-import { getCancelledOrders } from 'dataStore/actions/ordersAction';
+import { formatDeadline } from '../../../utils/dates';
+import {getCancelledOrders, reSubmitOrder} from 'dataStore/actions/ordersAction';
+import { ToastContainer, toast } from 'react-toastify';
 import { Button } from 'rsuite';
 
 const Cancelled = () => {
     const [activePage, setActivePage] = useState(1);
-    const [per, setPer] = useState(10);
     const dispatch = useDispatch();
+    const router = useRouter();
+    const per = 10;
     const orderSelector = useSelector(state => state.orderState);
     const {
         isLoading,
@@ -20,7 +23,16 @@ const Cancelled = () => {
         }
     } = orderSelector;
 
-    console.log(cancelled_orders)
+    const handleOrderResubmit = (orderID) => {
+        reSubmitOrder(dispatch, orderID).then(response => {
+            if(response.status === 200) {
+                toast.success("Order re-submitted successfully!", {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+                router.push('/dashboard/pending');
+            }
+        })
+    }
 
     useEffect(() => {
         const { id: userId } = JSON.parse(localStorage.currentUser);
@@ -29,6 +41,7 @@ const Cancelled = () => {
     }, [dispatch, activePage, per]);
     return (
         <div style={{ marginLeft: "10px", marginRight: "10px" }}>
+            <ToastContainer/>
             <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
                 <h3>Cancelled Orders:</h3>
             </div>
@@ -63,7 +76,7 @@ const Cancelled = () => {
                         <td style={styles.table.td}>{data.page && (data.page.name)}</td>
                         <td style={styles.table.td}>$ {data.amount.toFixed(2)}</td>
                         <td style={styles.table.td}>
-                            <Button color="blue" appearance="primary">Re-Submit</Button>
+                            <Button onClick={() => handleOrderResubmit(data.id)} color="blue" appearance="primary">Re-Submit</Button>
                         </td>
                     </tr>
                 ))}

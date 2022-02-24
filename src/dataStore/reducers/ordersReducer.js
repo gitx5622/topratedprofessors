@@ -70,7 +70,7 @@ import {
     PAY_FROM_WALLET_ERROR,
     GET_REVISION_ORDERS,
     GET_REVISION_ORDERS_SUCCESS,
-    GET_REVISION_ORDERS_ERROR
+    GET_REVISION_ORDERS_ERROR, RE_SUBMIT_ORDER, RE_SUBMIT_ORDER_SUCCESS, RE_SUBMIT_ORDER_ERROR
 
 } from "../dispatchTypes";
 
@@ -128,6 +128,7 @@ export const initialOrdersState = {
     cancelled_order: {},
     approved_order:{},
     paid_from_wallet_order:{},
+    re_submitted_order: {},
 }
 
 export const ordersReducers = (
@@ -692,6 +693,29 @@ export const ordersReducers = (
             };
         }
         case PAY_FROM_WALLET_ERROR: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                errorMessage: action.errorMessage,
+            };
+        }
+        case RE_SUBMIT_ORDER: {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            };
+        }
+        case RE_SUBMIT_ORDER_SUCCESS: {
+            return {
+                ...state,
+                isSuccess: false,
+                isLoading: false,
+                re_submitted_order: action.re_submitted_order,
+            };
+        }
+        case RE_SUBMIT_ORDER_ERROR: {
             return {
                 ...state,
                 isSuccess: false,

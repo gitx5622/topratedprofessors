@@ -147,9 +147,6 @@ const OrderDetails = ({ section }) => {
     const typeSelector = useSelector(state => state.typeState);
     const urgencySelector = useSelector(state => state.urgencyState);
     const languageSelector = useSelector(state => state.languageState);
-    const editorRef = useRef()
-    const [editorLoaded, setEditorLoaded] = useState(false);
-    const { CKEditor, ClassicEditor } = editorRef.current || {}
 
     const service_name = service ? service.name : "";
     const subject_name = subject ? subject.name : "";
@@ -207,9 +204,7 @@ const OrderDetails = ({ section }) => {
             }
         })
     }
-    const handleInstructionsChange = (value) => {
-        setinstructions(value);
-    }
+
     const parseServiceSelected = (event) => {
         const valueToParse = event.target.value;
         const service_id_index = Object.values(JSON.parse(valueToParse));
@@ -816,36 +811,40 @@ const OrderDetails = ({ section }) => {
                                     </Button>
                                 </div>
                                 <Panel>
-                                    <h6>Uploaded files</h6>
-                                    <table style={styles.table}>
+                                    {order_files.length < 0 && (
+                                        <div>
+                                        <h6>Uploaded files</h6>
+                                        <table style={styles.table}>
                                         <tr style={{ background: "#fdaa8f" }}>
-                                            <th style={{ padding: "10px", textAlign: "left" }}>File Name</th>
-                                            <th>Uploaded At</th>
+                                        <th style={{ padding: "10px", textAlign: "left" }}>File Name</th>
+                                        <th>Uploaded At</th>
                                         </tr>
-                                        {order_files && order_files.map((order_file) => (
-                                            <tr style={{ borderRadius: "10px" }}>
-                                                <td style={styles.table.td}>
-                                                    <strong>
-                                                        <Avatar
-                                                            style={{ background: "#17c671" }}
-                                                            circle
-                                                            size="sm">TRP
-                                                        </Avatar>
-                                                        {"     "}
-                                                        {order_file.attached}
-                                                    </strong>
-                                                </td>
-                                                <td style={styles.table.tdx}>
-                                                    <Button
-                                                        color="red"
-                                                        onClick={() => handleOrderFileDelete(order_file)}
-                                                        appearance="primary">
-                                                        Delete
-                                                    </Button>
-                                                </td>
-                                            </tr>
+                                        { order_files.map((order_file) => (
+                                        <tr style={{ borderRadius: "10px" }}>
+                                        <td style={styles.table.td}>
+                                        <strong>
+                                        <Avatar
+                                        style={{ background: "#17c671" }}
+                                        circle
+                                        size="sm">TRP
+                                        </Avatar>
+                                    {"     "}
+                                    {order_file.attached}
+                                        </strong>
+                                        </td>
+                                        <td style={styles.table.tdx}>
+                                        <Button
+                                        color="red"
+                                        onClick={() => handleOrderFileDelete(order_file)}
+                                        appearance="primary">
+                                        Delete
+                                        </Button>
+                                        </td>
+                                        </tr>
                                         ))}
-                                    </table>
+                                        </table>
+                                        </div>
+                                    )}
                                 </Panel>
                             </Col>
                         </Row>

@@ -63,9 +63,6 @@ import {
     REJECT_ORDER,
     REJECT_ORDER_SUCCESS,
     REJECT_ORDER_ERROR,
-    CREATE_USER_RATINGS,
-    CREATE_USER_RATINGS_SUCCESS,
-    CREATE_USER_RATINGS_ERROR,
     APPROVE_ORDER,
     APPROVE_ORDER_SUCCESS,
     APPROVE_ORDER_ERROR,
@@ -73,7 +70,11 @@ import {
     PAY_FROM_WALLET_SUCCESS,
     PAY_FROM_WALLET_ERROR,
     GET_REVISION_ORDERS,
-    GET_REVISION_ORDERS_SUCCESS, GET_REVISION_ORDERS_ERROR
+    GET_REVISION_ORDERS_SUCCESS,
+    GET_REVISION_ORDERS_ERROR,
+    RE_SUBMIT_ORDER,
+    RE_SUBMIT_ORDER_SUCCESS,
+    RE_SUBMIT_ORDER_ERROR
 } from '../dispatchTypes';
 
 
@@ -751,6 +752,35 @@ export const payFromWallet = async(dispatch, orderID) => {
     } catch (error) {
         dispatch({
             type: PAY_FROM_WALLET_ERROR,
+            errorMessage: error.response,
+        });
+
+        return error.response;
+    }
+};
+
+export const reSubmitOrder = async(dispatch, orderID) => {
+    dispatch({
+        type: RE_SUBMIT_ORDER,
+    });
+    try {
+        return await axiosConfig
+            .put(`/orders/${orderID}/resubmit`, {}, {
+                headers: {
+                    'x-toprated-token': localStorage.token,
+                },
+            })
+            .then(response => {
+                dispatch({
+                    type: RE_SUBMIT_ORDER_SUCCESS,
+                    re_submitted_order: response.data,
+                })
+                console.log(response)
+                return response;
+            });
+    } catch (error) {
+        dispatch({
+            type: RE_SUBMIT_ORDER_ERROR,
             errorMessage: error.response,
         });
 
