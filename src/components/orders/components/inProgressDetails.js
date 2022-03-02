@@ -7,9 +7,7 @@ import {
     Panel, Divider, Uploader, Button, Input, Modal, Nav,
     Grid, Row, Col, Avatar, Tag
 } from 'rsuite';
-import {
-    cancelOrder, fileUpload, getCancelReasons, getOrder, 
-    getOrderfiles, deleteOrderFile
+import {fileUpload, getOrder, getOrderfiles, deleteOrderFile
 } from 'dataStore/actions/ordersAction';
 import { formatDate, formatDeadline } from '../../../utils/dates';
 import { Editor } from '@tinymce/tinymce-react';
@@ -39,7 +37,6 @@ const InProgressDetails = ({ section }) => {
     const [messageOpen, setMessageOpen] = useState(false);
     const [messageInfo, setMessageInfo] = useState([]);
     const [uploadedFileName, setUploadedFileName] = useState("");
-    const [cancelReasonValue, setCancelReasonValue] = useState(1);
     const [uploadFiles, setUploadFiles] = useState({
         order_id: "",
         user_id: "",
@@ -56,15 +53,9 @@ const InProgressDetails = ({ section }) => {
         receiver_id: "",
         order_number: ""
     })
-    const [orderCancelValues, setOrderCancelValues] = useState({
-        order_number: "",
-        title: "",
-        description: ""
-    })
+
 
     const [active, setActive] = React.useState('2');
-    const [cancelOpen, setCancelOpen] = React.useState(false);
-
     const router = useRouter();
     const { inprogressID } = router.query;
     const dispatch = useDispatch();
@@ -74,7 +65,6 @@ const InProgressDetails = ({ section }) => {
     const {
         isLoading: orderLoading,
         order_files,
-        cancelled_reasons,
         order: {
             id: orderId,
             order_number,
@@ -193,39 +183,6 @@ const InProgressDetails = ({ section }) => {
         deleteOrderFile(dispatch, order_file.id)
     }
 
-    const handleCancelOpen = () => setCancelOpen(true)
-    const handleCancelClose = () => setCancelOpen(false);
-
-    const handleOrderCancelChange = (event) => {
-        let name = event.target.name;
-        let value = event.target.value;
-        setOrderCancelValues({
-            ...orderCancelValues,
-            [name]: value
-        })
-    }
-
-    const handleCancelReasonsChange = (event) => {
-        setCancelReasonValue(event.target.value)
-    }
-
-    const handleCancelOrderSubmit = () => {
-        const bodyData = {
-            order_number: order_number,
-            title: parseInt(cancelReasonValue),
-            description: orderCancelValues.description,
-        }
-        if (bodyData.description !== "") {
-            cancelOrder(dispatch, orderId, bodyData)
-                .then(response => {
-                    if (response.status === 200) {
-                        setCancelOpen(false);
-                        router.push("/dashboard/cancelled");
-                    }
-                })
-        }
-    }
-
     React.useEffect(() => {
         getOrder(dispatch, inprogressID);
         getOrderfiles(dispatch, inprogressID)
@@ -242,7 +199,6 @@ const InProgressDetails = ({ section }) => {
         getServices(dispatch);
         getLanguages(dispatch);
         getSpacing(dispatch);
-        getCancelReasons(dispatch)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 
@@ -284,36 +240,6 @@ const InProgressDetails = ({ section }) => {
         <div style={{ marginTop: "20px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginLeft: "10px", marginRight: "20px" }}>
                 <h4>Order Details</h4>
-                <Modal open={cancelOpen} onClose={handleCancelClose}>
-                    <Modal.Header>
-                        <Modal.Title>Cancel Order #{order_number}</Modal.Title>
-                    </Modal.Header>
-                    <Divider />
-                    <Modal.Body>
-                        <h6>Cancel Reasons</h6>
-                        <select onChange={handleCancelReasonsChange} style={{ background: "white", borderRadius: "5px", width: "250px", height: "30px" }}>
-                            {cancelled_reasons?.map((cancelled_reason) => (
-                                <option key={cancelled_reason.id} value={cancelled_reason.id}>{cancelled_reason.name}</option>
-                            ))}
-                        </select><br /><br />
-                        <h6>Description</h6>
-                        <textarea
-                            name="description"
-                            onChange={handleOrderCancelChange}
-                            style={{ border: '1px solid #becad6', width: "100%", padding: "10px", borderRadius: "5px", }}
-                            rows={4}
-                            placeholder="Description" /><br />
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={handleCancelOrderSubmit} appearance="primary">
-                            Ok
-                        </Button>
-                        <Button onClick={handleCancelClose} appearance="subtle">
-                            Cancel
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-                <Button onClick={handleCancelOpen} color="yellow" appearance="primary">Cancel</Button>
             </div>
             <Divider />
             <CustomNav appearance="tabs" active={active} onSelect={setActive} />
@@ -347,7 +273,9 @@ const InProgressDetails = ({ section }) => {
                                     </Button>
                                 </div>
                                 <Panel>
-                                    <h6>Uploaded files</h6>
+                                {order_files.length > 0 && (
+                                    <div>
+                                          <h6>Uploaded files</h6>
                                     <table style={styles.table}>
                                         <tr style={{ background: "#fdaa8f" }}>
                                             <th style={{ padding: "10px", textAlign: "left" }}>File Name</th>
@@ -377,6 +305,8 @@ const InProgressDetails = ({ section }) => {
                                             </tr>
                                         ))}
                                     </table>
+                                    </div>
+                                )}
                                 </Panel>
                             </Col>
                         </Row>

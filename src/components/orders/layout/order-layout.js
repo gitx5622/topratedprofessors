@@ -177,7 +177,7 @@ const OrderLayout = ({ children }) => {
                                     onClick={() => router.push('/dashboard/pending', undefined, { shallow: true })}>
                                     Pending
                                     {pending_orders_count > 0 && (
-                                        <Tag style={{ float: "right",borderRadius:100 }} color="green">{pending_orders_count}</Tag>
+                                        <Tag style={{ float: "right",borderRadius:100 }} color="green">{pending_orders_count - paid_orders_count}</Tag>
                                     )}
                                 </Nav.Item>
                                 <Nav.Item

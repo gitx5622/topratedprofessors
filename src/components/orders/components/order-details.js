@@ -287,7 +287,8 @@ const OrderDetails = ({ section }) => {
             const links = response.data.links[1].href;
             if (response.status === 200) {
                 router.push(links)
-            } else if (response.status !== 200) {
+            }
+            else if (response.status !== 200) {
                 dispatch({
                     type: 'MAKE_PAYMENT_ERROR',
                     errorMessage: 'There was an error while making payment',

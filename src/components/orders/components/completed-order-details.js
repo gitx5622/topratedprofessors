@@ -349,7 +349,9 @@ const OrderCompletedDetails = ({ section }) => {
                                     </Button>
                                 </div>
                                 <Panel>
-                                    <h6>Uploaded files</h6>
+                                {order_files.length > 0 && (
+                                    <div>
+                                     <h6>Uploaded files</h6>
                                     <table style={styles.table}>
                                         <tr style={{ background: "#fdaa8f" }}>
                                             <th style={{ padding: "10px", textAlign: "left" }}>File Name</th>
@@ -379,6 +381,8 @@ const OrderCompletedDetails = ({ section }) => {
                                             </tr>
                                         ))}
                                     </table>
+                                    </div>
+                                )}
                                 </Panel>
                             </Col>
                         </Row>
