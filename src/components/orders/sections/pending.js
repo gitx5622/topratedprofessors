@@ -51,7 +51,9 @@ const Pending = () => {
                     <th style={styles.table.th}>Amount</th>
                     <th style={styles.table.th}>Reserve Now</th>
                 </tr>
-                {pending_orders?.map((data) => (
+                {pending_orders
+                ?.filter(data => data.paid !== true)
+                .map((data) => (
                     <tr>
                         <td style={styles.table.td}>{data.id}</td>
                         <td style={styles.table.td}>

@@ -163,7 +163,6 @@ const OrderDetails = ({ section }) => {
         minHeight: 100,
         height: 200
     });
-    const formattedInstructruction = instructions?.slice(2).slice(0, -2);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleCancelOpen = () => setCancelOpen(true)
@@ -296,6 +295,12 @@ const OrderDetails = ({ section }) => {
             }
         })
     }
+
+    const handleInstructionsChange = (value) => {
+        console.log(value)
+        setinstructions(value);
+
+    }
     const handleUpdateOrderSubmit = (event) => {
         event.persist();
         event.preventDefault();
@@ -341,6 +346,7 @@ const OrderDetails = ({ section }) => {
             }
         }
     };
+
     const handleCreateMessageChange = (value, event) => {
         setMessage({
             ...message,
@@ -578,7 +584,6 @@ const OrderDetails = ({ section }) => {
                                             <div>
                                                 <Label htmlFor="sound">Subject</Label>
                                                 <select
-                                                    value={subject && subject.name}
                                                     style={{ width: '100%', height: "40px", border: '1px solid #becad6', background: "white", borderRadius: "5px" }}
                                                     onChange={handleInputChange}
                                                     name="subject_id">
@@ -587,7 +592,7 @@ const OrderDetails = ({ section }) => {
                                                             <option
                                                                 key={subjectx.id}
                                                                 selected={subjectx.name === subject_name}
-                                                                value={JSON.stringify(subjectx)}>{subjectx.name}</option>
+                                                                value={subjectx.id}>{subjectx.name}</option>
                                                         )
                                                     })}
                                                 </select>
@@ -717,7 +722,27 @@ const OrderDetails = ({ section }) => {
                                 <Label htmlFor="topic">Topic*</Label>
                                 <Input onChange={handleChange} placeholder={topic} name="topic" type='text' mb={3} />
                                 <Label htmlFor="instructions">Instructions*</ Label>
-                                <div>Instructions</div>
+                                <Editor
+                                apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
+                                initialValue={instructions}
+                                value={instructionsx}
+                                init={{
+                                    height: 250,
+                                    language: 'en_US',
+                                    menubar: false,
+                                    plugins: [
+                                        'advlist autolink lists link image',
+                                        'charmap print preview anchor help',
+                                        'searchreplace visualblocks code',
+                                        'insertdatetime media table paste wordcount'
+                                    ],
+                                    toolbar:
+                                        'undo redo | formatselect | bold italic | \
+                                                    alignleft aligncenter alignright | \
+                                                    bullist numlist outdent indent | help'
+                                }}
+                                onEditorChange={handleInstructionsChange}
+                            />
                                 <Button type="submit" color="cyan" appearance="primary">Edit Order</Button>
                             </Box>
                         </Drawer.Body>
@@ -811,7 +836,7 @@ const OrderDetails = ({ section }) => {
                                     </Button>
                                 </div>
                                 <Panel>
-                                    {order_files.length < 0 && (
+                                    {order_files.length > 0 && (
                                         <div>
                                         <h6>Uploaded files</h6>
                                         <table style={styles.table}>
@@ -919,7 +944,7 @@ const OrderDetails = ({ section }) => {
                             <div style={{ background: "#fdaa8f", height: '40px', padding: "10px" }}><h5>Order Instructions</h5></div>
                             <Editor
                                 apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
-                                value={formattedInstructruction}
+                                initialValue={instructions}
                                 init={{
                                     height: 450,
                                     language: 'en_US',
