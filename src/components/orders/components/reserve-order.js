@@ -6,6 +6,7 @@ import {makePayment} from "../../../dataStore/actions/walletAction";
 import {Grid, Row, Col, Button, Panel, Message} from 'rsuite';
 import {getOrder, payFromWallet} from "../../../dataStore/actions/ordersAction";
 import {BoxLoading } from 'react-loadingg';
+import { Editor } from '@tinymce/tinymce-react';
 import {formatDeadline} from "../../../utils/dates";
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -37,6 +38,7 @@ const ReserveOrder = () => {
             spacing,
             urgency,
             amount,
+            instructions
         } } = orderSelector;
     const router = useRouter();
     const { reserveID } = router.query;
@@ -98,7 +100,17 @@ const ReserveOrder = () => {
                 )}
                 <br/>
                 <ToastContainer />
+                <div style={{display:"flex", justifyContent:"space-between"}}>
                 <h3>Reserve Order/Pay for the order</h3>
+                <Button onClick={handleReserveFromWallet} color="blue" appearance="primary">Pay from Wallet</Button>
+                 <Button 
+                    color="blue" 
+                    appearance="primary"
+                    onClick={() => router.push('/dashboard/wallet')}
+                    >
+                    Deposit to Paypal
+                </Button>
+                ?  </div><br/>1`   `
             <Grid fluid>
                 <Row>
                     <Col xs={16}>
@@ -171,32 +183,26 @@ const ReserveOrder = () => {
                             </table>
                     </Col>
                     <Col xs={8}>
-                        <center>
-                            <div style={{border: "1px solid whitesmoke", paddingBottom:"10px", borderRadius: '20px', boxShadow:"0px 0px 10px 10px #A0C1B3 "}}>
-                                <h3>Pay using your Wallet</h3><br />
-                                <Button onClick={handleReserveFromWallet} style={{width:"80%"}} color="blue" appearance="primary">Pay from Wallet</Button>
-                            </div>
-                            <h3>OR</h3>
-                        </center>
-                        <div style={{border: "1px solid whitesmoke",borderRadius: '20px', boxShadow:"0px 0px 10px 10px #A0C1B3 "}}>
-                            <form onSubmit={handleMakePaypalPaymentSubmit} style={{padding: "20px" }}>
-                                <center>
-                                    <h3>Add funds to your account</h3><br />
-                                    <h5>Amount (USD): (Min amount: $0.01)</h5><br />
-                                    <input
-                                        style={{ borderRadius: "5px", fontSize: "24px", border: "1px solid #444141", height: '40px', width: "80%" }}
-                                        name="order_amount"
-                                        onChange={handlePaypalChange} /><br /><br />
-                                    <h5>Payment Methods</h5>
-                                    <img src={Payment} width="100" alt="" /><br /><br />
-                                    <p>
-                                        By clicking proceed button, means I understand and agree to the Terms of Service , including the Privacy
-                                        Policy and Refund Policy
-                                    </p>
-                                    <button style={{ background: "#17c671", color: "white", width: "80%", padding: "10px", borderRadius: "5px" }} type="submit">Proceed</button>
-                                </center>
-                            </form>
-                        </div>
+                       <label>Instructions</label>
+                         <Editor
+                                apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
+                                initialValue={instructions}
+                                init={{
+                                    height: 450,
+                                    language: 'en_US',
+                                    menubar: false,
+                                    plugins: [
+                                        'advlist autolink lists link image',
+                                        'charmap print preview anchor help',
+                                        'searchreplace visualblocks code',
+                                        'insertdatetime media table paste wordcount'
+                                    ],
+                                    toolbar:
+                                        'undo redo | formatselect | bold italic | \
+                                                    alignleft aligncenter alignright | \
+                                                    bullist numlist outdent indent | help'
+                                }}
+                            />
                     </Col>
                 </Row>
             </Grid>
