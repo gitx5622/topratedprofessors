@@ -4,6 +4,7 @@ import 'rsuite/dist/rsuite.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { useStore } from '../dataStore';
 import 'react-multi-carousel/lib/styles.css';
+import 'react-perfect-scrollbar/dist/css/styles.css';
 import 'rc-drawer/assets/index.css';
 import '../styles/index.css';
 import 'typeface-dm-sans';

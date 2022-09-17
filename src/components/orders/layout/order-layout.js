@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Container, Header, Content, Nav, Sidebar, Dropdown, Navbar, Tag } from 'rsuite';
 import { logoutUser } from "../../../dataStore/actions/userLogoutAction";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidenav, Badge } from 'rsuite';
 import { FaWallet, FaUserCircle } from 'react-icons/fa';
-import { Box } from 'theme-ui';
+import {Box, jsx} from 'theme-ui';
 import Geal from '../../../assets/logo.png';
 import ArowBackIcon from '@rsuite/icons/ArowBack';
 import DashboardIcon from '@rsuite/icons/Dashboard';
@@ -24,6 +24,7 @@ import {
     userCountOrderSummary
 } from 'dataStore/actions/ordersAction';
 import {userWalletSummary} from "../../../dataStore/actions/walletAction";
+import Sticky from "react-stickynode";
 
 
 const NavToggle = ({ expand, onChange }) => {
@@ -54,6 +55,7 @@ const NavToggle = ({ expand, onChange }) => {
 const OrderLayout = ({ children }) => {
     const [username, setUsername] = React.useState(null);
     const [expand, setExpand] = React.useState(true);
+    const [isSticky, setIsSticky] = useState(false);
     const router = useRouter();
     const dispatch = useDispatch();
     const userCountOrderSummarySelector = useSelector(state => state.orderState);
@@ -90,6 +92,14 @@ const OrderLayout = ({ children }) => {
             })
         }
     }
+
+    const handleStateChange = (status) => {
+        if (status.status === Sticky.STATUS_FIXED) {
+            setIsSticky(true);
+        } else if (status.status === Sticky.STATUS_ORIGINAL) {
+            setIsSticky(false);
+        }
+    };
 
     const CustomDropdown = ({ ...props }) => (
         <Dropdown {...props}>
@@ -128,7 +138,7 @@ const OrderLayout = ({ children }) => {
         <div className="show-fake-browser sidebar-page" style={{color: "black" }}>
             <Container>
                 <Sidebar
-                    style={{ display: 'flex', height: '100vh', color: "black", flexDirection: 'column' }}
+                    style={{ display: 'flex', position:"fixed", color: "black", flexDirection: 'column' }}
                     width={expand ? 260 : 56}
                     collapsible
                     appearance="inverse"
@@ -264,9 +274,9 @@ const OrderLayout = ({ children }) => {
                         expand={expand}
                         onChange={() => setExpand(!expand)} />
                 </Sidebar>
-
-                <Container>
-                    <Header>
+                <Container style={{marginLeft: expand ? 260 : 56}}>
+                    <Sticky innerZ={1001} top={0} onStateChange={handleStateChange}>
+                        <Header className={`${isSticky ? 'sticky' : 'unSticky'}`}>
                         <Navbar>
                             <Nav  style={{ color: "black", fontSize: "16px" }}>
                                 <Nav.Item onClick={() => router.push('/dashboard/all-orders', undefined, { shallow: true })}>My Orders</Nav.Item>
@@ -289,6 +299,7 @@ const OrderLayout = ({ children }) => {
                             </Nav>
                         </Navbar>
                     </Header>
+                </Sticky>
                     <Content>{children}</Content>
                 </Container>
             </Container>
