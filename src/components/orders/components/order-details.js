@@ -1238,7 +1238,7 @@ const OrderDetails = ({ section }) => {
                     <b>Amount</b>
                   </td>
                   <td style={styles.table.td} colSpan="3">
-                    $ {amount.toFixed(2)}
+                    $ {amount && amount.toFixed(2)}
                   </td>
                 </tr>
               </table>
