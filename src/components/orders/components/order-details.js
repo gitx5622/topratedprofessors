@@ -1058,7 +1058,7 @@ const OrderDetails = ({ section }) => {
                     </div>
                   </Uploader>
                   {uploadedFileName && (
-                    <h4>Uploaded File: {uploadedFileName}</h4>
+                    <h4>File Name: {uploadedFileName}</h4>
                   )}
                   <Divider />
                 </div>
