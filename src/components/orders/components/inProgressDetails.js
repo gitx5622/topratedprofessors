@@ -177,7 +177,7 @@ const InProgressDetails = ({ section }) => {
         ],
       });
     }
-    handleFileUploadSubmit();
+    await handleFileUploadSubmit();
   };
 
   const handleFileUploadSubmit = async () => {
