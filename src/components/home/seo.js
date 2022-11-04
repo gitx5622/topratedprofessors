@@ -2,10 +2,10 @@ import React from 'react';
 import Head from 'next/head';
 
 export default function SEO({
-  description = 'startup product landing page',
+  description = 'Free essay and research paper writing guide, essay writing service/Online homework help',
   author = 'JSM',
   meta,
-  title = 'startup landing title',
+  title = 'Toprated Professors',
 }) {
   const metaData = [
     {

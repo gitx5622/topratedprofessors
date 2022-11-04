@@ -14,10 +14,10 @@ const Reviews = () => {
         filterRatings(dispatch);
     }, [dispatch])
     return (
-        <div>
+        <div style={{ paddingTop: "20px" }}>
             <center>
             <h3 style={{color:"#fdaa8f"}}>Customer Reviews</h3>
-                <p style={{fontSize:"20px"}}>Avg rating for all reviews: <b>4.8/5.0</b></p>
+                <p style={{fontSize:"20px"}}>Avg rating for all reviews: <b>5.0/5.0</b></p>
             </center>
             <Grid fluid>
                 <Carousel autoplay className="custom-slider" style={{marginLeft: "-5px",marginRight: "-5px", minHeight:"250px"}}>

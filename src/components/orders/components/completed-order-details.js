@@ -482,7 +482,7 @@ const OrderCompletedDetails = ({ section }) => {
       {open && (
         <Grid fluid>
           <Row>
-            <Col xs={24} sm={24} md={16}>
+            <Col xs={24} sm={24} md={24}>
               <Panel style={{ marginTop: "-10px" }}>
                 <div
                   style={{
@@ -597,41 +597,38 @@ const OrderCompletedDetails = ({ section }) => {
                         {amount && amount.toFixed(2)}
                       </td>
                     </tr>
+                    <tr>
+                      <td style={styles.table.td}>
+                        <b>Order Instructions</b>
+                      </td>
+                      <td style={styles.table.td} colSpan="3">
+                        <Editor
+                          apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
+                          initialValue={formattedInstructruction}
+                          init={{
+                            height: 650,
+                            language: "en_US",
+                            menubar: false,
+                            plugins: [
+                              "advlist autolink lists link image",
+                              "charmap print preview anchor help",
+                              "searchreplace visualblocks code",
+                              "insertdatetime media table paste wordcount",
+                            ],
+                            toolbar:
+                              "undo redo | formatselect | bold italic | \
+                                                    alignleft aligncenter alignright | \
+                                                    bullist numlist outdent indent | help",
+                            setup: function (editor) {
+                              editor.setMode("readonly");
+                            },
+                          }}
+                        />
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </Panel>
-            </Col>
-            <Col xs={24} sm={24} md={8}>
-              <div
-                style={{
-                  background: "#fdaa8f",
-                  height: "40px",
-                  marginTop: "10px",
-                  padding: "10px",
-                }}
-              >
-                <h5>Order Instructions</h5>
-              </div>
-              <Editor
-                apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
-                value={formattedInstructruction}
-                init={{
-                  height: 450,
-                  readonly: 1,
-                  language: "en_US",
-                  menubar: false,
-                  plugins: [
-                    "advlist autolink lists link image",
-                    "charmap print preview anchor help",
-                    "searchreplace visualblocks code",
-                    "insertdatetime media table paste wordcount",
-                  ],
-                  toolbar:
-                    "undo redo | formatselect | bold italic | \
-                                                    alignleft aligncenter alignright | \
-                                                    bullist numlist outdent indent | help",
-                }}
-              />
             </Col>
           </Row>
         </Grid>
