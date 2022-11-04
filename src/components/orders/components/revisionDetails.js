@@ -239,15 +239,20 @@ const RevisionDetails = ({ section }) => {
         ],
       });
     }
+    handleFileUploadSubmit();
   };
 
-  const handleFileUploadSubmit = () => {
+  const handleFileUploadSubmit = async () => {
     uploaderRef.current.start();
-    fileUpload(dispatch, uploadFiles).then((response) => {
+    await fileUpload(dispatch, uploadFiles).then((response) => {
       console.log(response);
       if (response.status === 201) {
-        getOrderfiles(dispatch, completedOrderID);
+        getOrderfiles(dispatch, revisionID);
         toast.success("File uploaded Successfully!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        toast.error("File not uploaded Successfully!", {
           position: toast.POSITION.TOP_RIGHT,
         });
       }
@@ -428,8 +433,6 @@ const RevisionDetails = ({ section }) => {
                     listType="picture-text"
                     ref={uploaderRef}
                     value={uploadFiles}
-                    autoUpload={false}
-                    removable={uploadFiles.length >= 2 && true}
                     onChange={(file) => handleFileUploadChange(file)}
                     fileListVisible={false}
                   >
@@ -447,14 +450,6 @@ const RevisionDetails = ({ section }) => {
                     <h4>Uploaded File: {uploadedFileName}</h4>
                   )}
                   <Divider />
-                  <Button
-                    style={{ width: "100%" }}
-                    color="green"
-                    appearance="primary"
-                    onClick={handleFileUploadSubmit}
-                  >
-                    Start Upload
-                  </Button>
                 </div>
                 <Panel>
                   <h6>Uploaded files</h6>

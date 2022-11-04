@@ -177,15 +177,20 @@ const InProgressDetails = ({ section }) => {
         ],
       });
     }
+    handleFileUploadSubmit();
   };
 
-  const handleFileUploadSubmit = () => {
+  const handleFileUploadSubmit = async () => {
     uploaderRef.current.start();
-    fileUpload(dispatch, uploadFiles).then((response) => {
+    await fileUpload(dispatch, uploadFiles).then((response) => {
       console.log(response);
       if (response.status === 201) {
-        getOrderfiles(dispatch, completedOrderID);
+        getOrderfiles(dispatch, inprogressID);
         toast.success("File uploaded Successfully!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        toast.error("File not uploaded Successfully!", {
           position: toast.POSITION.TOP_RIGHT,
         });
       }
@@ -297,8 +302,6 @@ const InProgressDetails = ({ section }) => {
                     listType="picture-text"
                     ref={uploaderRef}
                     value={uploadFiles}
-                    autoUpload={false}
-                    removable={uploadFiles.length >= 2 && true}
                     onChange={(file) => handleFileUploadChange(file)}
                     fileListVisible={false}
                   >
@@ -316,14 +319,6 @@ const InProgressDetails = ({ section }) => {
                     <h4>Uploaded File: {uploadedFileName}</h4>
                   )}
                   <Divider />
-                  <Button
-                    style={{ width: "100%" }}
-                    color="green"
-                    appearance="primary"
-                    onClick={handleFileUploadSubmit}
-                  >
-                    Start Upload
-                  </Button>
                 </div>
                 <Panel>
                   {order_files.length > 0 && (

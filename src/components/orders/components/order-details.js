@@ -65,6 +65,7 @@ const OrderDetails = ({ section }) => {
   const [messageInfo, setMessageInfo] = useState([]);
   const [cancelReasonValue, setCancelReasonValue] = useState(1);
   const [successMessage, setSuccessMessage] = useState("");
+  const [uploadedFileName, setUploadedFileName] = useState("");
   const [uploadFiles, setUploadFiles] = useState({
     order_id: "",
     user_id: "",
@@ -97,7 +98,6 @@ const OrderDetails = ({ section }) => {
   const [instructionsx, setinstructions] = React.useState("");
   const [openWithHeader, setOpenWithHeader] = React.useState(false);
   const [cancelOpen, setCancelOpen] = React.useState(false);
-  const [uploadedFileName, setUploadedFileName] = useState("");
 
   const router = useRouter();
   const { orderID } = router.query;
@@ -433,15 +433,20 @@ const OrderDetails = ({ section }) => {
         ],
       });
     }
+    handleFileUploadSubmit();
   };
 
-  const handleFileUploadSubmit = () => {
+  const handleFileUploadSubmit = async () => {
     uploaderRef.current.start();
-    fileUpload(dispatch, uploadFiles).then((response) => {
+    await fileUpload(dispatch, uploadFiles).then((response) => {
       console.log(response);
       if (response.status === 201) {
         getOrderfiles(dispatch, orderID);
         toast.success("File uploaded Successfully!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        toast.error("File not uploaded Successfully!", {
           position: toast.POSITION.TOP_RIGHT,
         });
       }
@@ -481,6 +486,10 @@ const OrderDetails = ({ section }) => {
     });
   };
 
+  useEffect(() => {
+    setUploadedFileName(localStorage.file);
+  }, [uploadFiles.uploaded_files, uploaderRef]);
+
   React.useEffect(() => {
     getOrder(dispatch, orderID);
     getOrderfiles(dispatch, orderID);
@@ -506,10 +515,6 @@ const OrderDetails = ({ section }) => {
       if (response.status === 200) setMessageInfo(response.data);
     });
   }, [dispatch, order_number, message.message]);
-
-  useEffect(() => {
-    setUploadedFileName(localStorage.file);
-  }, [uploadFiles.uploaded_files, uploaderRef]);
 
   useEffect(() => {
     const { id: userID } = JSON.parse(localStorage.currentUser);
@@ -1039,8 +1044,6 @@ const OrderDetails = ({ section }) => {
                     listType="picture-text"
                     ref={uploaderRef}
                     value={uploadFiles}
-                    autoUpload={false}
-                    removable={uploadFiles.length >= 2 && true}
                     onChange={(file) => handleFileUploadChange(file)}
                     fileListVisible={false}
                   >
@@ -1054,30 +1057,10 @@ const OrderDetails = ({ section }) => {
                       Click or Drag a file to this area to upload
                     </div>
                   </Uploader>
-                  <br />
                   {uploadedFileName && (
-                    <div
-                      style={{
-                        height: "50px",
-                        border: "1px solid gray",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      <h4>
-                        <IoIosAttach style={{ fontSize: "34px" }} /> Uploaded
-                        File: {uploadedFileName}
-                      </h4>
-                    </div>
+                    <h4>Uploaded File: {uploadedFileName}</h4>
                   )}
                   <Divider />
-                  <Button
-                    style={{ width: "100%" }}
-                    color="green"
-                    appearance="primary"
-                    onClick={handleFileUploadSubmit}
-                  >
-                    Start Upload
-                  </Button>
                 </div>
                 <Panel>
                   {order_files.length > 0 && (

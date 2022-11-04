@@ -50,6 +50,7 @@ const OrderCompletedDetails = ({ section }) => {
   const [reject_reason_value, setRejectReasonValue] = useState(1);
   const [rejectOpen, setRejectOpen] = useState(false);
   const [hoverValue, setHoverValue] = React.useState(3);
+  const [uploadedFileName, setUploadedFileName] = useState("");
   const [uploadFiles, setUploadFiles] = useState({
     order_id: "",
     user_id: "",
@@ -79,7 +80,6 @@ const OrderCompletedDetails = ({ section }) => {
     instructions: "",
   });
   const [active, setActive] = React.useState("1");
-  const [uploadedFileName, setUploadedFileName] = useState("");
   const [ratingSuccess, setRatingSuccess] = useState("");
   const [messageInfo, setMessageInfo] = useState([]);
   const messageSelector = useSelector((state) => state.messageState);
@@ -231,15 +231,20 @@ const OrderCompletedDetails = ({ section }) => {
         ],
       });
     }
+    handleFileUploadSubmit();
   };
 
-  const handleFileUploadSubmit = () => {
+  const handleFileUploadSubmit = async () => {
     uploaderRef.current.start();
-    fileUpload(dispatch, uploadFiles).then((response) => {
+    await fileUpload(dispatch, uploadFiles).then((response) => {
       console.log(response);
       if (response.status === 201) {
         getOrderfiles(dispatch, completedOrderID);
         toast.success("File uploaded Successfully!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        toast.error("File not uploaded Successfully!", {
           position: toast.POSITION.TOP_RIGHT,
         });
       }
@@ -303,6 +308,10 @@ const OrderCompletedDetails = ({ section }) => {
   };
 
   useEffect(() => {
+    setUploadedFileName(localStorage.file);
+  }, [uploadFiles.uploaded_files, uploaderRef]);
+
+  useEffect(() => {
     getOrder(dispatch, completedOrderID);
     getOrderfiles(dispatch, completedOrderID);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -317,10 +326,6 @@ const OrderCompletedDetails = ({ section }) => {
   useEffect(() => {
     getRejectReasons(dispatch);
   }, [dispatch]);
-
-  useEffect(() => {
-    setUploadedFileName(localStorage.file);
-  }, [uploadFiles.uploaded_files, uploaderRef]);
 
   return (
     <div style={{ marginTop: "20px" }}>
@@ -402,8 +407,6 @@ const OrderCompletedDetails = ({ section }) => {
                     listType="picture-text"
                     ref={uploaderRef}
                     value={uploadFiles}
-                    autoUpload={false}
-                    removable={uploadFiles.length >= 2 && true}
                     onChange={(file) => handleFileUploadChange(file)}
                     fileListVisible={false}
                   >
@@ -421,14 +424,6 @@ const OrderCompletedDetails = ({ section }) => {
                     <h4>Uploaded File: {uploadedFileName}</h4>
                   )}
                   <Divider />
-                  <Button
-                    style={{ width: "100%" }}
-                    color="green"
-                    appearance="primary"
-                    onClick={handleFileUploadSubmit}
-                  >
-                    Start Upload
-                  </Button>
                 </div>
                 <Panel>
                   {order_files.length > 0 && (
