@@ -239,13 +239,12 @@ const RevisionDetails = ({ section }) => {
         ],
       });
     }
-    handleFileUploadSubmit();
+    await handleFileUploadSubmit();
   };
 
   const handleFileUploadSubmit = async () => {
     uploaderRef.current.start();
     await fileUpload(dispatch, uploadFiles).then((response) => {
-      console.log(response);
       if (response.status === 201) {
         getOrderfiles(dispatch, revisionID);
         toast.success("File uploaded Successfully!", {

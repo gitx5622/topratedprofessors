@@ -433,7 +433,7 @@ const OrderDetails = ({ section }) => {
         ],
       });
     }
-    handleFileUploadSubmit();
+    await handleFileUploadSubmit();
   };
 
   const handleFileUploadSubmit = async () => {

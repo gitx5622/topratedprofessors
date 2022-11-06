@@ -197,7 +197,6 @@ const OrderCompletedDetails = ({ section }) => {
 
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
-      console.log(file);
       const fileReader = new FileReader();
       fileReader?.readAsDataURL(file.blobFile);
       fileReader.onload = () => {
@@ -216,7 +215,6 @@ const OrderCompletedDetails = ({ section }) => {
     );
     const fileBase64 = await convertToBase64(file[file.length - 1]);
     const Base64 = fileBase64.slice(fileBase64.indexOf(",") + 1).trim();
-    console.log(Base64);
     if (extension && fileBase64 && orderId) {
       const { id: userID } = JSON.parse(localStorage.currentUser);
       setUploadFiles({
@@ -231,13 +229,12 @@ const OrderCompletedDetails = ({ section }) => {
         ],
       });
     }
-    handleFileUploadSubmit();
+    await handleFileUploadSubmit();
   };
 
   const handleFileUploadSubmit = async () => {
     uploaderRef.current.start();
     await fileUpload(dispatch, uploadFiles).then((response) => {
-      console.log(response);
       if (response.status === 201) {
         getOrderfiles(dispatch, completedOrderID);
         toast.success("File uploaded Successfully!", {
@@ -420,9 +417,7 @@ const OrderCompletedDetails = ({ section }) => {
                       Click or Drag a file to this area to upload
                     </div>
                   </Uploader>
-                  {uploadedFileName && (
-                    <h4>File Name: {uploadedFileName}</h4>
-                  )}
+                  {uploadedFileName && <h4>File Name: {uploadedFileName}</h4>}
                   <Divider />
                 </div>
                 <Panel>
