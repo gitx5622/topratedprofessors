@@ -28,8 +28,7 @@ import {
   updateOrder,
   deleteOrderFile,
 } from "dataStore/actions/ordersAction";
-import { IoIosAttach } from "react-icons/io";
-import { formatDate, formatDeadline } from "../../../utils/dates";
+import { formatDeadline } from "../../../utils/dates";
 import {
   makePayment,
   userWalletSummary,
@@ -433,10 +432,28 @@ const OrderDetails = ({ section }) => {
         ],
       });
     }
-    await handleFileUploadSubmit();
+    if (uploadFiles.uploaded_files.data.length) {
+      await handleFileUploadSubmit();
+    }
   };
 
   const handleFileUploadSubmit = async () => {
+    uploaderRef.current.start();
+    await fileUpload(dispatch, uploadFiles).then((response) => {
+      console.log(response);
+      if (response.status === 201) {
+        getOrderfiles(dispatch, orderID);
+        toast.success("File uploaded Successfully!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        toast.error("File not uploaded Successfully!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    });
+  };
+  const handleFileUploadSubmitCallback = async () => {
     uploaderRef.current.start();
     await fileUpload(dispatch, uploadFiles).then((response) => {
       console.log(response);
@@ -1057,9 +1074,7 @@ const OrderDetails = ({ section }) => {
                       Click or Drag a file to this area to upload
                     </div>
                   </Uploader>
-                  {uploadedFileName && (
-                    <h4>File Name: {uploadedFileName}</h4>
-                  )}
+                  {uploadedFileName && <h4>File Name: {uploadedFileName}</h4>}
                   <Divider />
                 </div>
                 <Panel>

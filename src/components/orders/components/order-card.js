@@ -1,9 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Head from 'next/head';
-import { useDispatch, useSelector } from "react-redux";
 import {  Box } from 'theme-ui';
-import { getOrders } from "../../../dataStore/actions/ordersAction";
-import { BoxLoading } from 'react-loadingg';
 import Completed from "../sections/completed";
 import Approved from "../sections/approved";
 import CreateOrder from "../sections/create-order";

@@ -1,11 +1,11 @@
-import React from 'react';
-import Head from 'next/head';
+import React from "react";
+import Head from "next/head";
 
 export default function SEO({
-  description = 'Free essay and research paper writing guide, essay writing service/Online homework help',
-  author = 'JSM',
+  description = "Free essay and research paper writing guide, essay writing service/Online homework help",
+  author = "JSM",
   meta,
-  title = 'Toprated Professors',
+  title = "Top Rated Professors Free essay and research paper writing guide, essay writing service/Online homework help",
 }) {
   const metaData = [
     {
@@ -41,7 +41,7 @@ export default function SEO({
       content: description,
     },
   ].concat(meta);
-  
+
   return (
     <Head>
       <title>{title}</title>

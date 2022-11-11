@@ -484,139 +484,114 @@ const OrderCompletedDetails = ({ section }) => {
                   <h5>Order #{order_number}</h5>
                 </div>
                 <table style={styles.table}>
-                  <tbody>
-                    <tr style={{ borderRadius: "10px" }}>
-                      <td style={styles.table.td}>
-                        <strong>Order Number</strong>
-                      </td>
-                      <td style={styles.table.tdx}>{order_number}</td>
-                      <td style={styles.table.td}>
-                        <strong>Client</strong>
-                      </td>
-                      <td style={styles.table.tdx}>{user && user.username}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.table.td}>
-                        <b>Service</b>
-                      </td>
-                      <td style={styles.table.td}>{service && service.name}</td>
-                      <td style={styles.table.td}>
-                        <b>Type of Paper</b>
-                      </td>
-                      <td style={styles.table.td}>{type && type.name}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.table.td}>
-                        <b>Spacing</b>
-                      </td>
-                      <td style={styles.table.td}>{spacing && spacing.name}</td>
-                      <td style={styles.table.td}>
-                        <b>Urgency</b>
-                      </td>
-                      <td style={styles.table.td}>{urgency && urgency.name}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.table.td}>
-                        <b>Pages</b>
-                      </td>
-                      <td style={styles.table.td}>{page && page.name}</td>
-                      <td style={styles.table.td}>
-                        <b>Level</b>
-                      </td>
-                      <td style={styles.table.td}>{level && level.name}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.table.td}>
-                        <b>Subject</b>
-                      </td>
-                      <td style={styles.table.td}>{subject && subject.name}</td>
-                      <td style={styles.table.td}>
-                        <b>Style</b>
-                      </td>
-                      <td style={styles.table.td}>{style && style.name}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.table.td}>
-                        <b>Sources</b>
-                      </td>
-                      <td style={styles.table.td}>{source && source.name}</td>
-                      <td style={styles.table.td}>
-                        <b>Language</b>
-                      </td>
-                      <td style={styles.table.td}>
-                        {language && language.name}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style={styles.table.td}>
-                        <b>Phone</b>
-                      </td>
-                      <td style={styles.table.td} colSpan="3">
-                        {phone}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style={styles.table.td}>
-                        <b>Topic</b>
-                      </td>
-                      <td style={styles.table.td} colSpan="3">
-                        {topic}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style={styles.table.td}>
-                        <b>Deadline</b>
-                      </td>
-                      <td style={styles.table.td} colSpan="3">
-                        {formatDeadline(deadline)}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style={styles.table.td}>
-                        <b>Created At</b>
-                      </td>
-                      <td style={styles.table.td} colSpan="3">
-                        {formatDate(created_at)}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style={styles.table.td}>
-                        <b>Amount</b>
-                      </td>
-                      <td style={styles.table.td} colSpan="3">
-                        {amount && amount.toFixed(2)}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style={styles.table.td}>
-                        <b>Order Instructions</b>
-                      </td>
-                      <td style={styles.table.td} colSpan="3">
-                        <Editor
-                          apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
-                          initialValue={formattedInstructruction}
-                          init={{
-                            height: 650,
-                            language: "en_US",
-                            menubar: false,
-                            plugins: [
-                              "advlist autolink lists link image",
-                              "charmap print preview anchor help",
-                              "searchreplace visualblocks code",
-                              "insertdatetime media table paste wordcount",
-                            ],
-                            toolbar:
-                              "undo redo | formatselect | bold italic | \
+                  <tr style={{ borderRadius: "10px" }}>
+                    <td style={styles.table.td}>
+                      <strong>Order Number</strong>
+                    </td>
+                    <td style={styles.table.tdx}>{order_number}</td>
+                    <td style={styles.table.td}>
+                      <b>Subject</b>
+                    </td>
+                    <td style={styles.table.td}>{subject && subject.name}</td>
+                  </tr>
+                  <tr>
+                    <td style={styles.table.td}>
+                      <strong>Client</strong>
+                    </td>
+                    <td style={styles.table.tdx}>{user && user.username}</td>
+                    <td style={styles.table.td}>
+                      <b>Style</b>
+                    </td>
+                    <td style={styles.table.td}>{style && style.name}</td>
+                  </tr>
+                  <tr>
+                    <td style={styles.table.td}>
+                      <b>Service</b>
+                    </td>
+                    <td style={styles.table.td}>{service && service.name}</td>
+                    <td style={styles.table.td}>
+                      <b>Language</b>
+                    </td>
+                    <td style={styles.table.td}>{language && language.name}</td>
+                  </tr>
+                  <tr>
+                    <td style={styles.table.td}>
+                      <b>Sources</b>
+                    </td>
+                    <td style={styles.table.td}>{source && source.name}</td>
+                    <td style={styles.table.td}>
+                      <b>Phone</b>
+                    </td>
+                    <td style={styles.table.td}>{phone}</td>
+                  </tr>
+                  <tr>
+                    <td style={styles.table.td}>
+                      <b>Type of Paper</b>
+                    </td>
+                    <td style={styles.table.td}>{type && type.name}</td>
+                    <td style={styles.table.td}>
+                      <b>Topic</b>
+                    </td>
+                    <td style={styles.table.td}>{topic}</td>
+                  </tr>
+                  <tr>
+                    <td style={styles.table.td}>
+                      <b>Spacing</b>
+                    </td>
+                    <td style={styles.table.td}>{spacing && spacing.name}</td>
+                    <td style={styles.table.td}>
+                      <b>Deadline</b>
+                    </td>
+                    <td style={styles.table.td}>{formatDeadline(deadline)}</td>
+                  </tr>
+                  <tr>
+                    <td style={styles.table.td}>
+                      <b>Urgency</b>
+                    </td>
+                    <td style={styles.table.td}>{urgency && urgency.name}</td>
+                    <td style={styles.table.td}>
+                      <b>Amount</b>
+                    </td>
+                    <td style={styles.table.td}>
+                      {amount && amount.toFixed(2)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={styles.table.td}>
+                      <b>Pages</b>
+                    </td>
+                    <td style={styles.table.td}>{page && page.name}</td>
+                    <td style={styles.table.td}>
+                      <b>Level</b>
+                    </td>
+                    <td style={styles.table.td}>{level && level.name}</td>
+                  </tr>
+                  <tr>
+                    <td style={styles.table.td}>
+                      <b>Instructions</b>
+                    </td>
+                    <td colSpan="3">
+                      <Editor
+                        apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
+                        initialValue={instructions}
+                        init={{
+                          height: 300,
+                          language: "en_US",
+                          menubar: false,
+                          plugins: [
+                            "advlist autolink lists link image",
+                            "charmap print preview anchor help",
+                            "searchreplace visualblocks code",
+                            "insertdatetime media table paste wordcount",
+                          ],
+                          toolbar:
+                            "undo redo | formatselect | bold italic | \
                                                     alignleft aligncenter alignright | \
                                                     bullist numlist outdent indent | help",
-                            setup: function (editor) {
-                              editor.setMode("readonly");
-                            },
-                          }}
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
+                        }}
+                      />
+                    </td>
+                  </tr>
                 </table>
               </Panel>
             </Col>
@@ -774,7 +749,7 @@ const OrderCompletedDetails = ({ section }) => {
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <Rate defaultValue={3} onChangeActive={setHoverValue} />{" "}
+                <Rate defaultValue={5} onChangeActive={setHoverValue} />{" "}
                 <span style={textStyle}>{texts[hoverValue]}</span>
                 <h6>Description</h6>
                 <textarea
@@ -888,12 +863,12 @@ const styles = {
       border: "1px solid #dddddd",
       textAlign: "left",
       fontSize: "18px",
-      padding: "8px",
+      padding: "5px",
     },
     th: {
       border: "1px solid #dddddd",
       textAlign: "left",
-      padding: "8px",
+      padding: "5px",
       background: "#fdaa8f",
     },
     tdx: {
@@ -901,7 +876,7 @@ const styles = {
       border: "1px solid #dddddd",
       textAlign: "left",
       fontSize: "18px",
-      padding: "8px",
+      padding: "5px",
       color: "#333333",
     },
   },
