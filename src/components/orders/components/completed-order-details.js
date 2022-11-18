@@ -209,16 +209,15 @@ const OrderCompletedDetails = ({ section }) => {
   };
 
   const handleFileUploadChange = async (file) => {
-    localStorage.file = file[file.length - 1].name;
-    const extension = file[file.length - 1]?.name.slice(
-      file[file.length - 1].name.lastIndexOf(".") + 1
-    );
-    const fileBase64 = await convertToBase64(file[file.length - 1]);
-    const Base64 = fileBase64.slice(fileBase64.indexOf(",") + 1).trim();
-    if (extension && fileBase64 && orderId) {
+    try {
+      localStorage.file = file[file?.length - 1].name;
+      const extension = file[file.length - 1]?.name.slice(
+        file[file.length - 1].name.lastIndexOf(".") + 1
+      );
+      const fileBase64 = await convertToBase64(file[file?.length - 1]);
+      const Base64 = fileBase64.slice(fileBase64.indexOf(",") + 1).trim();
       const { id: userID } = JSON.parse(localStorage.currentUser);
-      setUploadFiles({
-        ...uploadFiles,
+      const objectData = {
         order_id: orderId,
         user_id: userID,
         uploaded_files: [
@@ -227,25 +226,22 @@ const OrderCompletedDetails = ({ section }) => {
             data: Base64,
           },
         ],
+      };
+      uploaderRef.current.start();
+      await fileUpload(dispatch, objectData).then((response) => {
+        console.log(response);
+        if (response.status === 201) {
+          getOrderfiles(dispatch, completedOrderID);
+          toast.success("File uploaded Successfully!", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+      });
+    } catch (error) {
+      toast.error("File not uploaded Successfully!", {
+        position: toast.POSITION.TOP_RIGHT,
       });
     }
-    await handleFileUploadSubmit();
-  };
-
-  const handleFileUploadSubmit = async () => {
-    uploaderRef.current.start();
-    await fileUpload(dispatch, uploadFiles).then((response) => {
-      if (response.status === 201) {
-        getOrderfiles(dispatch, completedOrderID);
-        toast.success("File uploaded Successfully!", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      } else {
-        toast.error("File not uploaded Successfully!", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
-    });
   };
 
   const handleOrderFileDelete = (order_file) => {
@@ -405,7 +401,13 @@ const OrderCompletedDetails = ({ section }) => {
                     ref={uploaderRef}
                     value={uploadFiles}
                     onChange={(file) => handleFileUploadChange(file)}
-                    fileListVisible={false}
+                    renderFileInfo={(file) => {
+                      return (
+                        <>
+                          <span>File Name: {file.name}</span>
+                        </>
+                      );
+                    }}
                   >
                     <div
                       style={{
@@ -417,7 +419,6 @@ const OrderCompletedDetails = ({ section }) => {
                       Click or Drag a file to this area to upload
                     </div>
                   </Uploader>
-                  {uploadedFileName && <h4>File Name: {uploadedFileName}</h4>}
                   <Divider />
                 </div>
                 <Panel>
