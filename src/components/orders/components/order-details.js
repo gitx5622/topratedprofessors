@@ -1037,13 +1037,7 @@ const OrderDetails = ({ section }) => {
                     ref={uploaderRef}
                     value={uploadFiles}
                     onChange={(file) => handleFileUploadChange(file)}
-                    renderFileInfo={(file) => {
-                      return (
-                        <>
-                          <span>File Name: {file.name}</span>
-                        </>
-                      );
-                    }}
+                    fileListVisible={false}
                   >
                     <div
                       style={{
