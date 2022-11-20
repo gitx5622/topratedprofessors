@@ -28,6 +28,9 @@ const Header = ({ className }) => {
         <Link href="/header/services">
           <a>Services</a>
         </Link>
+        <Link href="/header/blog">
+          <a>Blogs</a>
+        </Link>
         <Link href="/">
           <a>
             <img src={USflag} alt="usflag" width="30" /> +1-814-250-1019
