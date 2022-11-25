@@ -5,40 +5,88 @@ import { ImFileText2, ImFilePdf } from "react-icons/im";
 import { BiRevision } from "react-icons/bi";
 import { GoMail } from "react-icons/go";
 import { Panel, Grid, Row, Col, List, Modal } from "rsuite";
-import { Box, Textarea, Input, Button, Label } from "theme-ui";
+import { Button } from "theme-ui";
 import Calculator from "./calculator";
 import router from "next/router";
 import Image from "../assets/banner-thumb.png";
-import { createBlog, getBlogs } from "dataStore/actions/blogAction";
+import {
+  createBlog,
+  getBlogs,
+  deleleBlog,
+  getBlog,
+  updateBlog,
+} from "dataStore/actions/blogAction";
 import { useDispatch, useSelector } from "react-redux";
+import ModalContext from "../components/helpers/ModalContext";
 
 const Blog = () => {
   const [open, setOpen] = useState(false);
-  const [blog, setBlog] = useState({
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [openView, setOpenView] = useState(false);
+  const [updateID, setUpdateID] = useState("");
+  const [blogDetails, setBlogDetails] = useState({
     title: "",
     blog_text: "",
     keywords: "",
   });
   const blogSelector = useSelector((state) => state.blogState);
+  const { blogs, blog } = blogSelector;
   const dispatch = useDispatch();
-  console.log(blogSelector);
+
+  const [updateDetails, setUpdateDetails] = useState({
+    title: blog.title,
+    blog_text: blog.blog_text,
+    keywords: blog.keywords,
+  });
 
   const handleClose = () => setOpen(false);
-  const Textarea = React.forwardRef((props, ref) => (
-    <Input {...props} as="textarea" ref={ref} />
-  ));
+  const handleUpdateClose = () => setOpenUpdate(false);
+  const handleViewClose = () => setOpenView(false);
 
   const handleInputChange = (event) => {
     event.persist();
-    setBlog((details) => ({
+    setBlogDetails((details) => ({
       ...details,
       [event.target.name]: event.target.value,
     }));
   };
 
-  const handleUserLogin = (e) => {
+  const handleUpdateChange = (event) => {
+    let name = event.target.name;
+    let value = event.target.value;
+    setUpdateDetails({
+      ...updateDetails,
+      [name]: value,
+    });
+  };
+  const handleUpdateSubmit = (event, articleID) => {
+    event.persist();
+    event.preventDefault();
+    const bodyData = {
+      title: updateDetails.title || blog.title,
+      blog_text: updateDetails.blog_text || blog.blog_text,
+      keywords: updateDetails.keywords || blog.keywords,
+    };
+    if (bodyData) {
+      updateBlog(dispatch, articleID, bodyData).then((response) => {
+        if (response.status === 200) {
+          setOpenUpdate(false);
+        }
+      });
+    } else {
+      dispatch({
+        type: "ERROR",
+        errorMessage: "Make sure all the fields all filled",
+      });
+      if (errorMessage.errorMessage) {
+        <Message type="error">Error</Message>;
+      }
+    }
+  };
+
+  const handleCreateArticle = (e) => {
     e.preventDefault();
-    const { title, blog_text, keywords } = blog;
+    const { title, blog_text, keywords } = blogDetails;
 
     const bodyData = {
       title,
@@ -57,12 +105,23 @@ const Blog = () => {
     }
   };
 
+  const handleDeleteArticle = (article) => {
+    deleleBlog(dispatch, article.id);
+  };
+
   useEffect(() => {
     getBlogs(dispatch);
   }, [dispatch]);
   return (
     <div style={{ paddingTop: "80px" }}>
-      <div style={{ marginLeft: "20px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginLeft: "20px",
+          marginRight: "20px",
+        }}
+      >
         <h3>BLOGS:</h3>
         <Button onClick={() => setOpen(true)}>Create</Button>
       </div>
@@ -71,83 +130,77 @@ const Blog = () => {
           <Col xs={24} sm={16} md={16}>
             <Grid fluid>
               <Row gutter={16}>
-                <Col xs={8}>
-                  <div className="show-col">
-                    <img src={Image} alt="image" width={300} height={180} />
-                  </div>
-                </Col>
-                <Col xs={16}>
-                  <div className="show-col">
-                    <h4>Introduction </h4># React Suite is a library of React
-                    components, designed for middle platform and back-end
-                    products. Committed to creating intimate interactive designs
-                    while providing developers with a friendly development
-                    experience.
-                  </div>
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col xs={8}>
-                  <div className="show-col">
-                    <img src={Image} alt="image" width={300} height={180} />
-                  </div>
-                </Col>
-                <Col xs={16}>
-                  <div className="show-col">
-                    <h4>Introduction </h4># React Suite is a library of React
-                    components, designed for middle platform and back-end
-                    products. Committed to creating intimate interactive designs
-                    while providing developers with a friendly development
-                    experience.
-                  </div>
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col xs={8}>
-                  <div className="show-col">
-                    <img src={Image} alt="image" width={300} height={180} />
-                  </div>
-                </Col>
-                <Col xs={16}>
-                  <div className="show-col">
-                    <h4>Introduction </h4># React Suite is a library of React
-                    components, designed for middle platform and back-end
-                    products. Committed to creating intimate interactive designs
-                    while providing developers with a friendly development
-                    experience.
-                  </div>
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col xs={8}>
-                  <div className="show-col">
-                    <img src={Image} alt="image" width={300} height={180} />
-                  </div>
-                </Col>
-                <Col xs={16}>
-                  <div className="show-col">
-                    <h4>Introduction </h4># React Suite is a library of React
-                    components, designed for middle platform and back-end
-                    products. Committed to creating intimate interactive designs
-                    while providing developers with a friendly development
-                    experience.
-                  </div>
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col xs={8}>
-                  <div className="show-col">
-                    <img src={Image} alt="image" width={300} height={180} />
-                  </div>
-                </Col>
-                <Col xs={16}>
-                  <div className="show-col">
-                    <h4>Introduction </h4># React Suite is a library of React
-                    components, designed for middle platform and back-end
-                    products. Committed to creating intimate interactive designs
-                    while providing developers with a friendly development
-                    experience.
-                  </div>
+                <Col xs={24}>
+                  <Panel>
+                    {blogs.top_articles?.map((blog) => (
+                      <div>
+                        <div
+                          style={{
+                            display: "flex",
+                            marginBottom: "5px",
+                            marginLeft: "5px",
+                          }}
+                        >
+                          <div className="show-col">
+                            <img
+                              src={Image}
+                              alt="image"
+                              width={300}
+                              height={180}
+                            />
+                          </div>
+                          <div>
+                            <div
+                              onClick={() => {
+                                getBlog(dispatch, blog.slug);
+                                setOpenView(true);
+                              }}
+                            >
+                              <h4>{blog.keywords} </h4>
+                              <div>
+                                # React Suite is a library of React components,
+                                designed for middle platform and back-end
+                                products. Committed to creating intimate
+                                interactive designs while providing developers
+                                with a friendly development experience.
+                              </div>
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                              }}
+                            >
+                              <Button
+                                onClick={() => {
+                                  setUpdateID(blog.id);
+                                  setOpenUpdate(true);
+                                }}
+                              >
+                                Update
+                              </Button>
+                              <Button
+                                style={{ backgroundColor: "red" }}
+                                onClick={() => handleDeleteArticle(blog)}
+                              >
+                                Delete
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                        <hr />
+                      </div>
+                    ))}
+                    {/* {blogs.top_articles && (
+                      <Pagination
+                        size="md"
+                        total={blogs.pagination.count}
+                        limit={per}
+                        activePage={activePage}
+                        onChangePage={(page) => setActivePage(page)}
+                      />
+                    )} */}
+                  </Panel>
                 </Col>
               </Row>
             </Grid>
@@ -220,43 +273,39 @@ const Blog = () => {
           </Col>
         </Row>
       </Grid>
-      <Modal size="md" open={open} onClose={handleClose}>
+      <ModalContext
+        open={open}
+        handleClose={handleClose}
+        hadleClick={handleCreateArticle}
+        handleInputChange={handleInputChange}
+        blog={blogDetails}
+        button="Create"
+        main_title="Create Blog"
+      />
+      <ModalContext
+        open={openUpdate}
+        handleClose={handleUpdateClose}
+        hadleClick={(e) => handleUpdateSubmit(e, updateID)}
+        handleInputChange={handleUpdateChange}
+        blog={updateDetails}
+        button="Update"
+        main_title="Update Blog"
+      />
+      <Modal open={openView} onClose={handleViewClose}>
         <Modal.Header>
-          <Modal.Title>Create Blog</Modal.Title>
+          <Modal.Title>Blog Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Box as="form" onSubmit={handleUserLogin}>
-            <Label htmlFor="email">Title</Label>
-            <Input
-              id="title"
-              name="title"
-              value={blog.title}
-              onChange={handleInputChange}
-            />
-            <Label htmlFor="Blog_Keywords">Blog Keywords</Label>
-            <Input
-              id="keywords"
-              name="keywords"
-              value={blog.keywords}
-              onChange={handleInputChange}
-            />
-            <Label htmlFor="Blog_content">Blog content</Label>
-            <Textarea
-              defaultValue="Create blog"
-              name="blog_text"
-              value={blog.blog_text}
-              onChange={handleInputChange}
-              rows={20}
-            />
-            <Button>Create</Button>
-          </Box>
+          <h4>{blog?.title}</h4>
+          <h6>Description</h6>
+          {blog?.keywords}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleClose} appearance="subtle">
-            Cancel
-          </Button>
-          <Button onClick={handleClose} appearance="primary">
+          <Button onClick={handleViewClose} appearance="primary">
             Ok
+          </Button>
+          <Button onClick={handleViewClose} appearance="subtle">
+            Cancel
           </Button>
         </Modal.Footer>
       </Modal>

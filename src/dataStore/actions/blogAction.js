@@ -4,11 +4,14 @@ import {
   CREATE_BLOGS_ERROR,
   CREATE_BLOGS_SUCCESS,
   DELETE_BLOG,
-  DELETE_BLOGS_ERROR,
-  DELETE_BLOGS_SUCCESS,
+  DELETE_BLOG_ERROR,
+  DELETE_BLOG_SUCCESS,
   GET_BLOGS,
   GET_BLOGS_ERROR,
   GET_BLOGS_SUCCESS,
+  GET_BLOG,
+  GET_BLOG_ERROR,
+  GET_BLOG_SUCCESS,
   UPDATE_BLOG,
   UPDATE_BLOGS_ERROR,
   UPDATE_BLOGS_SUCCESS,
@@ -20,12 +23,13 @@ export const getBlogs = async (dispatch) => {
   });
   try {
     return await axiosConfig
-      .get(`/top_articles/some-title`, {
+      .get(`/top_articles`, {
         headers: {
           "x-toprated-token": localStorage.token,
         },
       })
       .then((response) => {
+        console.log(response);
         dispatch({
           type: GET_BLOGS_SUCCESS,
           blogs: response.data,
@@ -35,6 +39,35 @@ export const getBlogs = async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_BLOGS_ERROR,
+      errorMessage: error.response.data.message,
+    });
+
+    return error.response;
+  }
+};
+
+export const getBlog = async (dispatch, title) => {
+  dispatch({
+    type: GET_BLOG,
+  });
+  try {
+    return await axiosConfig
+      .get(`top_articles/${title}`, {
+        headers: {
+          "x-toprated-token": localStorage.token,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        dispatch({
+          type: GET_BLOG_SUCCESS,
+          blog: response.data,
+        });
+        return response;
+      });
+  } catch (error) {
+    dispatch({
+      type: GET_BLOG_ERROR,
       errorMessage: error.response.data.message,
     });
 
@@ -70,28 +103,28 @@ export const createBlog = async (dispatch, credentials) => {
   }
 };
 
-export const deleleBlog = async (dispatch, orderID) => {
+export const deleleBlog = async (dispatch, articleID) => {
   dispatch({
     type: DELETE_BLOG,
   });
   try {
     return await axiosConfig
-      .delete(`/top_articles/1`, {
+      .delete(`/top_articles/${articleID}`, {
         headers: {
           "x-toprated-token": localStorage.token,
         },
       })
       .then((response) => {
         dispatch({
-          type: DELETE_BLOGS_SUCCESS,
+          type: DELETE_BLOG_SUCCESS,
           blogs: response.data,
-          orderId: orderID,
+          blog: articleID,
         });
         return response;
       });
   } catch (error) {
     dispatch({
-      type: DELETE_BLOGS_ERROR,
+      type: DELETE_BLOG_ERROR,
       errorMessage: error.response.data.message,
     });
 
@@ -99,7 +132,7 @@ export const deleleBlog = async (dispatch, orderID) => {
   }
 };
 
-export const updateBlog = async (dispatch, orderID, bodyData) => {
+export const updateBlog = async (dispatch, articleID, bodyData) => {
   dispatch({
     type: UPDATE_BLOG,
   });
@@ -114,7 +147,7 @@ export const updateBlog = async (dispatch, orderID, bodyData) => {
         dispatch({
           type: UPDATE_BLOGS_SUCCESS,
           blog: response.data,
-          orderId: orderID,
+          blog: articleID,
         });
         return response;
       });
