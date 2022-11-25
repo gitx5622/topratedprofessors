@@ -96,6 +96,7 @@ const Blog = () => {
     if (bodyData.title !== "" && bodyData.blog_text !== "") {
       createBlog(dispatch, bodyData).then((response) => {
         if (response.status === 200) getBlogs(dispatch);
+        setOpen(false);
       });
     } else {
       dispatchCheckDetails({
