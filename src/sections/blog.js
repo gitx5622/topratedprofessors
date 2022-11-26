@@ -93,7 +93,11 @@ const Blog = () => {
       blog_text,
       keywords,
     };
-    if (bodyData.title !== "" && bodyData.blog_text !== "") {
+    if (
+      bodyData.title !== "" &&
+      bodyData.blog_text !== "" &&
+      bodyData.keywords !== ""
+    ) {
       createBlog(dispatch, bodyData).then((response) => {
         if (response.status === 200) getBlogs(dispatch);
         setOpen(false);
@@ -157,14 +161,8 @@ const Blog = () => {
                                 setOpenView(true);
                               }}
                             >
-                              <h4>{blog.keywords} </h4>
-                              <div>
-                                # React Suite is a library of React components,
-                                designed for middle platform and back-end
-                                products. Committed to creating intimate
-                                interactive designs while providing developers
-                                with a friendly development experience.
-                              </div>
+                              <h4>{blog.title} </h4>
+                              <div>{blog.keywords}</div>
                             </div>
                             <div
                               style={{
