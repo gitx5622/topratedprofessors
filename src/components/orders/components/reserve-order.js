@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import Payment from "../../../assets/payment.png";
-import { makePayment } from "../../../dataStore/actions/walletAction";
 import { Grid, Row, Col, Button, Panel, Message } from "rsuite";
 import {
   getOrder,
@@ -14,11 +12,6 @@ import { formatDeadline } from "../../../utils/dates";
 import { ToastContainer, toast } from "react-toastify";
 
 const ReserveOrder = () => {
-  const [payment, setPayment] = useState({
-    order_amount: "",
-    user_id: "",
-  });
-
   const orderSelector = useSelector((state) => state.orderState);
   const {
     isLoading: orderLoading,
@@ -44,38 +37,12 @@ const ReserveOrder = () => {
       instructions,
     },
   } = orderSelector;
+  const walletSelector = useSelector((state) => state.orderState);
+  const { errorMessage: walletError } = walletSelector;
   const router = useRouter();
   const { reserveID } = router.query;
   const dispatch = useDispatch();
-
-  const handlePaypalChange = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setPayment({
-      ...payment,
-      [name]: value,
-    });
-  };
-
-  const handleMakePaypalPaymentSubmit = (event) => {
-    event.preventDefault();
-    const { id: userID } = JSON.parse(localStorage.currentUser);
-    const bodyData = {
-      user_id: parseInt(userID),
-      order_amount: parseInt(payment.order_amount, 10),
-    };
-    if (payment.order_amount !== "") {
-      makePayment(dispatch, bodyData).then((response) => {
-        const links = response.data.links[1].href;
-        if (response.status === 200) router.push(links);
-      });
-    } else {
-      dispatch({
-        type: "MAKE_PAYMENT_ERROR",
-        errorMessage: "Make sure all the fields all filled",
-      });
-    }
-  };
+  const formattedInstructructions = instructions?.trim().slice(2).slice(0, -2);
 
   const handleReserveFromWallet = () => {
     payFromWallet(dispatch, orderId).then((response) => {
@@ -84,6 +51,14 @@ const ReserveOrder = () => {
           position: toast.POSITION.TOP_CENTER,
         });
         router.push("/dashboard/waiting-assign");
+      } else {
+        dispatch({
+          type: "MAKE_PAYMENT_ERROR",
+          errorMessage: walletError.data.error_message,
+        });
+        toast.error(walletError.data.error_message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
       }
     });
   };
@@ -94,11 +69,6 @@ const ReserveOrder = () => {
   return (
     <div>
       <Panel>
-        {errorMessage && (
-          <Message style={{ background: "#F12D3C" }}>
-            <div style={{ color: "white" }}>{errorMessage.error_message}</div>
-          </Message>
-        )}
         {orderLoading && <BoxLoading />}
         <br />
         <ToastContainer />
@@ -118,7 +88,6 @@ const ReserveOrder = () => {
           >
             Deposit to Paypal
           </Button>
-          ?{" "}
         </div>
         <br />
         <Grid fluid>
@@ -202,7 +171,9 @@ const ReserveOrder = () => {
                   <td style={styles.table.td}>
                     <b>Amount</b>
                   </td>
-                  <td style={styles.table.td}>{amount && amount.toFixed(2)}</td>
+                  <td style={styles.table.td}>
+                    ${amount && amount.toFixed(2)}
+                  </td>
                 </tr>
                 <tr>
                   <td style={styles.table.td}>
@@ -221,7 +192,7 @@ const ReserveOrder = () => {
                   <td colSpan="3">
                     <Editor
                       apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
-                      initialValue={instructions}
+                      initialValue={formattedInstructructions}
                       init={{
                         height: 300,
                         language: "en_US",

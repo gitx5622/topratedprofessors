@@ -124,7 +124,7 @@ const RevisionDetails = ({ section }) => {
   const { revisionID } = router.query;
   const dispatch = useDispatch();
   const uploaderRef = React.useRef();
-  const formattedInstructruction = instructions?.trim().slice(3).slice(0, -4);
+  const formattedInstructructions = instructions?.trim().slice(2).slice(0, -2);
 
   const handleOpen = () => setReleaseFundsOpen(true);
   const handleClose = () => setReleaseFundsOpen(false);
@@ -487,132 +487,130 @@ const RevisionDetails = ({ section }) => {
       )}
       {open && (
         <Grid fluid>
-          <Row>
-            <Col xs={24} sm={24} md={16}>
-              <Panel style={{ marginTop: "-10px" }}>
-                <div
-                  style={{
-                    background: "#fdaa8f",
-                    height: "40px",
-                    padding: "10px",
-                  }}
-                >
-                  <h5>Order #{order_number}</h5>
-                </div>
-                <table style={styles.table}>
-                  <tr style={{ borderRadius: "10px" }}>
-                    <td style={styles.table.td}>
-                      <strong>Order Number</strong>
-                    </td>
-                    <td style={styles.table.tdx}>{order_number}</td>
-                    <td style={styles.table.td}>
-                      <b>Subject</b>
-                    </td>
-                    <td style={styles.table.td}>{subject && subject.name}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.table.td}>
-                      <strong>Client</strong>
-                    </td>
-                    <td style={styles.table.tdx}>{user && user.username}</td>
-                    <td style={styles.table.td}>
-                      <b>Style</b>
-                    </td>
-                    <td style={styles.table.td}>{style && style.name}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.table.td}>
-                      <b>Service</b>
-                    </td>
-                    <td style={styles.table.td}>{service && service.name}</td>
-                    <td style={styles.table.td}>
-                      <b>Language</b>
-                    </td>
-                    <td style={styles.table.td}>{language && language.name}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.table.td}>
-                      <b>Sources</b>
-                    </td>
-                    <td style={styles.table.td}>{source && source.name}</td>
-                    <td style={styles.table.td}>
-                      <b>Phone</b>
-                    </td>
-                    <td style={styles.table.td}>{phone}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.table.td}>
-                      <b>Type of Paper</b>
-                    </td>
-                    <td style={styles.table.td}>{type && type.name}</td>
-                    <td style={styles.table.td}>
-                      <b>Topic</b>
-                    </td>
-                    <td style={styles.table.td}>{topic}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.table.td}>
-                      <b>Spacing</b>
-                    </td>
-                    <td style={styles.table.td}>{spacing && spacing.name}</td>
-                    <td style={styles.table.td}>
-                      <b>Deadline</b>
-                    </td>
-                    <td style={styles.table.td}>{formatDeadline(deadline)}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.table.td}>
-                      <b>Urgency</b>
-                    </td>
-                    <td style={styles.table.td}>{urgency && urgency.name}</td>
-                    <td style={styles.table.td}>
-                      <b>Amount</b>
-                    </td>
-                    <td style={styles.table.td}>
-                      {amount && amount.toFixed(2)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={styles.table.td}>
-                      <b>Pages</b>
-                    </td>
-                    <td style={styles.table.td}>{page && page.name}</td>
-                    <td style={styles.table.td}>
-                      <b>Level</b>
-                    </td>
-                    <td style={styles.table.td}>{level && level.name}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.table.td}>
-                      <b>Instructions</b>
-                    </td>
-                    <td colSpan="3">
-                      <Editor
-                        apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
-                        initialValue={formattedInstructruction}
-                        init={{
-                          height: 300,
-                          language: "en_US",
-                          menubar: false,
-                          plugins: [
-                            "advlist autolink lists link image",
-                            "charmap print preview anchor help",
-                            "searchreplace visualblocks code",
-                            "insertdatetime media table paste wordcount",
-                          ],
-                          toolbar:
-                            "undo redo | formatselect | bold italic | \
-                                                    alignleft aligncenter alignright | \
-                                                    bullist numlist outdent indent | help",
-                        }}
-                      />
-                    </td>
-                  </tr>
-                </table>
-              </Panel>
-            </Col>
-          </Row>
-        </Grid>
+        <Row>
+          <Col xs={24} sm={24} md={24}>
+            <div
+              style={{
+                background: "#fdaa8f",
+                height: "40px",
+                padding: "10px",
+              }}
+            >
+              <h5>Order #{order_number}</h5>
+            </div>
+            <table style={styles.table}>
+              <tr style={{ borderRadius: "10px" }}>
+                <td style={styles.table.td}>
+                  <strong>Order Number</strong>
+                </td>
+                <td style={styles.table.tdx}>{order_number}</td>
+                <td style={styles.table.td}>
+                  <b>Subject</b>
+                </td>
+                <td style={styles.table.td}>{subject && subject.name}</td>
+              </tr>
+              <tr>
+                <td style={styles.table.td}>
+                  <strong>Client</strong>
+                </td>
+                <td style={styles.table.tdx}>{user && user.username}</td>
+                <td style={styles.table.td}>
+                  <b>Style</b>
+                </td>
+                <td style={styles.table.td}>{style && style.name}</td>
+              </tr>
+              <tr>
+                <td style={styles.table.td}>
+                  <b>Service</b>
+                </td>
+                <td style={styles.table.td}>{service && service.name}</td>
+                <td style={styles.table.td}>
+                  <b>Language</b>
+                </td>
+                <td style={styles.table.td}>{language && language.name}</td>
+              </tr>
+              <tr>
+                <td style={styles.table.td}>
+                  <b>Sources</b>
+                </td>
+                <td style={styles.table.td}>{source && source.name}</td>
+                <td style={styles.table.td}>
+                  <b>Phone</b>
+                </td>
+                <td style={styles.table.td}>{phone}</td>
+              </tr>
+              <tr>
+                <td style={styles.table.td}>
+                  <b>Type of Paper</b>
+                </td>
+                <td style={styles.table.td}>{type && type.name}</td>
+                <td style={styles.table.td}>
+                  <b>Topic</b>
+                </td>
+                <td style={styles.table.td}>{topic}</td>
+              </tr>
+              <tr>
+                <td style={styles.table.td}>
+                  <b>Spacing</b>
+                </td>
+                <td style={styles.table.td}>{spacing && spacing.name}</td>
+                <td style={styles.table.td}>
+                  <b>Deadline</b>
+                </td>
+                <td style={styles.table.td}>{formatDeadline(deadline)}</td>
+              </tr>
+              <tr>
+                <td style={styles.table.td}>
+                  <b>Urgency</b>
+                </td>
+                <td style={styles.table.td}>{urgency && urgency.name}</td>
+                <td style={styles.table.td}>
+                  <b>Amount</b>
+                </td>
+                <td style={styles.table.td}>
+                  ${amount && amount.toFixed(2)}
+                </td>
+              </tr>
+              <tr>
+                <td style={styles.table.td}>
+                  <b>Pages</b>
+                </td>
+                <td style={styles.table.td}>{page && page.name}</td>
+                <td style={styles.table.td}>
+                  <b>Level</b>
+                </td>
+                <td style={styles.table.td}>{level && level.name}</td>
+              </tr>
+              <tr>
+                <td style={styles.table.td}>
+                  <b>Instructions</b>
+                </td>
+                <td colSpan="3">
+                  <Editor
+                    apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
+                    initialValue={formattedInstructructions}
+                    init={{
+                      height: 300,
+                      language: "en_US",
+                      menubar: false,
+                      plugins: [
+                        "advlist autolink lists link image",
+                        "charmap print preview anchor help",
+                        "searchreplace visualblocks code",
+                        "insertdatetime media table paste wordcount",
+                      ],
+                      toolbar:
+                        "undo redo | formatselect | bold italic | \
+                                                  alignleft aligncenter alignright | \
+                                                  bullist numlist outdent indent | help",
+                    }}
+                  />
+                </td>
+              </tr>
+            </table>
+          </Col>
+        </Row>
+      </Grid>
       )}
       {messageOpen && (
         <div>
@@ -739,7 +737,7 @@ const RevisionDetails = ({ section }) => {
                     borderRadius: "5px",
                   }}
                   rows={4}
-                  placeholder="Textarea"
+                  placeholder="Revision Instructions"
                 />
                 <br />
               </Modal.Body>
@@ -778,7 +776,7 @@ const RevisionDetails = ({ section }) => {
                     borderRadius: "5px",
                   }}
                   rows={4}
-                  placeholder="Textarea"
+                  placeholder="Description"
                 />
                 <br />
               </Modal.Body>
@@ -835,7 +833,7 @@ const RevisionDetails = ({ section }) => {
                     borderRadius: "5px",
                   }}
                   rows={4}
-                  placeholder="Textarea"
+                  placeholder="Description"
                 />
                 <br />
               </Modal.Body>

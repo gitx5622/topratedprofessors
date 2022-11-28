@@ -157,9 +157,12 @@ const OrderDetails = ({ section }) => {
 
   const walletSelector = useSelector((state) => state.walletState);
   const { isLoading } = walletSelector;
+  const reserveSelector = useSelector((state) => state.orderState);
+  const { errorMessage: walletError } = reserveSelector;
   const messageSelector = useSelector((state) => state.messageState);
   const { messages } = messageSelector;
   const newMessages = [...messages];
+  const formattedInstructructions = instructions?.trim().slice(2).slice(0, -2);
 
   const levelSelector = useSelector((state) => state.levelState);
   const pageSelector = useSelector((state) => state.pageState);
@@ -466,13 +469,18 @@ const OrderDetails = ({ section }) => {
   const handleReserveFromWallet = () => {
     payFromWallet(dispatch, orderId).then((response) => {
       if (response.status === 200) {
-        setOpen(false);
         toast.success("Paid from wallet successfully!", {
           position: toast.POSITION.TOP_CENTER,
         });
         router.push("/dashboard/waiting-assign");
       } else {
-        setOpen(false);
+        dispatch({
+          type: "MAKE_PAYMENT_ERROR",
+          errorMessage: walletError?.data.error_message,
+        });
+        toast.error(walletError?.data.error_message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
       }
     });
   };
@@ -560,13 +568,7 @@ const OrderDetails = ({ section }) => {
   };
   return (
     <Panel>
-      {errorMessage && (
-        <Message style={{ background: "#F12D3C" }}>
-          <div style={{ color: "white" }}>
-            {errorMessage.data.error_message}
-          </div>
-        </Message>
-      )}
+      <ToastContainer />
       {successMessage && <Message type="success">{successMessage}</Message>}
       <br />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -894,8 +896,8 @@ const OrderDetails = ({ section }) => {
                 <Label htmlFor="instructions">Instructions*</Label>
                 <Editor
                   apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
-                  initialValue={instructions}
-                  value={instructionsx}
+                  initialValue={formattedInstructructions}
+                  value={instructions}
                   init={{
                     height: 250,
                     language: "en_US",
@@ -1180,7 +1182,9 @@ const OrderDetails = ({ section }) => {
                   <td style={styles.table.td}>
                     <b>Amount</b>
                   </td>
-                  <td style={styles.table.td}>{amount && amount.toFixed(2)}</td>
+                  <td style={styles.table.td}>
+                    ${amount && amount.toFixed(2)}
+                  </td>
                 </tr>
                 <tr>
                   <td style={styles.table.td}>
@@ -1199,7 +1203,7 @@ const OrderDetails = ({ section }) => {
                   <td colSpan="3">
                     <Editor
                       apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
-                      initialValue={instructions}
+                      initialValue={formattedInstructructions}
                       init={{
                         height: 300,
                         language: "en_US",

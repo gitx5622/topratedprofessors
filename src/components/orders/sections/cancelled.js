@@ -53,7 +53,6 @@ const Cancelled = () => {
                     <th style={styles.table.th}>Subject</th>
                     <th style={styles.table.th}>Type of Paper</th>
                     <th style={styles.table.th}>Deadline</th>
-                    <th style={styles.table.th}>Promo Code</th>
                     <th style={styles.table.th}>Pages</th>
                     <th style={styles.table.th}>Amount</th>
                     <th style={styles.table.th}>Re-submit</th>
@@ -69,10 +68,6 @@ const Cancelled = () => {
                         <td style={styles.table.td}>{data.subject && (data.subject.name)}</td>
                         <td style={styles.table.td}>{data.type && (data.type.name)}</td>
                         <td style={styles.table.td}>{formatDeadline(data.deadline)}</td>
-                        <td style={styles.table.td}>
-                            <center><Tag color="orange">{data.promocode === "" ? "none" : promocode}</Tag>
-                            </center>
-                        </td>
                         <td style={styles.table.td}>{data.page && (data.page.name)}</td>
                         <td style={styles.table.td}>$ {data.amount.toFixed(2)}</td>
                         <td style={styles.table.td}>

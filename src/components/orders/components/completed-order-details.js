@@ -117,7 +117,7 @@ const OrderCompletedDetails = ({ section }) => {
   const { completedOrderID } = router.query;
   const dispatch = useDispatch();
   const uploaderRef = React.useRef();
-  const formattedInstructruction = instructions?.trim().slice(3).slice(0, -4);
+  const formattedInstructruction = instructions?.trim().slice(2).slice(0, -2);
 
   const handleOpen = () => setReleaseFundsOpen(true);
   const handleClose = () => setReleaseFundsOpen(false);
@@ -568,7 +568,7 @@ const OrderCompletedDetails = ({ section }) => {
                     <td colSpan="3">
                       <Editor
                         apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
-                        initialValue={instructions}
+                        initialValue={formattedInstructruction}
                         init={{
                           height: 300,
                           language: "en_US",

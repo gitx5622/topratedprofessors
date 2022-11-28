@@ -101,7 +101,7 @@ const InProgressDetails = ({ section }) => {
     },
   } = orderSelector;
 
-  const formattedInstructruction = instructions?.trim().slice(3).slice(0, -4);
+  const formattedInstructruction = instructions?.trim().slice(2).slice(0, -2);
   const walletSelector = useSelector((state) => state.walletState);
   const { isLoading } = walletSelector;
   const messageSelector = useSelector((state) => state.messageState);
@@ -444,7 +444,7 @@ const InProgressDetails = ({ section }) => {
                       <b>Amount</b>
                     </td>
                     <td style={styles.table.td}>
-                      {amount && amount.toFixed(2)}
+                      ${amount && amount.toFixed(2)}
                     </td>
                   </tr>
                   <tr>
