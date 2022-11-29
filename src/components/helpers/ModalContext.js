@@ -51,7 +51,7 @@ const ModalContext = (props) => {
                 "insertdatetime media table paste wordcount",
               ],
               toolbar:
-                "undo redo | formatselect | bold italic | \
+                "link | undo redo | formatselect | bold italic | \
                                                     alignleft aligncenter alignright | \
                                                     bullist numlist outdent indent | help",
             }}
