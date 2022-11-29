@@ -183,7 +183,7 @@ const OrderLayout = ({ children }) => {
           collapsible
           appearance="inverse"
         >
-          <Sidenav.Header>
+          <Sidenav.Header onClick={() => router.push("/")}>
             <center>
               <Box sx={styles.headerStyles}>
                 <img className="image" src={Geal} height={47} alt="" />

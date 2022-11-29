@@ -23,11 +23,7 @@ export const getBlogs = async (dispatch) => {
   });
   try {
     return await axiosConfig
-      .get(`/top_articles`, {
-        headers: {
-          "x-toprated-token": localStorage.token,
-        },
-      })
+      .get(`/top_articles`)
       .then((response) => {
         console.log(response);
         dispatch({

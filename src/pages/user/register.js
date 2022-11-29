@@ -91,29 +91,17 @@ export default function Register() {
       </Box>
       <Box sx={styles.login}>
         <Box sx={styles.loginImage}>
+          <Box sx={styles.home} onClick={() => router.push("/")}>
+            TopRated Professors
+          </Box>
           <Image src={PatternBG} alt="" sx={styles.patternImage} />
         </Box>
         <Box sx={styles.form}>
           <Box sx={styles.formLogin} as="form" onSubmit={handleRegisterUser}>
             <center>
-              <h3 sx={{ fontFamily: "Quicksand, sans-serif" }}>
-                Welcome to TopRatedProfessors
-              </h3>
-              <br />
-              <Button
-                sx={{
-                  background: "#17a2b8",
-                  display: "block",
-                  width: "100%",
-                  borderColor: "#17a2b8",
-                }}
-                onClick={() => router.push("/")}
-                block
-                theme="info"
-              >
-                <BiArrowBack /> Go Home
-              </Button>
-              <br />
+              <Box sx={{ textAlign: "center", fontSize: "35px" }}>
+                Welcome to TopRated Professors
+              </Box>
               {checkDetailsData.errorMessage && (
                 <Message closable type="error">
                   {checkDetailsData.errorMessage}
@@ -121,11 +109,7 @@ export default function Register() {
               )}
             </center>
             <br />
-            <h3
-              sx={{ textAlign: "center", fontFamily: "Quicksand, sans-serif" }}
-            >
-              Register
-            </h3>
+            <Box sx={{ textAlign: "center", fontSize: "35px" }}>Register</Box>
             <br />
             <Box sx={styles.grid}>
               <Box>
@@ -241,6 +225,13 @@ const styles = {
       display: "none",
     },
   },
+  home: {
+    position: "absolute",
+    paddingTop: "20px",
+    paddingLeft: "20px",
+    fontSize: "30px",
+    cursor: "pointer",
+  },
   patternImage: {
     maxWidth: "100%",
     height: "100vh",
@@ -267,11 +258,6 @@ const styles = {
   formLogin: {
     wordWrap: "break-word",
     width: ["250px", "420px"],
-    label: {
-      fontFamily: "Quicksand, sans-serif",
-      fontSize: 1,
-      fontWeight: "bold",
-    },
     input: {
       borderColor: "gray",
       mb: "10px",

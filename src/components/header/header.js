@@ -38,18 +38,30 @@ const Header = ({ className }) => {
         </Link>
       </Flex>
       <div style={{ display: "flex", gap: "1em" }}>
-        <Link href="/user/login">
-          <a>
-            <Button
-              className="login__btn"
-              size="sm"
-              variant="secondary"
-              aria-label="Get Started"
-            >
-              Login
-            </Button>
-          </a>
-        </Link>
+        {localStorage.currentUser ? (
+          <Button
+            className="login__btn"
+            size="sm"
+            variant="secondary"
+            aria-label="logout"
+            onClick={() => localStorage.clear()}
+          >
+            Logout
+          </Button>
+        ) : (
+          <Link href="/user/login">
+            <a>
+              <Button
+                className="login__btn"
+                size="sm"
+                variant="secondary"
+                aria-label="Login"
+              >
+                Login
+              </Button>
+            </a>
+          </Link>
+        )}
         <Link href="/user/register">
           <a>
             <Button
@@ -57,6 +69,7 @@ const Header = ({ className }) => {
               size="sm"
               variant="secondary"
               aria-label="Get Started"
+              disabled={localStorage.currentUser}
             >
               Get Started
             </Button>
