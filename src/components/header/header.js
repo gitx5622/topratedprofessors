@@ -8,6 +8,9 @@ import LogoDark from "assets/logo.png";
 import USflag from "../../assets/usa.png";
 
 const Header = ({ className }) => {
+  const handleClearStorage = () => {
+    localStorage.clear();
+  };
   return (
     <header sx={styles.header} className={className}>
       <Link href="/">
@@ -38,13 +41,13 @@ const Header = ({ className }) => {
         </Link>
       </Flex>
       <div style={{ display: "flex", gap: "1em" }}>
-        {localStorage.currentUser ? (
+        {typeof window !== "undefined" && localStorage.currentUser ? (
           <Button
             className="login__btn"
             size="sm"
             variant="secondary"
             aria-label="logout"
-            onClick={() => localStorage.clear()}
+            onClick={handleClearStorage}
           >
             Logout
           </Button>
@@ -69,7 +72,9 @@ const Header = ({ className }) => {
               size="sm"
               variant="secondary"
               aria-label="Get Started"
-              disabled={localStorage.currentUser}
+              disabled={
+                typeof window !== "undefined" && localStorage.currentUser
+              }
             >
               Get Started
             </Button>
