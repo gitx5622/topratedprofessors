@@ -171,7 +171,7 @@ const styles = {
     paddingTop: "20px",
     paddingLeft: "20px",
     fontSize: "30px",
-    cursor: 'pointer'
+    cursor: "pointer",
   },
   patternImage: {
     maxWidth: "100%",

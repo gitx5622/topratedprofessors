@@ -1,27 +1,32 @@
 /** @jsx jsx */
-import React, { useState } from 'react';
-import { Box, jsx } from 'theme-ui';
-import { Scrollbars } from 'react-custom-scrollbars';
-import Drawer from 'components/home/drawer';
-import { IoMdClose, IoMdMenu } from 'react-icons/io';
-import Link from 'next/link';
-import { FaFacebookF, FaTwitter, FaGithubAlt, FaDribbble } from 'react-icons/fa';
+import React, { useState } from "react";
+import { Box, jsx } from "theme-ui";
+import { Scrollbars } from "react-custom-scrollbars";
+import Drawer from "components/home/drawer";
+import { IoMdClose, IoMdMenu } from "react-icons/io";
+import Link from "next/link";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaGithubAlt,
+  FaDribbble,
+} from "react-icons/fa";
 
 const social = [
   {
-    path: '/',
+    path: "/",
     icon: <FaFacebookF />,
   },
   {
-    path: '/',
+    path: "/",
     icon: <FaTwitter />,
   },
   {
-    path: '/',
+    path: "/",
     icon: <FaGithubAlt />,
   },
   {
-    path: '/',
+    path: "/",
     icon: <FaDribbble />,
   },
 ];
@@ -45,34 +50,32 @@ export default function MobileDrawer() {
       <Scrollbars autoHide>
         <Box sx={styles.content}>
           <Box sx={styles.menu}>
-              <div>
-                <Link href="/">
-                  <a>About Us</a>
-                </Link>
-                <Link href="/">
-                  <a>Reviews</a>
-                </Link>
-                <Link href="/">
-                  <a>How it Works</a>
-                </Link>
-                <Link href="/">
-                  <a>Why Us</a>
-                </Link>
-                <Link href="/">
-                  <a>Services</a>
-                </Link>
-                <Link href="/">
-                  <a>+1-814-250-1019</a>
-                </Link>
-              </div>
+            <div>
+              <Link href="/">
+                <a>About Us</a>
+              </Link>
+              <Link href="/">
+                <a>Reviews</a>
+              </Link>
+              <Link href="/">
+                <a>How it Works</a>
+              </Link>
+              <Link href="/">
+                <a>Why Us</a>
+              </Link>
+              <Link href="/">
+                <a>Services</a>
+              </Link>
+              <Link href="/">
+                <a>+1-814-250-1019</a>
+              </Link>
+            </div>
           </Box>
           <Box sx={styles.menuFooter}>
             <Box sx={styles.social}>
               {social?.map((socialItem, i) => (
-                <Box as='span' key={i} sx={styles.social.icon}>
-                  <Link href={socialItem.path}>
-                    {socialItem.icon}
-                  </Link>
+                <Box as="span" key={i} sx={styles.social.icon}>
+                  <Link href={socialItem.path}>{socialItem.icon}</Link>
                 </Box>
               ))}
             </Box>
@@ -81,112 +84,112 @@ export default function MobileDrawer() {
       </Scrollbars>
     </Drawer>
   );
-};
+}
 
 const styles = {
   handler: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: '0',
-    width: '26px',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: "0",
+    width: "26px",
 
-    '@media screen and (min-width: 1024px)': {
-      display: 'none',
+    "@media screen and (min-width: 1024px)": {
+      display: "none",
     },
   },
 
   drawer: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'dark',
+    width: "100%",
+    height: "100%",
+    backgroundColor: "dark",
   },
 
   close: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: '25px',
-    right: '30px',
-    zIndex: '1',
-    cursor: 'pointer',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: "25px",
+    right: "30px",
+    zIndex: "1",
+    cursor: "pointer",
   },
 
   content: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    pt: '100px',
-    pb: '40px',
-    px: '30px',
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    pt: "100px",
+    pb: "40px",
+    px: "30px",
   },
 
   menu: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
     a: {
-      fontSize: '16px',
-      fontWeight: '500',
-      color: 'text_white',
-      py: '15px',
-      cursor: 'pointer',
-      borderBottom: '1px solid #e8e5e5',
-      transition: 'all 0.25s',
-      '&:hover': {
-        color: 'secondary',
+      fontSize: "16px",
+      fontWeight: "500",
+      color: "text_white",
+      py: "15px",
+      cursor: "pointer",
+      borderBottom: "1px solid #e8e5e5",
+      transition: "all 0.25s",
+      "&:hover": {
+        color: "secondary",
       },
-      '&.active': {
-        color: 'secondary',
+      "&.active": {
+        color: "secondary",
       },
     },
   },
 
   menuFooter: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    mt: 'auto',
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    mt: "auto",
   },
 
   social: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
 
     icon: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: 'text',
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "text",
       fontSize: 14,
-      mr: '15px',
-      transition: 'all 0.25s',
-      cursor: 'pointer',
-      ':last-child': {
-        mr: '0',
+      mr: "15px",
+      transition: "all 0.25s",
+      cursor: "pointer",
+      ":last-child": {
+        mr: "0",
       },
-      '&:hover': {
-        color: 'secondary',
+      "&:hover": {
+        color: "secondary",
       },
     },
   },
 
   button: {
-    color: 'white',
-    fontSize: '14px',
-    fw: '700',
-    height: '45px',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    py: '0',
+    color: "white",
+    fontSize: "14px",
+    fw: "700",
+    height: "45px",
+    borderRadius: "5px",
+    cursor: "pointer",
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    py: "0",
   },
 };

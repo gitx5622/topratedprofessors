@@ -1,30 +1,30 @@
 /** @jsx jsx */
-import React from 'react';
-import { jsx, Box, Text, Heading } from 'theme-ui';
+import { jsx, Box, Text } from "theme-ui";
 
 export default function SectionHeader({ title, slogan, isWhite }) {
   return (
     <Box>
       <Text
-        as='p'
+        as="p"
         sx={{
-          fontSize: [0, '13px', null, '14px'],
-          textAlign: 'center',
-          letterSpacing: ['1.5px', null, '2px'],
-          textTransform: 'uppercase',
-          fontWeight: '700',
+          fontSize: [0, "13px", null, "14px"],
+          textAlign: "center",
+          letterSpacing: ["1.5px", null, "2px"],
+          textTransform: "uppercase",
+          fontWeight: "700",
           mb: 2,
           lineHeight: 1.5,
-          fontFamily: 'body',
-          color: isWhite ? 'white' : 'primary',
+          fontFamily: "body",
+          color: isWhite ? "white" : "primary",
           opacity: isWhite ? 0.7 : 1,
-        }}>
+        }}
+      >
         <center>{slogan}</center>
       </Text>
       <h3
         sx={{
-          textAlign: 'center',
-          color: isWhite ? 'white' : 'heading',
+          textAlign: "center",
+          color: isWhite ? "white" : "heading",
         }}
       >
         <center>{title}</center>

@@ -1,27 +1,27 @@
-import React from 'react';
-import { FaStar } from 'react-icons/fa';
+import React from "react";
+import { FaStar } from "react-icons/fa";
 
-const Rating = ({rating}) => {
+const Rating = ({ rating }) => {
   const totalRating = [];
-  for (let i = 0; i < 5; i++){
+  for (let i = 0; i < 5; i++) {
     if (i < rating) {
       totalRating.push(
-          <li className="star" key={i}>
-            <FaStar/>
-          </li>
-      )
-    }else {
+        <li className="star" key={i}>
+          <FaStar />
+        </li>
+      );
+    } else {
       totalRating.push(
-          <li className="star-o" key={i}>
-            <FaStar/>
-          </li>
-      )
+        <li className="star-o" key={i}>
+          <FaStar />
+        </li>
+      );
     }
   }
   return (
-      <div className="rating">
-        <ul>{totalRating}</ul>
-      </div>
+    <div className="rating">
+      <ul>{totalRating}</ul>
+    </div>
   );
 };
 

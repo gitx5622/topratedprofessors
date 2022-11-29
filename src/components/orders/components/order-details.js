@@ -63,18 +63,6 @@ const OrderDetails = ({ section }) => {
   const [messageOpen, setMessageOpen] = useState(false);
   const [messageInfo, setMessageInfo] = useState([]);
   const [cancelReasonValue, setCancelReasonValue] = useState(1);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [uploadedFileName, setUploadedFileName] = useState("");
-  const [uploadFiles, setUploadFiles] = useState({
-    order_id: "",
-    user_id: "",
-    uploaded_files: [
-      {
-        content_type: "",
-        data: "",
-      },
-    ],
-  });
   const [message, setMessage] = useState({
     sender_id: "",
     message: "",
@@ -324,9 +312,9 @@ const OrderDetails = ({ section }) => {
   };
 
   const handleInstructionsChange = (value) => {
-    console.log(value);
     setinstructions(value);
   };
+  
   const handleUpdateOrderSubmit = (event) => {
     event.persist();
     event.preventDefault();
@@ -485,10 +473,6 @@ const OrderDetails = ({ section }) => {
     });
   };
 
-  useEffect(() => {
-    setUploadedFileName(localStorage.file);
-  }, [uploadFiles.uploaded_files, uploaderRef]);
-
   React.useEffect(() => {
     getOrder(dispatch, orderID);
     getOrderfiles(dispatch, orderID);
@@ -569,8 +553,6 @@ const OrderDetails = ({ section }) => {
   return (
     <Panel>
       <ToastContainer />
-      {successMessage && <Message type="success">{successMessage}</Message>}
-      <br />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h4>Order Details</h4>
         <div style={{ display: "flex", gap: "1em" }}>
@@ -1036,7 +1018,6 @@ const OrderDetails = ({ section }) => {
                   <Uploader
                     listType="picture-text"
                     ref={uploaderRef}
-                    value={uploadFiles}
                     onChange={(file) => handleFileUploadChange(file)}
                     fileListVisible={false}
                   >

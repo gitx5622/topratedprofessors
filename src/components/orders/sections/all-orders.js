@@ -22,9 +22,9 @@ const AllOrders = () => {
 
   useEffect(() => {
     const { id: userId } = JSON.parse(localStorage.currentUser);
-    getOrders(dispatch, userId, activePage, per)
+    getOrders(dispatch, userId, activePage, per);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [dispatch, activePage, per]);
+  }, [dispatch, activePage, per]);
 
   return (
     <div style={{ marginLeft: "10px", marginRight: "10px" }}>

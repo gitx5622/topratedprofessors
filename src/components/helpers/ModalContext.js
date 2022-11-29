@@ -1,5 +1,6 @@
 import { Modal } from "rsuite";
 import { Box, Input, Button, Label } from "theme-ui";
+import { Editor } from "@tinymce/tinymce-react";
 
 const ModalContext = (props) => {
   const {
@@ -10,10 +11,9 @@ const ModalContext = (props) => {
     blog,
     button,
     main_title,
+    onEditorChange,
   } = props;
-  const Textarea = React.forwardRef((props, ref) => (
-    <Input {...props} as="textarea" ref={ref} />
-  ));
+
   return (
     <Modal size="md" open={open} onClose={handleClose}>
       <Modal.Header>
@@ -36,12 +36,26 @@ const ModalContext = (props) => {
             onChange={handleInputChange}
           />
           <Label htmlFor="Blog_content">Blog Content</Label>
-          <Textarea
-            defaultValue={main_title}
-            name="blog_text"
+          <Editor
+            apiKey="jm5weuex99fz17qyiv457ia53e6ignpzdupkd8vpszcywnoo"
+            initialValue={blog.blog_text}
             value={blog.blog_text}
-            onChange={handleInputChange}
-            rows={20}
+            init={{
+              height: 250,
+              language: "en_US",
+              menubar: false,
+              plugins: [
+                "advlist autolink lists link image",
+                "charmap print preview anchor help",
+                "searchreplace visualblocks code",
+                "insertdatetime media table paste wordcount",
+              ],
+              toolbar:
+                "undo redo | formatselect | bold italic | \
+                                                    alignleft aligncenter alignright | \
+                                                    bullist numlist outdent indent | help",
+            }}
+            onEditorChange={onEditorChange}
           />
           <Button>{button}</Button>
         </Box>

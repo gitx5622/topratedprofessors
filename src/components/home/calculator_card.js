@@ -204,7 +204,11 @@ const CalculatorCard = ({
                 onChange={parseLevelSelected}
               >
                 {levelsData?.map((level) => (
-                  <option key={level.id} value={JSON.stringify(level)}>
+                  <option
+                    key={level.id}
+                    selected={level.name === "College/Undergraduate"}
+                    value={JSON.stringify(level)}
+                  >
                     {level.name}
                   </option>
                 ))}

@@ -59,6 +59,14 @@ const Blog = () => {
       [name]: value,
     });
   };
+
+  const handleInstructionsChange = (value) => {
+    setBlogDetails((details) => ({
+      ...details,
+      blog_text: value,
+    }));
+  };
+
   const handleUpdateSubmit = (event, articleID) => {
     event.persist();
     event.preventDefault();
@@ -114,6 +122,15 @@ const Blog = () => {
     deleleBlog(dispatch, article.id);
   };
 
+  const handleBlogCreator = () => {
+    let blogCreator;
+    if (typeof window !== "undefined") {
+      // Perform localStorage action
+      blogCreator = blogCreator = localStorage.currentUser.id === 7 || null;
+    }
+    return blogCreator;
+  };
+
   useEffect(() => {
     getBlogs(dispatch);
   }, [dispatch]);
@@ -128,7 +145,9 @@ const Blog = () => {
         }}
       >
         <h3>BLOGS:</h3>
-        <Button onClick={() => setOpen(true)}>Create</Button>
+        {handleBlogCreator() ?? (
+          <Button onClick={() => setOpen(true)}>Create</Button>
+        )}
       </div>
       <Grid fluid>
         <Row>
@@ -170,20 +189,24 @@ const Blog = () => {
                                 justifyContent: "space-between",
                               }}
                             >
-                              <Button
-                                onClick={() => {
-                                  setUpdateID(blog.id);
-                                  setOpenUpdate(true);
-                                }}
-                              >
-                                Update
-                              </Button>
-                              <Button
-                                style={{ backgroundColor: "red" }}
-                                onClick={() => handleDeleteArticle(blog)}
-                              >
-                                Delete
-                              </Button>
+                              {handleBlogCreator() ?? (
+                                <>
+                                  <Button
+                                    onClick={() => {
+                                      setUpdateID(blog.id);
+                                      setOpenUpdate(true);
+                                    }}
+                                  >
+                                    Update
+                                  </Button>
+                                  <Button
+                                    style={{ backgroundColor: "red" }}
+                                    onClick={() => handleDeleteArticle(blog)}
+                                  >
+                                    Delete
+                                  </Button>
+                                </>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -280,15 +303,17 @@ const Blog = () => {
         blog={blogDetails}
         button="Create"
         main_title="Create Blog"
+        onEditorChange={handleInstructionsChange}
       />
       <ModalContext
         open={openUpdate}
         handleClose={handleUpdateClose}
         hadleClick={(e) => handleUpdateSubmit(e, updateID)}
-        handleInputChange={handleUpdateChange}
+        handleInputChange={handleInputChange}
         blog={updateDetails}
         button="Update"
         main_title="Update Blog"
+        onEditorChange={handleInstructionsChange}
       />
       <Modal open={openView} onClose={handleViewClose}>
         <Modal.Header>

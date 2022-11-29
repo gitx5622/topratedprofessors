@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head";
 import CompletedOrders from "../orders/components/completedOrders";
 import AllOrders from "../orders/components/allOrders";
 import WaitingAssign from "../orders/components/waitingAssign";
@@ -68,6 +69,20 @@ const Dashboard = ({ section }) => {
   };
   return (
     <div>
+      <Head>
+        <title>
+          {section.toUpperCase().replace(/_/g, " ")} - TopRated Professors
+        </title>
+        <link rel="shortcut icon" href="/logo.ico" />
+        <link
+          href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
       <OrderLayout>{renderOrderPages()}</OrderLayout>
     </div>
   );

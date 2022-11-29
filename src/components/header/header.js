@@ -6,10 +6,13 @@ import Link from "next/link";
 import Logo from "components/home/logo";
 import LogoDark from "assets/logo.png";
 import USflag from "../../assets/usa.png";
+import { useRouter } from "next/router";
 
 const Header = ({ className }) => {
+  const router = useRouter();
   const handleClearStorage = () => {
     localStorage.clear();
+    router.push("/");
   };
   return (
     <header sx={styles.header} className={className}>
